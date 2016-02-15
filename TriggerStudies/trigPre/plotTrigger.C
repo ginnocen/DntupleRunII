@@ -5,6 +5,7 @@
 #include <TFile.h>
 #include <TCanvas.h>
 #include <TGraphAsymmErrors.h>
+#include "CMS_lumi.C"
 
 
 // Take a tree, a variable and calculate the efficiency
@@ -22,7 +23,7 @@ TGraphAsymmErrors* getEfficiency(TTree *t, char *variable, TCut preselection, TC
    return g;
 }
 
-void plotTrigger(char *infname="mb.root")
+void plotTrigger(char *infname="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root")
 {
 
    // ============== Open file and basic settings ===============   
@@ -32,7 +33,6 @@ void plotTrigger(char *infname="mb.root")
    TTree *ntDkpi = (TTree*)inf->Get("ntDkpi");
    TTree *ntHlt = (TTree*)inf->Get("ntHlt");
    TTree *ntSkim = (TTree*)inf->Get("ntSkim");
-   
    ntDkpi->AddFriend(ntHlt);
    ntDkpi->AddFriend(ntSkim);   
 
@@ -48,10 +48,10 @@ void plotTrigger(char *infname="mb.root")
 
    // This MB sample has part0;part5;part9; part13; part17 MB triggers
    TCut mbCut = "(HLT_L1MinimumBiasHF1OR_part0_v1||  \
-                  HLT_L1MinimumBiasHF1OR_part5_v1||  \
-                  HLT_L1MinimumBiasHF1OR_part9_v1||  \
-                  HLT_L1MinimumBiasHF1OR_part13_v1|| \
-                  HLT_L1MinimumBiasHF1OR_part17_v1)";
+                             HLT_L1MinimumBiasHF1OR_part5_v1||  \
+                             HLT_L1MinimumBiasHF1OR_part9_v1||  \
+                             HLT_L1MinimumBiasHF1OR_part13_v1|| \
+                             HLT_L1MinimumBiasHF1OR_part17_v1)";
    
    // L1 trigger thresholds
    TCut l1Cut16 = "L1_SingleJet16_BptxAND==1";
@@ -112,6 +112,7 @@ void plotTrigger(char *infname="mb.root")
    leg->Draw();
 
    c->SaveAs("result/Dmeson-HLTriggerEfficiency.pdf");
+   c->SaveAs("result/Dmeson-HLTriggerEfficiency.png");
    c->SaveAs("result/Dmeson-HLTriggerEfficiency.C");
 
    
@@ -154,6 +155,7 @@ void plotTrigger(char *infname="mb.root")
    leg2->Draw();
 
    c2->SaveAs("result/Dmeson-L1TriggerEfficiency.pdf");
+   c2->SaveAs("result/Dmeson-L1TriggerEfficiency.png");
    c2->SaveAs("result/Dmeson-L1TriggerEfficiency.C");
    
    
