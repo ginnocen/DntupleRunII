@@ -175,14 +175,14 @@ TF1* fit(TString variable, TString variableplot, TTree* nt, TTree* ntMC, Double_
   ntMC->Project(Form("hMCSignal-%d",count),"Dmass",Form("%s*(%s&&(%s)>%f&&(%s)<%f&&(Dgen==23333))",weight.Data(),selmc.Data(),variable.Data(),ptmin,variable.Data(),ptmax));   
   ntMC->Project(Form("hMCSwapped-%d",count),"Dmass",Form("%s*(%s&&(%s)>%f&&(%s)<%f&&(Dgen==23344))",weight.Data(),selmc.Data(),variable.Data(),ptmin,variable.Data(),ptmax));   
   
-  
+  /*
   TFile *fout=new TFile(Form("FitsFiles/Fits_%s_%d.root",collisionsystem.Data(),count),"recreate");
   fout->cd();
   hMCSignal->Write();
   hMCSwapped->Write();
   h->Write();  
   fout->Close();
-  
+  */
   
   f->SetParLimits(4,-1000,1000);
   f->SetParLimits(10,0.001,0.05);
