@@ -101,12 +101,14 @@ void plotTriggerForTDR(char *infname="/data/yjlee/dmeson/2015/trigger/mb.root")
   c->SetBottomMargin( B/H );
   
   
-    TH2D *hTmp = new TH2D ("hTmp","",100,0,80,100,0,1.4);
+    TH2D *hTmp = new TH2D ("hTmp","",100,0,80,100,0,1.6);
     hTmp->GetXaxis()->SetTitle("D^{0} p_{T}");  
     hTmp->GetYaxis()->SetTitleOffset(1.1);
     hTmp->GetXaxis()->SetTitleOffset(0.95);
-    hTmp->GetYaxis()->SetTitle("HLT Trigger efficiency");  
-    hTmp->SetMaximum(1.4);
+    hTmp->GetYaxis()->SetTitle("Efficiency");  
+    hTmp->GetYaxis()->CenterTitle();
+    hTmp->GetXaxis()->CenterTitle();
+    hTmp->SetMaximum(1.6);
     hTmp->GetXaxis()->SetTitleFont(42);
     hTmp->GetXaxis()->SetLabelFont(42);
     hTmp->GetXaxis()->SetTitleSize(0.06);
@@ -133,47 +135,57 @@ void plotTriggerForTDR(char *infname="/data/yjlee/dmeson/2015/trigger/mb.root")
 
    g8->SetLineColor(1);
    g8->SetMarkerColor(1);
-   g8->Draw("p same");
+   g8->Draw("pl same");
    
    g15->SetLineColor(2);
    g15->SetMarkerColor(2);
-   g15->Draw("p same");
+   g15->Draw("pl same");
 
    g20->SetLineColor(4);
    g20->SetMarkerColor(4);
-   g20->Draw("p same");
+   g20->Draw("pl same");
    
    g30->SetLineColor(kGreen+2);
    g30->SetMarkerColor(kGreen+2);
-   g30->Draw("p same");
+   g30->Draw("pl same");
    
- TLegend *legend=new TLegend(0.4479866,0.2972028,0.8389262,0.4842657,"");
+ TLegend *legend=new TLegend(0.4579866,0.2472028,0.8389262,0.4342657,"");
   legend->SetBorderSize(0);
   legend->SetLineColor(0);
   legend->SetFillColor(0);
   legend->SetFillStyle(1001);
   legend->SetTextFont(42);
-  legend->SetTextSize(0.045);
+  legend->SetTextSize(0.04);
 
-  TLegendEntry *ent_g8=legend->AddEntry(g8,"HLT D meson 8","pl");
+  TLegendEntry *ent_g8=legend->AddEntry(g8,"HLT D meson p_{T} #geq 8","pl");
   ent_g8->SetTextFont(42);
   ent_g8->SetLineColor(1);
   ent_g8->SetMarkerColor(1);
-  TLegendEntry *ent_g15=legend->AddEntry(g15,"HLT D meson 15","pl");
+  TLegendEntry *ent_g15=legend->AddEntry(g15,"HLT D meson p_{T} #geq15","pl");
   ent_g15->SetTextFont(42);
   ent_g15->SetLineColor(1);
   ent_g15->SetMarkerColor(1);
-  TLegendEntry *ent_g20=legend->AddEntry(g20,"HLT D meson 20","pl");
+  TLegendEntry *ent_g20=legend->AddEntry(g20,"HLT D meson p_{T} #geq 20","pl");
   ent_g20->SetTextFont(42);
   ent_g20->SetLineColor(1);
   ent_g20->SetMarkerColor(1);
-  TLegendEntry *ent_g30=legend->AddEntry(g30,"HLT D meson 30","pl");
+  TLegendEntry *ent_g30=legend->AddEntry(g30,"HLT D meson p_{T} #geq 30","pl");
   ent_g30->SetTextFont(42);
   ent_g30->SetLineColor(1);
   ent_g30->SetMarkerColor(1);
   legend->Draw("same");
    
    CMS_lumi( c, 1, 11 );
+   
+   
+  TLatex * tlatexeff=new TLatex(0.2079866,0.70,"HLT efficiency with respect to L1 seed");
+  tlatexeff->SetNDC();
+  tlatexeff->SetTextColor(1);
+  tlatexeff->SetTextFont(42);
+  tlatexeff->SetTextSize(0.040);
+  tlatexeff->Draw("same");
+
+   
 
    c->SaveAs("result/Dmeson-HLTriggerEfficiency.pdf");
    c->SaveAs("result/Dmeson-HLTriggerEfficiency.png");
