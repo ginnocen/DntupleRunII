@@ -241,9 +241,13 @@ void CrossSectionRatio(TString inputFONLL="output_inclusiveDd0meson_5TeV_y1.root
 
   TFile *outputfile=new TFile(outputplot.Data(),"recreate");
   outputfile->cd();
+  gaeCrossSyst->Write();
   gaeRatioCrossFONLLstat->Write();
   gaeBplusReference->Write();
   hSigmaPPStat->Write();
+  gaeRatioCrossFONLLstat->Write();
+  gaeRatioCrossFONLLsyst->Write();
+  gaeRatioCrossFONLLunity->Write();
 }
 
 
