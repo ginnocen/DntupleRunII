@@ -3,7 +3,7 @@
 #include "TLegendEntry.h"
 
 
-void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPP.root", TString inputPbPb="CrossSectionFONLLPbPb.root")
+void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPPMB.root", TString inputPbPb="CrossSectionFONLLPbPbMB.root",TString label="MB",TString outputfile="RAAfileMB.root")
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -17,7 +17,7 @@ void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPP.root", TStri
   hSigmaPPStat->SetName("hSigmaPPStat");
   TH1D*hNuclearModification=(TH1D*)fPbPb->Get("hPtSigma");
   hNuclearModification->SetName("hNuclearModification");
-  hNuclearModification->Scale(1/208./208.);
+  hNuclearModification->Scale(1./208./208.);
   hNuclearModification->Divide(hSigmaPPStat);
 
 
@@ -51,7 +51,7 @@ void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPP.root", TStri
   TCanvas*canvasRAA=new TCanvas("canvasRAA","canvasRAA",550,500);
   canvasRAA->cd();
   canvasRAA->SetLogx();
-  TH2F* hemptyEff=new TH2F("hemptyEff","",50,10.,120.,10.,0,1.5);  
+  TH2F* hemptyEff=new TH2F("hemptyEff","",50,0.,120.,10.,0,1.5);  
   hemptyEff->GetXaxis()->CenterTitle();
   hemptyEff->GetYaxis()->CenterTitle();
   hemptyEff->GetYaxis()->SetTitle("D^{0} R_{AA}");
@@ -120,19 +120,25 @@ void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPP.root", TStri
   legendSigma->Draw("same");
 
   canvasRAA->SaveAs("canvasRAA.pdf");
+  TFile *fRAA=new TFile(outputfile.Data(),"recreate");
+  fRAA->cd();
+  gNuclearModification->Write();
+  hNuclearModification->Write();
+  
+  
 }
 
 
 int main(int argc, char *argv[])
 {
-  if((argc != 3))
+  if((argc != 5))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
 
-  if(argc ==3)
-    NuclearModificationFactor(argv[1], argv[2]);
+  if(argc ==5)
+    NuclearModificationFactor(argv[1], argv[2],argv[3], argv[4]);
   return 0;
 }
 

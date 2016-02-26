@@ -72,7 +72,7 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/backup/ntD_EvtBase
   hEffSelection->Sumw2();
   hEffSelection->Divide(hEffSelection,hPtMCrecoonly,1,1,"b");
   
-  TH2F* hemptyEff=new TH2F("hemptyEff","",50,10.,120.,10.,0,1.5);  
+  TH2F* hemptyEff=new TH2F("hemptyEff","",50,0.,120.,10.,0,1.5);  
   hemptyEff->GetXaxis()->CenterTitle();
   hemptyEff->GetYaxis()->CenterTitle();
   hemptyEff->GetYaxis()->SetTitle("acceptance x #epsilon_{reco} x #epsilon_{sel} ");

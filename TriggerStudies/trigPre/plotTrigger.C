@@ -123,7 +123,7 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
     hTmp->GetXaxis()->SetTitle("p_{T} (D^{0}) (GeV)");  
     hTmp->GetYaxis()->SetTitleOffset(1.15);
     hTmp->GetXaxis()->SetTitleOffset(0.95);
-    hTmp->GetYaxis()->SetTitle("Efficiency");  
+    hTmp->GetYaxis()->SetTitle("HLT Efficiency");  
     hTmp->GetYaxis()->CenterTitle();
     hTmp->GetXaxis()->CenterTitle();
     hTmp->SetMaximum(1.4);
@@ -206,6 +206,8 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
 
    c->SaveAs("result/Dmeson-HLTriggerEfficiency.pdf");
    c->SaveAs("result/Dmeson-HLTriggerEfficiency.png");
+   c->SaveAs("result/Dmeson-HLTriggerEfficiency.jpeg");
+   c->SaveAs("result/Dmeson-HLTriggerEfficiency.eps");
    c->SaveAs("result/Dmeson-HLTriggerEfficiency.C");
 
    
@@ -249,6 +251,7 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
 
    c2->SaveAs("result/Dmeson-L1TriggerEfficiency.pdf");
    c2->SaveAs("result/Dmeson-L1TriggerEfficiency.png");
+   c2->SaveAs("result/Dmeson-L1TriggerEfficiency.jpeg");
    c2->SaveAs("result/Dmeson-L1TriggerEfficiency.C");
    
    
