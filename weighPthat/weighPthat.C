@@ -1,8 +1,9 @@
 using namespace std;
-#include "weighPthat.h"
+#include "uti.h"
+#define MAX_GEN      6000
 
-int weighPthat(TString ifname = "/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dstar_D0kpi/ntD_EvtBase_20160112_Dfinder_20151229_pp_Pythia8D0kpi_noweight.root",
-               TString ofname = "test.root")
+int weighPthat(TString ifname = "",
+               TString ofname = "")
 {
   Bool_t isInsidebin(Float_t xpthat, Float_t xmaxgenpt, Int_t i);
   cout<<endl;
@@ -43,7 +44,7 @@ int weighPthat(TString ifname = "/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dstar_D0kp
       Float_t maxpt=0;
       for(Int_t k=0;k<Gsize;k++)
         {
-          if((GisSignal[k]==1||GisSignal[k]==2)&&Gpt[k]>maxpt) maxpt=Gpt[k];
+          if((GisSignal[k]==genSignal[0]||GisSignal[k]==genSignal[1])&&Gpt[k]>maxpt) maxpt=Gpt[k];
         }
       for(Int_t j=0;j<nBins;j++)
         {
@@ -78,7 +79,7 @@ int weighPthat(TString ifname = "/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dstar_D0kp
       Float_t maxpt=0;
       for(Int_t k=0;k<Gsize;k++)
         {
-          if((GisSignal[k]==1||GisSignal[k]==2)&&Gpt[k]>maxpt) maxpt=Gpt[k];
+          if((GisSignal[k]==genSignal[0]||GisSignal[k]==genSignal[1])&&Gpt[k]>maxpt) maxpt=Gpt[k];
         }
       maxDgenpt = maxpt;
       for(Int_t j=0;j<nBins;j++)
@@ -105,6 +106,7 @@ Bool_t isInsidebin(Float_t xpthat, Float_t xmaxgenpt, Int_t i)
       cout<<"    Error: invalid input"<<endl;
       return false;
     }
+  //if(xpthat>(xmaxgenpt*2.)) return false; 
   if(i<(nBins-1)&&(xpthat>pthatBin[i]&&xmaxgenpt>pthatBin[i])&&!(xpthat>pthatBin[i+1]&&xmaxgenpt>pthatBin[i+1])) return true;
   else if(i==(nBins-1)&&xpthat>pthatBin[i]&&xmaxgenpt>pthatBin[i]) return true;
   else return false;
