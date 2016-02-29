@@ -27,6 +27,9 @@ OUTPUTFILEPbPbMB="hPtSpectrumDzeroPbPbMB.root"
 OUTPUTFILEPlotPbPbMB="CrossSectionFONLLPbPbMB.root"
 OUTPUTFILERAAMB="outputRAAMB.root"
 
+OUTPUTFILEMCSTUDYPPMB="MCstudiesPPMB.root"
+OUTPUTFILEMCSTUDYPbPbMB="MCstudiesPbPbMB.root"
+
 
 NTUPLAPYTHIA="/data/HeavyFlavourRun2/BtoDPythia/treefile_ptall_11january2016.root"
 INPUTMCPPMB="/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dzero_kpi/ntD_EvtBase_20160216_Dfinder_20160201_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root"
@@ -89,12 +92,12 @@ fi
 
 if [ $DOMCstudyPPMB -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPPMB"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB"
+./MCefficiency.exe "$INPUTMCPPMB"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB"
 fi
 
 if [ $DOMCstudyPbPbMB -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPbPbMB"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB"
+./MCefficiency.exe "$INPUTMCPbPbMB"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB"
 fi
 
 
