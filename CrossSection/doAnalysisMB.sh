@@ -3,12 +3,12 @@
 
 cp config/parametersLowpt.h parameters.h
 
-DOFONLL=0
-DOFEEDDOWN=0
-DOFITSPPMB=0
-DOFITSPbPbMB=0
-DOMCstudyPPMB=0
-DOMCstudyPbPbMB=0
+DOFONLL=1
+DOFEEDDOWN=1
+DOFITSPPMB=1
+DOFITSPbPbMB=1
+DOMCstudyPPMB=1
+DOMCstudyPbPbMB=1
 DOCrossSectionPPMB=1
 DOCrossSectionPbPbMB=1
 DORAAMB=1
