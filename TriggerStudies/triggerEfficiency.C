@@ -20,9 +20,12 @@ float triggerEfficiency(double pt, double HLT, bool isPbPb)
          fL1->SetParameters(3.95443e-2,1.44985e-1,-2.23026);
       }	else if (HLT==30) {
          fL1->SetParameters(6.19120e-3,1.19415e-1,-2.24150);
+      } else {
+         cout <<"Oh no, where did you find this HLT path??? I don't remember this value "<<HLT<<". This is a disaster! We need to go to Brocard to buy more cakes..."<<endl;
+	 return 1e10; 
       }
       
-      // HLT
+      // HLT, at high pt things are consistent with 1, put 1 for the moment
       if (pt<HLT) {
          val = 1e10; // veto
 	 cout <<"using D candidate below HLT threshold!!"<<endl;
