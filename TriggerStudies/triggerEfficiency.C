@@ -2,7 +2,7 @@
 
 // Yen-Jie: correction factors for L1 + HLT trigger efficiency for D meson
 
-float triggerEfficiency(double pt, double HLT, isPbPb)
+float triggerEfficiency(double pt, double HLT, bool isPbPb)
 {
    float val=1;
    
@@ -11,7 +11,28 @@ float triggerEfficiency(double pt, double HLT, isPbPb)
       val = 1;
    } else {
       // pp collisions
-      val = 1;
+      TF1 *fL1 = new TF1("fL1","TMath::Erf(x*[1]+[2])*0.5*(1-[0])+0.5*(1+[0])");
+      if (HLT==8) {
+         fL1->SetParameters(1.81837e-1,1.54009e-1,-1.66545);
+      } else if (HLT==15) {
+         fL1->SetParameters(6.35868e-2,1.32864e-1,-1.90241);
+      } else if (HLT==20) {
+         fL1->SetParameters(3.95443e-2,1.44985e-1,-2.23026);
+      }	else if (HLT==30) {
+         fL1->SetParameters(6.19120e-3,1.19415e-1,-2.24150);
+      }
+      
+      // HLT
+      if (pt<HLT) {
+         val = 1e10; // veto
+	 cout <<"using D candidate below HLT threshold!!"<<endl;
+      } else {
+         // 
+         val = 1;
+      }
+      
+      val *= fL1->Eval(pt);
+      
    }
    
    return val;
