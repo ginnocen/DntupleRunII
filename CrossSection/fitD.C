@@ -353,8 +353,8 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
   TH1F* histo_copy_nofitfun = ( TH1F * ) h->Clone("histo_copy_nofitfun");
   histo_copy_nofitfun->Draw("esame");
 //
-  if(nBins==1) c->SaveAs(Form("DMass-inclusive%s_%d.pdf",collisionsystem.Data(),count));
-  else c->SaveAs(Form("DMass%s_%d.pdf",collisionsystem.Data(),count));
+  if(nBins==1) c->SaveAs(Form("Fits/DMass-inclusive%s_%d.pdf",collisionsystem.Data(),count));
+  else c->SaveAs(Form("Fits/DMass%s_%d.pdf",collisionsystem.Data(),count));
   
   return mass;
 }
