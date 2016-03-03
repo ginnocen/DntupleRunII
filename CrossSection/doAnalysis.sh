@@ -6,15 +6,15 @@ cp config/parametersHighpt.h parameters.h
 DOFONLL=1
 DOTRGCOMBINATION=1
 DOFEEDDOWN=1
-DOFITSPP=1
+DOFITSPP=0
 DOFITSPPMCClosure=0
-DOFITSPbPb=1
-DOMCstudyPP=1
+DOFITSPbPb=0
+DOMCstudyPP=0
 DOMCstudyNPPP=0
-DOMCstudyPbPb=1
-DOCrossSectionPP=1
-DOCrossSectionPbPb=1
-DORAA=1
+DOMCstudyPbPb=0
+DOCrossSectionPP=0
+DOCrossSectionPbPb=0
+DORAA=0
 
 FONLLDATINPUT="pp_d0meson_5TeV_y1"
 FONLLDATINPUTBtoD="pp_Btod0meson_5TeV_y1"
@@ -81,17 +81,17 @@ OUTPUTPrescalePbPb="prescalePbPb.root"
 if [ $DOFONLL -eq 1 ]; then      
 
 g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe 
-./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILE" 
-./Dzerodsigmadpt.exe "$FONLLDATINPUTBtoD"  "$FONLLOUTPUTFILEBtoD" 
+./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILE" "$LABELPP"
+./Dzerodsigmadpt.exe "$FONLLDATINPUTBtoD"  "$FONLLOUTPUTFILEBtoD" "$LABELPP"
 
 g++ BplusAlldsigmadpt.cc $(root-config --cflags --libs) -g -o BplusAlldsigmadpt.exe 
-./BplusAlldsigmadpt.exe "$FONLLDATINPUTB"  "$FONLLOUTPUTFILEB" 
+./BplusAlldsigmadpt.exe "$FONLLDATINPUTB"  "$FONLLOUTPUTFILEB" "$LABELPP"
 fi 
 
 if [ $DOFEEDDOWN -eq 1 ]; then      
 
 g++ RatioFeedDown.cc $(root-config --cflags --libs) -g -o RatioFeedDown.exe 
-./RatioFeedDown.exe "$FONLLOUTPUTFILE"  "$FONLLOUTPUTFILEBtoD" "$FONLLOUTPUTFILEInclusiveD"
+./RatioFeedDown.exe "$FONLLOUTPUTFILE"  "$FONLLOUTPUTFILEBtoD" "$FONLLOUTPUTFILEInclusiveD" "$LABELPP"
 
 g++ plotFeedDown.C $(root-config --cflags --libs) -g -o plotFeedDown.exe 
 ./plotFeedDown.exe "$FONLLOUTPUTFILE"  "$FONLLOUTPUTFILEB" "$NTUPLAPYTHIA" 1 0 100 
