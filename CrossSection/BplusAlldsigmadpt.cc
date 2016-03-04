@@ -16,7 +16,7 @@
 
 using namespace std;
 
-void BplusAlldsigmadpt(TString inputFONLLdat, TString outputFONLL)
+void BplusAlldsigmadpt(TString inputFONLLdat, TString outputFONLL,TString label)
 {
   double norm=0.401;           //FF=B0
   gROOT->SetStyle("Plain");
@@ -218,8 +218,8 @@ void BplusAlldsigmadpt(TString inputFONLLdat, TString outputFONLL)
 
   gaeSigmaBall->SetName("gaeSigmaBall");
   gaeSigmaBzero->SetName("gaeSigmaBzero");
-  cr->SaveAs(Form("canvas_%s.pdf",inputFONLLdat.Data()));
-  cr->SaveAs(Form("canvas_%s.eps",inputFONLLdat.Data()));
+  cr->SaveAs(Form("canvas_%s_%s.pdf",inputFONLLdat.Data(),label.Data()));
+  cr->SaveAs(Form("canvas_%s_%s.eps",inputFONLLdat.Data(),label.Data()));
   
   TFile*foutput=new TFile(outputFONLL.Data(),"recreate");
   foutput->cd();
@@ -233,13 +233,13 @@ void BplusAlldsigmadpt(TString inputFONLLdat, TString outputFONLL)
 
 int main(int argc, char *argv[])
 {
-  if((argc != 3))
+  if((argc != 4))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
   
-  if(argc == 3)
-    BplusAlldsigmadpt(argv[1], argv[2]);
+  if(argc == 4)
+    BplusAlldsigmadpt(argv[1], argv[2], argv[3]);
   return 0;
 }

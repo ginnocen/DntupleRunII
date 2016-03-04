@@ -18,7 +18,7 @@
 using namespace std;
 
 
-void RatioFeedDown(TString inputDpromptFONLL="output_pp_d0meson5_5TeV_y1.root", TString inputnonpromptDFONLL="output_pp_Btod0meson5_5TeV_y1.root", TString outputinclusiveD="output_inclusiveDd0meson5_5TeV_y1.root"){
+void RatioFeedDown(TString inputDpromptFONLL="output_pp_d0meson5_5TeV_y1.root", TString inputnonpromptDFONLL="output_pp_Btod0meson5_5TeV_y1.root", TString outputinclusiveD="output_inclusiveDd0meson5_5TeV_y1.root",TString label="PP"){
 
   TFile*fileprompt=new TFile(inputDpromptFONLL.Data());
   TFile*fileFeedDown=new TFile(inputnonpromptDFONLL.Data());
@@ -142,7 +142,8 @@ void RatioFeedDown(TString inputDpromptFONLL="output_pp_d0meson5_5TeV_y1.root", 
   tlatexratio->SetTextFont(42);
   tlatexratio->SetTextSize(0.04);
   tlatexratio->Draw();
-  cFeedOverPrompt->SaveAs("cFeedOverPrompt.pdf");
+  cFeedOverPrompt->SaveAs(Form("cFeedOverPrompt%s.pdf",label.Data()));
+
 
   TCanvas* cInclusiveCross = new TCanvas("cInclusiveCross","cInclusiveCross",600,500);
   cInclusiveCross->SetLogy();
@@ -169,7 +170,7 @@ void RatioFeedDown(TString inputDpromptFONLL="output_pp_d0meson5_5TeV_y1.root", 
   tlatexinclusive->SetTextFont(42);
   tlatexinclusive->SetTextSize(0.04);
   tlatexinclusive->Draw();
-  cInclusiveCross->SaveAs("cInclusiveCross.pdf");
+  cInclusiveCross->SaveAs(Form("cInclusiveCross_%s.pdf",label.Data()));
 
 
   TCanvas* crelativeuncertainty = new TCanvas("crelativeuncertainty","crelativeuncertainty",600,500);
@@ -207,7 +208,7 @@ void RatioFeedDown(TString inputDpromptFONLL="output_pp_d0meson5_5TeV_y1.root", 
   TLegendEntry* entfeed=legend->AddEntry(gaeErrFeed,"Total relative error on feed-down cross","PL");
   TLegendEntry* entinclusive=legend->AddEntry(gaeErrInclusive,"Total relative error on inclusive cross","PL");
   legend->Draw();
-  crelativeuncertainty->SaveAs("crelativeuncertainty.pdf");
+  crelativeuncertainty->SaveAs(Form("crelativeuncertainty_%s.pdf",label.Data()));
   
   TFile*foutput=new TFile(outputinclusiveD.Data(),"recreate");
   foutput->cd();
@@ -218,13 +219,13 @@ void RatioFeedDown(TString inputDpromptFONLL="output_pp_d0meson5_5TeV_y1.root", 
 
 int main(int argc, char *argv[])
 {
-  if((argc != 4))
+  if((argc != 5))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
   
-  if(argc == 4)
+  if(argc == 5)
     RatioFeedDown(argv[1], argv[2], argv[3]);
   return 0;
 }
