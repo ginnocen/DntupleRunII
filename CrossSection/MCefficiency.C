@@ -16,7 +16,7 @@ Double_t binwidthmass=(maxhisto-minhisto)/nbinsmasshisto;
 TString weight = "1";
 TString selmc;
 
-void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/backup/ntD_EvtBase_20160125_Dfinder_20151229_pp_Pythia8_prompt_D0_pthatweight.root", TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))",TString selmcgenacceptance="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0", TString cut_recoonly="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11", TString cut="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>1.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11",TString label="PP",TString outputfile="test.root")
+void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0pt0p0_Pthat080_dPt0tkPt0p5_pthatweight.root", TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))",TString selmcgenacceptance="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0", TString cut_recoonly="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11", TString cut="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>1.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&Dtrk2Algo>3&&Dtrk2Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)",TString label="PP",TString outputfile="test.root", int useweight=1)
 {
   selmc = Form("%s",cut.Data());
 
@@ -25,7 +25,8 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/backup/ntD_EvtBase
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
 
-
+  if(useweight) weight="pthatweight";
+ 
   TFile* infMC = new TFile(inputmc.Data());
   TTree* ntMC = (TTree*)infMC->Get("ntDkpi");
   TTree* ntGen = (TTree*)infMC->Get("ntGen");
@@ -135,6 +136,23 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/backup/ntD_EvtBase
   hemptyPthat->SetMaximum(2);
   hemptyPthat->SetMinimum(0.);
 
+
+  TH2F* hemptySpectra=new TH2F("hemptySpectra","",50,0.,130.,10,1,1e5);  
+  hemptySpectra->GetXaxis()->CenterTitle();
+  hemptySpectra->GetYaxis()->CenterTitle();
+  hemptySpectra->GetYaxis()->SetTitle("Entries");
+  hemptySpectra->GetXaxis()->SetTitle("p_{T}");
+  hemptySpectra->GetXaxis()->SetTitleOffset(0.9);
+  hemptySpectra->GetYaxis()->SetTitleOffset(0.95);
+  hemptySpectra->GetXaxis()->SetTitleSize(0.05);
+  hemptySpectra->GetYaxis()->SetTitleSize(0.05);
+  hemptySpectra->GetXaxis()->SetTitleFont(42);
+  hemptySpectra->GetYaxis()->SetTitleFont(42);
+  hemptySpectra->GetXaxis()->SetLabelFont(42);
+  hemptySpectra->GetYaxis()->SetLabelFont(42);
+  hemptySpectra->GetXaxis()->SetLabelSize(0.035);
+  hemptySpectra->GetYaxis()->SetLabelSize(0.035);  
+
   TH2F* hemptyPthatWeighted=(TH2F*)hemptyPthat->Clone("hemptyPthatWeighted");
   hemptyPthatWeighted->GetXaxis()->SetTitle("pthat reweighted");
   
@@ -150,6 +168,18 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/backup/ntD_EvtBase
   hPthatweight->Draw("same");
   canvasPthat->SaveAs(Form("canvasPthat_%s.pdf",Form(label.Data())));
   
+  TCanvas*canvasSpectra=new TCanvas("canvasSpectra","canvasSpectra",1000.,500);
+  canvasSpectra->Divide(2,1);
+  canvasSpectra->cd(1);
+  gPad->SetLogy();
+  hemptySpectra->Draw();
+  hPtMC->Draw("same");
+  canvasSpectra->cd(2);
+  gPad->SetLogy();
+  hemptySpectra->Draw();
+  hPtGen->Draw("same");
+  canvasSpectra->SaveAs(Form("canvasSpectra_%s.pdf",Form(label.Data())));
+
   TFile *fout=new TFile(outputfile.Data(),"recreate");
   fout->cd();
   hPtGen->Write();
@@ -161,14 +191,14 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/backup/ntD_EvtBase
 
 int main(int argc, char *argv[])
 {
-  if((argc !=8))
+  if((argc !=9))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
   
-  if(argc == 8)
-    MCefficiency(argv[1],argv[2],argv[3],argv[4],argv[5],argv[6],argv[7]);
+  if(argc == 9)
+    MCefficiency(argv[1],argv[2],argv[3],argv[4],argv[5],argv[6],argv[7],atoi(argv[8]));
   return 0;
 }
 
