@@ -3,18 +3,18 @@
 
 cp config/parametersHighpt.h parameters.h 
 
-DOFONLL=0
-DOTRGCOMBINATION=0
-DOFEEDDOWN=0
-DOFITSPP=0
+DOFONLL=1
+DOTRGCOMBINATION=1
+DOFEEDDOWN=1
+DOFITSPP=1
 DOFITSPPMCClosure=0
 DOFITSPbPb=1
-DOMCstudyPP=0
+DOMCstudyPP=1
 DOMCstudyNPPP=0
 DOMCstudyPbPb=1
-DOCrossSectionPP=0
+DOCrossSectionPP=1
 DOCrossSectionPbPb=1
-DORAA=0
+DORAA=1
 
 FONLLDATINPUT="pp_d0meson_5TeV_y1"
 FONLLDATINPUTBtoD="pp_Btod0meson_5TeV_y1"
@@ -44,7 +44,7 @@ INPUTDATAPbPb="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126
 
 LUMIPP=26.31
 ISMCPP=0
-ISDOWEIGHTPP=1
+ISDOWEIGHTPP=0
 SELGENPP="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
 SELGENPPACCPP="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0"
 RECOONLYPP="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&Dtrk2Algo>3&&Dtrk2Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk2PixelHit+Dtrk2StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)"
@@ -64,7 +64,7 @@ LABELPPMCClosure="PPMCClosure"
                                          
 LUMIPbPb=0.000404 #404*0.001*0.001
 ISMCPbPb=0
-ISDOWEIGHTPbPb=1
+ISDOWEIGHTPbPb=0
 SELGENPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
 SELGENPPACCPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0"
 RECOONLYPbPb="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk2PixelHit+Dtrk2StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)"
@@ -124,18 +124,18 @@ fi
 
 if [ $DOMCstudyPP -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP"
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$ISDOWEIGHTPP"
 fi
 
 if [ $DOMCstudyNPPP -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELNPPP" "$OUTPUTFILEMCSTUDYNPPP"
+./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELNPPP" "$OUTPUTFILEMCSTUDYNPPP" "$ISDOWEIGHTPP"
 fi
 
 
 if [ $DOMCstudyPbPb -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb"
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$ISDOWEIGHTPbPb"
 fi
 
 if [ $DOCrossSectionPP -eq 1 ]; then      
