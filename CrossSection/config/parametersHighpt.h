@@ -3,8 +3,10 @@ const int nBins=11;
 double ptBins[nBins+1] = {20.,25.,30.,35.,40.,45.,50.,55.,60,70.,80,100};
 const int ntriggers=3;
 TString triggerHLTPP[ntriggers]={"HLT_DmesonPPTrackingGlobal_Dpt15_v1","HLT_DmesonPPTrackingGlobal_Dpt30_v1","HLT_DmesonPPTrackingGlobal_Dpt50_v1"};
+int triggerHLTPPthresholds[ntriggers]={15,30,30};
 int triggerassignmentPP[nBins]= {0,0,0,0,1,1,1,1,2,2,2};
 TString triggerHLTPbPb[ntriggers]={"HLT_HIDmesonHITrackingGlobal_Dpt20_v1","HLT_HIDmesonHITrackingGlobal_Dpt40_v1","HLT_HIDmesonHITrackingGlobal_Dpt60_v1"};
+int triggerHLTPbPbthresholds[ntriggers]={20,40,60};
 int triggerassignmentPbPb[nBins]= {0,0,0,0,0,1,1,1,1,2,2};
 
 /*

@@ -19,8 +19,9 @@ void CrossSectionRatio(TString inputFONLL="output_inclusiveDd0meson_5TeV_y1.root
   if (usePrescaleCorr==1){
     TFile*fprescalesPP=new TFile(inputprescalesPP.Data()); 
     TH1F*hPrescalesPtBinsPP=(TH1F*)fprescalesPP->Get("hPrescalesPtBins");
+    TH1F*hTriggerEfficiencyPtBinsPP=(TH1F*)fprescalesPP->Get("hTriggerEfficiencyPtBins");
     for (int i=0;i<nBins;i++) {
-      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1));
+      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
     }
   }
 

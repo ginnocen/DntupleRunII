@@ -3,6 +3,8 @@
 #include "TLegendEntry.h"
 #include "TNtuple.h"
 #include "TH1F.h"
+#include "../TriggerStudies/triggerEfficiency.C"
+
 using namespace std;
 
 
@@ -17,18 +19,31 @@ void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/Da
   TString cut=Form("Max$(Dpt)>%d",threshold);
   cout<<cut.Data()<<endl;
 
-  TH1D* hPrescalesPtBins = new TH1D("hPrescalesPtBins","",nBins,0,nBins);
+  TH1D* hPrescalesPtBins = new TH1D("hPrescalesPtBins","",nBins,ptBins);
+  TH1D* hTriggerEfficiencyPtBins = new TH1D("hTriggerEfficiencyPtBins","",nBins,ptBins);
   
   TString triggerHLT[ntriggers];
    int triggerassignment[nBins];
+  int triggerHLTthresholds[nBins];
+  bool isPbPb;
   
   if(ispp=="PP"){
-     for (int index=0; index<ntriggers;index++) triggerHLT[index]=triggerHLTPP[index];
+     for (int index=0; index<ntriggers;index++){
+       triggerHLT[index]=triggerHLTPP[index];
+       triggerHLTthresholds[index]=triggerHLTPPthresholds[index];
+    }
      for (int index=0; index<nBins;index++) triggerassignment[index]=triggerassignmentPP[index];
+     isPbPb=false;
+
   }
   if(ispp=="PbPb"){
-     for (int index=0; index<ntriggers;index++) triggerHLT[index]=triggerHLTPbPb[index];
+     for (int index=0; index<ntriggers;index++){
+       triggerHLT[index]=triggerHLTPbPb[index];
+       triggerHLTthresholds[index]=triggerHLTPbPbthresholds[index];
+    }
      for (int index=0; index<nBins;index++) triggerassignment[index]=triggerassignmentPbPb[index];
+     isPbPb=true;
+
   }
 
   double ntriggerscounters[ntriggers];       
@@ -70,20 +85,6 @@ void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/Da
     ncounters[m]=hCountsUnpresc[m]->GetEntries();
     
   }
-/*
-  for (int index=0; index<ntriggers;index++) nt->SetBranchAddress(triggerHLT[index].Data(),&triggervariable[index]);
-  int nevents_total = nt->GetEntries();    
-  //int nevents_total = 1000000;
-  for(int entry=0; entry<nevents_total; entry++){
-    if((entry%10000)==0) printf("Loading event #%d of %d.\n",entry,nevents_total);
-    nt->GetEntry(entry);
-    
-    for (int index=0; index<ntriggers;index++) {
-      ncountersANDunprescaled[index]=ncountersANDunprescaled[index]+(triggervariable[index]&&(triggervariable[2]==1));
-      ncounters[index]=ncounters[index]+triggervariable[index];
-    }
-  }//end of for over events
-*/
   
     for (int index=0; index<ntriggers;index++){
      prescale[index]=ncountersANDunprescaled[index]/ncounters[2];
@@ -101,11 +102,17 @@ void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/Da
     for (int index=0; index<nBins;index++){
      hPrescalesPtBins->SetBinContent(index+1,prescale[triggerassignment[index]]);
      hPrescalesPtBins->SetBinError(index+1,errorprescale[triggerassignment[index]]);
+     double triggerefficiency=triggerEfficiency(hPrescalesPtBins->GetBinCenter(index+1),triggerHLTthresholds[triggerassignment[index]],isPbPb);
+     std::cout<<"bin center="<<hPrescalesPtBins->GetBinCenter(index+1)<<", thresholds="<<triggerHLTthresholds[triggerassignment[index]]<<",isPbPb="<<isPbPb<<", efficiency="<<triggerefficiency<<std::endl;
+     hTriggerEfficiencyPtBins->SetBinContent(index+1,triggerefficiency);
+     
     }
-    hPrescalesPtBins->Draw();
+    hTriggerEfficiencyPtBins->Draw();
     TFile*foutput=new TFile(output.Data(),"recreate");
     foutput->cd();
     hPrescalesPtBins->Write();
+    hTriggerEfficiencyPtBins->Write();
+    
 }
 
 
