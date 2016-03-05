@@ -10,7 +10,7 @@ DOFITSPP=1
 DOFITSPPMCClosure=0
 DOFITSPbPb=1
 DOMCstudyPP=1
-DOMCstudyNPPP=0
+DOMCstudyNPPP=1
 DOMCstudyPbPb=1
 DOCrossSectionPP=1
 DOCrossSectionPbPb=1
@@ -38,9 +38,11 @@ OUTPUTFILEMCSTUDYPbPb="ROOTfiles/MCstudiesPbPb.root"
 NTUPLAPYTHIA="/data/HeavyFlavourRun2/BtoDPythia/treefile_ptall_11january2016.root"
 INPUTMCPP="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root"
 INPUTMCNPPP="/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dzero_kpi_nonprompt/ntD_EvtBase_20160229_Dfinder_20160215_pp_Pythia8_nonprompt_D0_dPt0tkPt0p5_pthatweight.root"
-INPUTDATAPP="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root"
+INPUTDATAPP="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2_skimmed.root"
+INPUTDATAPPUNSKIMMED="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root"
 INPUTMCPbPb="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root"
-INPUTDATAPbPb="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2.root"
+INPUTDATAPbPb="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2_skimmed.root"
+INPUTDATAPbPbUNSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2.root"
 
 LUMIPP=26.31
 ISMCPP=0
@@ -100,10 +102,10 @@ fi
 if [ $DOTRGCOMBINATION -eq 1 ]; then      
 
 g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
-./triggercombination.exe "$LABELPP"  "$INPUTDATAPP" "$CUTFORTRIGGERPRESCALEPP" "$OUTPUTPrescalePP"
+./triggercombination.exe "$LABELPP"  "$INPUTDATAPPUNSKIMMED" "$CUTFORTRIGGERPRESCALEPP" "$OUTPUTPrescalePP"
 
 g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
-./triggercombination.exe "$LABELPbPb"  "$INPUTDATAPbPb" "$CUTFORTRIGGERPRESCALEPbPb" "$OUTPUTPrescalePbPb"
+./triggercombination.exe "$LABELPbPb"  "$INPUTDATAPbPbUNSKIMMED" "$CUTFORTRIGGERPRESCALEPbPb" "$OUTPUTPrescalePbPb"
 fi
 
 if [ $DOFITSPP -eq 1 ]; then      
