@@ -17,21 +17,23 @@ FONLLDATINPUT="pp_d0meson_5TeV_y1"
 FONLLDATINPUTBtoD="pp_Btod0meson_5TeV_y1"
 FONLLDATINPUTB="pp_Bmeson_5TeV_y1"
 
-FONLLOUTPUTFILE="output_pp_d0meson_5TeV_y1LowPt.root"
-FONLLOUTPUTFILEBtoD="output_pp_Btod0meson_5TeV_y1LowPt.root"
-FONLLOUTPUTFILEInclusiveD="output_inclusiveDd0meson_5TeV_y1LowPt.root"
-FONLLOUTPUTFILEB="output_pp_Bmeson_5TeV_y1LowPt.root"
-OUTPUTFILEPPMB="hPtSpectrumDzeroPPMB.root"
-OUTPUTFILEPlotPPMB="CrossSectionFONLLPPMB.root"
-OUTPUTFILEPbPbMB="hPtSpectrumDzeroPbPbMB.root"
-OUTPUTFILEPlotPbPbMB="CrossSectionFONLLPbPbMB.root"
-OUTPUTFILERAAMB="outputRAAMB.root"
+FONLLOUTPUTFILE="ROOTfiles/output_pp_d0meson_5TeV_y1LowPt.root"
+FONLLOUTPUTFILEBtoD="ROOTfiles/output_pp_Btod0meson_5TeV_y1LowPt.root"
+FONLLOUTPUTFILEInclusiveD="ROOTfiles/output_inclusiveDd0meson_5TeV_y1LowPt.root"
+FONLLOUTPUTFILEB="ROOTfiles/output_pp_Bmeson_5TeV_y1LowPt.root"
+OUTPUTFILEPPMB="ROOTfiles/hPtSpectrumDzeroPPMB.root"
+OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMB.root"
+OUTPUTFILEPbPbMB="ROOTfiles/hPtSpectrumDzeroPbPbMB.root"
+OUTPUTFILEPlotPbPbMB="ROOTfiles/CrossSectionFONLLPbPbMB.root"
+OUTPUTFILERAAMB="ROOTfiles/outputRAAMB.root"
+
+OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB.root"
+OUTPUTFILEMCSTUDYPbPbMB="ROOTfiles/MCstudiesPbPbMB.root"
 
 
 NTUPLAPYTHIA="/data/HeavyFlavourRun2/BtoDPythia/treefile_ptall_11january2016.root"
-INPUTMCPPMB="/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dzero_kpi/ntD_EvtBase_20160216_Dfinder_20160201_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root"
-#INPUTMCPbPbMB="/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dzero_kpi/ntD_EvtBase_20160216_Dfinder_20160201_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root"
-INPUTMCPbPbMB="/data/wangj/MC2015/Dntuple/PbPb/ntD_PbPb_Dzero_kpi/ntD_EvtBase_20160215_Dfinder_20151229_Pythia8_prompt_D0_pthatweight.root"
+INPUTMCPPMB="/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160229_Dfinder_20160215_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root"
+INPUTMCPbPbMB="/data/wangj/MC2015/Dntuple/PbPb/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160229_Dfinder_20160215_PbPb_Pythia8_prompt_D0_dPt1tkPt1_pthatweight.root"
 INPUTDATAPPMB="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root"
 INPUTDATAPbPbMB="/data/jisun/PbPb2015/Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016.root"
                                          
@@ -60,17 +62,17 @@ USEPRESCALEPbPbMB=0
 if [ $DOFONLL -eq 1 ]; then      
 
 g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe 
-./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILE" 
-./Dzerodsigmadpt.exe "$FONLLDATINPUTBtoD"  "$FONLLOUTPUTFILEBtoD" 
+./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILE" "$LABELPPMB"
+./Dzerodsigmadpt.exe "$FONLLDATINPUTBtoD"  "$FONLLOUTPUTFILEBtoD" "$LABELPPMB"
 
 g++ BplusAlldsigmadpt.cc $(root-config --cflags --libs) -g -o BplusAlldsigmadpt.exe 
-./BplusAlldsigmadpt.exe "$FONLLDATINPUTB"  "$FONLLOUTPUTFILEB" 
+./BplusAlldsigmadpt.exe "$FONLLDATINPUTB"  "$FONLLOUTPUTFILEB" "$LABELPPMB"
 fi 
 
 if [ $DOFEEDDOWN -eq 1 ]; then      
 
 g++ RatioFeedDown.cc $(root-config --cflags --libs) -g -o RatioFeedDown.exe 
-./RatioFeedDown.exe "$FONLLOUTPUTFILE"  "$FONLLOUTPUTFILEBtoD" "$FONLLOUTPUTFILEInclusiveD"
+./RatioFeedDown.exe "$FONLLOUTPUTFILE"  "$FONLLOUTPUTFILEBtoD" "$FONLLOUTPUTFILEInclusiveD" "$LABELPP"
 
 g++ plotFeedDown.C $(root-config --cflags --libs) -g -o plotFeedDown.exe 
 ./plotFeedDown.exe "$FONLLOUTPUTFILE"  "$FONLLOUTPUTFILEB" "$NTUPLAPYTHIA" 1 0 100 
@@ -89,12 +91,12 @@ fi
 
 if [ $DOMCstudyPPMB -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPPMB"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB"
+./MCefficiency.exe "$INPUTMCPPMB"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB"
 fi
 
 if [ $DOMCstudyPbPbMB -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPbPbMB"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB"
+./MCefficiency.exe "$INPUTMCPbPbMB"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB"
 fi
 
 

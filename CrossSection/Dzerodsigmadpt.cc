@@ -16,7 +16,7 @@
 
 using namespace std;
 
-void Dzerodsigmadpt(TString inputFONLLdat, TString outputFONLL)
+void Dzerodsigmadpt(TString inputFONLLdat, TString outputFONLL,TString label)
 {
   double norm=0.557;           //FF of D->D0
   gROOT->SetStyle("Plain");
@@ -218,8 +218,8 @@ void Dzerodsigmadpt(TString inputFONLLdat, TString outputFONLL)
 
   gaeSigma->SetName("gaeSigma");
   gaeSigmaDzero->SetName("gaeSigmaDzero");
-  cr->SaveAs(Form("canvas_%s.pdf",inputFONLLdat.Data()));
-  cr->SaveAs(Form("canvas_%s.eps",inputFONLLdat.Data()));
+  cr->SaveAs(Form("canvas_%s_%s.pdf",inputFONLLdat.Data(),label.Data()));
+  cr->SaveAs(Form("canvas_%s_%s.eps",inputFONLLdat.Data(),label.Data()));
   
   TFile*foutput=new TFile(outputFONLL.Data(),"recreate");
   foutput->cd();
@@ -235,13 +235,13 @@ void Dzerodsigmadpt(TString inputFONLLdat, TString outputFONLL)
 
 int main(int argc, char *argv[])
 {
-  if((argc != 3))
+  if((argc != 4))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
   
-  if(argc == 3)
-    Dzerodsigmadpt(argv[1], argv[2]);
+  if(argc == 4)
+    Dzerodsigmadpt(argv[1],argv[2],argv[3]);
   return 0;
 }
