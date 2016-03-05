@@ -1,4 +1,4 @@
-#include <TF1.h>
+	#include <TF1.h>
 
 // Yen-Jie: correction factors for L1 + HLT trigger efficiency for D meson
 
@@ -14,9 +14,11 @@ float triggerEfficiency(double pt, double HLT, bool isPbPb)
          fL1->SetParameters(-4.5400e3,3.09974e-1,2.31049);
       } else if (HLT==40) {
          fL1->SetParameters(-4.05647e3,8.77473e-3,3.1443);
+      } else if (HLT==50) {
+         fL1->SetParameters(2.01935e-1,7.43858e-2,-2.0107);               
       } else if (HLT==60) {
          fL1->SetParameters(7.0734e-2,6.76907e-2,-2.31850);               
-      } else {
+     } else {
          cout <<"Oh no, where did you find this HLT path??? I don't remember this value "<<HLT<<". This is a disaster! We need to go to Brocard to buy more cakes..."<<endl;
 	 return 1e10; 
       }
