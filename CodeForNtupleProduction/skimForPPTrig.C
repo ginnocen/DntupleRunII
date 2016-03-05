@@ -43,7 +43,7 @@ void AddCloneTree(vector<TTree*> &cloneForest,TFile *outf, TTree* t, const char 
 }
 
 // main routine
-void skimForPbPbTrig(TString infname="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root",TString outfname="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2_skimmed.root")
+void skimForPPTrig(TString infname="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root",TString outfname="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2_skimmed.root")
 {
    vector<TTree*> cloneForest;
    vector<TTree*> forest;
