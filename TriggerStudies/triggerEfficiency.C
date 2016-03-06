@@ -19,14 +19,14 @@ float triggerEfficiency(double pt, double HLT, bool isPbPb)
       } else if (HLT==60) {
          fL1->SetParameters(7.0734e-2,6.76907e-2,-2.31850);               
      } else {
-         cout <<"Oh no, where did you find this HLT path??? I don't remember this value "<<HLT<<". This is a disaster! We need to go to Brocard to buy more cakes..."<<endl;
+         std::cout <<"Oh no, where did you find this HLT path??? I don't remember this value "<<HLT<<". This is a disaster! We need to go to Brocard to buy more cakes..."<<std::endl;
 	 return 1e10; 
       }
 
       // HLT, at high pt things are consistent with 0.9275+-0.0055 for the moment
       if (pt<HLT) {
          val = 1e10; // veto
-	 cout <<"using D candidate below HLT threshold!!"<<endl;
+	 std::cout <<"using D candidate below HLT threshold!!"<<std::endl;
       } else {
          // 
          val = 0.9275;
@@ -46,14 +46,14 @@ float triggerEfficiency(double pt, double HLT, bool isPbPb)
       }	else if (HLT==30) {
          fL1->SetParameters(6.19120e-3,1.19415e-1,-2.24150);
       } else {
-         cout <<"Oh no, where did you find this HLT path??? I don't remember this value "<<HLT<<". This is a disaster! We need to go to Brocard to buy more cakes..."<<endl;
+         std::cout <<"Oh no, where did you find this HLT path??? I don't remember this value "<<HLT<<". This is a disaster! We need to go to Brocard to buy more cakes..."<<std::endl;
 	 return 1e10; 
       }
       
       // HLT, at high pt things are consistent with 1, put 1 for the moment
       if (pt<HLT) {
          val = 1e10; // veto
-	 cout <<"using D candidate below HLT threshold!!"<<endl;
+	 std::cout <<"using D candidate below HLT threshold!!"<<std::endl;
       } else {
          // 
          val = 1;
