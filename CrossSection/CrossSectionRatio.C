@@ -19,8 +19,9 @@ void CrossSectionRatio(TString inputFONLL="output_inclusiveDd0meson_5TeV_y1.root
   if (usePrescaleCorr==1){
     TFile*fprescalesPP=new TFile(inputprescalesPP.Data()); 
     TH1F*hPrescalesPtBinsPP=(TH1F*)fprescalesPP->Get("hPrescalesPtBins");
+    TH1F*hTriggerEfficiencyPtBinsPP=(TH1F*)fprescalesPP->Get("hTriggerEfficiencyPtBins");
     for (int i=0;i<nBins;i++) {
-      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1));
+      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
     }
   }
 
@@ -96,7 +97,7 @@ void CrossSectionRatio(TString inputFONLL="output_inclusiveDd0meson_5TeV_y1.root
   pSigma->Draw();
   pSigma->cd();
 
-  TH2F* hemptySigma=new TH2F("hemptySigma","",50,0.,110.,10.,1.1,1.e6);  
+  TH2F* hemptySigma=new TH2F("hemptySigma","",50,ptBins[0]-5.,ptBins[nBins]+5.,10.,1.1,1.e9);  
   hemptySigma->GetXaxis()->CenterTitle();
   hemptySigma->GetYaxis()->CenterTitle();
   hemptySigma->GetYaxis()->SetTitle("d#sigma / dp_{T}( pb GeV^{-1}c)");
@@ -168,7 +169,7 @@ void CrossSectionRatio(TString inputFONLL="output_inclusiveDd0meson_5TeV_y1.root
   pRatio->Draw();
   pRatio->cd();
 
-  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,0.,110.,10.,0.,2.1);
+  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,ptBins[0]-5.,ptBins[nBins]+5.,10.,0.,2.1);
   hemptyRatio->GetXaxis()->SetTitle("p_{T} (GeV/c)");
   hemptyRatio->GetYaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->SetTitle("Data / FONLL");

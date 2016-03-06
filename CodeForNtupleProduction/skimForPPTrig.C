@@ -43,7 +43,7 @@ void AddCloneTree(vector<TTree*> &cloneForest,TFile *outf, TTree* t, const char 
 }
 
 // main routine
-void skimForPbPbTrig(TString infname="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2.root",TString outfname="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2_skimmed.root")
+void skimForPPTrig(TString infname="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root",TString outfname="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2_skimmed.root")
 {
    vector<TTree*> cloneForest;
    vector<TTree*> forest;
@@ -80,14 +80,14 @@ void skimForPbPbTrig(TString infname="/data/dmeson2015/DataDntuple/nt_skimmed_Df
    float Dtrk2Pt[15000];
    float DsvpvDistance[15000];
    float DsvpvDisErr[15000];
-   int HLT_HIDmesonHITrackingGlobal_Dpt20_v1;
-   int HLT_HIDmesonHITrackingGlobal_Dpt40_v1;
-   int HLT_HIDmesonHITrackingGlobal_Dpt60_v1;
+   int HLT_DmesonPPTrackingGlobal_Dpt15_v1;
+   int HLT_DmesonPPTrackingGlobal_Dpt30_v1;
+   int HLT_DmesonPPTrackingGlobal_Dpt50_v1;
    
    ntDkpi->SetBranchAddress("Dsize",&Dsize);
-   ntDkpi->SetBranchAddress("HLT_HIDmesonHITrackingGlobal_Dpt20_v1",&HLT_HIDmesonHITrackingGlobal_Dpt20_v1);
-   ntDkpi->SetBranchAddress("HLT_HIDmesonHITrackingGlobal_Dpt40_v1",&HLT_HIDmesonHITrackingGlobal_Dpt40_v1);
-   ntDkpi->SetBranchAddress("HLT_HIDmesonHITrackingGlobal_Dpt60_v1",&HLT_HIDmesonHITrackingGlobal_Dpt60_v1);
+   ntDkpi->SetBranchAddress("HLT_DmesonPPTrackingGlobal_Dpt15_v1",&HLT_DmesonPPTrackingGlobal_Dpt15_v1);
+   ntDkpi->SetBranchAddress("HLT_DmesonPPTrackingGlobal_Dpt30_v1",&HLT_DmesonPPTrackingGlobal_Dpt30_v1);
+   ntDkpi->SetBranchAddress("HLT_DmesonPPTrackingGlobal_Dpt50_v1",&HLT_DmesonPPTrackingGlobal_Dpt50_v1);
    ntDkpi->SetBranchAddress("Dpt",Dpt);
    ntDkpi->SetBranchAddress("Dy",Dy);
    ntDkpi->SetBranchAddress("Dtrk1Pt",Dtrk1Pt);
@@ -105,12 +105,12 @@ void skimForPbPbTrig(TString infname="/data/dmeson2015/DataDntuple/nt_skimmed_Df
 	 if (Dsize>0) {
 	   int ncand=0;
 	   for (int j=0;j<Dsize;j++) {
-	      if (Dpt[j]>19.&&Dtrk1Pt[j]>8.&&Dtrk2Pt[j]>8.&&Dy[j]>-1.1&&Dy[j]<1.1&&DsvpvDistance[j]/DsvpvDisErr[j]>3.) {
+	      if (Dpt[j]>19.&&Dtrk1Pt[j]>2.&&Dtrk2Pt[j]>2.&&Dy[j]>-1.1&&Dy[j]<1.1&&DsvpvDistance[j]/DsvpvDisErr[j]>3.) {
 	         ncand++;
 		 break;
 	      }
 	   }
-          if (ncand>0&&(HLT_HIDmesonHITrackingGlobal_Dpt20_v1||HLT_HIDmesonHITrackingGlobal_Dpt40_v1||HLT_HIDmesonHITrackingGlobal_Dpt60_v1)) {
+          if (ncand>0&&(HLT_DmesonPPTrackingGlobal_Dpt15_v1||HLT_DmesonPPTrackingGlobal_Dpt30_v1||HLT_DmesonPPTrackingGlobal_Dpt50_v1)) {
 	      GetEntry(forest,i);
 	      FillOutput(cloneForest);
 	   }

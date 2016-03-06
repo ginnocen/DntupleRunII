@@ -3,14 +3,14 @@
 #include "TLegendEntry.h"
 
 
-void CombineCrossSections()
+void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root")
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
 
-  TFile* filePPMB = new TFile("CrossSectionFONLLPPMB.root");  
+  TFile* filePPMB = new TFile(fileMB.Data());  
   TGraphAsymmErrors* gaeRatioCrossFONLLstatMB = (TGraphAsymmErrors*)filePPMB->Get("gaeRatioCrossFONLLstat");
   TGraphAsymmErrors* gaeRatioCrossFONLLsystMB = (TGraphAsymmErrors*)filePPMB->Get("gaeRatioCrossFONLLsyst");
   TGraphAsymmErrors* gaeCrossSystMB = (TGraphAsymmErrors*)filePPMB->Get("gaeCrossSyst");
@@ -18,7 +18,7 @@ void CombineCrossSections()
   TGraphAsymmErrors* gaeRatioCrossFONLLunityMB = (TGraphAsymmErrors*)filePPMB->Get("gaeRatioCrossFONLLunity");
   TH1D* hSigmaPPStatMB = (TH1D*)filePPMB->Get("hPtSigma");
 
-  TFile* filePP = new TFile("CrossSectionFONLLPP.root");  
+  TFile* filePP = new TFile(file.Data());  
   TGraphAsymmErrors* gaeRatioCrossFONLLstat = (TGraphAsymmErrors*)filePP->Get("gaeRatioCrossFONLLstat");
   TGraphAsymmErrors* gaeRatioCrossFONLLsyst = (TGraphAsymmErrors*)filePP->Get("gaeRatioCrossFONLLsyst");
   TGraphAsymmErrors* gaeCrossSyst = (TGraphAsymmErrors*)filePP->Get("gaeCrossSyst");
@@ -182,7 +182,20 @@ void CombineCrossSections()
   gaeRatioCrossFONLLsyst->SetMarkerColor(4);
 
   l->Draw("same");
-  cSigma->SaveAs("comparison.pdf");
+  cSigma->SaveAs("CrossSectionComparison.pdf");
 
   }
+
+int main(int argc, char *argv[])
+{
+  if((argc != 3))
+  {
+    std::cout << "Wrong number of inputs" << std::endl;
+    return 1;
+  }
+
+  if(argc ==3)
+    CombineCrossSections(argv[1], argv[2]);
+  return 0;
+}
 

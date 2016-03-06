@@ -119,7 +119,7 @@ void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPPMB.root", TSt
 
   legendSigma->Draw("same");
 
-  canvasRAA->SaveAs("canvasRAA.pdf");
+  canvasRAA->SaveAs(Form("canvasRAA%s.pdf",label.Data()));
   TFile *fRAA=new TFile(outputfile.Data(),"recreate");
   fRAA->cd();
   gNuclearModification->Write();

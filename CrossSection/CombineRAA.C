@@ -3,22 +3,22 @@
 #include "TLegendEntry.h"
 
 
-void CombineRAA()
+void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTfiles/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/PlotRAA.root" )
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
 
-  TFile* filePPMB = new TFile("outputRAAMB.root");  
+  TFile* filePPMB = new TFile(fileMB.Data());  
   TGraphAsymmErrors* gNuclearModificationMB = (TGraphAsymmErrors*)filePPMB->Get("gNuclearModification");
   TH1D* hNuclearModificationMB = (TH1D*)filePPMB->Get("hNuclearModification");
 
-  TFile* filePP = new TFile("outputRAA.root");  
+  TFile* filePP = new TFile(file.Data());  
   TGraphAsymmErrors* gNuclearModification = (TGraphAsymmErrors*)filePP->Get("gNuclearModification");
   TH1D* hNuclearModification = (TH1D*)filePP->Get("hNuclearModification");
   
-  TFile *fRAA=new TFile("/afs/cern.ch/work/g/ginnocen/public/PlotRAA.root");
+  TFile *fRAA=new TFile(filecharged.Data());
   TH1D*hTrackPt_trkCorr_PbPb_copy1=(TH1D*)fRAA->Get("hTrackPt_trkCorr_PbPb_copy1");
   
 
@@ -107,4 +107,19 @@ void CombineRAA()
   canvasRAA->SaveAs("canvasRAAComparison.pdf");
 
   }
+
+int main(int argc, char *argv[])
+{
+  if((argc != 4))
+  {
+    std::cout << "Wrong number of inputs" << std::endl;
+    return 1;
+  }
+
+  if(argc ==4)
+    CombineRAA(argv[1], argv[2],argv[3]);
+  return 0;
+}
+
+
 
