@@ -14,8 +14,10 @@ cp "$MYPWD"/canvasEff_studyPP.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasEff_studyPPMB.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasEff_studyPbPb.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasEff_studyPbPbMB.pdf Plots/Efficiency/.
-cp "$MYPWD"/canvas_pp_Btod0meson_5TeV_y1.pdf Plots/FONLL/.
-cp "$MYPWD"/canvas_pp_d0meson_5TeV_y1.pdf Plots/FONLL/.
+cp "$MYPWD"/canvas_pp_Btod0meson_5TeV_y1_PPMB.pdf Plots/FONLL/.
+cp "$MYPWD"/canvas_pp_d0meson_5TeV_y1_PPMB.pdf Plots/FONLL/.
+cp "$MYPWD"/canvas_pp_Btod0meson_5TeV_y1_PP.pdf Plots/FONLL/.
+cp "$MYPWD"/canvas_pp_d0meson_5TeV_y1_PP.pdf Plots/FONLL/.
 cp "$MYPWD"/canvasSigmaDzeroRatioPP.pdf Plots/Results/.
 cp "$MYPWD"/canvasSigmaDzeroRatioPPMB.pdf Plots/Results/.
 cp "$MYPWD"/CrossSectionComparison.pdf Plots/Results/.
