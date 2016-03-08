@@ -17,6 +17,7 @@ double ppLumiUncertainty 	= 10;			// 10% for the moment, to be updated (from Dan
 double ppSignalExtraction	= 7;			// TODO: old number from 2011, to be updated
 double ppDMesonSelection	= 11.4;			// TODO: old number from 2011, to be updated
 double ppBFeedDownCorrection	= 0;			// TODO
+double ppMCPtSpectra		= 0;			// TODO
 
 // =============================================================================================================
 // PbPb uncertainty
@@ -30,6 +31,7 @@ double TAAUncertainty0to100	= 5.7;			// TODO: old number from 2011, to be update
 double PbPbSignalExtraction	= 7;			// TODO: old number from 2011, to be updated
 double PbPbDMesonSelection	= 11.4;			// TODO: old number from 2011, to be updated
 double PbPbBFeedDownCorrection	= 0;			// TODO
+double PbPbMCPtSpectra		= 0;			// TODO
 
 // =============================================================================================================
 // RAA systematics
@@ -38,18 +40,20 @@ float systematicsForRAA(double pt, double HLT=0)
 {
    double sys=0;
    sys+=ppLumiUncertainty*ppLumiUncertainty;
-   sys+=ppSignalExtraction*ppSignalExtraction;
+   //sys+=ppSignalExtraction*ppSignalExtraction;
    sys+=ppDMesonSelection*ppDMesonSelection;
    sys+=ppBFeedDownCorrection*ppBFeedDownCorrection;
+   sys+=ppMCPtSpectra*ppMCPtSpectra;
    
    if (pt<20) sys+=PbPbNMBUncertainty*PbPbNMBUncertainty;
    	else  sys+=PbPbLumiUncertainty*PbPbLumiUncertainty;
    
    sys+=TAAUncertainty0to100*TAAUncertainty0to100;
-   sys+=PbPbSignalExtraction*PbPbSignalExtraction;
+   //sys+=PbPbSignalExtraction*PbPbSignalExtraction;
    sys+=PbPbDMesonSelection*PbPbDMesonSelection;
    sys+=PbPbBFeedDownCorrection*PbPbBFeedDownCorrection;
-   
+   sys+=PbPbMCPtSpectra*PbPbMCPtSpectra;
+    
    return sqrt(sys);
 }
 
@@ -68,8 +72,15 @@ float systematicsForRCP(double pt, double HLT=0)
 // =============================================================================================================
 float systematicsPP(double pt, double HLT=0)
 {
-   return 0.2;
-
+   double sys=0;
+   sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
+   sys+=ppLumiUncertainty*ppLumiUncertainty;
+   //sys+=ppSignalExtraction*ppSignalExtraction;
+   sys+=ppDMesonSelection*ppDMesonSelection;
+   sys+=ppBFeedDownCorrection*ppBFeedDownCorrection;
+   sys+=ppMCPtSpectra*ppMCPtSpectra;
+   
+   return sqrt(sys);
 }
 
 // =============================================================================================================
@@ -77,7 +88,18 @@ float systematicsPP(double pt, double HLT=0)
 // =============================================================================================================
 float systematicsPbPb(double pt, double HLT=0)
 {
-   return 0.2;
+   double sys=0;
+   sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
+   if (pt<20) sys+=PbPbNMBUncertainty*PbPbNMBUncertainty;
+   	else  sys+=PbPbLumiUncertainty*PbPbLumiUncertainty;
+   
+   sys+=TAAUncertainty0to100*TAAUncertainty0to100;
+   //sys+=PbPbSignalExtraction*PbPbSignalExtraction;
+   sys+=PbPbDMesonSelection*PbPbDMesonSelection;
+   sys+=PbPbBFeedDownCorrection*PbPbBFeedDownCorrection;
+   sys+=PbPbMCPtSpectra*PbPbMCPtSpectra;
+    
+   return sqrt(sys);
 
 }
 
