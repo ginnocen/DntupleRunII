@@ -1,4 +1,8 @@
 #include <TF1.h>
+#include <TH1D.h>
+#include <TCanvas.h>
+#include <TLine.h>
+#include <TLegend.h>
 
 // Yen-Jie: systematics table for D meson
 // Unit: In percentage
@@ -53,26 +57,29 @@ void initialization()
 // =============================================================================================================
 // RAA systematics
 // =============================================================================================================
-float systematicsForRAA(double pt, double HLT=0)
+float systematicsForRAA(double pt, double HLT=0, int stage=0)
 {
    if (!initialized) initialization();
    double sys=0;
    sys+=ppLumiUncertainty*ppLumiUncertainty;
-   sys+=ppDMesonSelection*ppDMesonSelection;
-   sys+=ppBFeedDownCorrection*ppBFeedDownCorrection;
-   sys+=ppMCPtSpectra*ppMCPtSpectra;
    
    if (pt<20) sys+=PbPbNMBUncertainty*PbPbNMBUncertainty;
    	else  sys+=PbPbLumiUncertainty*PbPbLumiUncertainty;
    
    sys+=TAAUncertainty0to100*TAAUncertainty0to100;
 
-
+   if (stage==1) return sqrt(sys);
+   
    sys+=(fPbPbSignalExtractionSig->Eval(pt)-fppSignalExtractionSig->Eval(pt))*
         (fPbPbSignalExtractionSig->Eval(pt)-fppSignalExtractionSig->Eval(pt));
    sys+=(fPbPbSignalExtractionBkg->Eval(pt)-fppSignalExtractionBkg->Eval(pt))*
    	(fPbPbSignalExtractionBkg->Eval(pt)-fppSignalExtractionBkg->Eval(pt));
 
+   if (stage==2) return sqrt(sys);
+   
+   sys+=ppDMesonSelection*ppDMesonSelection;
+   sys+=ppBFeedDownCorrection*ppBFeedDownCorrection;
+   sys+=ppMCPtSpectra*ppMCPtSpectra;
    sys+=PbPbDMesonSelection*PbPbDMesonSelection;
    sys+=PbPbBFeedDownCorrection*PbPbBFeedDownCorrection;
    sys+=PbPbMCPtSpectra*PbPbMCPtSpectra;
@@ -131,3 +138,60 @@ float systematicsPbPb(double pt, double HLT=0)
 
 }
 
+
+// =============================================================================================================
+// Drawer
+// =============================================================================================================
+void drawSys(double x1,double y1, double x2,double y2, int color = 1)
+{
+   TLine *l1 = new TLine(x1,y1/100.,x2,y2/100.);
+   TLine *l2 = new TLine(x1,-y1/100.,x2,-y2/100.);
+   l1->SetLineWidth(2);
+   l2->SetLineWidth(2);
+   l1->SetLineColor(color);
+   l2->SetLineColor(color);
+   l1->Draw();
+   l2->Draw();
+ 
+}
+
+// =============================================================================================================
+// Plot systematics for RAA
+// =============================================================================================================
+void plotSystematicsRAA()
+{
+   TH1D *htmp = new TH1D("htmp","",1000,3,102);
+   htmp->SetAxisRange(-0.5,0.8,"Y");
+   htmp->SetXTitle("D meson p_{T} (GeV/c)");
+   htmp->SetYTitle("Systematical Uncertainty");
+   TCanvas *c = new TCanvas("c","",600,600);
+   c->SetLogx();
+   htmp->Draw();
+   for (double i=3;i<100;i+=0.1)
+   {      
+      drawSys(i,systematicsForRAA(i), i+0.1,systematicsForRAA(i+0.1),1);
+      drawSys(i,systematicsForRAA(i,0,1), i+0.1,systematicsForRAA(i+0.1,0,1),2);
+      drawSys(i,sqrt((systematicsForRAA(i,0,2)*systematicsForRAA(i,0,2))-(systematicsForRAA(i,0,1)*systematicsForRAA(i,0,1))),
+              i+0.1,sqrt((systematicsForRAA(i+0.1,0,2)*systematicsForRAA(i+0.1,0,2))-(systematicsForRAA(i+0.1,0,1)*systematicsForRAA(i+0.1,0,1))),4);
+      drawSys(i,sqrt((systematicsForRAA(i,0,0)*systematicsForRAA(i,0,0))-(systematicsForRAA(i,0,2)*systematicsForRAA(i,0,2))),
+              i+0.1,sqrt((systematicsForRAA(i+0.1,0,0)*systematicsForRAA(i+0.1,0,0))-(systematicsForRAA(i+0.1,0,2)*systematicsForRAA(i+0.1,0,2))),kGreen+2);
+   }
+
+   TH1D *h1 = new TH1D("h1","",100,0,1);
+   h1->SetLineWidth(2); h1->SetLineColor(1);
+   TH1D *h2 = new TH1D("h2","",100,0,1);
+   h2->SetLineWidth(2); h2->SetLineColor(2);
+   TH1D *h4 = new TH1D("h4","",100,0,1);
+   h4->SetLineWidth(2); h4->SetLineColor(4);
+   TH1D *h5 = new TH1D("h5","",100,0,1);
+   h5->SetLineWidth(2); h5->SetLineColor(kGreen+2);
+ 
+   TLegend *leg = new TLegend(0.2,0.7,0.9,0.9);
+   leg->SetBorderSize(0);
+   leg->SetFillStyle(0);
+   leg->AddEntry(h1,"Total Systematics","l");
+   leg->AddEntry(h2,"Overall Normalization (N_{MB}, Lumi)","l");
+   leg->AddEntry(h4,"Signal Extraction","l");
+   leg->AddEntry(h5,"D Meson Selection and Correction","l");
+   leg->Draw();
+}
