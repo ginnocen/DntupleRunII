@@ -8,25 +8,30 @@ DOFITSPP=0
 DOFITSPPMCClosure=0
 DOFITSPbPb=0
 DOMCstudyPP=0
+DOMCstudyPPReweight=1
 DOMCstudyNPPP=0
 DOMCstudyPbPb=0
+DOMCstudyPbPbReweight=0
 DOCrossSectionPP=0
 DOCrossSectionPbPb=0
 DORAA=0
 
-DOFONLLMB=1
-DOFEEDDOWNMB=1
-DOFITSPPMB=1
+DOFONLLMB=0
+DOFEEDDOWNMB=0
+DOFITSPPMB=0
 DOFITSPbPbMB=0
-DOMCstudyPPMB=1
+DOMCstudyPPMB=0
+DOMCstudyPPMBReweight=0
 DOMCstudyPbPbMB=0
-DOCrossSectionPPMB=1
+DOMCstudyPbPbMBReweight=0
+DOCrossSectionPPMB=0
 DOCrossSectionPbPbMB=0
 DORAAMB=0
 
 DOCombineCrossSection=0
 DOCombineRAA=0
 
+UNITY=1
 FONLLDATINPUT="pp_d0meson_5TeV_y1"
 FONLLDATINPUTBtoD="pp_Btod0meson_5TeV_y1"
 FONLLDATINPUTB="pp_Bmeson_5TeV_y1"
@@ -52,9 +57,9 @@ OUTPUTFILEPlotPP="ROOTfiles/CrossSectionFONLLPP.root"
 OUTPUTFILEPbPb="ROOTfiles/hPtSpectrumDzeroPbPb.root"
 OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPb.root"
 OUTPUTFILERAA="ROOTfiles/outputRAA.root"
-OUTPUTFILEMCSTUDYPP="ROOTfiles/MCstudiesPP.root"
-OUTPUTFILEMCSTUDYNPPP="ROOTfiles/MCstudiesNPPP.root"
-OUTPUTFILEMCSTUDYPbPb="ROOTfiles/MCstudiesPbPb.root"
+OUTPUTFILEMCSTUDYPP="ROOTfiles/MCstudiesPP"
+OUTPUTFILEMCSTUDYNPPP="ROOTfiles/MCstudiesNPPP"
+OUTPUTFILEMCSTUDYPbPb="ROOTfiles/MCstudiesPbPb"
 
 LUMIPP=26.31
 ISMCPP=0
@@ -143,16 +148,28 @@ g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$ISDOWEIGHTPP"
 fi
 
+if [ $DOMCstudyPPReweight -eq 1 ]; then      
+g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$UNITY"
+fi
+
+
 if [ $DOMCstudyNPPP -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELNPPP" "$OUTPUTFILEMCSTUDYNPPP" "$ISDOWEIGHTPP"
 fi
 
 
+if [ $DOMCstudyPbPbReweight -eq 1 ]; then      
+g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$UNITY"
+fi
+
 if [ $DOMCstudyPbPb -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$ISDOWEIGHTPbPb"
 fi
+
 
 if [ $DOCrossSectionPP -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
@@ -185,8 +202,8 @@ OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMB.root"
 OUTPUTFILEPbPbMB="ROOTfiles/hPtSpectrumDzeroPbPbMB.root"
 OUTPUTFILEPlotPbPbMB="ROOTfiles/CrossSectionFONLLPbPbMB.root"
 OUTPUTFILERAAMB="ROOTfiles/outputRAAMB.root"
-OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB.root"
-OUTPUTFILEMCSTUDYPbPbMB="ROOTfiles/MCstudiesPbPbMB.root"
+OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB"
+OUTPUTFILEMCSTUDYPbPbMB="ROOTfiles/MCstudiesPbPbMB"
 
 
 LUMIPPMB=0.0351        #assuming sigma=70mb, Nevents=2213 millions, estimated MB efficiency=0.9  Lumi=2.213*10^9/(70*0.85*10^9pb)=2.213/(70*0.9)=0.0351
@@ -249,10 +266,21 @@ g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$ISDOWEIGHTPPMB"
 fi
 
+if [ $DOMCstudyPPMBReweight -eq 1 ]; then      
+g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$UNITY"
+fi
+
 if [ $DOMCstudyPbPbMB -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$ISDOWEIGHTPbPbMB"
 fi
+
+if [ $DOMCstudyPbPbMBReweight -eq 1 ]; then      
+g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$UNITY"
+fi
+
 
 if [ $DOCrossSectionPPMB -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
