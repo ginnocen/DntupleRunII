@@ -207,7 +207,7 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   gPad->SetLogy();
   hemptyPthatWeighted->Draw();
   hPthatweight->Draw("same");
-  canvasPthat->SaveAs(Form("canvasPthat_%s.pdf",Form(label.Data())));
+ // canvasPthat->SaveAs(Form("canvasPthat_%s.pdf",Form(label.Data())));
   
   TCanvas*canvasSpectra=new TCanvas("canvasSpectra","canvasSpectra",1000.,500);
   canvasSpectra->Divide(2,1);
@@ -219,7 +219,7 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   gPad->SetLogy();
   hemptySpectra->Draw();
   hPtGen->Draw("same");
-  canvasSpectra->SaveAs(Form("canvasSpectra_%s.pdf",Form(label.Data())));
+  //canvasSpectra->SaveAs(Form("canvasSpectra_%s.pdf",Form(label.Data())));
   
  if(useweight) { 
   TCanvas*canvasPtReweight=new TCanvas("canvasPtReweight","canvasPtReweight",1000.,500.); 
