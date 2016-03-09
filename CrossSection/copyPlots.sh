@@ -29,8 +29,9 @@ cp "$MYPWD"/canvasPtreweightedComparisonPP.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPPMB.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPbPb.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPbPbMB.pdf Plots/SystPtShape/.
+cp "$MYPWD"/canvasPtReweightPPptreweighted.pdf Plots/SystPtShape/.
 
-tdr --style=an b AN-15-308 
+#tdr --style=an b AN-15-308 
 svn add Plots/*/*
 svn commit -m "update of plots" Plots
 cd "$MYPWD"
