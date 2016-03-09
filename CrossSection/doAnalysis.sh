@@ -1,15 +1,14 @@
 #!/bin/bash
 #source clean.sh
 
+#Central point of the analysis
+
 DOFONLL=0
 DOTRGCOMBINATION=0
 DOFEEDDOWN=0
 DOFITSPP=0
 DOFITSPPMCClosure=0
 DOFITSPbPb=0
-DOMCstudyPP=0
-DOMCstudyNPPP=0
-DOMCstudyPbPb=0
 DOCrossSectionPP=0
 DOCrossSectionPbPb=0
 DORAA=0
@@ -18,8 +17,6 @@ DOFONLLMB=0
 DOFEEDDOWNMB=0
 DOFITSPPMB=0
 DOFITSPbPbMB=0
-DOMCstudyPPMB=0
-DOMCstudyPbPbMB=0
 DOCrossSectionPPMB=0
 DOCrossSectionPbPbMB=0
 DORAAMB=0
@@ -27,11 +24,20 @@ DORAAMB=0
 DOCombineCrossSection=0
 DOCombineRAA=0
 
+#Efficiency studies
 
-DOMCstudyPPReweight=0
-DOMCstudyPbPbReweight=0
-DOMCstudyPPMBReweight=0
-DOMCstudyPbPbMBReweight=0
+DOMCstudyPP=1
+DOMCstudyNPPP=0
+DOMCstudyPbPb=1
+DOMCstudyPPMB=1
+DOMCstudyPbPbMB=1
+
+#reweight systematic
+
+DOMCstudyPPReweight=1
+DOMCstudyPbPbReweight=1
+DOMCstudyPPMBReweight=1
+DOMCstudyPbPbMBReweight=1
 DOsystematicPtshape=1
 
 UNITY=1
