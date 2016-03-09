@@ -8,10 +8,8 @@ DOFITSPP=0
 DOFITSPPMCClosure=0
 DOFITSPbPb=0
 DOMCstudyPP=0
-DOMCstudyPPReweight=1
 DOMCstudyNPPP=0
 DOMCstudyPbPb=0
-DOMCstudyPbPbReweight=0
 DOCrossSectionPP=0
 DOCrossSectionPbPb=0
 DORAA=0
@@ -21,15 +19,20 @@ DOFEEDDOWNMB=0
 DOFITSPPMB=0
 DOFITSPbPbMB=0
 DOMCstudyPPMB=0
-DOMCstudyPPMBReweight=0
 DOMCstudyPbPbMB=0
-DOMCstudyPbPbMBReweight=0
 DOCrossSectionPPMB=0
 DOCrossSectionPbPbMB=0
 DORAAMB=0
 
 DOCombineCrossSection=0
 DOCombineRAA=0
+
+
+DOMCstudyPPReweight=0
+DOMCstudyPbPbReweight=0
+DOMCstudyPPMBReweight=0
+DOMCstudyPbPbMBReweight=0
+DOsystematicPtshape=1
 
 UNITY=1
 FONLLDATINPUT="pp_d0meson_5TeV_y1"
@@ -307,6 +310,12 @@ CHARGEDHADRON="/afs/cern.ch/work/g/ginnocen/public/PlotRAA.root"
 if [ $DOCombineRAA -eq 1 ]; then      
 g++ CombineRAA.C $(root-config --cflags --libs) -g -o CombineRAA.exe 
 ./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON"
+fi
+
+
+if [ $DOsystematicPtshape -eq 1 ]; then      
+g++ PtShapeSystematic.C $(root-config --cflags --libs) -g -o PtShapeSystematic.exe 
+./PtShapeSystematic.exe 
 fi
 
 
