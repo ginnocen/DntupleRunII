@@ -100,10 +100,10 @@ float systematicsPP(double pt, double HLT=0)
    double sys=0;
    sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
    sys+=ppLumiUncertainty*ppLumiUncertainty;
-   //sys+=ppSignalExtraction*ppSignalExtraction;
    sys+=ppDMesonSelection*ppDMesonSelection;
    sys+=ppBFeedDownCorrection*ppBFeedDownCorrection;
    sys+=ppMCPtSpectra*ppMCPtSpectra;
+   sys+=(fppSignalExtractionSig->Eval(pt))*(fppSignalExtractionSig->Eval(pt));
    
    return sqrt(sys);
 }
@@ -115,15 +115,17 @@ float systematicsPbPb(double pt, double HLT=0)
 {
    if (!initialized) initialization();
    double sys=0;
+   
+   // pp tracking eff uncertainty used for the moment
    sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
    if (pt<20) sys+=PbPbNMBUncertainty*PbPbNMBUncertainty;
    	else  sys+=PbPbLumiUncertainty*PbPbLumiUncertainty;
    
    sys+=TAAUncertainty0to100*TAAUncertainty0to100;
-   //sys+=PbPbSignalExtraction*PbPbSignalExtraction;
    sys+=PbPbDMesonSelection*PbPbDMesonSelection;
    sys+=PbPbBFeedDownCorrection*PbPbBFeedDownCorrection;
    sys+=PbPbMCPtSpectra*PbPbMCPtSpectra;
+   sys+=(fPbPbSignalExtractionSig->Eval(pt))*(fPbPbSignalExtractionSig->Eval(pt));
     
    return sqrt(sys);
 
