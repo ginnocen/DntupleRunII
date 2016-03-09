@@ -1,5 +1,4 @@
 #include "uti.h"
-#include "config/parametersLowpt.h"
 
 Double_t setparam0=100.;
 Double_t setparam1=1.865;
@@ -13,15 +12,14 @@ Double_t maxhisto=2.0;
 Double_t nbinsmasshisto=60;
 Double_t binwidthmass=(maxhisto-minhisto)/nbinsmasshisto;
 
+TString cut_recoonly="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dtrk2Pt>1.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0";
 TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))";
+TString selmcgenacceptance="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>1.0&&Gtk2pt>1.0";
 TString selmc="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dtrk2Pt>1.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>1.5&&Dchi2cl>0.05&&Dalpha<0.12";
 
 void test(int MCsample=0, bool doreweighting=true){
 
   TString weight="1";
-
-  //const int nBins=50;
-  //double ptBins[nBins+1] = {0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100};
  
   TString inputFONLL="/afs/cern.ch/work/g/ginnocen/public/output_pp_d0meson_5TeV_y1.root";
 
@@ -90,7 +88,7 @@ void test(int MCsample=0, bool doreweighting=true){
   canvas->SaveAs(Form("MCreweighting_%d.pdf",MCsample));  
 }
 
-void simplereweight(int isdoweight=2){
+void simplereweight(int isdoweight=3){
 
   TString myweight;
   TString myweightreco;
@@ -106,6 +104,11 @@ if (isdoweight==2){
     myweight="1";
     myweightreco="1";
   }
+if (isdoweight==3){
+    myweight="pthatweight*(pow(10,0.095118*Gpt+-1.133104+Gpt*Gpt*-0.000788)+pow(10,4.273087*Gpt+-9.873373+Gpt*Gpt*-0.474733))";
+    myweightreco="pthatweight*(pow(10,0.095118*Dgenpt+-1.133104+Dgenpt*Dgenpt*-0.000788)+pow(10,4.273087*Dgenpt+-9.873373+Dgenpt*Dgenpt*-0.474733))";
+ }
+
   
   TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root";
   
@@ -120,16 +123,33 @@ if (isdoweight==2){
 
   TH1D* myhPtMC = new TH1D("myhPtMC","",nBins,ptBins);
   TH1D* myhPtGen = new TH1D("myhPtGen","",nBins,ptBins);
+  TH1D* myhPtMCrecoonly = new TH1D("myhPtMCrecoonly","",nBins,ptBins);
+  TH1D* myhPtGenAcc = new TH1D("myhPtGenAcc","",nBins,ptBins);
 
+  ntMC->Project("myhPtMCrecoonly","Dpt",TCut(myweightreco)*(TCut(cut_recoonly.Data())&&"(Dgen==23333)"));
+  divideBinWidth(myhPtMCrecoonly);
   ntMC->Project("myhPtMC","Dpt",TCut(myweightreco)*(TCut(selmc.Data())&&"(Dgen==23333)"));
   divideBinWidth(myhPtMC);
   ntGen->Project("myhPtGen","Gpt",TCut(myweight)*(TCut(selmcgen.Data())));
   divideBinWidth(myhPtGen);
+  ntGen->Project("myhPtGenAcc","Gpt",TCut(myweight)*(TCut(selmcgenacceptance.Data())));
+  divideBinWidth(myhPtGenAcc);
+
 
   myhPtMC->Sumw2();
   TH1D* hEff = (TH1D*)myhPtMC->Clone("hEff");
   hEff->Divide(myhPtGen);
+  TH1D* hEffReco = (TH1D*)myhPtMCrecoonly->Clone("hEffReco");
+  hEffReco->Sumw2();
+  hEffReco->Divide(myhPtGen);
 
+  TH1D* hEffAcc = (TH1D*)myhPtGenAcc->Clone("hEffAcc");
+  hEffAcc->Sumw2();
+  hEffAcc->Divide(hEffAcc,myhPtGen,1,1,"b");
+  
+  TH1D* hEffSelection = (TH1D*)myhPtMC->Clone("hEffSelection");
+  hEffSelection->Sumw2();
+  hEffSelection->Divide(hEffSelection,myhPtMCrecoonly,1,1,"b");
 
   TCanvas*canvas=new TCanvas("canvas","canvas",1000.,400);
   
@@ -147,9 +167,12 @@ if (isdoweight==2){
   if (isdoweight==0) outputname="effreweightpt.root";
   if (isdoweight==1) outputname="effreweightpthat.root";
   if (isdoweight==2) outputname="effnoreweight.root";
+  if (isdoweight==3) outputname="effpthatANDFONLL.root";
   
   TFile*f=new TFile(outputname.Data(),"recreate");
   f->cd();
   hEff->Write();
-
+  hEffReco->Write();
+  hEffSelection->Write();
+  hEffAcc->Write();
 }
