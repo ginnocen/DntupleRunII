@@ -1,5 +1,4 @@
 #include "uti.h"
-#include "config/parametersLowpt.h"
 
 Double_t setparam0=100.;
 Double_t setparam1=1.865;
@@ -21,9 +20,6 @@ TString selmc="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dtr
 void test(int MCsample=0, bool doreweighting=true){
 
   TString weight="1";
-
-  //const int nBins=50;
-  //double ptBins[nBins+1] = {0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100};
  
   TString inputFONLL="/afs/cern.ch/work/g/ginnocen/public/output_pp_d0meson_5TeV_y1.root";
 
