@@ -1,27 +1,43 @@
 #include "uti.h"
-#include "parameters.h"
 #include "TLegendEntry.h"
+#include "parameters.h"
 
-void compareMC(){
+
+void test(int effselector=0){
+
+  TString effhisto, titlename;
+  if(effselector==0) {effhisto="hEffAcc"; titlename="Acceptance";}
+  if(effselector==1) {effhisto="hEffReco"; titlename="Reco efficiency";}
+  if(effselector==2) {effhisto="hEffSelection"; titlename="Selection efficiency";}
+  if(effselector==3) {effhisto="hEff"; titlename="Total effiiciency";}
 
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
-
+//pthat10pthat10ptreweighted.root
   
-  int value1=10; int value2=30; int value3=50; bool integratedonly=false;
+  int value1=10; int value2=30; int value3=50; 
 
-  TFile *f1=new TFile(Form("ROOTfiles/pthat%d.root",value1));
-  TFile *f2=new TFile(Form("ROOTfiles/pthat%d.root",value2));
-  TFile *f3=new TFile(Form("ROOTfiles/pthat%d.root",value3));
-  TFile *fallnoweight=new TFile("ROOTfiles/pthatall.root");
+  TFile *f1=new TFile(Form("ROOTfiles/pthat%dpthat%dptreweighted.root",value1,value1));
+  TFile *f2=new TFile(Form("ROOTfiles/pthat%dpthat%dptreweighted.root",value2,value2));
+  TFile *f3=new TFile(Form("ROOTfiles/pthat%dpthat%dptreweighted.root",value3,value3));
+  TFile *fallnoweight=new TFile("ROOTfiles/pthatallpthatallptreweighted.root");
 
-  TH1D *h1=(TH1D*)f1->Get("hEff");
-  TH1D *h2=(TH1D*)f2->Get("hEff");
-  TH1D *h3=(TH1D*)f3->Get("hEff");
-  TH1D *hallnoweight=(TH1D*)fallnoweight->Get("hEff");
-  TH2F* hemptyPthat=new TH2F("hemptyPthat","",50,0,100.,10,0.01,5.);  
+  TH1D *h1=(TH1D*)f1->Get(effhisto.Data());
+  TH1D *h2=(TH1D*)f2->Get(effhisto.Data());
+  TH1D *h3=(TH1D*)f3->Get(effhisto.Data());
+    
+  for (int m=1;m<=nBinsReweight; m++){
+  
+  if (m>=11) {h1->SetBinContent(m,0); h1->SetBinError(m,0);  }
+  if (m>=17) {h2->SetBinContent(m, 0); h2->SetBinError(m,0);  }
+    
+  }
+  
+  
+  TH1D *hallnoweight=(TH1D*)fallnoweight->Get(effhisto.Data());
+  TH2F* hemptyPthat=new TH2F("hemptyPthat","",50,0,100.,10,0.01,10.);  
   hemptyPthat->GetXaxis()->CenterTitle();
   hemptyPthat->GetYaxis()->CenterTitle();
   hemptyPthat->GetYaxis()->SetTitle("Efficiencies");
@@ -37,9 +53,35 @@ void compareMC(){
   hemptyPthat->GetXaxis()->SetLabelSize(0.035);
   hemptyPthat->GetYaxis()->SetLabelSize(0.035);  
 
+  TH2F* hemptyPthatRatio=new TH2F("hemptyPthatRatio","",50,0,100.,10,0.0,2.);  
+  hemptyPthatRatio->GetXaxis()->CenterTitle();
+  hemptyPthatRatio->GetYaxis()->CenterTitle();
+  hemptyPthatRatio->GetYaxis()->SetTitle("Efficiencies");
+  hemptyPthatRatio->GetXaxis()->SetTitle("p_{T}");
+  hemptyPthatRatio->GetXaxis()->SetTitleOffset(0.9);
+  hemptyPthatRatio->GetYaxis()->SetTitleOffset(1.0);
+  hemptyPthatRatio->GetXaxis()->SetTitleSize(0.05);
+  hemptyPthatRatio->GetYaxis()->SetTitleSize(0.05);
+  hemptyPthatRatio->GetXaxis()->SetTitleFont(42);
+  hemptyPthatRatio->GetYaxis()->SetTitleFont(42);
+  hemptyPthatRatio->GetXaxis()->SetLabelFont(42);
+  hemptyPthatRatio->GetYaxis()->SetLabelFont(42);
+  hemptyPthatRatio->GetXaxis()->SetLabelSize(0.035);
+  hemptyPthatRatio->GetYaxis()->SetLabelSize(0.035);  
 
-  TCanvas*c=new TCanvas("c","c",500,500);
-  c->cd();
+
+  TH1D *hRatio1=(TH1D*)h1->Clone("hRatio1");
+  TH1D *hRatio2=(TH1D*)h2->Clone("hRatio2");
+  TH1D *hRatio3=(TH1D*)h3->Clone("hRatio3"); 
+  hRatio1->Divide(hallnoweight);
+  hRatio2->Divide(hallnoweight);
+  hRatio3->Divide(hallnoweight);
+  
+
+
+  TCanvas*c=new TCanvas("c","c",1000,500);
+  c->Divide(2,1);
+  c->cd(1);
   gPad->SetLogy();
   gPad->SetLogx();
   h1->SetLineColor(1);
@@ -52,9 +94,9 @@ void compareMC(){
   hallnoweight->SetMarkerColor(6);
   
   hemptyPthat->Draw();
-  if(!integratedonly)h1->Draw("same");
-  if(!integratedonly)h2->Draw("same");
-  if(!integratedonly)h3->Draw("same");
+  h1->Draw("same");
+  h2->Draw("same");
+  h3->Draw("same");
   hallnoweight->Draw("same");
   TLegend *legend=new TLegend(0.2100806,0.7068644,0.5084677,0.8605932,"");
   legend->SetBorderSize(0);
@@ -63,7 +105,6 @@ void compareMC(){
   legend->SetFillStyle(1001);
   legend->SetTextFont(42);
   legend->SetTextSize(0.045);
-  if(!integratedonly){
   TLegendEntry *ent_pthat1=legend->AddEntry(h1,Form("efficiency sample pthat=%d",value1),"pf");
   ent_pthat1->SetTextFont(42);
   ent_pthat1->SetLineColor(1);
@@ -76,16 +117,42 @@ void compareMC(){
   ent_pthat3->SetTextFont(42);
   ent_pthat3->SetLineColor(4);
   ent_pthat3->SetMarkerColor(4);
-  }
+  
   TLegendEntry *ent_pthatallnoweigth=legend->AddEntry(hallnoweight,"efficiency sample pthat all","pf");
   ent_pthatallnoweigth->SetTextFont(42);
   ent_pthatallnoweigth->SetLineColor(6);
   ent_pthatallnoweigth->SetMarkerColor(6);
-  legend->Draw("same");
-  if(!integratedonly) c->SaveAs(Form("canvasEfficiency_phat%d_pthat%d_pthat%d.pdf",value1,value2,value3));
-  else c->SaveAs("canvas_phatintegrated.pdf");
+  legend->Draw("same");   
+  c->cd(2);
+  gPad->SetLogx();
+  hRatio1->SetLineColor(1);
+  hRatio2->SetLineColor(2);
+  hRatio3->SetLineColor(4);
+  hallnoweight->SetLineColor(6);
+  hRatio1->SetMarkerColor(1);
+  hRatio2->SetMarkerColor(2);
+  hRatio3->SetMarkerColor(4);
+  hallnoweight->SetMarkerColor(6);
+  hemptyPthatRatio->Draw();
+  hRatio1->Draw("same");
+  hRatio2->Draw("same");
+  hRatio3->Draw("same");
+  
+  if(effselector==0) c->SaveAs(Form("canvasAccEfficiency_phat%d_pthat%d_pthat%d.pdf",value1,value2,value3));
+  if(effselector==1) c->SaveAs(Form("canvasRecoEfficiency_phat%d_pthat%d_pthat%d.pdf",value1,value2,value3));
+  if(effselector==2) c->SaveAs(Form("canvasSelEfficiency_phat%d_pthat%d_pthat%d.pdf",value1,value2,value3));
+  if(effselector==3) c->SaveAs(Form("canvasTotalEfficiency_phat%d_pthat%d_pthat%d.pdf",value1,value2,value3));
+
 }
 
+
+void compareMC(){
+  test(0);
+  test(1);
+  test(2);
+  test(3);
+
+}
 
 int main(int argc, char *argv[])
 {

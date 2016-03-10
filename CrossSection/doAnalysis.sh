@@ -44,6 +44,10 @@ DOsystematicPthatstudyPP=1
 
 UNITY=1
 NULL=0
+
+MINIMUMFIT=2
+MAXIMUMFIT=100
+
 FONLLDATINPUT="pp_d0meson_5TeV_y1"
 FONLLDATINPUTBtoD="pp_Btod0meson_5TeV_y1"
 FONLLDATINPUTB="pp_Bmeson_5TeV_y1"
@@ -93,7 +97,7 @@ CUTFORTRIGGERPRESCALEPP=0
 
 LUMIPPMCClosure=1
 ISMCPPMCClosure=1
-ISDOWEIGHTPPMCClosure=1
+ISDOWEIGHTPPMCClosure=0
 TRGPPMCClosure="1"
 LABELPPMCClosure="PPMCClosure"
 
@@ -162,29 +166,29 @@ fi
 
 if [ $DOMCstudyPP -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$ISDOWEIGHTPP"
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$ISDOWEIGHTPP" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
 if [ $DOMCstudyPPReweight -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$UNITY"
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$UNITY" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
 
 if [ $DOMCstudyNPPP -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELNPPP" "$OUTPUTFILEMCSTUDYNPPP" "$ISDOWEIGHTPP"
+./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELNPPP" "$OUTPUTFILEMCSTUDYNPPP" "$ISDOWEIGHTPP" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
 
 if [ $DOMCstudyPbPbReweight -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$UNITY"
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$UNITY" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
 if [ $DOMCstudyPbPb -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$ISDOWEIGHTPbPb"
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
 
@@ -280,22 +284,22 @@ fi
 
 if [ $DOMCstudyPPMB -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$ISDOWEIGHTPPMB"
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$ISDOWEIGHTPPMB" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
 if [ $DOMCstudyPPMBReweight -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$UNITY"
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$UNITY" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
 if [ $DOMCstudyPbPbMB -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$ISDOWEIGHTPbPbMB"
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$ISDOWEIGHTPbPbMB" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
 if [ $DOMCstudyPbPbMBReweight -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$UNITY"
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$UNITY" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
 
@@ -338,19 +342,19 @@ if [ $DOsystematicPthatstudyPP -eq 1 ]; then
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 LABELPTHAT="pthatall"
 FILEOUTPTHAT="ROOTfiles/pthatall"
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$NULL"   
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$UNITY"  2 100
 LABELPTHAT="pthat10"
 FILEOUTPTHAT="ROOTfiles/pthat10"
-./MCefficiency.exe "$INPUTMCPPPthat10"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$NULL"
+./MCefficiency.exe "$INPUTMCPPPthat10"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$UNITY" 2 30
 LABELPTHAT="pthat30"
 FILEOUTPTHAT="ROOTfiles/pthat30"
-./MCefficiency.exe "$INPUTMCPPPthat30"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$NULL"
+./MCefficiency.exe "$INPUTMCPPPthat30"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$UNITY" 2 70
 LABELPTHAT="pthat50"
 FILEOUTPTHAT="ROOTfiles/pthat50"
-./MCefficiency.exe "$INPUTMCPPPthat50"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$NULL"
+./MCefficiency.exe "$INPUTMCPPPthat50"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$UNITY" 2 100
 LABELPTHAT="pthat70"
 FILEOUTPTHAT="ROOTfiles/pthat70"
-./MCefficiency.exe "$INPUTMCPPPthat70"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$NULL"
+./MCefficiency.exe "$INPUTMCPPPthat70"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$UNITY" 2 100
 g++ compareMC.C $(root-config --cflags --libs) -g -o compareMC.exe 
 ./compareMC.exe 
 fi
