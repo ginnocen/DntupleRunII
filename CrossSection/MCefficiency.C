@@ -96,7 +96,7 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   divideBinWidth(hPtGenAcc);
 
   ntMC->Project("hPthat","pthat","1");
-  ntMC->Project("hPthatweight","pthat",TCut("pthatweight"));
+  ntMC->Project("hPthatweight","pthat",TCut("1"));
 
   hPtMC->Sumw2();
   TH1D* hEff = (TH1D*)hPtMC->Clone("hEff");

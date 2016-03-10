@@ -26,21 +26,24 @@ DOCombineRAA=0
 
 #Efficiency studies
 
-DOMCstudyPP=1
+DOMCstudyPP=0
 DOMCstudyNPPP=0
-DOMCstudyPbPb=1
-DOMCstudyPPMB=1
-DOMCstudyPbPbMB=1
+DOMCstudyPbPb=0
+DOMCstudyPPMB=0
+DOMCstudyPbPbMB=0
 
 #reweight systematic
 
-DOMCstudyPPReweight=1
-DOMCstudyPbPbReweight=1
-DOMCstudyPPMBReweight=1
-DOMCstudyPbPbMBReweight=1
-DOsystematicPtshape=1
+DOMCstudyPPReweight=0
+DOMCstudyPbPbReweight=0
+DOMCstudyPPMBReweight=0
+DOMCstudyPbPbMBReweight=0
+DOsystematicPtshape=0
+
+DOsystematicPthatstudyPP=1
 
 UNITY=1
+NULL=0
 FONLLDATINPUT="pp_d0meson_5TeV_y1"
 FONLLDATINPUTBtoD="pp_Btod0meson_5TeV_y1"
 FONLLDATINPUTB="pp_Bmeson_5TeV_y1"
@@ -55,6 +58,11 @@ INPUTMCPbPb="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_E
 #INPUTMCPbPb="/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160229_Dfinder_20160215_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root"
 INPUTDATAPbPb="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2_skimmed.root"
 INPUTDATAPbPbUNSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2.root"
+
+INPUTMCPPPthat10="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0pt0p0_Pthat10_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt0tkPt0p5_D0Dstar.root"
+INPUTMCPPPthat30="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0pt0p0_Pthat30_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt0tkPt0p5_D0Dstar.root"
+INPUTMCPPPthat50="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0pt0p0_Pthat50_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt0tkPt0p5_D0Dstar.root"
+INPUTMCPPPthat70="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0pt0p0_Pthat80_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt0tkPt0p5_D0Dstar.root"
 
 FONLLOUTPUTFILE="ROOTfiles/output_pp_d0meson_5TeV_y1.root"
 FONLLOUTPUTFILEBtoD="ROOTfiles/output_pp_Btod0meson_5TeV_y1.root"
@@ -324,4 +332,25 @@ g++ PtShapeSystematic.C $(root-config --cflags --libs) -g -o PtShapeSystematic.e
 ./PtShapeSystematic.exe 
 fi
 
+cp config/parametersAllpt.h parameters.h
 
+if [ $DOsystematicPthatstudyPP -eq 1 ]; then   
+g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
+LABELPTHAT="pthatall"
+FILEOUTPTHAT="ROOTfiles/pthatall"
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$NULL"   
+LABELPTHAT="pthat10"
+FILEOUTPTHAT="ROOTfiles/pthat10"
+./MCefficiency.exe "$INPUTMCPPPthat10"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$NULL"
+LABELPTHAT="pthat30"
+FILEOUTPTHAT="ROOTfiles/pthat30"
+./MCefficiency.exe "$INPUTMCPPPthat30"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$NULL"
+LABELPTHAT="pthat50"
+FILEOUTPTHAT="ROOTfiles/pthat50"
+./MCefficiency.exe "$INPUTMCPPPthat50"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$NULL"
+LABELPTHAT="pthat70"
+FILEOUTPTHAT="ROOTfiles/pthat70"
+./MCefficiency.exe "$INPUTMCPPPthat70"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$NULL"
+g++ compareMC.C $(root-config --cflags --libs) -g -o compareMC.exe 
+./compareMC.exe 
+fi
