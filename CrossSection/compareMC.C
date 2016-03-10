@@ -3,7 +3,7 @@
 #include "parameters.h"
 
 
-void test(int effselector=0){
+void test(int effselector=0,TString pthat0="",TString pthat1="",TString pthat2="",TString pthatall=""){
 
   TString effhisto, titlename;
   if(effselector==0) {effhisto="hEffAcc"; titlename="Acceptance";}
@@ -19,10 +19,10 @@ void test(int effselector=0){
   
   int value1=10; int value2=30; int value3=50; 
 
-  TFile *f1=new TFile(Form("ROOTfiles/pthat%dpthat%dptreweighted.root",value1,value1));
-  TFile *f2=new TFile(Form("ROOTfiles/pthat%dpthat%dptreweighted.root",value2,value2));
-  TFile *f3=new TFile(Form("ROOTfiles/pthat%dpthat%dptreweighted.root",value3,value3));
-  TFile *fallnoweight=new TFile("ROOTfiles/pthatallpthatallptreweighted.root");
+  TFile *f1=new TFile(pthat0.Data());
+  TFile *f2=new TFile(pthat1.Data());
+  TFile *f3=new TFile(pthat2.Data());
+  TFile *fallnoweight=new TFile(pthatall.Data());
 
   TH1D *h1=(TH1D*)f1->Get(effhisto.Data());
   TH1D *h2=(TH1D*)f2->Get(effhisto.Data());
@@ -146,17 +146,23 @@ void test(int effselector=0){
 }
 
 
-void compareMC(){
-  test(0);
-  test(1);
-  test(2);
-  test(3);
+void compareMC(TString pthat0,TString pthat1,TString pthat2,TString pthatall){
+  test(0,pthat0,pthat1,pthat2,pthatall);
+  test(1,pthat0,pthat1,pthat2,pthatall);
+  test(2,pthat0,pthat1,pthat2,pthatall);
+  test(3,pthat0,pthat1,pthat2,pthatall);
 
 }
 
 int main(int argc, char *argv[])
 {
-  compareMC();
-  return 1;
+  if((argc !=5))
+  {
+    std::cout << "Wrong number of inputs" << std::endl;
+    return 1;
+  }
+  
+  if(argc == 5)
+    compareMC(argv[1],argv[2],argv[3],argv[4]);
+  return 0;
 }
-

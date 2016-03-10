@@ -58,7 +58,7 @@ INPUTMCPP="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_Evt
 INPUTMCNPPP="/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dzero_kpi_nonprompt/ntD_EvtBase_20160229_Dfinder_20160215_pp_Pythia8_nonprompt_D0_dPt0tkPt0p5_pthatweight.root"
 INPUTDATAPP="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2_skimmed.root"
 INPUTDATAPPUNSKIMMED="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root"
-INPUTMCPbPb="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root"
+INPUTMCPbPb="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0_dPt1tkPt1_pthatweight.root"
 #INPUTMCPbPb="/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160229_Dfinder_20160215_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root"
 INPUTDATAPbPb="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2_skimmed.root"
 INPUTDATAPbPbUNSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2.root"
@@ -66,7 +66,7 @@ INPUTDATAPbPbUNSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb
 INPUTMCPPPthat10="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0pt0p0_Pthat10_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt0tkPt0p5_D0Dstar.root"
 INPUTMCPPPthat30="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0pt0p0_Pthat30_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt0tkPt0p5_D0Dstar.root"
 INPUTMCPPPthat50="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0pt0p0_Pthat50_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt0tkPt0p5_D0Dstar.root"
-INPUTMCPPPthat70="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0pt0p0_Pthat80_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt0tkPt0p5_D0Dstar.root"
+INPUTMCPPPthat70="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0pt0p0_Pthat70_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt0tkPt0p5_D0Dstar.root"
 
 FONLLOUTPUTFILE="ROOTfiles/output_pp_d0meson_5TeV_y1.root"
 FONLLOUTPUTFILEBtoD="ROOTfiles/output_pp_Btod0meson_5TeV_y1.root"
@@ -340,21 +340,23 @@ cp config/parametersAllpt.h parameters.h
 
 if [ $DOsystematicPthatstudyPP -eq 1 ]; then   
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-LABELPTHAT="pthatall"
-FILEOUTPTHAT="ROOTfiles/pthatall"
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$UNITY"  2 100
-LABELPTHAT="pthat10"
-FILEOUTPTHAT="ROOTfiles/pthat10"
-./MCefficiency.exe "$INPUTMCPPPthat10"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$UNITY" 2 30
-LABELPTHAT="pthat30"
-FILEOUTPTHAT="ROOTfiles/pthat30"
-./MCefficiency.exe "$INPUTMCPPPthat30"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$UNITY" 2 70
-LABELPTHAT="pthat50"
-FILEOUTPTHAT="ROOTfiles/pthat50"
-./MCefficiency.exe "$INPUTMCPPPthat50"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$UNITY" 2 100
-LABELPTHAT="pthat70"
-FILEOUTPTHAT="ROOTfiles/pthat70"
-./MCefficiency.exe "$INPUTMCPPPthat70"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPTHAT" "$FILEOUTPTHAT" "$UNITY" 2 100
+
+LABELPTHATALL="pthatallPP"
+FILEOUTPTHATALL="ROOTfiles/pthatallPP.root" 
+LABELPTHAT10="pthat10PP"
+FILEOUTPTHAT10="ROOTfiles/pthat10PP.root"
+LABELPTHAT30="pthat30PP"
+FILEOUTPTHAT30="ROOTfiles/pthat30PP.root"
+LABELPTHAT50="pthat50PP"
+FILEOUTPTHAT50="ROOTfiles/pthat50PP.root"
+
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPTHATALL" "$FILEOUTPTHATALL" "$UNITY"  2 100
+./MCefficiency.exe "$INPUTMCPPPthat10"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPTHAT10" "$FILEOUTPTHAT10" "$UNITY"  2 30
+./MCefficiency.exe "$INPUTMCPPPthat30"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPTHAT30" "$FILEOUTPTHAT30" "$UNITY"  2 70
+./MCefficiency.exe "$INPUTMCPPPthat50"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPTHAT50" "$FILEOUTPTHAT50" "$UNITY"  2 100
 g++ compareMC.C $(root-config --cflags --libs) -g -o compareMC.exe 
-./compareMC.exe 
+./compareMC.exe "$FILEOUTPTHAT10" "$FILEOUTPTHAT30" "$FILEOUTPTHAT50" "$FILEOUTPTHATALL"
 fi
+
+
+

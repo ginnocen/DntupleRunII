@@ -250,9 +250,8 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   hFONLLOverPt->Draw();
   canvasPtReweight->SaveAs(Form("canvasPtReweight%s.pdf",Form(label.Data())));
   }
-  if(useweight) outputfile=outputfile+label;
 
-  TFile *fout=new TFile(Form("%s.root",outputfile.Data()),"recreate");
+  TFile *fout=new TFile(outputfile.Data(),"recreate");
   fout->cd();
   hPtGen->Write();
   hEffAcc->Write();
