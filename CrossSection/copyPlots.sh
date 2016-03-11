@@ -29,8 +29,20 @@ cp "$MYPWD"/canvasPtreweightedComparisonPP.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPPMB.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPbPb.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPbPbMB.pdf Plots/SystPtShape/.
+cp "$MYPWD"/canvasPtReweightPPptreweighted.pdf Plots/SystPtShape/.
 
-tdr --style=an b AN-15-308 
+
+cp "$MYPWD"/canvasAccEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
+cp "$MYPWD"/canvasRecoEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
+cp "$MYPWD"/canvasSelEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
+cp "$MYPWD"/canvasTotalEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
+
+cp "$MYPWD"/canvasClosurePP.pdf Plots/Efficiency/.
+cp "$MYPWD"/canvasClosurePbPb.pdf Plots/Efficiency/.
+
+canvasClosurePP.pdf
+
+#tdr --style=an b AN-15-308 
 svn add Plots/*/*
 svn commit -m "update of plots" Plots
 cd "$MYPWD"
