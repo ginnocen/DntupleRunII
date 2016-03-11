@@ -3,35 +3,35 @@
 
 #Central point of the analysis
 
-DOFONLL=0
-DOTRGCOMBINATION=0
-DOFEEDDOWN=0
-DOFITSPP=0
+DOFONLL=1
+DOTRGCOMBINATION=1
+DOFEEDDOWN=1
+DOFITSPP=1
 DOFITSPPMCClosure=0
-DOFITSPbPbMCClosure=1
-DOFITSPbPb=0
-DOCrossSectionPP=0
-DOCrossSectionPbPb=0
-DORAA=0
+DOFITSPbPbMCClosure=0
+DOFITSPbPb=1
+DOCrossSectionPP=1
+DOCrossSectionPbPb=1
+DORAA=1
 
-DOFONLLMB=0
-DOFEEDDOWNMB=0
-DOFITSPPMB=0
-DOFITSPbPbMB=0
-DOCrossSectionPPMB=0
-DOCrossSectionPbPbMB=0
-DORAAMB=0
+DOFONLLMB=1
+DOFEEDDOWNMB=1
+DOFITSPPMB=1
+DOFITSPbPbMB=1
+DOCrossSectionPPMB=1
+DOCrossSectionPbPbMB=1
+DORAAMB=1
 
 DOCombineCrossSection=0
 DOCombineRAA=0
 
 #Efficiency studies
 
-DOMCstudyPP=0
-DOMCstudyNPPP=0
-DOMCstudyPbPb=0
-DOMCstudyPPMB=0
-DOMCstudyPbPbMB=0
+DOMCstudyPP=1
+DOMCstudyNPPP=1
+DOMCstudyPbPb=1
+DOMCstudyPPMB=1
+DOMCstudyPbPbMB=1
 
 #reweight systematic
 
@@ -163,12 +163,12 @@ fi
 
 if [ $DOFITSPP -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPPSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   "$LUMIPP"   "$ISDOWEIGHTPP"   "$LABELPP"  "$OUTPUTFILEPP"
+./fitD.exe "$INPUTDATAPPUNSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   "$LUMIPP"   "$ISDOWEIGHTPP"   "$LABELPP"  "$OUTPUTFILEPP"
 fi
 
 if [ $DOFITSPbPb -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPbPbSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPb" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPb"   "$LUMIPbPb"   "$ISDOWEIGHTPbPb"  "$LABELPbPb"  "$OUTPUTFILEPbPb"
+./fitD.exe "$INPUTDATAPbPbUNSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPb" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPb"   "$LUMIPbPb"   "$ISDOWEIGHTPbPb"  "$LABELPbPb"  "$OUTPUTFILEPbPb"
 fi
 
 if [ $DOMCstudyPP -eq 1 ]; then      
@@ -281,12 +281,12 @@ fi
 
 if [ $DOFITSPPMB -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPPMBSKIMMED"  "$INPUTMCPP"  "$TRGPPMB" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMB"   "$LUMIPPMB"   "$ISDOWEIGHTPPMB"   "$LABELPPMB"  "$OUTPUTFILEPPMB"
+./fitD.exe "$INPUTDATAPPMBUNSKIMMED"  "$INPUTMCPP"  "$TRGPPMB" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMB"   "$LUMIPPMB"   "$ISDOWEIGHTPPMB"   "$LABELPPMB"  "$OUTPUTFILEPPMB"
 fi
 
 if [ $DOFITSPbPbMB -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPbPbMBSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPbMB" "$CUTPbPbMB"   "$SELGENPbPbMB"   "$ISMCPbPbMB"   "$LUMIPbPbMB"   "$ISDOWEIGHTPbPbMB"   "$LABELPbPbMB"  "$OUTPUTFILEPbPbMB"
+./fitD.exe "$INPUTDATAPbPbMBUNSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPbMB" "$CUTPbPbMB"   "$SELGENPbPbMB"   "$ISMCPbPbMB"   "$LUMIPbPbMB"   "$ISDOWEIGHTPbPbMB"   "$LABELPbPbMB"  "$OUTPUTFILEPbPbMB"
 fi
 
 if [ $DOMCstudyPPMB -eq 1 ]; then      

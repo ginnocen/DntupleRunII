@@ -37,6 +37,11 @@ cp "$MYPWD"/canvasRecoEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasSelEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasTotalEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
 
+cp "$MYPWD"/canvasClosurePP.pdf Plots/Efficiency/.
+cp "$MYPWD"/canvasClosurePbPb.pdf Plots/Efficiency/.
+
+canvasClosurePP.pdf
+
 #tdr --style=an b AN-15-308 
 svn add Plots/*/*
 svn commit -m "update of plots" Plots
