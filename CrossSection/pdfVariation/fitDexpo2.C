@@ -17,7 +17,7 @@ Double_t binwidthmass=(maxhisto-minhisto)/nbinsmasshisto;
 TString collisionsystem;
 TString infname;
 
-void fitDexpo(TString collsyst="PbPb", TString outputfile="outfMasshisto/mass")
+void fitDexpo2(TString collsyst="PbPb", TString outputfile="outfMasshisto/mass")
 {
   collisionsystem = collsyst;
   infname = outputfile;
@@ -45,7 +45,7 @@ TF1* fit(Double_t ptmin, Double_t ptmax)
   TH1D* h = (TH1D*)infile->Get("h");                    h->SetName(Form("h_%.0f_%.0f",ptmin,ptmax));
   TH1D* hMCSignal = (TH1D*)infile->Get("hMCSignal");    hMCSignal->SetName(Form("hMCSignal_%.0f_%.0f",ptmin,ptmax));
   TH1D* hMCSwapped = (TH1D*)infile->Get("hMCSwapped");  hMCSwapped->SetName(Form("hMCSwapped_%.0f_%.0f",ptmin,ptmax));
-  TF1* f = new TF1(Form("f_%.0f_%.0f",ptmin,ptmax),"[0]*([7]*([9]*Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[9])*Gaus(x,[1],[10])/(sqrt(2*3.14159)*[10]))+(1-[7])*Gaus(x,[1],[8])/(sqrt(2*3.14159)*[8]))+[3]*exp([4]*x)", 1.7, 2.0);
+  TF1* f = new TF1(Form("f_%.0f_%.0f",ptmin,ptmax),"[0]*([7]*([9]*Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[9])*Gaus(x,[1],[10])/(sqrt(2*3.14159)*[10]))+(1-[7])*Gaus(x,[1],[8])/(sqrt(2*3.14159)*[8]))+[3]*exp([4]*x+[5]*x*x)", 1.7, 2.0);
 
   f->SetParLimits(10,0.001,0.05);
   f->SetParLimits(2,0.01,0.1);
@@ -64,6 +64,7 @@ TF1* fit(Double_t ptmin, Double_t ptmax)
   f->FixParameter(1,fixparam1);
   f->FixParameter(3,0);
   f->FixParameter(4,0);
+  f->FixParameter(5,0);
   h->GetEntries();
   
   hMCSignal->Fit(Form("f_%.0f_%.0f",ptmin,ptmax),"q","",minhisto,maxhisto);
@@ -91,6 +92,7 @@ TF1* fit(Double_t ptmin, Double_t ptmax)
   f->FixParameter(8,f->GetParameter(8));
   f->ReleaseParameter(3);
   f->ReleaseParameter(4);
+  f->ReleaseParameter(5);
   f->SetParLimits(3,0,1.e+10);
   f->SetParameter(3,1.e+3);
 
@@ -100,16 +102,16 @@ TF1* fit(Double_t ptmin, Double_t ptmax)
   h->Fit(Form("f_%.0f_%.0f",ptmin,ptmax),"q","",minhisto,maxhisto);
   f->ReleaseParameter(1);
   f->SetParLimits(1,1.85,1.90);
-  //f->ReleaseParameter(2);                                     // you need to release these two parameters if you want to perform studies on the sigma shape
-  //f->ReleaseParameter(10);                                   // you need to release these two parameters if you want to perform studies on the sigma shape
+
   h->Fit(Form("f_%.0f_%.0f",ptmin,ptmax),"L q","",minhisto,maxhisto);
   h->Fit(Form("f_%.0f_%.0f",ptmin,ptmax),"L q","",minhisto,maxhisto);
   h->Fit(Form("f_%.0f_%.0f",ptmin,ptmax),"L q","",minhisto,maxhisto);
   h->Fit(Form("f_%.0f_%.0f",ptmin,ptmax),"L m","",minhisto,maxhisto);
   
-  TF1* background = new TF1(Form("background_%.0f_%.0f",ptmin,ptmax),"[0]*exp([1]*x)");
+  TF1* background = new TF1(Form("background_%.0f_%.0f",ptmin,ptmax),"[0]*exp([1]*x+[2]*x*x)");
   background->SetParameter(0,f->GetParameter(3));
   background->SetParameter(1,f->GetParameter(4));
+  background->SetParameter(2,f->GetParameter(5));
   background->SetLineColor(4);
   background->SetRange(minhisto,maxhisto);
   background->SetLineStyle(2);
@@ -221,7 +223,7 @@ TF1* fit(Double_t ptmin, Double_t ptmax)
   texYield->SetLineWidth(2);
   texYield->Draw();
 
-  c->SaveAs(Form("plotFits/DMass_expo_%s_%.0f_%.0f.pdf",collisionsystem.Data(),ptmin,ptmax));
+  c->SaveAs(Form("plotFits/DMass_expo2_%s_%.0f_%.0f.pdf",collisionsystem.Data(),ptmin,ptmax));
   
   TCanvas* cPull = new TCanvas(Form("cPull_%.0f_%.0f",ptmin,ptmax),"",600,700);
   TH1D* hPull = (TH1D*)h->Clone("hPull");
@@ -271,7 +273,7 @@ TF1* fit(Double_t ptmin, Double_t ptmax)
   hPull->Draw("p");
   lPull->Draw();
   cPull->cd();
-  cPull->SaveAs(Form("plotFits/DMass_expo_%s_%.0f_%.0f_Pull.pdf",collisionsystem.Data(),ptmin,ptmax));
+  cPull->SaveAs(Form("plotFits/DMass_expo2_%s_%.0f_%.0f_Pull.pdf",collisionsystem.Data(),ptmin,ptmax));
 
   return mass;
 }
@@ -286,7 +288,7 @@ int main(int argc, char *argv[])
   }
   else
     {
-      fitDexpo(argv[1]);
+      fitDexpo2(argv[1]);
       return 0;
     }
 }
