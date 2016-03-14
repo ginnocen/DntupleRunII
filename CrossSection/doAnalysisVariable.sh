@@ -3,8 +3,8 @@
 
 VariableOption=$1
 
-INPUTMCPP="/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dzero_kpi/ntD_EvtBase_20160203_Dfinder_20160201_pp_Pythia8_prompt_D0pt30p0_Pthat30_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20151212_dPt0tkPt0p5_D0Dstar.root"
-INPUTMCNPPP="/data/wangj/MC2015/Dntuple/pp/ntD_pp_Dzero_kpi_nonprompt/ntD_EvtBase_20160203_Dfinder_20160201_pp_Pythia8_nonprompt_D0pt30p0_Pthat30_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160122_dPt0tkPt0p5_D0Dstar.root"
+INPUTMCPP="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root"
+INPUTMCNPPP="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_nonprompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_nonprompt_D0_dPt0tkPt0p5_pthatweight.root"
 INPUTDATAPP="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root"
 
 
@@ -96,9 +96,9 @@ TRGPPData="HLT_DmesonPPTrackingGlobal_Dpt30_v1"
 
 
 g++ fitDVariable.C $(root-config --cflags --libs) -g -o fitDVariable.exe 
-#./fitDVariable.exe "$VARIABLE" "$VARIABLEPLOT" "$INPUTMCPP"  "$INPUTMCPP"  "$TRGPPMC" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   "$LUMIPP"   "$ISDOWEIGHTPP"   "$LABELPPPromptMC"  "$OUTPUTFILEPPVariablePromptMC"
-#./fitDVariable.exe "$VARIABLE" "$VARIABLEPLOT" "$INPUTMCNPPP"  "$INPUTMCNPPP"  "$TRGPPMC" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   "$LUMIPP"   "$ISDOWEIGHTPP"   "$LABELPPNonPromptMC"  "$OUTPUTFILEPPVariableNonPromptMC"
-#./fitDVariable.exe "$VARIABLE" "$VARIABLEPLOT" "$INPUTDATAPP"  "$INPUTMCPP"  "$TRGPPData" "$CUTPP"   "$SELGENPP"   "$ISMCPPData"   "$LUMIPP"   "$ISDOWEIGHTPP"   "$LABELPPData"  "$OUTPUTFILEPPVariableData"
+./fitDVariable.exe "$VARIABLE" "$VARIABLEPLOT" "$INPUTMCPP"  "$INPUTMCPP"  "$TRGPPMC" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   "$LUMIPP"   "$ISDOWEIGHTPP"   "$LABELPPPromptMC"  "$OUTPUTFILEPPVariablePromptMC"
+./fitDVariable.exe "$VARIABLE" "$VARIABLEPLOT" "$INPUTMCNPPP"  "$INPUTMCNPPP"  "$TRGPPMC" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   "$LUMIPP"   "$ISDOWEIGHTPP"   "$LABELPPNonPromptMC"  "$OUTPUTFILEPPVariableNonPromptMC"
+./fitDVariable.exe "$VARIABLE" "$VARIABLEPLOT" "$INPUTDATAPP"  "$INPUTMCPP"  "$TRGPPData" "$CUTPP"   "$SELGENPP"   "$ISMCPPData"   "$LUMIPP"   "$ISDOWEIGHTPP"   "$LABELPPData"  "$OUTPUTFILEPPVariableData"
 
 g++ compareMCdataVariables.C $(root-config --cflags --libs) -g -o compareMCdataVariables.exe 
 ./compareMCdataVariables.exe "$OUTPUTFILEPPVariablePromptMC" "$OUTPUTFILEPPVariableNonPromptMC" "$OUTPUTFILEPPVariableData" "$VARIABLEPLOT" "$VARIABLENAME" "$LIMITLOW" "$LIMITHIGH"
