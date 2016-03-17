@@ -17,11 +17,10 @@ TString weightfunctiongen = "1";
 TString weightfunctionreco = "1";
 TString selmc;
 
-void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root", TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))",TString selmcgenacceptance="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0", TString cut_recoonly="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11", TString cut="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>1.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&Dtrk2Algo>3&&Dtrk2Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)",TString label="PP",TString outputfile="test", int useweight=0, int minfit=2,int maxfit=100)
+void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root", TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))",TString selmcgenacceptance="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0", TString cut_recoonly="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11", TString cut="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>1.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&Dtrk2Algo>3&&Dtrk2Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)",TString label="PP",TString outputfile="test", int useweight=1, int minfit=2,int maxfit=100)
 {
-  if(useweight) label=label+"ptreweighted";
-  selmc = Form("%s",cut.Data());
-
+ 
+ selmc=cut;
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
@@ -37,45 +36,17 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   ntGen->AddFriend(nthi);
   nthi->AddFriend(ntMC);
   ntMC->AddFriend(nthi);
-  
-  TH1D* hPtGenFONLL = new TH1D("hPtGenFONLL","",nBinsReweight,ptBinsReweight);
-  ntGen->Project("hPtGenFONLL","Gpt",(TCut(selmcgen.Data())));
-  divideBinWidth(hPtGenFONLL);
-    
-  TString fonll="/afs/cern.ch/work/g/ginnocen/public/output_pp_d0meson_5TeV_y1.root";
-  TFile* filePPReference = new TFile(fonll.Data());  
-  TGraphAsymmErrors* gaeBplusReference = (TGraphAsymmErrors*)filePPReference->Get("gaeSigmaDzero");
 
-  TH1D* hFONLL = new TH1D("hFONLL","",nBinsReweight,ptBinsReweight);
-  double x,y;
-  for(int i=0;i<nBinsReweight;i++){
-    gaeBplusReference->GetPoint(i,x,y);
-    hFONLL->SetBinContent(i+1,y);
+  if(useweight&&(label=="PP"||label=="PPMB")) {
+    weightfunctiongen="pow(10,-0.168499*Gpt+3.872855+Gpt*Gpt*0.000556)+pow(10,-0.068599*Gpt+2.512265+Gpt*Gpt*0.000331)";
+    weightfunctionreco="pow(10,-0.168499*Dgenpt+3.872855+Dgenpt*Dgenpt*0.000556)+pow(10,-0.068599*Dgenpt+2.512265+Dgenpt*Dgenpt*0.000331)";
   }
-  TH1D* hFONLLOverPt=(TH1D*)hFONLL->Clone("hFONLLOverPt");
-  TH1D* hFONLLOverPtWeight=(TH1D*)hFONLL->Clone("hFONLLOverPtWeight");
-
-  hFONLLOverPt->Divide(hPtGenFONLL);
   
-  TF1 *myfit = new TF1("myfit","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 2, 100);
-  hFONLLOverPt->Fit("myfit","","",minfit,maxfit);
-  double par0=myfit->GetParameter(0);
-  double par1=myfit->GetParameter(1);
-  double par2=myfit->GetParameter(2);
-  double par3=myfit->GetParameter(3);
-  double par4=myfit->GetParameter(4);
-  double par5=myfit->GetParameter(5);
-
-  TString myweightfunctiongen=Form("pow(10,%f*Gpt+%f+Gpt*Gpt*%f)+pow(10,%f*Gpt+%f+Gpt*Gpt*%f)",par0,par1,par2,par3,par4,par5);
-  TString myweightfunctionreco=Form("pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)+pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)",par0,par1,par2,par3,par4,par5);
-    
-  TString weightfunctiongen="1";
-  TString weightfunctionreco="1";
-
-  if(useweight) {
-    weightfunctiongen=myweightfunctiongen;
-    weightfunctionreco=myweightfunctionreco;
+    if(useweight&&(label=="PbPb"||label=="PbPbMB")) {
+    weightfunctiongen="pow(10,-0.091618*Gpt+2.966262+Gpt*Gpt*0.000524)+pow(10,-0.167553*Gpt+3.800779+Gpt*Gpt*-0.000798) +1.437905+-0.029141*Gpt+0.000146*Gpt*Gpt";
+    weightfunctionreco="pow(10,-0.091618*Dgenpt+2.966262+Dgenpt*Dgenpt*0.000524)+pow(10,-0.167553*Dgenpt+3.800779+Dgenpt*Dgenpt*-0.000798) +1.437905+-0.029141*Dgenpt+0.000146*Dgenpt*Dgenpt";
   }
+
 
    std::cout<<"fit function parameters="<<weightfunctiongen<<std::endl;
 
@@ -220,36 +191,6 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   hemptySpectra->Draw();
   hPtGen->Draw("same");
   //canvasSpectra->SaveAs(Form("canvasSpectra_%s.pdf",Form(label.Data())));
-  
- if(useweight) { 
-  TCanvas*canvasPtReweight=new TCanvas("canvasPtReweight","canvasPtReweight",1000.,500.); 
-  canvasPtReweight->Divide(3,1);
-  canvasPtReweight->cd(1);
-  gPad->SetLogy();
-  hPtGenFONLL->SetXTitle("Gen p_{T}");
-  hPtGenFONLL->SetYTitle("#entries");
-  hPtGenFONLL->SetMinimum(1e-4);  
-  hPtGenFONLL->SetMaximum(1e11);  
-  hPtGenFONLL->GetYaxis()->SetTitleOffset(1.4);
-  hPtGenFONLL->Draw();
-  canvasPtReweight->cd(2);
-  gPad->SetLogy();
-  hFONLL->SetXTitle("p_{T}");
-  hFONLL->SetYTitle("FONLL, #entries");
-  hFONLL->SetMinimum(1e-4);  
-  hFONLL->SetMaximum(1e11);  
-  hFONLL->GetYaxis()->SetTitleOffset(1.4);
-  hFONLL->Draw();
-  canvasPtReweight->cd(3);
-  gPad->SetLogy();
-  hFONLLOverPt->SetXTitle("Gen p_{T}");
-  hFONLLOverPt->SetYTitle("FONLL/PYTHIA ");
-  hFONLLOverPt->SetMinimum(1e-4);  
-  hFONLLOverPt->SetMaximum(1e11);  
-  hFONLLOverPt->GetYaxis()->SetTitleOffset(1.4);
-  hFONLLOverPt->Draw();
-  canvasPtReweight->SaveAs(Form("canvasPtReweight%s.pdf",Form(label.Data())));
-  }
 
   TFile *fout=new TFile(outputfile.Data(),"recreate");
   fout->cd();

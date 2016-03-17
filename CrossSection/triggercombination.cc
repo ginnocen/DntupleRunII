@@ -8,13 +8,19 @@
 using namespace std;
 
 
-void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root",int threshold=60, TString output="outputtestpp.root"){
+void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root",TString inputdataMB="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root", int threshold=0, TString output="outputtestpp.root"){
 
   TFile* inf = new TFile(inputdata.Data());
   TTree* nt = (TTree*) inf->Get("ntDkpi");
   TTree* HltTree= (TTree*) inf->Get("ntHlt");
   HltTree->AddFriend(nt);
   nt->AddFriend(HltTree);
+  
+  TFile* infMB = new TFile(inputdataMB.Data());
+  TTree* ntMB = (TTree*) infMB->Get("ntDkpi");
+  TTree* HltTreeMB= (TTree*) infMB->Get("ntHlt");
+  HltTreeMB->AddFriend(ntMB);
+  ntMB->AddFriend(HltTreeMB);
   
   TString cut=Form("Max$(Dpt)>%d",threshold);
   cout<<cut.Data()<<endl;
@@ -107,6 +113,23 @@ void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/Da
      hTriggerEfficiencyPtBins->SetBinContent(index+1,triggerefficiency);
      
     }
+    
+    TH1D*htrg=new TH1D("htrg","htrg",2,-100,100);
+    TH1D*hMB=new TH1D("hMB","hMB",2,-100,100);
+
+    HltTree->Draw("1>>htrg",triggerHLT[ntriggers-1].Data());
+    HltTreeMB->Draw("1>>hMB",triggerHLT[ntriggers-1].Data());
+
+    double ncountstrg=htrg->GetEntries();
+    double ncountsMB=hMB->GetEntries();
+    double ratio=ncountsMB/ncountstrg;
+    double relerrortrg=TMath::Sqrt(ncountstrg)/ncountstrg;
+    double relerrorMB=TMath::Sqrt(ncountsMB)/ncountsMB;
+    double relratio=TMath::Sqrt(relerrortrg*relerrortrg+relerrorMB*relerrorMB);
+
+    std::cout<<"ratio of unprescaled triggers in MB over triggered sample="<<ratio<<"with relative uncertainty="<<relratio<<std::endl; 
+
+      
     hTriggerEfficiencyPtBins->Draw();
     TFile*foutput=new TFile(output.Data(),"recreate");
     foutput->cd();
@@ -118,14 +141,14 @@ void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/Da
 
 int main(int argc, char *argv[])
 {
-  if((argc != 5))
+  if((argc != 6))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
 
-  if(argc == 5)
-    triggercombination(argv[1],argv[2],atoi(argv[3]),argv[4]);
+  if(argc == 6)
+    triggercombination(argv[1],argv[2],argv[3],atoi(argv[4]),argv[5]);
   return 0;
 }
 

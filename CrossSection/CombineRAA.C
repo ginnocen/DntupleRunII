@@ -3,7 +3,7 @@
 #include "TLegendEntry.h"
 
 
-void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTfiles/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/PlotRAA.root" )
+void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTfiles/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_mar15result.root" )
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -19,13 +19,13 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   TH1D* hNuclearModification = (TH1D*)filePP->Get("hNuclearModification");
   
   TFile *fRAA=new TFile(filecharged.Data());
-  TH1D*hTrackPt_trkCorr_PbPb_copy1=(TH1D*)fRAA->Get("hTrackPt_trkCorr_PbPb_copy1");
+  TH1D*hTrackPt_trkCorr_PbPb_copy1=(TH1D*)fRAA->Get("RAA_0_100");
   
 
   TCanvas*canvasRAA=new TCanvas("canvasRAA","canvasRAA",550,500);
   canvasRAA->cd();
   canvasRAA->SetLogx();
-  TH2F* hemptyEff=new TH2F("hemptyEff","",50,0.,120.,10.,0,1.5);  
+  TH2F* hemptyEff=new TH2F("hemptyEff","",50,-2,120.,10.,0,1.5);  
   hemptyEff->GetXaxis()->CenterTitle();
   hemptyEff->GetYaxis()->CenterTitle();
   hemptyEff->GetYaxis()->SetTitle("D^{0} R_{AA}");
@@ -61,6 +61,8 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   hNuclearModificationMB->SetLineWidth(3);
   hNuclearModificationMB->Draw("same");
   
+  hTrackPt_trkCorr_PbPb_copy1->SetMarkerColor(2);
+  hTrackPt_trkCorr_PbPb_copy1->SetLineColor(2);  
   hTrackPt_trkCorr_PbPb_copy1->Draw("same");
   hTrackPt_trkCorr_PbPb_copy1->SetLineWidth(3);
 
