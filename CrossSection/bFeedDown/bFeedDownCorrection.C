@@ -4,7 +4,7 @@
 
 float bFeedDownFraction(double pt, double HLT, bool isPbPb)
 {
-   double val;
+   double val=0.23; // place holder
    if (!isPbPb) { // pp
       if(pt>20&&pt<30) { 
          // 77.0+- 1.7%
