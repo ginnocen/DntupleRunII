@@ -27,9 +27,16 @@ void normalize(TH1D *h,int color)
 
 TF1 *bFeedDownFraction(double ptMin=20,double ptMax=25)
 {
+/*
    TFile *infMCP = new TFile("miniNtuplePrompt.root");
    TFile *infMCNP = new TFile("miniNtupleNonPrompt.root");
    TFile *infData = new TFile("miniData.root");
+*/
+
+   TFile *infMCP = new TFile("ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root");
+   TFile *infMCNP = new TFile("ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_nonprompt_D0_dPt0tkPt0p5_pthatweight.root");
+   // TFile *infData = new TFile("miniData.root");
+   TFile *infData = new TFile("ppData.root");
     
    TTree *tMCP = (TTree*)infMCP->Get("ntDkpi");
    TTree *tMCNP = (TTree*)infMCNP->Get("ntDkpi");
@@ -53,12 +60,17 @@ TF1 *bFeedDownFraction(double ptMin=20,double ptMax=25)
    TCut cutSignal = "abs(Dmass-1.8649)<0.025";
    TCut cutSideband = "abs(Dmass-1.8649)>0.075&&abs(Dmass-1.8649)<0.1";
  //  TCut weightfuncFtionreco="((TMath::Erf((log(DsvpvDisErr))*(Dgenpt*Dgenpt*(-0.001)+0.1021*Dgenpt+1.247)+(Dgenpt*Dgenpt*(-0.0032)+0.2912*Dgenpt+6.8275))+1))*(pow(10,-0.168499*Dgenpt+3.872855+Dgenpt*Dgenpt*0.000556)+pow(10,-0.068599*Dgenpt+2.512265+Dgenpt*Dgenpt*0.000331))";
-   TCut weightfunctionreco = "pthatweight*(pthat>20)";
+   TCut weightfunctionreco = "pthatweight";
    int nBin=20;
    double binL=3.5;
    double binH=103.5;
    double fitRangeL=3.5;
    double fitRangeH=100.5;
+
+   if (ptMax<=6) {
+      fitRangeH=43.5;
+      binH=43.5;
+   }
 
    float bins[6+1]={3.5,5.5,8.5,10.5,20.5,30.5,50.5};
    
