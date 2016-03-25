@@ -338,7 +338,7 @@ TF1* fit(TString variable, TString variableplot, TTree* nt, TTree* ntMC, Double_
 
   TLatex* tex;
 
-  tex = new TLatex(0.22,0.78,Form("%.1f < %s  < %.1f",ptmin,variableplot.Data(),ptmax));
+  tex = new TLatex(0.22,0.78,Form("%.3f < %s  < %.3f",ptmin,variableplot.Data(),ptmax));
   tex->SetNDC();
   tex->SetTextFont(42);
   tex->SetTextSize(0.04);

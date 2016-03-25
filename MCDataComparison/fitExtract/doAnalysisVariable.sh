@@ -43,7 +43,8 @@ fi
 fi
 
 ISDOWEIGHTPP=1
-WEIGHTINGFACTOR="pow(10,-0.168499*Dgenpt+3.872855+Dgenpt*Dgenpt*0.000556)+pow(10,-0.068599*Dgenpt+2.512265+Dgenpt*Dgenpt*0.000331)"
+#WEIGHTINGFACTOR="pow(10,-0.168499*Dgenpt+3.872855+Dgenpt*Dgenpt*0.000556)+pow(10,-0.068599*Dgenpt+2.512265+Dgenpt*Dgenpt*0.000331)"
+WEIGHTINGFACTOR="1"
 
 if [ $VariableOption -eq 0 ]; then      
 cp config/parametersVariablesDecay.h parameters.h 
@@ -97,11 +98,14 @@ LABELPPData="DataPt"
 LIMITLOW=20
 LIMITHIGH=40
 OUTPUTFILEPLOT="outputPlotPt.root"
+WEIGHTINGFACTOR="pthatweight"
 if [ $System == "PbPb" ]; then
 cp config/parametersVariablesDpt_PbPb.h parameters.h
 fi
 if [ $Type == "MB" ]; then
 cp config/parametersVariablesDpt_MB.h parameters.h
+LIMITLOW=3
+LIMITHIGH=20
 fi
 fi
 

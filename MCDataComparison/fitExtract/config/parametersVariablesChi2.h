@@ -1,5 +1,7 @@
-const int nBins=5;
-double ptBins[nBins+1] = {0.05,0.2,0.4,0.6,0.8,1.0};
+//const int nBins=5;
+//double ptBins[nBins+1] = {0.05,0.2,0.4,0.6,0.8,1.0};
+const int nBins=7;
+double ptBins[nBins+1] = {0.05,0.1,0.2,0.3,0.4,0.6,0.8,1.0};
 
 //const int nBins=6;
 //double ptBins[nBins+1] = {35.,38.,40,42, 44.,46.,48.};

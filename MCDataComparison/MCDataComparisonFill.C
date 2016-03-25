@@ -16,14 +16,15 @@ float sidebandHigh = 0.12;
 float wfactor = signalWidth/(sidebandHigh-sidebandLow);
 
 enum varType{
-	_Dpt,
 	_Dmass,
 	_Ddtheta,
 	_DlxyBS_DlxyBSErr,
+	_Dpt,
 	_Dy,
 	_Dalpha,
 	_Dchi2cl,
 	_DsvpvDistance_DsvpvDisErr,
+	_fine_Dpt,
 	_fine_Dy,
 	_fine_Dalpha,
 	_fine_Dchi2cl,
@@ -46,27 +47,40 @@ struct varStruct{
 	bool pthatWeight;
 };
 
-double _binPtpp[5] = {20, 25, 30, 35, 40};
-double _binPtPbPb[5] = {20, 25, 30, 35, 40};
-double _binChi[6] = {0.05,0.2,0.4,0.6,0.8,1.0};
-double _binAlpha[6] = {0.00,0.005,0.01,0.02,0.03,0.12};
-double _binDecay[7] = {4.,5.,6.,7.,8.,10,15};
-double _binY[7] = {-1.,-0.6,-0.3,0.,0.3,0.6,1.};
-double _dummy[1] = {0};
+const int _nbinPtpp    = 4; 
+const int _nbinPtPbPb  = 4;
+const int _nbinPtMB    = 7;
+const int _nbinChi     = 7;
+const int _nbinAlpha   = 7;
+const int _nbinDecay   = 6;
+const int _nbinY       = 6;
+const int _ndummy      = 0;
+
+double _binPtpp[_nbinPtpp+1] = {20, 25, 30, 35, 40};
+double _binPtPbPb[_nbinPtPbPb+1] = {20, 25, 30, 35, 40};
+double _binPtMB[_nbinPtMB+1] = {3.,4.,5.,6.,8.,10.,15.,20.};
+double _binChi[_nbinChi+1] = {0.05,0.1,0.2,0.3,0.4,0.6,0.8,1.0};
+double _binAlpha[_nbinAlpha+1] = {0.00,0.003,0.006,0.009,0.014,0.02,0.03,0.12};
+double _binDecay[_nbinDecay+1] = {4.,5.,6.,7.,8.,10,15};
+double _binY[_nbinY+1] = {-1.,-0.6,-0.3,0.,0.3,0.6,1.};
+double _dummy[_ndummy+1] = {0};
 
 struct varStruct myVars[_varSize] = {
-	{"Dpt",                       "Dpt",                             16, 20,   100.,  4, _binPtpp,   0, "Dpt",                            "GeV", "outputPlotPt.root",        true },
-	{"Dmass",                     "Dmass",                           20, 1.7,  2.,    1, _dummy,     0, "Dmass",                          "GeV", "",                         false},
-	{"Ddtheta",                   "Ddtheta",                         20, 0.,   0.2,   1, _dummy,     0, "Ddtheta",                        "",    "",                         false},
-	{"DlxyBS/DlxyBSErr",          "DlxyBS_DlxyBSErr",                20, 0.,   1000., 1, _dummy,     0, "DlxyBS_DlxyBSErr",               "",    "",                         false},
-	{"Dy",                        "Dy",                              20, -1,   1.,    6, _binY,      1, "Dy",                             "",    "outputPlotRapidity.root",  false},
-	{"Dalpha",                    "Dalpha",                          20, 0.,   0.04,  5, _binAlpha,  1, "Dalpha",                         "",    "outputPlotDalpha.root",    false},
-	{"Dchi2cl",                   "Dchi2cl",                         20, 0.05, 1.,    5, _binChi,    1, "Dchi2cl",                        "",    "outputPlotChi2.root",      false},
-	{"DsvpvDistance/DsvpvDisErr", "DsvpvDistance_DsvpvDisErr",       20, 4.,   15.,   6, _binDecay,  1, "DsvpvDistance_DsvpvDisErr_fine", "",    "outputPlotDecay.root",     false},
-	{"Dy",                        "_fine_Dy",                        20, -1,   1.,    1, _dummy,     0, "Dy_fine",                        "",    "outputPlotRapidity.root",  false},
-	{"Dalpha",                    "_fine_Dalpha",                    20, 0.,   0.12,  1, _dummy,     0, "Dalpha_fine",                    "",    "outputPlotDalpha.root",    false},
-	{"Dchi2cl",                   "_fine_Dchi2cl",                   20, 0.05, 1.,    1, _dummy,     0, "Dchi2cl_fine",                   "",    "outputPlotChi2.root",      false},
-	{"DsvpvDistance/DsvpvDisErr", "_fine_DsvpvDistance_DsvpvDisErr", 20, 4.,   15.,   1, _dummy,     0, "DsvpvDistance_DsvpvDisErr_fine", "",    "outputPlotDecay.root",     false}
+	{"Dmass",                     "Dmass",                           50, 1.7,  2.,    _ndummy,     _dummy,     0, "Dmass",                          "GeV", "",                         false},
+	{"Ddtheta",                   "Ddtheta",                         20, 0.,   0.1,   _ndummy,     _dummy,     0, "Ddtheta",                        "",    "",                         false},
+	{"DlxyBS/DlxyBSErr",          "DlxyBS_DlxyBSErr",                20, 0.,   1000., _ndummy,     _dummy,     0, "DlxyBS_DlxyBSErr",               "",    "",                         false},
+	{"Dpt",                       "Dpt",                             20, 0,    100.,  _nbinPtpp,   _binPtpp,   1, "Dpt",                            "GeV", "outputPlotPt.root",        true },
+	{"Dy",                        "Dy",                              20, -1,   1.,    _nbinY,      _binY,      1, "Dy",                             "",    "outputPlotRapidity.root",  false},
+	{"Dalpha",                    "Dalpha",                          20, 0.,   0.04,  _nbinAlpha,  _binAlpha,  1, "Dalpha",                         "",    "outputPlotDalpha.root",    false},
+	{"Dchi2cl",                   "Dchi2cl",                         20, 0.05, 1.,    _nbinChi,    _binChi,    1, "Dchi2cl",                        "",    "outputPlotChi2.root",      false},
+	{"DsvpvDistance/DsvpvDisErr", "DsvpvDistance_DsvpvDisErr",       20, 4.,   15.,   _nbinDecay,  _binDecay,  1, "DsvpvDistance_DsvpvDisErr",      "",    "outputPlotDecay.root",     false},
+	{"Dpt",                       "_fine_Dpt",                       20, 0,    100.,  _ndummy,     _dummy,     0, "Dpt_fine",                       "GeV", "",                         true },
+	{"Dy",                        "_fine_Dy",                        20, -1,   1.,    _ndummy,     _dummy,     0, "Dy_fine",                        "",    "",                         false},
+	{"Dalpha",                    "_fine_Dalpha",                    20, 0.,   0.12,  _ndummy,     _dummy,     0, "Dalpha_fine",                    "",    "",                         false},
+	{"Dchi2cl",                   "_fine_Dchi2cl",                   20, 0.05, 1.,    _ndummy,     _dummy,     0, "Dchi2cl_fine",                   "",    "",                         false},
+//	{"Dalpha",                    "_fine_Dalpha",                    20, 0.,   0.12,  _ndummy,     _dummy,     0, "Dalpha_fine",                    "",    "",                         true},
+//	{"Dchi2cl",                   "_fine_Dchi2cl",                   20, 0.05, 1.,    _ndummy,     _dummy,     0, "Dchi2cl_fine",                   "",    "",                         true},
+	{"DsvpvDistance/DsvpvDisErr", "_fine_DsvpvDistance_DsvpvDisErr", 20, 4.,   15.,   _ndummy,     _dummy,     0, "DsvpvDistance_DsvpvDisErr_fine", "",    "",                         false}
 };
 
 class HLTBranches
@@ -100,13 +114,13 @@ class HLTBranches
 		int HLT_HIL1MinimumBiasHF2AND_part1_v1;
 		int HLT_HIL1MinimumBiasHF2AND_part2_v1;
 		int HLT_HIL1MinimumBiasHF2AND_part3_v1;
-        void setHLTBranches(TTree* t1, string ){
+        void setHLTBranches(TTree* t1, string dataNtype){
 			if(dataNtype == "ppHF"){
         	    t1->SetBranchAddress("HLT_DmesonPPTrackingGlobal_Dpt15_v1" ,&HLT_DmesonPPTrackingGlobal_Dpt15_v1);
     	        t1->SetBranchAddress("HLT_DmesonPPTrackingGlobal_Dpt30_v1" ,&HLT_DmesonPPTrackingGlobal_Dpt30_v1);
 	            t1->SetBranchAddress("HLT_DmesonPPTrackingGlobal_Dpt50_v1" ,&HLT_DmesonPPTrackingGlobal_Dpt50_v1);
 			}
-            if(dataNtype == "PbPBHF"){
+            if(dataNtype == "PbPbHF"){
 				t1->SetBranchAddress("HLT_HIDmesonHITrackingGlobal_Dpt20_v1", &HLT_HIDmesonHITrackingGlobal_Dpt20_v1);
 				t1->SetBranchAddress("HLT_HIDmesonHITrackingGlobal_Dpt40_v1", &HLT_HIDmesonHITrackingGlobal_Dpt40_v1);
 				t1->SetBranchAddress("HLT_HIDmesonHITrackingGlobal_Dpt60_v1", &HLT_HIDmesonHITrackingGlobal_Dpt60_v1);
@@ -147,27 +161,41 @@ class HLTBranches
 //float pa1[nBins] = {0, 0, 0};	
 //float pa2[nBins] = {0, 0, 0};	
 //float ptBinsPbPb[nBins+1]={20, 45, 70, 100};
-const int nBins=1; 
-float ptBinspp[nBins+1]={20, 40};
-float pa0[nBins] = {1};	
-float pa1[nBins] = {0};	
-float pa2[nBins] = {0};	
-float ptBinsPbPb[nBins+1]={20, 45};
+const int paraBins = 15;
+float pa0[paraBins] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};	
+float pa1[paraBins] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};	
+float pa2[paraBins] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};	
+const int nBinsppHF=7; 
+float ptBinsppHF[nBinsppHF+1]={20, 40, -1, 20, 25, 30, 35, 40 };
+const int nBinsPbPbHF=7; 
+float ptBinsPbPbHF[nBinsPbPbHF+1]={20, 45, -1, 20, 25, 30, 35, 45};
+const int nBinsppMB=10; 
+float ptBinsppMB[nBinsppMB+1]={3, 20, -1, 3.,4.,5.,6.,8.,10.,15.,20.};
+int nBins; 
 float *ptBins;
 
-void overlapTH1(TCanvas* c, TH1D* h1, TH1D* h2, TH1D* h3, TH1D* h4, string xTitle, TH1D* hRatio, string rfile, int customize = -1, bool isPbPb = false);
+void overlapTH1(TCanvas* c, TH1D* h1, TH1D* h2, TH1D* h3, TH1D* h4, string xTitle, TH1D* hRatio, string rfile, int customize, string dataNtype, int _bin);
 void setBranches(TTree* t1, DntupleBranches &Dntuple);
 void setGenBranches(TTree* t1, DntupleBranches &Dntuple);
 
 void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, string dataNtype)
 {
 
-	if(!isPbPb) {
-		ptBins = ptBinspp;
+	if(dataNtype == "ppHF") {
+		nBins = nBinsppHF;
+		ptBins = ptBinsppHF;
 	}
-	if(isPbPb) {
-		ptBins = ptBinsPbPb;
+	if(dataNtype == "PbPbHF") {
+		nBins = nBinsPbPbHF;
+		ptBins = ptBinsPbPbHF;
 		myVars[_Dpt].binSep = _binPtPbPb;
+		myVars[_Dpt].nBinSep = _nbinPtPbPb;
+	}
+	if(dataNtype == "ppMB" || dataNtype == "PbPbMB") {
+		nBins = nBinsppMB;
+		ptBins = ptBinsppMB;
+		myVars[_Dpt].binSep = _binPtMB;
+		myVars[_Dpt].nBinSep = _nbinPtMB;
 	}
 	
 	string wPrefix = "";
@@ -182,6 +210,7 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 	gStyle->SetPadTopMargin(0.1);
 	gStyle->SetPadBottomMargin(0.145);
 	gStyle->SetTitleX(.0f);
+	//gStyle->SetErrorX(0.);
 
 	TTree* nt = (TTree*) inf->Get("ntDkpi");
 	TTree* HltTree = (TTree*) inf->Get("ntHlt");
@@ -210,21 +239,28 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 	for (int p = 0; p < nBins; p++){
 		//ptR[p] =  new TH1D((myVars[_Dpt].title+"Ratio"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[_Dpt].title.c_str(), myVars[_Dpt].nBin, myVars[_Dpt].xMin, myVars[_Dpt].xMax);
 		ptR[p] =  new TH1D((myVars[_Dpt].title+"Ratio"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[_Dpt].title.c_str(), myVars[_Dpt].nBinSep, myVars[_Dpt].binSep);
+		ptR[p]->SetDefaultSumw2();
 		for (int i = 0 ; i < _varSize; i++){
 			c[i][p] =  new TCanvas(("c"+myVars[i].title+Form("%d%s", p, wPrefix.c_str())).c_str(),"",600,600);
+			float _xMin = myVars[i].xMin;
+			float _xMax = myVars[i].xMax;
 			if(myVars[i].binOpt==0){
-				h1[i][p] =  new TH1D((myVars[i].title+"1"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				h2[i][p] =  new TH1D((myVars[i].title+"2"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				h3[i][p] =  new TH1D((myVars[i].title+"3"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				h4[i][p] =  new TH1D((myVars[i].title+"4"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				h11[i][p] = new TH1D((myVars[i].title+"11"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				h12[i][p] = new TH1D((myVars[i].title+"12"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				h13[i][p] = new TH1D((myVars[i].title+"13"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				h14[i][p] = new TH1D((myVars[i].title+"14"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				h21[i][p] = new TH1D((myVars[i].title+"21"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				h22[i][p] = new TH1D((myVars[i].title+"22"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				h23[i][p] = new TH1D((myVars[i].title+"23"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
-				hRatio[i][p] = new TH1D((myVars[i].title+"_ratio"+Form("%d%s", p, wPrefix.c_str())).c_str(), (myVars[i].title+"_ratio").c_str(), myVars[i].nBin, myVars[i].xMin, myVars[i].xMax);
+				if(i == _fine_Dpt && ptBins[p] != -1 && ptBins[p+1] != -1){
+					_xMin = ptBins[p];
+					_xMax = ptBins[p+1];
+				}
+				h1[i][p] =   new TH1D((myVars[i].title+"1"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				h2[i][p] =   new TH1D((myVars[i].title+"2"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				h3[i][p] =   new TH1D((myVars[i].title+"3"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				h4[i][p] =   new TH1D((myVars[i].title+"4"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				h11[i][p] = new TH1D((myVars[i].title+"11"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				h12[i][p] = new TH1D((myVars[i].title+"12"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				h13[i][p] = new TH1D((myVars[i].title+"13"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				h14[i][p] = new TH1D((myVars[i].title+"14"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				h21[i][p] = new TH1D((myVars[i].title+"21"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				h22[i][p] = new TH1D((myVars[i].title+"22"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				h23[i][p] = new TH1D((myVars[i].title+"23"+Form("%d%s", p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBin, _xMin, _xMax);
+				hRatio[i][p] = new TH1D((myVars[i].title+"_ratio"+Form("%d%s", p, wPrefix.c_str())).c_str(), (myVars[i].title+"_ratio").c_str(), myVars[i].nBin, _xMin, _xMax);
 			}
             if(myVars[i].binOpt==1){
 				h1[i][p] =  new TH1D((myVars[i].title+"1"+Form("%d%s",  p, wPrefix.c_str())).c_str(), myVars[i].title.c_str(), myVars[i].nBinSep, myVars[i].binSep);
@@ -257,8 +293,12 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
     ntMC->SetBranchAddress("Dgen" ,Dntuple.Dgen);
 
 	float pthatweight;
+	int isPrompt;
 	ntHi->SetBranchAddress("pthatweight" ,&pthatweight);
+	ntHi->SetBranchAddress("isPrompt" ,&isPrompt);
 	float ptWeight = 1;
+	float additionWeight = 1;
+	float totalWeight = 1;
 	int nEntries = ntMC->GetEntries();
 //	nEntries = 1000000;
 	for(int i=0;i<nEntries;i++){
@@ -289,7 +329,7 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 			){
 				boolCut = true;
 			}
-			if (&&Dntuple.Dy[s]>-1.&&Dntuple.Dy[s]<1.
+			if (Dntuple.Dy[s]>-1.&&Dntuple.Dy[s]<1.
 				&&Dntuple.Dtrk1highPurity[s]&&Dntuple.Dtrk2highPurity[s]
 				&&Dntuple.Dtrk1Pt[s]>8.5&&Dntuple.Dtrk2Pt[s]>8.5
 				&&Dntuple.Dtrk1PtErr[s]/Dntuple.Dtrk1Pt[s]<0.1&&Dntuple.Dtrk2PtErr[s]/Dntuple.Dtrk2Pt[s]<0.1
@@ -363,84 +403,96 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 				}
 			}
 			for (int p = 0; p < nBins; p++){
+				if(ptBins[p] == -1 || ptBins[p+1] == -1) continue;
 				ptWeight = pa0[p] + pa1[p]*Dntuple.Dpt[s] + pa2[p]*Dntuple.Dpt[s]*Dntuple.Dpt[s];
+				if(isPrompt) additionWeight = 1;
+				else additionWeight = 0.15;
+				totalWeight = ptWeight*additionWeight;
+				//totalWeight = 1;
+				//totalWeight = 0.15;
 				if(Dntuple.Dpt[s]>ptBins[p]&&Dntuple.Dpt[s]<ptBins[p+1]){
 					if(boolSignalRG){
-						h1 [_Dpt][p]->Fill(Dntuple.Dpt[s], ptWeight);
+						h1 [_Dpt][p]->Fill(Dntuple.Dpt[s], totalWeight);
 						h11[_Dpt][p]->Fill(Dntuple.Dpt[s], pthatweight*ptWeight);
-						h1 [_Dmass][p]->Fill(Dntuple.Dmass[s], ptWeight);
+						h1 [_Dmass][p]->Fill(Dntuple.Dmass[s], totalWeight);
 						h11[_Dmass][p]->Fill(Dntuple.Dmass[s], pthatweight*ptWeight);
-						h1 [_Ddtheta][p]->Fill(Dntuple.Ddtheta[s], ptWeight);
+						h1 [_Ddtheta][p]->Fill(Dntuple.Ddtheta[s], totalWeight);
 						h11[_Ddtheta][p]->Fill(Dntuple.Ddtheta[s], pthatweight*ptWeight);
-						h1 [_DlxyBS_DlxyBSErr][p]->Fill(Dntuple.DlxyBS[s]/Dntuple.DlxyBSErr[s], ptWeight);
+						h1 [_DlxyBS_DlxyBSErr][p]->Fill(Dntuple.DlxyBS[s]/Dntuple.DlxyBSErr[s], totalWeight);
 						h11[_DlxyBS_DlxyBSErr][p]->Fill(Dntuple.DlxyBS[s]/Dntuple.DlxyBSErr[s], pthatweight*ptWeight);
-						h1 [_Dy][p]->Fill(Dntuple.Dy[s], ptWeight);
+						h1 [_Dy][p]->Fill(Dntuple.Dy[s], totalWeight);
 						h11[_Dy][p]->Fill(Dntuple.Dy[s], pthatweight*ptWeight);
-						h1 [_Dalpha][p]->Fill(Dntuple.Dalpha[s], ptWeight);
+						h1 [_Dalpha][p]->Fill(Dntuple.Dalpha[s], totalWeight);
 						h11[_Dalpha][p]->Fill(Dntuple.Dalpha[s], pthatweight*ptWeight);
-						h1 [_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], ptWeight);
+						h1 [_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], totalWeight);
 						h11[_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], pthatweight*ptWeight);
-						h1 [_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], ptWeight);
+						h1 [_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], totalWeight);
 						h11[_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], pthatweight*ptWeight);
-						h1 [_fine_Dy][p]->Fill(Dntuple.Dy[s], ptWeight);
+						h1 [_fine_Dpt][p]->Fill(Dntuple.Dpt[s], totalWeight);
+						h11[_fine_Dpt][p]->Fill(Dntuple.Dpt[s], pthatweight*ptWeight);
+						h1 [_fine_Dy][p]->Fill(Dntuple.Dy[s], totalWeight);
 						h11[_fine_Dy][p]->Fill(Dntuple.Dy[s], pthatweight*ptWeight);
-						h1 [_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s], ptWeight);
+						h1 [_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s], totalWeight);
 						h11[_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s], pthatweight*ptWeight);
-						h1 [_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], ptWeight);
+						h1 [_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], totalWeight);
 						h11[_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], pthatweight*ptWeight);
-						h1 [_fine_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], ptWeight);
+						h1 [_fine_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], totalWeight);
 						h11[_fine_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], pthatweight*ptWeight);
 						if(boolGenCut){
-							h4 [_Dpt][p]->Fill(Dntuple.Dpt[s], ptWeight);
+							h4 [_Dpt][p]->Fill(Dntuple.Dpt[s], totalWeight);
 							h14[_Dpt][p]->Fill(Dntuple.Dpt[s], pthatweight*ptWeight);
-							h4 [_Dmass][p]->Fill(Dntuple.Dmass[s], ptWeight);
+							h4 [_Dmass][p]->Fill(Dntuple.Dmass[s], totalWeight);
 							h14[_Dmass][p]->Fill(Dntuple.Dmass[s], pthatweight*ptWeight);
-							h4 [_Ddtheta][p]->Fill(Dntuple.Ddtheta[s], ptWeight);
+							h4 [_Ddtheta][p]->Fill(Dntuple.Ddtheta[s], totalWeight);
 							h14[_Ddtheta][p]->Fill(Dntuple.Ddtheta[s], pthatweight*ptWeight);
-							h4 [_DlxyBS_DlxyBSErr][p]->Fill(Dntuple.DlxyBS[s]/Dntuple.DlxyBSErr[s], ptWeight);
+							h4 [_DlxyBS_DlxyBSErr][p]->Fill(Dntuple.DlxyBS[s]/Dntuple.DlxyBSErr[s], totalWeight);
 							h14[_DlxyBS_DlxyBSErr][p]->Fill(Dntuple.DlxyBS[s]/Dntuple.DlxyBSErr[s], pthatweight*ptWeight);
-							h4 [_Dy][p]->Fill(Dntuple.Dy[s], ptWeight);
+							h4 [_Dy][p]->Fill(Dntuple.Dy[s], totalWeight);
 							h14[_Dy][p]->Fill(Dntuple.Dy[s], pthatweight*ptWeight);
-							h4 [_Dalpha][p]->Fill(Dntuple.Dalpha[s], ptWeight);
+							h4 [_Dalpha][p]->Fill(Dntuple.Dalpha[s], totalWeight);
 							h14[_Dalpha][p]->Fill(Dntuple.Dalpha[s], pthatweight*ptWeight);
-							h4 [_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], ptWeight);
+							h4 [_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], totalWeight);
 							h14[_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], pthatweight*ptWeight);
-							h4 [_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], ptWeight);
+							h4 [_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], totalWeight);
 							h14[_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], pthatweight*ptWeight);
-							h4 [_fine_Dy][p]->Fill(Dntuple.Dy[s], ptWeight);
+							h4 [_fine_Dpt][p]->Fill(Dntuple.Dpt[s], totalWeight);
+							h14[_fine_Dpt][p]->Fill(Dntuple.Dpt[s], pthatweight*ptWeight);
+							h4 [_fine_Dy][p]->Fill(Dntuple.Dy[s], totalWeight);
 							h14[_fine_Dy][p]->Fill(Dntuple.Dy[s], pthatweight*ptWeight);
-							h4 [_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s], ptWeight);
+							h4 [_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s], totalWeight);
 							h14[_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s], pthatweight*ptWeight);
-							h4 [_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], ptWeight);
+							h4 [_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], totalWeight);
 							h14[_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], pthatweight*ptWeight);
-							h4 [_fine_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], ptWeight);
+							h4 [_fine_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], totalWeight);
 							h14[_fine_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], pthatweight*ptWeight);
 						}
 					}
 					if(boolSidebandRG){
-						h2 [_Dpt][p]->Fill(Dntuple.Dpt[s], ptWeight);
+						h2 [_Dpt][p]->Fill(Dntuple.Dpt[s], totalWeight);
 						h12[_Dpt][p]->Fill(Dntuple.Dpt[s], pthatweight*ptWeight);
-						h2 [_Dmass][p]->Fill(Dntuple.Dmass[s], ptWeight);
+						h2 [_Dmass][p]->Fill(Dntuple.Dmass[s], totalWeight);
 						h12[_Dmass][p]->Fill(Dntuple.Dmass[s], pthatweight*ptWeight);
-						h2 [_Ddtheta][p]->Fill(Dntuple.Ddtheta[s], ptWeight);
+						h2 [_Ddtheta][p]->Fill(Dntuple.Ddtheta[s], totalWeight);
 						h12[_Ddtheta][p]->Fill(Dntuple.Ddtheta[s], pthatweight*ptWeight);
-						h2 [_DlxyBS_DlxyBSErr][p]->Fill(Dntuple.DlxyBS[s]/Dntuple.DlxyBSErr[s], ptWeight);
+						h2 [_DlxyBS_DlxyBSErr][p]->Fill(Dntuple.DlxyBS[s]/Dntuple.DlxyBSErr[s], totalWeight);
 						h12[_DlxyBS_DlxyBSErr][p]->Fill(Dntuple.DlxyBS[s]/Dntuple.DlxyBSErr[s], pthatweight*ptWeight);
-						h2 [_Dy][p]->Fill(Dntuple.Dy[s], ptWeight);
+						h2 [_fine_Dpt][p]->Fill(Dntuple.Dpt[s], totalWeight);
+						h12[_fine_Dpt][p]->Fill(Dntuple.Dpt[s], pthatweight*ptWeight);
+						h2 [_Dy][p]->Fill(Dntuple.Dy[s], totalWeight);
 						h12[_Dy][p]->Fill(Dntuple.Dy[s], pthatweight*ptWeight);
-						h2 [_Dalpha][p]->Fill(Dntuple.Dalpha[s], ptWeight);
+						h2 [_Dalpha][p]->Fill(Dntuple.Dalpha[s], totalWeight);
 						h12[_Dalpha][p]->Fill(Dntuple.Dalpha[s], pthatweight*ptWeight);
-						h2 [_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], ptWeight);
+						h2 [_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], totalWeight);
 						h12[_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], pthatweight*ptWeight);
-						h2 [_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], ptWeight);
+						h2 [_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], totalWeight);
 						h12[_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], pthatweight*ptWeight);
-						h2 [_fine_Dy][p]->Fill(Dntuple.Dy[s], ptWeight);
+						h2 [_fine_Dy][p]->Fill(Dntuple.Dy[s], totalWeight);
 						h12[_fine_Dy][p]->Fill(Dntuple.Dy[s], pthatweight*ptWeight);
-						h2 [_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s], ptWeight);
+						h2 [_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s], totalWeight);
 						h12[_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s], pthatweight*ptWeight);
-						h2 [_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], ptWeight);
+						h2 [_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], totalWeight);
 						h12[_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s], pthatweight*ptWeight);
-						h2 [_fine_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], ptWeight);
+						h2 [_fine_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], totalWeight);
 						h12[_fine_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s], pthatweight*ptWeight);
 					}
 				}
@@ -477,7 +529,7 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 			){
 				boolCut = true;
 			}
-			if (&&Dntuple.Dy[s]>-1.&&Dntuple.Dy[s]<1.
+			if (Dntuple.Dy[s]>-1.&&Dntuple.Dy[s]<1.
 				&&Dntuple.Dtrk1highPurity[s]&&Dntuple.Dtrk2highPurity[s]
 				&&Dntuple.Dtrk1Pt[s]>8.5&&Dntuple.Dtrk2Pt[s]>8.5
 				&&Dntuple.Dtrk1PtErr[s]/Dntuple.Dtrk1Pt[s]<0.1&&Dntuple.Dtrk2PtErr[s]/Dntuple.Dtrk2Pt[s]<0.1
@@ -573,7 +625,7 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 			if ((HLTBh.HLT_HIL1MinimumBiasHF2AND_part1_v1
 				||HLTBh.HLT_HIL1MinimumBiasHF2AND_part2_v1
 				||HLTBh.HLT_HIL1MinimumBiasHF2AND_part3_v1)
-				&&(dataNtype == "ppMB")
+				&&(dataNtype == "PbPbMB")
 			){
 				boolHLTCut = true;
 			}
@@ -588,6 +640,7 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 			}
 			hDataMass->Fill(Dntuple.Dmass[s]);
 			for (int p = 0; p < nBins; p++){
+				if(ptBins[p] == -1 || ptBins[p+1] == -1) continue;
 				if(Dntuple.Dpt[s]>ptBins[p]&&Dntuple.Dpt[s]<ptBins[p+1]){
 					if(boolSignalRG){
 						h21 [_Dpt][p]->Fill(Dntuple.Dpt[s]);
@@ -598,6 +651,7 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 						h21 [_Dalpha][p]->Fill(Dntuple.Dalpha[s]);
 						h21 [_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s]);
 						h21 [_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s]);
+						h21 [_fine_Dpt][p]->Fill(Dntuple.Dpt[s]);
 						h21 [_fine_Dy][p]->Fill(Dntuple.Dy[s]);
 						h21 [_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s]);
 						h21 [_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s]);
@@ -612,6 +666,7 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 						h22 [_Dalpha][p]->Fill(Dntuple.Dalpha[s]);
 						h22 [_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s]);
 						h22 [_DsvpvDistance_DsvpvDisErr][p]->Fill(Dntuple.DsvpvDistance[s]/Dntuple.DsvpvDisErr[s]);
+						h22 [_fine_Dpt][p]->Fill(Dntuple.Dpt[s]);
 						h22 [_fine_Dy][p]->Fill(Dntuple.Dy[s]);
 						h22 [_fine_Dalpha][p]->Fill(Dntuple.Dalpha[s]);
 						h22 [_fine_Dchi2cl][p]->Fill(Dntuple.Dchi2cl[s]);
@@ -624,6 +679,7 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 
     for (int i = 0 ; i < _varSize; i++){
 	for (int p = 0 ; p < nBins; p++){
+		if(ptBins[p] == -1 || ptBins[p+1] == -1) continue;
 		for(int bin = 1; bin < h1[i][p]->GetNbinsX()+1; bin++){
 			h1[i][p]  ->SetBinContent(bin, h1[i][p] ->GetBinContent(bin)/h1[i][p] ->GetBinWidth(bin));
 			h2[i][p]  ->SetBinContent(bin, h2[i][p] ->GetBinContent(bin)/h2[i][p] ->GetBinWidth(bin));
@@ -636,6 +692,18 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 			h21[i][p] ->SetBinContent(bin, h21[i][p]->GetBinContent(bin)/h21[i][p]->GetBinWidth(bin));
 			h22[i][p] ->SetBinContent(bin, h22[i][p]->GetBinContent(bin)/h22[i][p]->GetBinWidth(bin));
 			h23[i][p] ->SetBinContent(bin, h23[i][p]->GetBinContent(bin)/h23[i][p]->GetBinWidth(bin));
+
+			h1[i][p]  ->SetBinError(bin, h1[i][p] ->GetBinError(bin)/h1[i][p] ->GetBinWidth(bin));
+			h2[i][p]  ->SetBinError(bin, h2[i][p] ->GetBinError(bin)/h2[i][p] ->GetBinWidth(bin));
+			h3[i][p]  ->SetBinError(bin, h3[i][p] ->GetBinError(bin)/h3[i][p] ->GetBinWidth(bin));
+			h4[i][p]  ->SetBinError(bin, h4[i][p] ->GetBinError(bin)/h4[i][p] ->GetBinWidth(bin));
+			h11[i][p] ->SetBinError(bin, h11[i][p]->GetBinError(bin)/h11[i][p]->GetBinWidth(bin));
+			h12[i][p] ->SetBinError(bin, h12[i][p]->GetBinError(bin)/h12[i][p]->GetBinWidth(bin));
+			h13[i][p] ->SetBinError(bin, h13[i][p]->GetBinError(bin)/h13[i][p]->GetBinWidth(bin));
+			h14[i][p] ->SetBinError(bin, h14[i][p]->GetBinError(bin)/h14[i][p]->GetBinWidth(bin));
+			h21[i][p] ->SetBinError(bin, h21[i][p]->GetBinError(bin)/h21[i][p]->GetBinWidth(bin));
+			h22[i][p] ->SetBinError(bin, h22[i][p]->GetBinError(bin)/h22[i][p]->GetBinWidth(bin));
+			h23[i][p] ->SetBinError(bin, h23[i][p]->GetBinError(bin)/h23[i][p]->GetBinWidth(bin));
 		}
 		h3[i][p] = (TH1D*)h1[i][p]->Clone();
 		h3[i][p]->Add(h2[i][p],-wfactor);
@@ -646,29 +714,30 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 		h23[i][p] = (TH1D*)h21[i][p]->Clone();
 		h23[i][p]->Add(h22[i][p],-wfactor);
 		if(myVars[i].pthatWeight == false){
-			overlapTH1(c[i][p], h4[i][p],  h3[i][p],  h23[i][p], h21[i][p], myVars[i].xtitle, hRatio[i][p], myVars[i].rfile, -1, isPbPb);
+			if(p==0){
+				overlapTH1(c[i][p], h4[i][p],  h3[i][p],  h23[i][p], h21[i][p], myVars[i].xtitle, hRatio[i][p], myVars[i].rfile, -1, dataNtype, p);
+			}
+			else
+				overlapTH1(c[i][p], h4[i][p],  h3[i][p],  h23[i][p], h21[i][p], myVars[i].xtitle, hRatio[i][p], "", -1, dataNtype, p);
 		}
 		else{
-			overlapTH1(c[i][p], h14[i][p], h13[i][p], h23[i][p], h21[i][p], myVars[i].xtitle, hRatio[i][p], myVars[i].rfile, -1, isPbPb);
+			if(p==0){
+				overlapTH1(c[i][p], h14[i][p], h13[i][p], h23[i][p], h21[i][p], myVars[i].xtitle, hRatio[i][p], myVars[i].rfile, -1, dataNtype, p);
+			}
+			else
+				overlapTH1(c[i][p], h14[i][p], h13[i][p], h23[i][p], h21[i][p], myVars[i].xtitle, hRatio[i][p], "", -1, dataNtype, p);
 		}
-		if(!isPbPb){
-			c[i][p]->SaveAs(("plotsFill_pp/"+myVars[i].plotName+Form("ptBin%d%s", p, wPrefix.c_str())+".pdf").c_str());
-		}
-		if(isPbPb){
-			c[i][p]->SaveAs(("plotsFill_PbPb/"+myVars[i].plotName+Form("ptBin%d%s", p, wPrefix.c_str())+".pdf").c_str());
-		}
-		c[i][p]->SaveAs(("temp/"+myVars[i].plotName+Form("ptBin%d%s", p, wPrefix.c_str())+".C").c_str());
+		c[i][p]->SaveAs(("plotsFill_"+dataNtype+"/"+myVars[i].plotName+Form("ptBin%d%s", p, wPrefix.c_str())+".pdf").c_str());
+		//c[i][p]->SaveAs(("temp/"+myVars[i].plotName+Form("ptBin%d%s", p, wPrefix.c_str())+".C").c_str());
 	}}
 	if (DoPtWeight){
-	    overlapTH1(cMass, hMCMassGM, hMCMassGMW, hMCMass, hDataMass, "Dmass", hMassRatio, "", 1, isPbPb);
-		if(!isPbPb)	cMass->SaveAs("plotsFill_pp/mass.pdf");
-		if(isPbPb)	cMass->SaveAs("plotsFill_PbPb/mass.pdf");
+	    overlapTH1(cMass, hMCMassGM, hMCMassGMW, hMCMass, hDataMass, "Dmass", hMassRatio, "", 1, dataNtype, -1);
+		cMass->SaveAs(("plotsFill_"+dataNtype+"/mass.pdf").c_str());
 	}
 
 	if (!DoPtWeight){
 		for (int p = 0; p < nBins; p++){
-			h23[_Dpt][p]->Sumw2();
-			h13[_Dpt][p]->Sumw2();
+			if(ptBins[p] == -1 || ptBins[p+1] == -1) continue;
 			h23[_Dpt][p]->Scale(1/h23[_Dpt][p]->Integral());
 			h13[_Dpt][p]->Scale(1/h13[_Dpt][p]->Integral());
 			ptR[p] = (TH1D*)h23[_Dpt][p]->Clone();
@@ -687,8 +756,7 @@ void DoAnalysis(TFile* inf, TFile* infMC, TString outputfile, bool DoPtWeight, s
 			f->SetLineWidth(3);
 			ptR[p]->Draw("p");
 			f->Draw("l same ");
-			if(!isPbPb) cptR->SaveAs(Form("plotsFill_pp/ptRptBin%d.pdf",p));
-			if(isPbPb) cptR->SaveAs(Form("plotsFill_PbPb/ptRptBin%d.pdf",p));
+			cptR->SaveAs(Form("plotsFill_%s/ptRptBin%d.pdf", dataNtype.c_str(), p));
 			pa0[p] = f->GetParameter(0);
 			pa1[p] = f->GetParameter(1);
 			pa2[p] = f->GetParameter(2);
@@ -704,12 +772,15 @@ void MCDataComparisonFill(TString inputdata="/data/dmeson2015/DataDntuple/nt_201
 	//inputmc  ="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root";
 	inputmc  ="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_promptNnonprompt_D0_dPt0tkPt0p5_pthatweight.root";
 	inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2_skimmed.root";
-
 	TFile* infMC  = new TFile(inputmc.Data());
 	TFile* inf    = new TFile(inputdata.Data());
-	
-	DoAnalysis(inf, infMC, outputfile, false, "ppHF");
-	DoAnalysis(inf, infMC, outputfile, true, "ppHF");
+//	DoAnalysis(inf, infMC, outputfile, false, "ppHF");
+//	DoAnalysis(inf, infMC, outputfile, true, "ppHF");
+
+	inputdata = "/data/dmeson2015/DataDntuple/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016_skimmed.root";
+	inf    = new TFile(inputdata.Data());
+//	DoAnalysis(inf, infMC, outputfile, false, "ppHF");
+//	DoAnalysis(inf, infMC, outputfile, true, "ppMB");
 
 	//PbPb
 	//inputmc = "/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root";
@@ -719,15 +790,17 @@ void MCDataComparisonFill(TString inputdata="/data/dmeson2015/DataDntuple/nt_201
 	infMC = new TFile(inputmc.Data());
 //	DoAnalysis(inf, infMC, outputfile, false, "PbPbHF");
 //	DoAnalysis(inf, infMC, outputfile, true, "PbPbHF");
+
+	inputdata = "/data/dmeson2015/DataDntuple/Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016_skim.root";
+	inf = new TFile(inputdata.Data());
+//	DoAnalysis(inf, infMC, outputfile, false, "PbPbMB");
+	DoAnalysis(inf, infMC, outputfile, true, "PbPbMB");
+		
 }
 	
-void overlapTH1(TCanvas* c, TH1D* h1, TH1D* h2, TH1D*h3, TH1D* h4, string xTitle, TH1D* hRatio, string rfile, int customize, bool isPbPb){
+void overlapTH1(TCanvas* c, TH1D* h1, TH1D* h2, TH1D*h3, TH1D* h4, string xTitle, TH1D* hRatio, string rfile, int customize, string dataNtype, int _bin){
 	c->cd();
 	h1->GetXaxis()->SetTitle(xTitle.c_str());
-	h1->Sumw2();
-	h2->Sumw2();
-	h3->Sumw2();
-	h4->Sumw2();
 	h1->Scale(1/h1->Integral());
 	h2->Scale(1/h2->Integral());
 	h3->Scale(1/h3->Integral());
@@ -740,11 +813,11 @@ void overlapTH1(TCanvas* c, TH1D* h1, TH1D* h2, TH1D*h3, TH1D* h4, string xTitle
 //	h1->SetMaximum(max(h1->GetMaximum(), max(h3->GetMaximum(), h4->GetMaximum()))*1.2);
 //	h1->SetMinimum(h3->GetMinimum()*1.2);
 	h1->SetMinimum(0);
-	h1->SetMarkerSize(2);
-	h2->SetMarkerSize(0.8);
-	h3->SetMarkerSize(0.8);
-	h1->SetMarkerColor(2);
+	h1->SetMarkerSize(0.);
+	h2->SetMarkerSize(0.5);
+	h3->SetMarkerSize(0.5);
 	h1->SetMarkerStyle(21);
+	h1->SetMarkerColor(2);
 	h2->SetMarkerColor(kGreen-4);
 	h3->SetMarkerColor(kAzure+8);
 	h4->SetMarkerColor(kMagenta+3);
@@ -782,7 +855,7 @@ void overlapTH1(TCanvas* c, TH1D* h1, TH1D* h2, TH1D*h3, TH1D* h4, string xTitle
         pad1 = new TPad(Form("p%d", pcount), Form("p%d", pcount), 0.01, 0.35, 0.99, 0.99); pcount++;
 		pad1->Draw();
 		pad1->cd();
-		h1->Draw("pe");
+		h1->Draw("hist e");
 //		h2->Draw("same pe");
 //		h3->Draw("same pe");
 //		h4->Draw("same pe");
@@ -791,7 +864,7 @@ void overlapTH1(TCanvas* c, TH1D* h1, TH1D* h2, TH1D*h3, TH1D* h4, string xTitle
 		TLegend* leg = myLegend(0.5, 0.65, 0.86, 0.86);
   		leg->SetTextFont(42);
   		leg->SetTextSize(0.045);
-		leg->AddEntry(h1, "MC gen matched", "p");
+		leg->AddEntry(h1, Form("MC gen matched Dpt=%.0f~%.0f", ptBins[_bin], ptBins[_bin+1]), "l");
 		leg->AddEntry(h2, "MC sideband sub.", "l");
 		leg->AddEntry(h3, "data sideband sub.", "l");
 //		leg->AddEntry(h4, "data signal region", "p");
@@ -807,46 +880,47 @@ void overlapTH1(TCanvas* c, TH1D* h1, TH1D* h2, TH1D*h3, TH1D* h4, string xTitle
 		TH1D* MCIn;
 		TH1D* ratioIn;
 		if(rfile!=""){
-			if(!isPbPb) rfin = new TFile(("fitExtract_pp/"+rfile).c_str());
-			if(isPbPb) rfin = new TFile(("fitExtract_PbPb/"+rfile).c_str());
+			rfin = new TFile(("fitExtract/OutPuts_"+dataNtype+"/"+rfile).c_str());
 			dataIn = (TH1D*)rfin->Get("hPt");
 			MCIn = (TH1D*)rfin->Get("hPtMCTot");
 			TH1D* ratioIn = (TH1D*)rfin->Get("hRatio");
 	        pad1->cd();
-			dataIn->SetMarkerSize(2);
-			MCIn->SetMarkerSize(2);
-			dataIn->SetLineWidth(0);
-			MCIn->SetLineWidth(0);
+			dataIn->SetMarkerSize(0);
+			MCIn->SetMarkerSize(0);
+			//dataIn->SetLineWidth(0);
+			//MCIn->SetLineWidth(0);
 			dataIn->SetMarkerStyle(34);
 			MCIn->SetMarkerStyle(34);
 			//dataIn->SetMarkerStyle(29);
 			//MCIn->SetMarkerStyle(29);
+			MCIn->SetFillStyle(3001);
+			MCIn->SetFillColor(kGreen-2);
 			MCIn->SetMarkerColor(kGreen-2);
 			MCIn->SetLineColor(kGreen-2);
+			dataIn->SetFillStyle(3001);
+			dataIn->SetFillColor(kBlue-4);
 			dataIn->SetMarkerColor(kBlue-4);
 			dataIn->SetLineColor(kBlue-4);
-			MCIn->Draw("same pe");
-			dataIn->Draw("same pe");
-			if(!isPbPb){
-		        leg->AddEntry(MCIn, Form("MC fit Dpt=%.0f~%.0f", ptBinspp[0], ptBinspp[1]), "p");
-	    	    leg->AddEntry(dataIn, Form("data fit Dpt=%.0f~%.0f", ptBinspp[0], ptBinspp[1]), "p");
-			}
-			if(isPbPb){
-		        leg->AddEntry(MCIn, Form("MC fit Dpt=%.0f~%.0f", ptBinsPbPb[0], ptBinsPbPb[1]), "p");
-	    	    leg->AddEntry(dataIn, Form("data fit Dpt=%.0f~%.0f", ptBinsPbPb[0], ptBinsPbPb[1]), "p");
-			}
+			MCIn->Draw("same E2");
+			dataIn->Draw("same E2");
+		    leg->AddEntry(MCIn, Form("MC fit Dpt=%.0f~%.0f", ptBins[0], ptBins[1]), "f");
+	    	leg->AddEntry(dataIn, Form("data fit"), "f");
 			leg->Draw();
 	        pad2->cd();
 			ratioIn->SetLineWidth(0);
             ratioIn->SetMarkerStyle(34);
-			ratioIn->SetMarkerSize(2);
+			ratioIn->SetFillColor(2);
+			ratioIn->SetFillStyle(3001);
+			ratioIn->SetLineColor(2);
+			ratioIn->SetMarkerColor(2);
+			ratioIn->SetMarkerSize(0);
 			//ratioIn->Draw("same pe");
-			ratioIn->Draw("same pe");
+			ratioIn->Draw("same E2");
 			TLegend* leg2 = myLegend(0.5, 0.65, 0.86, 0.86);
   			leg2->SetTextFont(42);
   			leg2->SetTextSize(0.085);
-			leg2->AddEntry(hRatio, "ratio sideband", "p");
-			leg2->AddEntry(ratioIn, "ratio fit", "p");
+			leg2->AddEntry(hRatio, "ratio sideband", "l");
+			leg2->AddEntry(ratioIn, "ratio fit", "f");
 			leg2->Draw();
 		}
 	}
