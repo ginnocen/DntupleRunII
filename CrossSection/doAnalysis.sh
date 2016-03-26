@@ -3,24 +3,24 @@
 
 #Central point of the analysis
 
-DOFONLL=0
-DOTRGCOMBINATION=0
-DOFEEDDOWN=0
-DOFITSPP=0
-DOFITSPPMCClosure=0
-DOFITSPbPbMCClosure=0
-DOFITSPbPb=0
-DOCrossSectionPP=0
-DOCrossSectionPbPb=0
-DORAA=0
+DOFONLL=1
+DOTRGCOMBINATION=1
+DOFEEDDOWN=1
+DOFITSPP=1
+DOFITSPPMCClosure=1
+DOFITSPbPbMCClosure=1
+DOFITSPbPb=1
+DOCrossSectionPP=1
+DOCrossSectionPbPb=1
+DORAA=1
 
-DOFONLLMB=0
-DOFEEDDOWNMB=0
-DOFITSPPMB=0
+DOFONLLMB=1
+DOFEEDDOWNMB=1
+DOFITSPPMB=1
 DOFITSPbPbMB=1
-DOCrossSectionPPMB=0
-DOCrossSectionPbPbMB=0
-DORAAMB=0
+DOCrossSectionPPMB=1
+DOCrossSectionPbPbMB=1
+DORAAMB=1
 
 DOCombineCrossSection=0
 DOCombineRAA=0
@@ -205,12 +205,12 @@ fi
 
 if [ $DOCrossSectionPP -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEInclusiveD"  "$OUTPUTFILEPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" "$LABELPP"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" "$LABELPP"
 fi
 
 if [ $DOCrossSectionPbPb -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEInclusiveD"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" "$LABELPbPb"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" "$LABELPbPb"
 fi
 
 if [ $DORAA -eq 1 ]; then      
@@ -313,12 +313,12 @@ fi
 
 if [ $DOCrossSectionPPMB -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEInclusiveDMB"  "$OUTPUTFILEPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" "$LABELPPMB"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" "$LABELPPMB"
 fi
 
 if [ $DOCrossSectionPbPbMB -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEInclusiveDMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePP" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePP" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB"
 fi
 
 if [ $DORAAMB -eq 1 ]; then      
