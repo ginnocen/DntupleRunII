@@ -1,9 +1,11 @@
 #include "uti.h"
 #include "parameters.h"
 #include "TLegendEntry.h"
+#include "bFeedDown/bFeedDownCorrection.C"
 
 
-void CrossSectionRatio(TString inputFONLL="output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",TString label="PP")
+
+void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",TString label="PbPb")
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -12,7 +14,11 @@ void CrossSectionRatio(TString inputFONLL="output_inclusiveDd0meson_5TeV_y1.root
 
   TFile* filePPReference = new TFile(inputFONLL.Data());  
   TGraphAsymmErrors* gaeBplusReference = (TGraphAsymmErrors*)filePPReference->Get("gaeSigmaDzero");
-    
+  
+  bool isPbPb;
+  if(label=="PP"||label=="PPMB" ) isPbPb=false;
+  if(label=="PbPb"||label=="PbPbMB" ) isPbPb=true;
+  
   TFile* filePP = new TFile(inputPP.Data());
   TH1F* hEffPP = (TH1F*)filePP->Get("hEff");
   TH1F* hSigmaPPStat = (TH1F*)filePP->Get("hPtSigma");
@@ -20,8 +26,10 @@ void CrossSectionRatio(TString inputFONLL="output_inclusiveDd0meson_5TeV_y1.root
     TFile*fprescalesPP=new TFile(inputprescalesPP.Data()); 
     TH1F*hPrescalesPtBinsPP=(TH1F*)fprescalesPP->Get("hPrescalesPtBins");
     TH1F*hTriggerEfficiencyPtBinsPP=(TH1F*)fprescalesPP->Get("hTriggerEfficiencyPtBins");
+    
     for (int i=0;i<nBins;i++) {
-      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
+      double prompt=bFeedDownCorrection(hSigmaPPStat->GetBinCenter(i+1),isPbPb);
+      hSigmaPPStat->SetBinContent(i+1,prompt*hSigmaPPStat->GetBinContent(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
     }
   }
 
