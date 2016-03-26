@@ -2,7 +2,7 @@
 
 // Yen-Jie: B feeddown fraction
 
-float bFeedDownFraction(double pt, bool isPbPb)
+float bFeedDownCorrection(double pt, bool isPbPb)
 {
    double val=-1.0; // place holder
    double errval=-1.0;
