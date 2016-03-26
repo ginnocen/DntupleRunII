@@ -2,38 +2,40 @@
 
 // Yen-Jie: B feeddown fraction
 
-float bFeedDownFraction(double pt, double HLT, bool isPbPb)
+float bFeedDownFraction(double pt, bool isPbPb)
 {
-   double val=0.23; // place holder
+   double val=-1.0; // place holder
+   double errval=-1.0;
+   
    if (!isPbPb) { // pp
-      if (pt>6&&pt<8) {
-         // 81.5 +- 2.3
-	 val = 1-0.815;
-      } else if (pt>8&&pt<10) {
-         // 69.2 +- 2.9
-	 val = 1-0.692;
-      }else if (pt>10&&pt<15) {
-         // 71.8 +- 2.8
-	 val = 1-0.718;
-      } else if (pt>15&&pt<20) {
-         //  73.0 +- 6.3
-         val = 1-0.730;
-      } else if (pt>20&&pt<30) { 
-         // 77.0+- 1.7%
-         val = 1-0.770;
-      } else if (pt>30&&pt<40) {  
-         // 75.3 +- 1.6%
-	 val = 1-0.753;
-      } else if (pt>40&&pt<50) {
-         // 83.3% +- 3.5%
-	 val = 1-0.833;
-      } else if (pt>50) {
-         // 82.4% +- 3.1%
-	 val = 1-0.824;
+      if (pt>1&&pt<2) {
+	 val = 0.766;
+      } else if (pt>2&&pt<6) {
+	 val = 0.766;
+      } else if (pt>6&&pt<10) {
+	 val =0.896 ;
+      }else if (pt>10&&pt<20) {
+	 val =0.913 ;
+      } else if (pt>20&&pt<50) {
+     val =0.898;
+      } else if (pt>50&&pt<100) { 
+      val =0.972;
       }
    } else {
      // PbPb
-      val = 0.15; // place holder
+     if (pt>1&&pt<2) {
+	 val = 0.703;
+     } else if (pt>2&&pt<6) {
+	 val = 0.703;
+      } else if (pt>6&&pt<10) {
+	 val =0.703 ;
+      }else if (pt>10&&pt<20) {
+	 val =0.880 ;
+      } else if (pt>20&&pt<50) {
+     val =0.940;
+      } else if (pt>50&&pt<100) { 
+      val =0.920;
+      }
    }
    return val;
 }

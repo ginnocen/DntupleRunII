@@ -99,7 +99,7 @@ void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_ncand_D
 	 if (Dsize>0) {
 	   int ncand=0;
 	   for (int j=0;j<Dsize;j++) {
-	      if (Dpt[j]>1.&&Dtrk1Pt[j]>1.&&Dtrk2Pt[j]>1.&&Dy[j]>-1.1&&Dy[j]<1.1&&DsvpvDistance[j]/DsvpvDisErr[j]>3.) {
+	      if (Dpt[j]>1.&&Dtrk1Pt[j]>0.5&&Dtrk2Pt[j]>0.5&&Dy[j]>-1.1&&Dy[j]<1.1&&DsvpvDistance[j]/DsvpvDisErr[j]>3.) {
 	         ncand++;
 		 break;
 	      }
