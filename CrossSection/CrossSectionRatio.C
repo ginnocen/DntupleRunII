@@ -22,6 +22,14 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   TFile* filePP = new TFile(inputPP.Data());
   TH1F* hEffPP = (TH1F*)filePP->Get("hEff");
   TH1F* hSigmaPPStat = (TH1F*)filePP->Get("hPtSigma");
+  TH1F* hfprompt = new TH1F("hfprompt","",nBins,ptBins);
+  
+    for (int i=0;i<nBins;i++) {
+      double prompt=bFeedDownCorrection(hSigmaPPStat->GetBinCenter(i+1),isPbPb);
+      hfprompt->SetBinContent(i+1,prompt);
+      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)*hfprompt->GetBinContent(i+1));
+    }
+  
   if (usePrescaleCorr==1){
     TFile*fprescalesPP=new TFile(inputprescalesPP.Data()); 
     TH1F*hPrescalesPtBinsPP=(TH1F*)fprescalesPP->Get("hPrescalesPtBins");
@@ -228,6 +236,7 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   hEffPP->SetLineWidth(2);
   hEffPP->SetLineColor(1);
   hEffPP->Draw("same");
+
   
   TString text;
   TString sample;
@@ -247,6 +256,34 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   tlatexeff2->SetTextSize(0.04);
   tlatexeff2->Draw();
   cEffPP->SaveAs(Form("efficiency%s.pdf",label.Data()));
+  
+  
+  TCanvas* cFprompt = new TCanvas("cFprompt","",550,500);
+  TH2F* hemptyPrompt=new TH2F("hemptyPrompt","",50,0.,110.,10.,0,1.);  
+  hemptyPrompt->GetXaxis()->CenterTitle();
+  hemptyPrompt->GetYaxis()->CenterTitle();
+  hemptyPrompt->GetYaxis()->SetTitle("f_{prompt}");
+  hemptyPrompt->GetXaxis()->SetTitle("p_{T} (GeV/c)");
+  hemptyPrompt->GetXaxis()->SetTitleOffset(0.9);
+  hemptyPrompt->GetYaxis()->SetTitleOffset(1.05);
+  hemptyPrompt->GetXaxis()->SetTitleSize(0.045);
+  hemptyPrompt->GetYaxis()->SetTitleSize(0.045);
+  hemptyPrompt->GetXaxis()->SetTitleFont(42);
+  hemptyPrompt->GetYaxis()->SetTitleFont(42);
+  hemptyPrompt->GetXaxis()->SetLabelFont(42);
+  hemptyPrompt->GetYaxis()->SetLabelFont(42);
+  hemptyPrompt->GetXaxis()->SetLabelSize(0.04);
+  hemptyPrompt->GetYaxis()->SetLabelSize(0.04);  
+  hemptyPrompt->SetMaximum(2);
+  hemptyPrompt->SetMinimum(0.);
+  hemptyPrompt->Draw();
+  cFprompt->cd();
+  hemptyPrompt->Draw();
+  hfprompt->SetLineWidth(2);
+  hfprompt->SetLineColor(1);
+  hfprompt->Draw("same");
+  cFprompt->SaveAs(Form("cFprompt%s.pdf",label.Data()));
+
 
   TFile *outputfile=new TFile(outputplot.Data(),"recreate");
   outputfile->cd();
@@ -257,6 +294,7 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   gaeRatioCrossFONLLstat->Write();
   gaeRatioCrossFONLLsyst->Write();
   gaeRatioCrossFONLLunity->Write();
+  hfprompt->Write();
 }
 
 
