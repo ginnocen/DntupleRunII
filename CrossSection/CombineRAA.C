@@ -3,7 +3,7 @@
 #include "TLegendEntry.h"
 
 
-void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTfiles/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_mar15result.root" )
+void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTfiles/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root" )
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
