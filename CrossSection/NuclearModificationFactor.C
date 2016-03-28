@@ -1,7 +1,7 @@
 #include "uti.h"
 #include "parameters.h"
 #include "TLegendEntry.h"
-
+#include "../Systematics/systematics.C"
 
 void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPPMB.root", TString inputPbPb="CrossSectionFONLLPbPbMB.root",TString label="MB",TString outputfile="RAAfileMB.root")
 {
@@ -38,8 +38,9 @@ void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPPMB.root", TSt
   for(int i=0;i<nBins;i++)
   {
     yr[i] = hNuclearModification->GetBinContent(i+1);
-    yrlow[i] = hNuclearModification->GetBinContent(i+1)*0.2;
-    yrhigh[i] =hNuclearModification->GetBinContent(i+1)*0.2;
+    double systematic=0.01*systematicsForRAA(hNuclearModification->GetBinCenter(i+1),0.,0.);
+    yrlow[i] = hNuclearModification->GetBinContent(i+1)*systematic;
+    yrhigh[i] =hNuclearModification->GetBinContent(i+1)*systematic;
   }
 
 

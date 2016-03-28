@@ -2,6 +2,7 @@
 #include "parameters.h"
 #include "TLegendEntry.h"
 #include "bFeedDown/bFeedDownCorrection.C"
+#include "../Systematics/systematics.C"
 
 
 
@@ -52,8 +53,11 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
       xrhigh[i] = gaeBplusReference->GetErrorXhigh(i);
       ycross[i] = hSigmaPPStat->GetBinContent(i+1);
       ycrossstat[i] = hSigmaPPStat->GetBinError(i+1);
-      ycrosssysthigh[i]= hSigmaPPStat->GetBinContent(i+1)*0.1;  // fake systematic uncertainty, to be updated 
-      ycrosssystlow[i]= hSigmaPPStat->GetBinContent(i+1)*0.1;  // fake systematic uncertainty, to be updated 
+      double systematic=0.;
+      if (isPbPb) systematic=0.01*systematicsPP(xr[i],0.);
+      else  systematic=0.01*systematicsPbPb(xr[i],0.);     
+      ycrosssysthigh[i]= hSigmaPPStat->GetBinContent(i+1)*systematic;
+      ycrosssystlow[i]= hSigmaPPStat->GetBinContent(i+1)*systematic;
       yratiocrossFONLL[i] = ycross[i]/yFONLL[i];
       yratiocrossFONLLstat[i] = ycrossstat[i]/yFONLL[i];
       yratiocrossFONLLsysthigh[i] = ycrosssysthigh[i]/yFONLL[i];
