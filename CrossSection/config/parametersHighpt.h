@@ -6,7 +6,7 @@ double ptBinsReweight[nBinsReweight+1] = {0,2,4,6,8,10,12,14,16,18,20,22,24,26,2
 
 const int ntriggers=3;
 TString triggerHLTPP[ntriggers]={"HLT_DmesonPPTrackingGlobal_Dpt15_v1","HLT_DmesonPPTrackingGlobal_Dpt30_v1","HLT_DmesonPPTrackingGlobal_Dpt50_v1"};
-int triggerHLTPPthresholds[ntriggers]={15,30,30};
+int triggerHLTPPthresholds[ntriggers]={15,30,50};
 int triggerassignmentPP[nBins]= {0,0,0,1,1,2,2};
 TString triggerHLTPbPb[ntriggers]={"HLT_HIDmesonHITrackingGlobal_Dpt20_v1","HLT_HIDmesonHITrackingGlobal_Dpt40_v1","HLT_HIDmesonHITrackingGlobal_Dpt60_v1"};
 int triggerHLTPbPbthresholds[ntriggers]={20,40,60};
