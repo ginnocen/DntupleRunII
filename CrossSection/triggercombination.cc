@@ -76,10 +76,10 @@ void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/Da
     TString hnameUnpresc=Form("hCountsUnpresc_%d",m);
     
     TString fillhistoPrescANDUnpresc=Form("%s>>%s",triggerHLT[m].Data(),hnamePrescANDUnpresc.Data());
-    TString fillhistoUnpresc=Form("%s>>%s",triggerHLT[2].Data(),hnameUnpresc.Data());
+    TString fillhistoUnpresc=Form("%s>>%s",triggerHLT[ntriggers-1].Data(),hnameUnpresc.Data());
     
-    TString selPrescANDUnpresc=Form("%s&&%s&&%s",triggerHLT[m].Data(),triggerHLT[2].Data(),cut.Data());
-    TString selUnpresc=Form("%s&&%s",triggerHLT[2].Data(),cut.Data());
+    TString selPrescANDUnpresc=Form("%s&&%s&&%s",triggerHLT[m].Data(),triggerHLT[ntriggers-1].Data(),cut.Data());
+    TString selUnpresc=Form("%s&&%s",triggerHLT[ntriggers-1].Data(),cut.Data());
     
     hCountsPrescANDUnpresc[m]=new TH1D(hnamePrescANDUnpresc.Data(),"histo",100,-0.5,2);
     hCountsUnpresc[m]=new TH1D(hnameUnpresc.Data(),"histo",100,-0.5,2);
@@ -93,11 +93,11 @@ void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/Da
   }
   
     for (int index=0; index<ntriggers;index++){
-     prescale[index]=ncountersANDunprescaled[index]/ncounters[2];
-     errorprescale[index]=1/ncounters[2]*TMath::Sqrt(ncountersANDunprescaled[index]*(1-(ncountersANDunprescaled[index]/ncounters[2])));
+     prescale[index]=ncountersANDunprescaled[index]/ncounters[ntriggers-1];
+     errorprescale[index]=1/ncounters[ntriggers-1]*TMath::Sqrt(ncountersANDunprescaled[index]*(1-(ncountersANDunprescaled[index]/ncounters[ntriggers-1])));
      cout<<"------index------"<<endl;
      cout<<"triggerHLT="<<triggerHLT[index]<<endl;
-     cout<<"nuprescaled="<<ncounters[2]<<endl; 
+     cout<<"nuprescaled="<<ncounters[ntriggers-1]<<endl; 
      cout<<"ncountersANDunprescaled="<<ncountersANDunprescaled[index]<<endl; 
      cout<<"prescale="<<prescale[index]<<endl; 
      cout<<"error on prescale binomial="<<errorprescale[index]<<endl; 
@@ -116,7 +116,10 @@ void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/Da
     
     TH1D*htrg=new TH1D("htrg","htrg",2,-100,100);
     TH1D*hMB=new TH1D("hMB","hMB",2,-100,100);
-
+    
+    //TString mypath="(HLT_L1MinimumBiasHF1OR_part1_v1||HLT_L1MinimumBiasHF1OR_part2_v1||HLT_L1MinimumBiasHF1OR_part3_v1||HLT_L1MinimumBiasHF1OR_part4_v1||HLT_L1MinimumBiasHF1OR_part5_v1||HLT_L1MinimumBiasHF1OR_part6_v1||HLT_L1MinimumBiasHF1OR_part7_v1||HLT_L1MinimumBiasHF1OR_part8_v1||HLT_L1MinimumBiasHF1OR_part9_v1||HLT_L1MinimumBiasHF1OR_part10_v1||HLT_L1MinimumBiasHF1OR_part11_v1||HLT_L1MinimumBiasHF1OR_part12_v1||HLT_L1MinimumBiasHF1OR_part13_v1||HLT_L1MinimumBiasHF1OR_part14_v1||HLT_L1MinimumBiasHF1OR_part15_v1||HLT_L1MinimumBiasHF1OR_part16_v1||HLT_L1MinimumBiasHF1OR_part17_v1||HLT_L1MinimumBiasHF1OR_part18_v1||HLT_L1MinimumBiasHF1OR_part19_v1)";
+    //HltTree->Draw("1>>htrg",Form("%s",triggerHLT[ntriggers-1].Data()));
+    //HltTreeMB->Draw("1>>hMB",Form("%s&&%s",triggerHLT[ntriggers-1].Data(),mypath.Data()));
     HltTree->Draw("1>>htrg",triggerHLT[ntriggers-1].Data());
     HltTreeMB->Draw("1>>hMB",triggerHLT[ntriggers-1].Data());
 

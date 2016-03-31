@@ -17,15 +17,11 @@ TString weightfunctiongen = "1";
 TString weightfunctionreco = "1";
 TString selmc;
 
-void FONLLweight(int isPbPb=0,int minfit=2,int maxfit=100)
+void FONLLweight(int isPbPb=1,TString inputmc="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0_dPt1tkPt1_pthatweight.root", int minfit=2,int maxfit=100,TString pthat="pthatall")
 {
   TString label;
-  TString inputmc;
   TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))";
   
-  if(isPbPb==1) inputmc="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0_dPt1tkPt1_pthatweight.root";
-  else inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root";
-
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
@@ -69,7 +65,7 @@ void FONLLweight(int isPbPb=0,int minfit=2,int maxfit=100)
 
    myweightfunctiongen=Form("pow(10,%f*Gpt+%f+Gpt*Gpt*%f)+pow(10,%f*Gpt+%f+Gpt*Gpt*%f) +%f+%f*Gpt+%f*Gpt*Gpt",par0,par1,par2,par3,par4,par5,par6,par7,par8);
    myweightfunctionreco=Form("pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)+pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f) +%f+%f*Dgenpt+%f*Dgenpt*Dgenpt",par0,par1,par2,par3,par4,par5,par6,par7,par8);
-   label="PbPb";
+   label="PbPb"+pthat;
   }
   else {
   
@@ -84,7 +80,7 @@ void FONLLweight(int isPbPb=0,int minfit=2,int maxfit=100)
 
   myweightfunctiongen=Form("pow(10,%f*Gpt+%f+Gpt*Gpt*%f)+pow(10,%f*Gpt+%f+Gpt*Gpt*%f)",par0,par1,par2,par3,par4,par5);
   myweightfunctionreco=Form("pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)+pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)",par0,par1,par2,par3,par4,par5);
-  label="PP";
+  label="PP"+pthat;
 
   }
   
@@ -124,14 +120,14 @@ void FONLLweight(int isPbPb=0,int minfit=2,int maxfit=100)
 
 int main(int argc, char *argv[])
 {
-  if((argc !=4))
+  if((argc !=6))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
   
-  if(argc == 4)
-    FONLLweight(atoi(argv[1]),atoi(argv[2]),atoi(argv[3]));
+  if(argc == 6)
+    FONLLweight(atoi(argv[1]),argv[2], atoi(argv[3]),atoi(argv[4]),argv[5]);
   return 0;
 }
 
