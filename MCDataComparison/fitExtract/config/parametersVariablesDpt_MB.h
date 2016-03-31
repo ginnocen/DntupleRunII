@@ -4,8 +4,8 @@
 //double ptBins[nBins+1] = {20, 25, 30, 35, 40, 45 ,50 ,60 ,100};
 //const int nBins=4;
 //double ptBins[nBins+1] = {20, 25, 30, 35, 40};
-const int nBins=7;
-double ptBins[nBins+1] = {3.,4.,5.,6.,8.,10.,15.,20.};
+const int nBins=8;
+double ptBins[nBins+1] = {1.,3.,4.,5.,6.,8.,10.,15.,20.};
 
 
 // DONT TOUCH BELOW THIS
