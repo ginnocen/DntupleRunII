@@ -19,7 +19,7 @@ TString selmc;
 
 void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root", TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))",TString selmcgenacceptance="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0", TString cut_recoonly="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11", TString cut="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>1.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&Dtrk2Algo>3&&Dtrk2Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)",TString label="PP",TString outputfile="test", int useweight=1, int minfit=2,int maxfit=100)
 {
- 
+ std::cout<<"option="<<useweight<<std::endl;
  selmc=cut;
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -37,17 +37,26 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   nthi->AddFriend(ntMC);
   ntMC->AddFriend(nthi);
 
-  if(useweight&&(label=="PP"||label=="PPMB")) {
-    weightfunctiongen="pow(10,-0.168499*Gpt+3.872855+Gpt*Gpt*0.000556)+pow(10,-0.068599*Gpt+2.512265+Gpt*Gpt*0.000331)";
-    weightfunctionreco="pow(10,-0.168499*Dgenpt+3.872855+Dgenpt*Dgenpt*0.000556)+pow(10,-0.068599*Dgenpt+2.512265+Dgenpt*Dgenpt*0.000331)";
+  if (useweight==0){
+       weightfunctiongen="1"; 
+       weightfunctionreco="1";  
+   }   
+  if (useweight==1){
+     weightfunctiongen="pthatweight";
+     weightfunctionreco="pthatweight";  
   }
   
-    if(useweight&&(label=="PbPb"||label=="PbPbMB")) {
-    weightfunctiongen="pow(10,-0.091618*Gpt+2.966262+Gpt*Gpt*0.000524)+pow(10,-0.167553*Gpt+3.800779+Gpt*Gpt*-0.000798) +1.437905+-0.029141*Gpt+0.000146*Gpt*Gpt";
+  //ptweight pp
+  if (useweight==2){
+    weightfunctiongen="pow(10,-0.168499*Gpt+3.872855+Gpt*Gpt*0.000556)+pow(10,-0.068599*Gpt+2.512265+Gpt*Gpt*0.000331)";  
+    weightfunctionreco="pow(10,-0.168499*Dgenpt+3.872855+Dgenpt*Dgenpt*0.000556)+pow(10,-0.068599*Dgenpt+2.512265+Dgenpt*Dgenpt*0.000331)"; 
+  }
+  //ptweight pbpb 
+  if (useweight==3){
+    weightfunctiongen="pow(10,-0.091618*Gpt+2.966262+Gpt*Gpt*0.000524)+pow(10,-0.167553*Gpt+3.800779+Gpt*Gpt*-0.000798) +1.437905+-0.029141*Gpt+0.000146*Gpt*Gpt"; 
     weightfunctionreco="pow(10,-0.091618*Dgenpt+2.966262+Dgenpt*Dgenpt*0.000524)+pow(10,-0.167553*Dgenpt+3.800779+Dgenpt*Dgenpt*-0.000798) +1.437905+-0.029141*Dgenpt+0.000146*Dgenpt*Dgenpt";
   }
-
-
+  
    std::cout<<"fit function parameters="<<weightfunctiongen<<std::endl;
 
   TH1D* hPtMC = new TH1D("hPtMC","",nBins,ptBins);
@@ -216,4 +225,7 @@ int main(int argc, char *argv[])
     MCefficiency(argv[1],argv[2],argv[3],argv[4],argv[5],argv[6],argv[7],atoi(argv[8]),atoi(argv[9]),atoi(argv[10]));
   return 0;
 }
+
+
+
 
