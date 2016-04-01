@@ -32,8 +32,16 @@ DOCombineRAA=0
 DOMCstudyPP=0
 DOMCstudyNPPP=0
 DOMCstudyPbPb=0
+DOMCstudyNPPbPb=0
 DOMCstudyPPMB=0
+DOMCstudyNPPPMB=0
 DOMCstudyPbPbMB=0
+DOMCstudyNPPbPbMB=0
+
+DOMCcombinePP=0
+DOMCcombinePbPb=0
+DOMCcombinePPMB=0
+DOMCcombinePbPbMB=0
 
 #reweight systematic
 
@@ -43,8 +51,8 @@ DOMCstudyPPMBReweight=0
 DOMCstudyPbPbMBReweight=0
 DOsystematicPtshape=0
 
-DOsystematicPthatstudyPP=1
-DOsystematicPthatstudyPbPb=1
+DOsystematicPthatstudyPP=0
+DOsystematicPthatstudyPbPb=0
 
 UNITY=1
 NULL=0
@@ -64,6 +72,7 @@ INPUTDATAPPSKIMMED="/data/dmeson2015/DataDntuple/ntD_EvtBase_20160330_HeavyFlavo
 INPUTDATAPPUNSKIMMED="/data/wangj/Data2015/Dntuple/pp/ntD_EvtBase_20160330_HeavyFlavor_DfinderData_pp_20160329_dPt0tkPt1_D0Dstar3p5p_goldenjson.root"
 INPUTMCPbPb="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0_dPt1tkPt1_pthatweight.root"
 INPUTMCPbPbMB="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0pt0p0_Pthat10_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt1tkPt1_D0Ds.root"
+INPUTMCNPPbPb="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_nonprompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_nonprompt_D0_dPt1tkPt1_pthatweight.root"
 INPUTDATAPbPbSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2_skimmed.root"
 INPUTDATAPbPbUNSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2.root"
 
@@ -91,9 +100,10 @@ OUTPUTFILEPlotPP="ROOTfiles/CrossSectionFONLLPP.root"
 OUTPUTFILEPbPb="ROOTfiles/hPtSpectrumDzeroPbPb.root"
 OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPb.root"
 OUTPUTFILERAA="ROOTfiles/outputRAA.root"
-OUTPUTFILEMCSTUDYPP="ROOTfiles/MCstudiesPP"
-OUTPUTFILEMCSTUDYNPPP="ROOTfiles/MCstudiesNPPP"
-OUTPUTFILEMCSTUDYPbPb="ROOTfiles/MCstudiesPbPb"
+OUTPUTFILEMCSTUDYPP="ROOTfiles/MCstudiesPP.root"
+OUTPUTFILEMCSTUDYNPPP="ROOTfiles/MCstudiesNPPP.root"
+OUTPUTFILEMCSTUDYPbPb="ROOTfiles/MCstudiesPbPb.root"
+OUTPUTFILEMCSTUDYNPPbPb="ROOTfiles/MCstudiesNPPbPb.root"
 
 LUMIPP=25.8
 ISMCPP=0
@@ -118,6 +128,7 @@ RECOONLYPbPb="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk
 CUTPbPb="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk2PixelHit+Dtrk2StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)&&((DlxyBS/DlxyBSErr)>1.5&&Dalpha<0.12&&((Dpt>2&&Dpt<4&&(DsvpvDistance/DsvpvDisErr)>5.86&&Dchi2cl>0.224)||(Dpt>4&&Dpt<5&&(DsvpvDistance/DsvpvDisErr)>5.46&&Dchi2cl>0.196)||(Dpt>5&&Dpt<6&&(DsvpvDistance/DsvpvDisErr)>4.86&&Dchi2cl>0.170)||(Dpt>6&&Dpt<8&&(DsvpvDistance/DsvpvDisErr)>4.54&&Dchi2cl>0.125)||(Dpt>8&&Dpt<10&&(DsvpvDistance/DsvpvDisErr)>4.42&&Dchi2cl>0.091)||(Dpt>10&&Dpt<15&&(DsvpvDistance/DsvpvDisErr)>4.06&&Dchi2cl>0.069)||(Dpt>15&&Dpt<20&&(DsvpvDistance/DsvpvDisErr)>3.71&&Dchi2cl>0.056)||(Dpt>20&&Dpt<25&&(DsvpvDistance/DsvpvDisErr)>3.25&&Dchi2cl>0.054)||(Dpt>25&&(DsvpvDistance/DsvpvDisErr)>2.97&&Dchi2cl>0.050)))"
 TRGPbPb="((HLT_HIDmesonHITrackingGlobal_Dpt20_v1&&Dpt>20&&Dpt<40)||(HLT_HIDmesonHITrackingGlobal_Dpt40_v1&&Dpt>40&&Dpt<60)||(HLT_HIDmesonHITrackingGlobal_Dpt60_v1&&Dpt>60))"
 LABELPbPb="PbPb"
+LABELNPPbPb="NPPbPb"
 USEPRESCALEPbPb=1
 CUTFORTRIGGERPRESCALEPbPb=0
 
@@ -175,11 +186,25 @@ g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe
 ./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELNPPP" "$OUTPUTFILEMCSTUDYNPPP" "$ISDOWEIGHTPP" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
+if [ $DOMCcombinePP -eq 1 ]; then      
+g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
+./plotPnNP.exe "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$OUTPUTFILEMCSTUDYNPPP"
+fi
+
 if [ $DOMCstudyPbPb -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
+if [ $DOMCstudyNPPbPb -eq 1 ]; then      
+g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
+./MCefficiency.exe "$INPUTMCNPPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELNPPbPb" "$OUTPUTFILEMCSTUDYNPPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
+fi
+
+if [ $DOMCcombinePbPb -eq 1 ]; then      
+g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
+./plotPnNP.exe "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$OUTPUTFILEMCSTUDYNPPbPb"
+fi
 
 if [ $DOCrossSectionPP -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
@@ -206,8 +231,10 @@ OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMB.root"
 OUTPUTFILEPbPbMB="ROOTfiles/hPtSpectrumDzeroPbPbMB.root"
 OUTPUTFILEPlotPbPbMB="ROOTfiles/CrossSectionFONLLPbPbMB.root"
 OUTPUTFILERAAMB="ROOTfiles/outputRAAMB.root"
-OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB"
-OUTPUTFILEMCSTUDYPbPbMB="ROOTfiles/MCstudiesPbPbMB"
+OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB.root"
+OUTPUTFILEMCSTUDYNPPPMB="ROOTfiles/MCstudiesNPPPMB.root"
+OUTPUTFILEMCSTUDYPbPbMB="ROOTfiles/MCstudiesPbPbMB.root"
+OUTPUTFILEMCSTUDYNPPbPbMB="ROOTfiles/MCstudiesNPPbPbMB.root"
 
 
 #LUMIPPMB=0.0351        #assuming sigma=70mb, Nevents=2213 millions, estimated MB efficiency=0.9  Lumi=2.213*10^9/(70*0.85*10^9pb)=2/(70*0.9)=0.0351
@@ -220,6 +247,7 @@ RECOONLYPPMB="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dtrk
 CUTPPMB="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dtrk2Pt>1.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>2.5&&Dchi2cl>0.05&&Dalpha<0.12"
 TRGPPMB="(HLT_L1MinimumBiasHF1OR_part1_v1||HLT_L1MinimumBiasHF1OR_part2_v1||HLT_L1MinimumBiasHF1OR_part3_v1||HLT_L1MinimumBiasHF1OR_part4_v1||HLT_L1MinimumBiasHF1OR_part5_v1||HLT_L1MinimumBiasHF1OR_part6_v1||HLT_L1MinimumBiasHF1OR_part7_v1||HLT_L1MinimumBiasHF1OR_part8_v1||HLT_L1MinimumBiasHF1OR_part9_v1||HLT_L1MinimumBiasHF1OR_part10_v1||HLT_L1MinimumBiasHF1OR_part11_v1||HLT_L1MinimumBiasHF1OR_part12_v1||HLT_L1MinimumBiasHF1OR_part13_v1||HLT_L1MinimumBiasHF1OR_part14_v1||HLT_L1MinimumBiasHF1OR_part15_v1||HLT_L1MinimumBiasHF1OR_part16_v1||HLT_L1MinimumBiasHF1OR_part17_v1||HLT_L1MinimumBiasHF1OR_part18_v1||HLT_L1MinimumBiasHF1OR_part19_v1)"
 LABELPPMB="PPMB"
+LABELNPPPMB="NPPPMB"
 USEPRESCALEPPMB=0
 
 
@@ -233,6 +261,7 @@ RECOONLYPbPbMB="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dt
 CUTPbPbMB="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dtrk2Pt>1.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5&&((DlxyBS/DlxyBSErr)>1.5&&Dalpha<0.12&&((Dpt>1&&Dpt<2&&(DsvpvDistance/DsvpvDisErr)>6.0&&Dchi2cl>0.25)||(Dpt>2&&Dpt<4&&(DsvpvDistance/DsvpvDisErr)>5.86&&Dchi2cl>0.224)||(Dpt>4&&Dpt<5&&(DsvpvDistance/DsvpvDisErr)>5.46&&Dchi2cl>0.196)||(Dpt>5&&Dpt<6&&(DsvpvDistance/DsvpvDisErr)>4.86&&Dchi2cl>0.170)||(Dpt>6&&Dpt<8&&(DsvpvDistance/DsvpvDisErr)>4.54&&Dchi2cl>0.125)||(Dpt>8&&Dpt<10&&(DsvpvDistance/DsvpvDisErr)>4.42&&Dchi2cl>0.091)||(Dpt>10&&Dpt<15&&(DsvpvDistance/DsvpvDisErr)>4.06&&Dchi2cl>0.069)||(Dpt>15&&Dpt<20&&(DsvpvDistance/DsvpvDisErr)>3.71&&Dchi2cl>0.056)||(Dpt>20&&Dpt<25&&(DsvpvDistance/DsvpvDisErr)>3.25&&Dchi2cl>0.054)||(Dpt>25&&(DsvpvDistance/DsvpvDisErr)>2.97&&Dchi2cl>0.050)))"
 TRGPbPbMB="(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)"
 LABELPbPbMB="PbPbMB"
+LABELNPPbPbMB="NPPbPbMB"
 USEPRESCALEPbPbMB=0
 
 cp config/parametersLowpt.h parameters.h
@@ -272,11 +301,31 @@ g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$ISDOWEIGHTPPMB" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
+if [ $DOMCstudyNPPPMB -eq 1 ]; then      
+g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
+./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELNPPPMB" "$OUTPUTFILEMCSTUDYNPPPMB" "$ISDOWEIGHTPPMB" "$MINIMUMFIT" "$MAXIMUMFIT"
+fi
+
+if [ $DOMCcombinePPMB -eq 1 ]; then      
+g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
+./plotPnNP.exe "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$OUTPUTFILEMCSTUDYNPPPMB"
+fi
+
 if [ $DOMCstudyPbPbMB -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$ISDOWEIGHTPbPbMB" "$MINIMUMFIT" "$MAXIMUMFIT"
 fi
 
+
+if [ $DOMCstudyNPPbPbMB -eq 1 ]; then      
+g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
+./MCefficiency.exe "$INPUTMCNPPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELNPPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$ISDOWEIGHTPbPbMB" "$MINIMUMFIT" "$MAXIMUMFIT"
+fi
+
+if [ $DOMCcombinePbPbMB -eq 1 ]; then      
+g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
+./plotPnNP.exe "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB"
+fi
 if [ $DOCrossSectionPPMB -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
 ./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" "$LABELPPMB"
