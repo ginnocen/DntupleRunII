@@ -9,18 +9,20 @@ DOFEEDDOWN=0
 DOFITSPP=0
 DOFITSPPMCClosure=0
 DOFITSPbPbMCClosure=0
+DOFITSPPMBMCClosure=0
+DOFITSPbPbMBMCClosure=0
 DOFITSPbPb=0
 DOCrossSectionPP=0
-DOCrossSectionPbPb=1
-DORAA=1
+DOCrossSectionPbPb=0
+DORAA=0
 
 DOFONLLMB=0
 DOFEEDDOWNMB=0
 DOFITSPPMB=0
 DOFITSPbPbMB=0
 DOCrossSectionPPMB=0
-DOCrossSectionPbPbMB=1
-DORAAMB=1
+DOCrossSectionPbPbMB=0
+DORAAMB=0
 
 DOCombineCrossSection=0
 DOCombineRAA=0
@@ -85,8 +87,6 @@ FONLLOUTPUTFILEBtoD="ROOTfiles/output_pp_Btod0meson_5TeV_y1.root"
 FONLLOUTPUTFILEInclusiveD="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root"
 FONLLOUTPUTFILEB="ROOTfiles/output_pp_Bmeson_5TeV_y1.root"
 OUTPUTFILEPP="ROOTfiles/hPtSpectrumDzeroPP.root"
-OUTPUTFILEPPMCClosure="ROOTfiles/hPtSpectrumDzeroPPMCClosure.root"
-OUTPUTFILEPbPbMCClosure="ROOTfiles/hPtSpectrumDzeroPbPbMCClosure.root"
 OUTPUTFILEPlotPP="ROOTfiles/CrossSectionFONLLPP.root"
 OUTPUTFILEPbPb="ROOTfiles/hPtSpectrumDzeroPbPb.root"
 OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPb.root"
@@ -108,17 +108,6 @@ LABELNPPP="NPPP"
 USEPRESCALEPP=1
 CUTFORTRIGGERPRESCALEPP=0
 
-LUMIPPMCClosure=1
-ISMCPPMCClosure=1
-ISDOWEIGHTPPMCClosure=0
-TRGPPMCClosure="1"
-LABELPPMCClosure="PPMCClosure"
-
-LUMIPbPbMCClosure=1
-ISMCPbPbMCClosure=1
-ISDOWEIGHTPbPbMCClosure=0
-TRGPbPbMCClosure="1"
-LABELPbPbMCClosure="PbPbMCClosure"
                                          
 LUMIPbPb=0.0003325458691 #404*0.001*0.001/1.21487
 ISMCPbPb=0
@@ -213,7 +202,6 @@ FONLLOUTPUTFILEBtoDMB="ROOTfiles/output_pp_Btod0meson_5TeV_y1MB.root"
 FONLLOUTPUTFILEInclusiveDMB="ROOTfiles/output_inclusiveDd0meson_5TeV_y1MB.root"
 FONLLOUTPUTFILEBMB="ROOTfiles/output_pp_Bmeson_5TeV_y1MB.root"
 OUTPUTFILEPPMB="ROOTfiles/hPtSpectrumDzeroPPMB.root"
-OUTPUTFILEPPMCClosureMB="ROOTfiles/hPtSpectrumDzeroPPMCClosureMB.root"
 OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMB.root"
 OUTPUTFILEPbPbMB="ROOTfiles/hPtSpectrumDzeroPbPbMB.root"
 OUTPUTFILEPlotPbPbMB="ROOTfiles/CrossSectionFONLLPbPbMB.root"
@@ -368,19 +356,70 @@ g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB" "$LABELPTHATALLPTWEIGHTPPMC" "$FILEOUTPTHATALLPTWEIGHTPPMC" 0  2 100
 fi
 
+
+cp config/parametersHighpt.h parameters.h
+
+OUTPUTFILEPPMCClosure="ROOTfiles/hPtSpectrumDzeroPPMCClosure.root"
+OUTPUTFILEPbPbMCClosure="ROOTfiles/hPtSpectrumDzeroPbPbMCClosure.root"
+LUMIPPMCClosure=1
+ISMCPPMCClosure=1
+ISDOWEIGHTPPMCClosure=0
+TRGPPMCClosure="1"
+LABELPPMCClosure="PPMCClosure"
+
+LUMIPbPbMCClosure=1
+ISMCPbPbMCClosure=1
+ISDOWEIGHTPbPbMCClosure=0
+TRGPbPbMCClosure="1"
+LABELPbPbMCClosure="PbPbMCClosure"
+
 if [ $DOFITSPPMCClosure -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTMCPP"  "$INPUTMCPP"  "$TRGPPMCClosure" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMCClosure"   "$LUMIPPMCClosure"   "$ISDOWEIGHTPPMCClosure"   "$LABELPPMCClosure"  "$OUTPUTFILEPPMCClosure"
+./fitD.exe "$INPUTMCPP"  "$INPUTMCPP"  "$TRGPPMCClosure" "$CUTPP"   "$SELGENPP"   "$ISMCPPMCClosure"   "$LUMIPPMCClosure"   "$ISDOWEIGHTPPMCClosure"   "$LABELPPMCClosure"  "$OUTPUTFILEPPMCClosure"
 g++ ClosureTest.C $(root-config --cflags --libs) -g -o ClosureTest.exe 
 ./ClosureTest.exe "$OUTPUTFILEPPMCClosure" "$LABELPP"
 fi
 
 if [ $DOFITSPbPbMCClosure -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTMCPbPb"  "$INPUTMCPbPb"  "$TRGPbPbMCClosure" "$CUTPbPbMB"   "$SELGENPbPb"   "$ISMCPbPbMCClosure"   "$LUMIPbPbMCClosure"   "$ISDOWEIGHTPbPbMCClosure"   "$LABELPbPbMCClosure"  "$OUTPUTFILEPbPbMCClosure"
+./fitD.exe "$INPUTMCPbPb"  "$INPUTMCPbPb"  "$TRGPbPbMCClosure" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPbMCClosure"   "$LUMIPbPbMCClosure"   "$ISDOWEIGHTPbPbMCClosure"   "$LABELPbPbMCClosure"  "$OUTPUTFILEPbPbMCClosure"
 g++ ClosureTest.C $(root-config --cflags --libs) -g -o ClosureTest.exe 
 ./ClosureTest.exe "$OUTPUTFILEPbPbMCClosure" "$LABELPbPb"
 fi
+
+cp config/parametersLowpt.h parameters.h
+
+OUTPUTFILEPPMBMCClosure="ROOTfiles/hPtSpectrumDzeroPPMBMCClosure.root"
+OUTPUTFILEPbPbMBMCClosure="ROOTfiles/hPtSpectrumDzeroPbPbMBMCClosure.root"
+LUMIPPMBMCClosure=1
+ISMCPPMBMCClosure=1
+ISDOWEIGHTPPMBMCClosure=0
+TRGPPMBMCClosure="1"
+LABELPPMBMCClosure="PPMBMCClosure"
+
+LUMIPbPbMBMCClosure=1
+ISMCPbPbMBMCClosure=1
+ISDOWEIGHTPbPbMBMCClosure=0
+TRGPbPbMBMCClosure="1"
+LABELPbPbMBMCClosure="PbPbMBMCClosure"
+
+if [ $DOFITSPPMBMCClosure -eq 1 ]; then      
+g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
+./fitD.exe "$INPUTMCPP"  "$INPUTMCPP"  "$TRGPPMBMCClosure" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMBMCClosure"   "$LUMIPPMBMCClosure"   "$ISDOWEIGHTPPMBMCClosure"   "$LABELPPMBMCClosure"  "$OUTPUTFILEPPMBMCClosure"
+g++ ClosureTest.C $(root-config --cflags --libs) -g -o ClosureTest.exe 
+./ClosureTest.exe "$OUTPUTFILEPPMBMCClosure" "$LABELPPMB"
+fi
+
+if [ $DOFITSPbPbMBMCClosure -eq 1 ]; then      
+g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
+./fitD.exe "$INPUTMCPbPb"  "$INPUTMCPbPb"  "$TRGPbPbMBMCClosure" "$CUTPbPbMB"   "$SELGENPbPb"   "$ISMCPbPbMBMCClosure"   "$LUMIPbPbMBMCClosure"   "$ISDOWEIGHTPbPbMBMCClosure"   "$LABELPbPbMBMCClosure"  "$OUTPUTFILEPbPbMBMCClosure"
+g++ ClosureTest.C $(root-config --cflags --libs) -g -o ClosureTest.exe 
+./ClosureTest.exe "$OUTPUTFILEPbPbMBMCClosure" "$LABELPbPbMB"
+fi
+
+
+
+
 
 
 

@@ -20,10 +20,10 @@ void ClosureTest(TString inputfile="ROOTfiles/hPtSpectrumDzeroPPMCClosure.root",
     
   TCanvas*canvas=new TCanvas("canvas","canvas",550,500);
   canvas->cd();
-  TH2F* hemptyClosure=new TH2F("hemptyClosure","",50,0,100.,10,0.8,1.2);  
+  TH2F* hemptyClosure=new TH2F("hemptyClosure","",50,ptBins[0]-2,ptBins[nBins-1]+2,10,0.5,1.5);  
   hemptyClosure->GetXaxis()->CenterTitle();
   hemptyClosure->GetYaxis()->CenterTitle();
-  hemptyClosure->GetYaxis()->SetTitle("PtCorr/PtGen");
+  hemptyClosure->GetYaxis()->SetTitle("Corrected Yield/Generated Yield");
   hemptyClosure->GetXaxis()->SetTitle("p_{T}");
   hemptyClosure->GetXaxis()->SetTitleOffset(.9);
   hemptyClosure->GetYaxis()->SetTitleOffset(1.);
