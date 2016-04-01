@@ -46,7 +46,7 @@ float triggerEfficiency(double pt, double HLT, bool isPbPb)
       }	else if (HLT==30) {
          fL1->SetParameters(6.19120e-3,1.19415e-1,-2.24150);
       }	else if (HLT==50) {
-         fL1->SetParameters(6.19120e-3,1.19415e-1,-2.24150);
+         fL1->SetParameters(4.353e-3,  1.041e-1,  -2.355);
       } else {
          std::cout <<"Oh no, where did you find this HLT path??? I don't remember this value "<<HLT<<". This is a disaster! We need to go to Brocard to buy more cakes..."<<std::endl;
 	 return 1e10; 
