@@ -11,9 +11,11 @@ cd notes/AN-15-308/trunk
 
 cp "$MYPWD"/Fits/DMass*.pdf Plots/Fits/.
 cp "$MYPWD"/canvasEff_studyPP.pdf Plots/Efficiency/.
+cp "$MYPWD"/canvasEff_studyNPPP.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasEff_studyPPMB.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasEff_studyPbPb.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasEff_studyPbPbMB.pdf Plots/Efficiency/.
+
 cp "$MYPWD"/canvas_pp_Btod0meson_5TeV_y1_PPMB.pdf Plots/FONLL/.
 cp "$MYPWD"/canvas_pp_d0meson_5TeV_y1_PPMB.pdf Plots/FONLL/.
 cp "$MYPWD"/canvas_pp_Btod0meson_5TeV_y1_PP.pdf Plots/FONLL/.
@@ -31,11 +33,8 @@ cp "$MYPWD"/canvasPtreweightedComparisonPbPb.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPbPbMB.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtReweightPPptreweighted.pdf Plots/SystPtShape/.
 
-
-cp "$MYPWD"/canvasAccEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
-cp "$MYPWD"/canvasRecoEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
-cp "$MYPWD"/canvasSelEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
-cp "$MYPWD"/canvasTotalEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
+cp "$MYPWD"/canvasTotAccEfficiencyPtHatWeight_isPbPb0.pdf Plots/Efficiency/.
+cp "$MYPWD"/canvasTotAccEfficiencyPtHatWeight_isPbPb1.pdf Plots/Efficiency/.
 
 cp "$MYPWD"/canvasClosurePP.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasClosurePbPb.pdf Plots/Efficiency/.

@@ -117,13 +117,14 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   TH2F* hemptyEffReco=(TH2F*)hemptyEff->Clone("hemptyEffReco");
   TH2F* hemptyEffSelection=(TH2F*)hemptyEff->Clone("hemptyEffSelection");
   
-  TCanvas*canvasEff=new TCanvas("canvasEff","canvasEff",1100.,1000);
-  canvasEff->Divide(2,2);
+  TCanvas*canvasEff=new TCanvas("canvasEff","canvasEff",1000.,500);
+  canvasEff->Divide(2,1);
   canvasEff->cd(1);
   
   hemptyEffAcc->SetYTitle("#alpha");
   hemptyEffAcc->Draw();
   hEffAcc->Draw("same");
+  /*
   canvasEff->cd(2);
   hEffReco->GetYaxis()->SetTitleOffset(1.2);
   hemptyEffReco->SetYTitle("#alpha x #epsilon_{reco} ");
@@ -133,7 +134,8 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   hemptyEffSelection->SetYTitle(" #epsilon_{sel}");
   hemptyEffSelection->Draw();  
   hEffSelection->Draw("same");  
-  canvasEff->cd(4);
+  */
+  canvasEff->cd(2);
   hemptyEff->Draw();
   hEff->Draw("same");
   canvasEff->SaveAs(Form("canvasEff_study%s.pdf",Form(label.Data())));

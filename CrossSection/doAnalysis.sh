@@ -43,8 +43,8 @@ DOMCstudyPPMBReweight=0
 DOMCstudyPbPbMBReweight=0
 DOsystematicPtshape=0
 
-DOsystematicPthatstudyPP=0
-DOsystematicPthatstudyPbPb=0
+DOsystematicPthatstudyPP=1
+DOsystematicPthatstudyPbPb=1
 
 UNITY=1
 NULL=0
