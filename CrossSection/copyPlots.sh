@@ -39,6 +39,8 @@ cp "$MYPWD"/canvasTotalEfficiency_phat10_pthat30_pthat50.pdf Plots/Efficiency/.
 
 cp "$MYPWD"/canvasClosurePP.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasClosurePbPb.pdf Plots/Efficiency/.
+cp "$MYPWD"/canvasClosurePPMB.pdf Plots/Efficiency/.
+cp "$MYPWD"/canvasClosurePbPbMB.pdf Plots/Efficiency/.
 
 canvasClosurePP.pdf
 
