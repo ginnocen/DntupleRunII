@@ -43,10 +43,10 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   hemptyEff->SetMaximum(2);
   hemptyEff->SetMinimum(0.);
   hemptyEff->Draw();
-  gNuclearModification->SetFillColor(4);
+  gNuclearModification->SetFillColor(1);
   gNuclearModification->SetFillStyle(0); 
   gNuclearModification->SetLineWidth(3);
-  gNuclearModification->SetLineColor(4);
+  gNuclearModification->SetLineColor(1);
   gNuclearModification->Draw("5same");
   gNuclearModificationMB->SetFillColor(1);
   gNuclearModificationMB->SetFillStyle(0); 
@@ -54,7 +54,7 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   gNuclearModificationMB->SetLineColor(1);
   gNuclearModificationMB->Draw("5same");
 
-  hNuclearModification->SetLineColor(4);
+  hNuclearModification->SetLineColor(1);
   hNuclearModification->SetLineWidth(3);
   hNuclearModification->Draw("same");
   hNuclearModificationMB->SetLineColor(1);
@@ -89,16 +89,16 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
 
   TLegendEntry *ent_Dhighpt=legendSigma->AddEntry(hNuclearModification,"R_{AA} D triggers.","pf");
   ent_Dhighpt->SetTextFont(42);
-  ent_Dhighpt->SetLineColor(4);
-  ent_Dhighpt->SetMarkerColor(4);
+  ent_Dhighpt->SetLineColor(1);
+  ent_Dhighpt->SetMarkerColor(1);
   ent_Dhighpt->SetTextSize(0.03);
-  
+  /*
   TLegendEntry *ent_DMB=legendSigma->AddEntry(hNuclearModificationMB,"R_{AA} D MB.","pf");
   ent_DMB->SetTextFont(42);
   ent_DMB->SetLineColor(1);
   ent_DMB->SetMarkerColor(1);
   ent_DMB->SetTextSize(0.03);
-  
+  */
   TLegendEntry *ent_Charged=legendSigma->AddEntry(hTrackPt_trkCorr_PbPb_copy1,"R_{AA} charged hadrons.","pf");
   ent_Charged->SetTextFont(42);
   ent_Charged->SetLineColor(1);
@@ -107,6 +107,7 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   
   legendSigma->Draw();
   canvasRAA->SaveAs("canvasRAAComparison.pdf");
+  canvasRAA->SaveAs("canvasRAAComparison.png");
 
   }
 
