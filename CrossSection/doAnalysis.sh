@@ -12,7 +12,7 @@ DOFITSPbPbMCClosure=0
 DOFITSPPMBMCClosure=0
 DOFITSPbPbMBMCClosure=0
 DOFITSPbPb=0
-DOCrossSectionPP=0
+DOCrossSectionPP=1
 DOCrossSectionPbPb=0
 DORAA=0
 
@@ -20,11 +20,11 @@ DOFONLLMB=0
 DOFEEDDOWNMB=0
 DOFITSPPMB=0
 DOFITSPbPbMB=0
-DOCrossSectionPPMB=0
+DOCrossSectionPPMB=1
 DOCrossSectionPbPbMB=0
 DORAAMB=0
 
-DOCombineCrossSection=0
+DOCombineCrossSection=1
 DOCombineRAA=0
 
 #Efficiency studies
@@ -168,12 +168,12 @@ fi
 
 if [ $DOFITSPP -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPPSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   "$LUMIPP"   "$ISDOWEIGHTPP"   "$LABELPP"  "$OUTPUTFILEPP"
+./fitD.exe "$INPUTDATAPPSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   1   "$ISDOWEIGHTPP"   "$LABELPP"  "$OUTPUTFILEPP"
 fi
 
 if [ $DOFITSPbPb -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPbPbSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPb" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPb"   "$LUMIPbPb"   "$ISDOWEIGHTPbPb"  "$LABELPbPb"  "$OUTPUTFILEPbPb"
+./fitD.exe "$INPUTDATAPbPbSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPb" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPb"   1   "$ISDOWEIGHTPbPb"  "$LABELPbPb"  "$OUTPUTFILEPbPb"
 fi
 
 if [ $DOMCstudyPP -eq 1 ]; then      
@@ -208,12 +208,12 @@ fi
 
 if [ $DOCrossSectionPP -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" "$LABELPP"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" "$LABELPP" "$LUMIPP"
 fi
 
 if [ $DOCrossSectionPbPb -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" "$LABELPbPb"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" "$LABELPbPb" "$LUMIPbPb"
 fi
 
 if [ $DORAA -eq 1 ]; then      
@@ -288,12 +288,12 @@ fi
 
 if [ $DOFITSPPMB -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPPMBSKIMMED"  "$INPUTMCPP"  "$TRGPPMB" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMB"   "$LUMIPPMB"   "$ISDOWEIGHTPPMB"   "$LABELPPMB"  "$OUTPUTFILEPPMB"
+./fitD.exe "$INPUTDATAPPMBSKIMMED"  "$INPUTMCPP"  "$TRGPPMB" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMB"   1   "$ISDOWEIGHTPPMB"   "$LABELPPMB"  "$OUTPUTFILEPPMB"
 fi
 
 if [ $DOFITSPbPbMB -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPbPbMBSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPbMB" "$CUTPbPbMB"   "$SELGENPbPbMB"   "$ISMCPbPbMB"   "$LUMIPbPbMB"   "$ISDOWEIGHTPbPbMB"   "$LABELPbPbMB"  "$OUTPUTFILEPbPbMB"
+./fitD.exe "$INPUTDATAPbPbMBSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPbMB" "$CUTPbPbMB"   "$SELGENPbPbMB"   "$ISMCPbPbMB"   1   "$ISDOWEIGHTPbPbMB"   "$LABELPbPbMB"  "$OUTPUTFILEPbPbMB"
 fi
 
 if [ $DOMCstudyPPMB -eq 1 ]; then      
@@ -328,12 +328,12 @@ g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe
 fi
 if [ $DOCrossSectionPPMB -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" "$LABELPPMB"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" "$LABELPPMB" "$LUMIPPMB"
 fi
 
 if [ $DOCrossSectionPbPbMB -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePP" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePP" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB" "$LUMIPbPb"
 fi
 
 if [ $DORAAMB -eq 1 ]; then      
