@@ -87,7 +87,7 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   hSigmaPPStatMB->SetLineWidth(2);
   hSigmaPPStatMB->Draw("epsame"); 
 
-  hSigmaPPStat->SetLineColor(4);
+  hSigmaPPStat->SetLineColor(1);
   hSigmaPPStat->SetLineWidth(2);
   hSigmaPPStat->Draw("epsame"); 
 
@@ -97,10 +97,10 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   gaeCrossSystMB->SetLineColor(1);
   gaeCrossSystMB->Draw("5same");  
 
-  gaeCrossSyst->SetFillColor(4);
+  gaeCrossSyst->SetFillColor(1);
   gaeCrossSyst->SetFillStyle(0); 
   gaeCrossSyst->SetLineWidth(2);
-  gaeCrossSyst->SetLineColor(4);
+  gaeCrossSyst->SetLineColor(1);
   gaeCrossSyst->Draw("5same");  
 
   TLegend *legendSigma=new TLegend(0.5100806,0.5868644,0.8084677,0.7605932,"");
@@ -110,13 +110,13 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   legendSigma->SetFillStyle(1001);
   legendSigma->SetTextFont(42);
   legendSigma->SetTextSize(0.045);
-  
+ /* 
   TLegendEntry *ent_SigmaPPMB=legendSigma->AddEntry(hSigmaPPStatMB,"pp MB","pf");
   ent_SigmaPPMB->SetTextFont(42);
   ent_SigmaPPMB->SetLineColor(2);
   ent_SigmaPPMB->SetMarkerColor(2);
-  
-  TLegendEntry *ent_SigmaPP=legendSigma->AddEntry(hSigmaPPStat,"pp triggered","pf");
+*/  
+  TLegendEntry *ent_SigmaPP=legendSigma->AddEntry(hSigmaPPStat,"pp data","pf");
   ent_SigmaPP->SetTextFont(42);
   ent_SigmaPP->SetLineColor(1);
   ent_SigmaPP->SetMarkerColor(1);
@@ -175,14 +175,15 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   gaeRatioCrossFONLLsystMB->Draw("5same");
   gaeRatioCrossFONLLunity->Draw("5same");
   gaeRatioCrossFONLLstat->Draw("epsame");
-  gaeRatioCrossFONLLstat->SetLineColor(4);
-  gaeRatioCrossFONLLstat->SetMarkerColor(4);
+  gaeRatioCrossFONLLstat->SetLineColor(1);
+  gaeRatioCrossFONLLstat->SetMarkerColor(1);
   gaeRatioCrossFONLLsyst->Draw("5same");
-  gaeRatioCrossFONLLsyst->SetLineColor(4);
-  gaeRatioCrossFONLLsyst->SetMarkerColor(4);
+  gaeRatioCrossFONLLsyst->SetLineColor(1);
+  gaeRatioCrossFONLLsyst->SetMarkerColor(1);
 
   l->Draw("same");
   cSigma->SaveAs("CrossSectionComparison.pdf");
+  cSigma->SaveAs("CrossSectionComparison.png");
 
   }
 

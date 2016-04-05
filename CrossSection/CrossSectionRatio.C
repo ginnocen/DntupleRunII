@@ -6,7 +6,7 @@
 
 
 
-void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",TString label="PbPb")
+void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",TString label="PbPb",double lumi=1.)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -25,10 +25,14 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   TH1F* hSigmaPPStat = (TH1F*)filePP->Get("hPtSigma");
   TH1F* hfprompt = new TH1F("hfprompt","",nBins,ptBins);
   
+  hSigmaPPStat->Scale(1./lumi);
+  
     for (int i=0;i<nBins;i++) {
       double prompt=bFeedDownCorrection(hSigmaPPStat->GetBinCenter(i+1),isPbPb);
       hfprompt->SetBinContent(i+1,prompt);
-      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)*hfprompt->GetBinContent(i+1));
+      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)*prompt);
+      hSigmaPPStat->SetBinError(i+1,hSigmaPPStat->GetBinError(i+1)*prompt);
+      std::cout<<"pt center="<<hSigmaPPStat->GetBinCenter(i+1)<<", prompt fraction="<<prompt<<std::endl;
     }
   
   if (usePrescaleCorr==1){
@@ -39,8 +43,12 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
     for (int i=0;i<nBins;i++) {
       double prompt=bFeedDownCorrection(hSigmaPPStat->GetBinCenter(i+1),isPbPb);
       hSigmaPPStat->SetBinContent(i+1,prompt*hSigmaPPStat->GetBinContent(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
+      hSigmaPPStat->SetBinError(i+1,prompt*hSigmaPPStat->GetBinError(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
+      std::cout<<"pt center="<<hSigmaPPStat->GetBinCenter(i+1)<<", prompt fraction="<<prompt<<std::endl;
     }
   }
+  
+
 
   Double_t xr[nBins], xrlow[nBins], xrhigh[nBins], ycross[nBins],ycrossstat[nBins],ycrosssysthigh[nBins],ycrosssystlow[nBins], yFONLL[nBins];
   Double_t yratiocrossFONLL[nBins], yratiocrossFONLLstat[nBins], yratiocrossFONLLsysthigh[nBins], yratiocrossFONLLsystlow[nBins];
@@ -121,6 +129,7 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   hemptySigma->GetXaxis()->CenterTitle();
   hemptySigma->GetYaxis()->CenterTitle();
   hemptySigma->GetYaxis()->SetTitle("d#sigma / dp_{T}( pb GeV^{-1}c)");
+  if (isPbPb) hemptySigma->GetYaxis()->SetTitle("1/T_{AA} * dN / dp_{T}( pb GeV^{-1}c)");
   hemptySigma->GetXaxis()->SetTitleOffset(1.);
   hemptySigma->GetYaxis()->SetTitleOffset(1.3);
   hemptySigma->GetXaxis()->SetTitleSize(0.045);
@@ -304,14 +313,14 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
 
 int main(int argc, char *argv[])
 {
-  if((argc != 7))
+  if((argc != 8))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
   
-  if(argc == 7)
-    CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],argv[6]);
+  if(argc == 8)
+    CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],argv[6],atof(argv[7]));
   return 0;
 }
 

@@ -17,7 +17,6 @@ void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPPMB.root", TSt
   hSigmaPPStat->SetName("hSigmaPPStat");
   TH1D*hNuclearModification=(TH1D*)fPbPb->Get("hPtSigma");
   hNuclearModification->SetName("hNuclearModification");
-  hNuclearModification->Scale(1./208./208.);
   hNuclearModification->Divide(hSigmaPPStat);
 
 
