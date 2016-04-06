@@ -2,7 +2,7 @@
 #source clean.sh
 
 CENTPbPb=10
-CUTCENTPbPb="%%hiBin<20."
+CUTCENTPbPb="&&hiBin<20."
 
 #Central point of the analysis
 
@@ -16,8 +16,8 @@ DONORMPPMB=0
 DONORMPbPb=0
 DONORMPbPbMB=0
 
-DORAA=0
-DORAAMB=0
+DORAA=1
+DORAAMB=1
 
 DOCombineCrossSection=0
 DOCombineRAA=0
@@ -74,9 +74,9 @@ INPUTMCPbPbPthat70="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_p
 
 ## PbPb DATA 
 
-#INPUTDATAPbPbSKIMMED="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160331_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0_FINALJSON_v6.root"
+#INPUTDATAPbPbSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2_skimmed.root"
 INPUTDATAPbPbSKIMMED="/data/dmeson2015/DataDntuple/ntD_EvtBase_20160331_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0_FINALJSON_v6_skimmed.root"
-INPUTDATAPbPbUNSKIMMED="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160331_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0_FINALJSON_v6.root"
+INPUTDATAPbPbUNSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2.root"
 INPUTDATAPbPbMBUNSKIMMED="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
 INPUTDATAPbPbMBSKIMMED="/data/jisun/PbPb2015/HF2and_tk1p0_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
 
@@ -164,6 +164,7 @@ OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPb_Cent10.root"
 OUTPUTFILERAA="ROOTfiles/outputRAA_Cent10.root"
 
 LUMIPbPb=7.63533
+#LUMIPbPb=18.4115 
 ISMCPbPb=0
 ISDOWEIGHTPbPb=0
 SELGENPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
@@ -202,7 +203,7 @@ g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe
 ./MCefficiency.exe "$INPUTMCPbPb"  "${SELGENPbPb}${CUTCENTPbPb}" "${SELGENPPACCPbPb}${CUTCENTPbPb}"  "${RECOONLYPbPb}${CUTCENTPbPb}" "${CUTPbPb}${CUTCENTPbPb}"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
 
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCNPPbPb"  "${SELGENPbPb}${CUTCENTPbPb}" "${SELGENPPACCPbPb}${CUTCENTPbPb}"  "${RECOONLYPbPb}${CUTCENTPbPb}" "${CUTPbPb}${CUTCENTPbPb}"  "${LABELNPPbPb}${CUTCENTPbPb}" "$OUTPUTFILEMCSTUDYNPPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
+./MCefficiency.exe "$INPUTMCNPPbPb"  "${SELGENPbPb}${CUTCENTPbPb}" "${SELGENPPACCPbPb}${CUTCENTPbPb}"  "${RECOONLYPbPb}${CUTCENTPbPb}" "${CUTPbPb}${CUTCENTPbPb}"  "$LABELNPPbPb" "$OUTPUTFILEMCSTUDYNPPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
 
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
 ./plotPnNP.exe "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$OUTPUTFILEMCSTUDYNPPbPb"
@@ -290,6 +291,7 @@ OUTPUTFILERAAMB="ROOTfiles/outputRAAMB_Cent10.root"
 
 
 LUMIPbPbMB=0.350197
+#LUMIPbPbMB=0.831646 
 ISMCPbPbMB=0
 ISDOWEIGHTPbPbMB=0
 SELGENPbPbMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
