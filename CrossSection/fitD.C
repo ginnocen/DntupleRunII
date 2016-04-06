@@ -8,7 +8,7 @@ Double_t setparam10=0.005;
 Double_t setparam8=0.1;
 Double_t setparam9=0.1;
 Double_t fixparam1=1.865;
-Double_t minhisto=	1.7;
+Double_t minhisto=1.7;
 Double_t maxhisto=2.0;
 Double_t nbinsmasshisto=60;
 Double_t binwidthmass=(maxhisto-minhisto)/nbinsmasshisto;
@@ -16,12 +16,27 @@ Double_t binwidthmass=(maxhisto-minhisto)/nbinsmasshisto;
 TString weight = "pthatweight";
 TString seldata;
 TString selmc;
+TString selmceff;
+TString selmcgen;
 TString collisionsystem;
+Float_t cent;
 
-void fitD(TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root", TString inputmc="/afs/cern.ch/work/w/wangj/public/Dmeson/ntD_20151110_DfinderMC_20151110_EvtMatching_Pythia_D0pt15p0_Pthat15_TuneZ2_5020GeV_GENSIM_75x_1015_20151110_ppGlobaTrackingPPmenuHFlowpuv11_MBseed_twang-Pythia_1107.root", TString trgselection="((HLT_DmesonPPTrackingGlobal_Dpt15_v1&&Dpt>25&&Dpt<40)||(HLT_DmesonPPTrackingGlobal_Dpt30_v1&&Dpt>40&&Dpt<60)||(HLT_DmesonPPTrackingGlobal_Dpt50_v1&&Dpt>60))",  TString cut="Dy>-1.&&Dy<1.&&(Dtrk1highPurity&&Dtrk2highPurity)&&(DsvpvDistance/DsvpvDisErr)>3.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1Pt>1.5&&Dtrk2Pt>1.5", TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))", int isMC=0, Double_t luminosity=26., int doweight=0, TString collsyst="PbPb", TString outputfile="mytest.root")
+void fitD(TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root", TString inputmc="/afs/cern.ch/work/w/wangj/public/Dmeson/ntD_20151110_DfinderMC_20151110_EvtMatching_Pythia_D0pt15p0_Pthat15_TuneZ2_5020GeV_GENSIM_75x_1015_20151110_ppGlobaTrackingPPmenuHFlowpuv11_MBseed_twang-Pythia_1107.root", TString trgselection="((HLT_DmesonPPTrackingGlobal_Dpt15_v1&&Dpt>25&&Dpt<40)||(HLT_DmesonPPTrackingGlobal_Dpt30_v1&&Dpt>40&&Dpt<60)||(HLT_DmesonPPTrackingGlobal_Dpt50_v1&&Dpt>60))",  TString cut="Dy>-1.&&Dy<1.&&(Dtrk1highPurity&&Dtrk2highPurity)&&(DsvpvDistance/DsvpvDisErr)>3.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1Pt>1.5&&Dtrk2Pt>1.5", TString cutmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))", int isMC=0, Double_t luminosity=26., int doweight=0, TString collsyst="PbPb", TString outputfile="mytest.root", Float_t centrality=-1)
 {
   collisionsystem=collsyst;
-  seldata = Form("%s&&%s",trgselection.Data(),cut.Data());
+  cent = centrality*2;
+  if(cent<0)
+    {
+      seldata = Form("%s&&%s",trgselection.Data(),cut.Data());
+      selmceff = Form("%s",cut.Data());
+      selmcgen = Form("%s",cutmcgen.Data());
+    }
+  else
+    {
+      seldata = Form("%s&&%s&&hiBin<%f",trgselection.Data(),cut.Data(),cent);
+      selmceff = Form("%s&&hiBin<%f",cut.Data(),cent);
+      selmcgen = Form("%s&&hiBin<%f",cutmcgen.Data(),cent);
+    }
   selmc = Form("%s",cut.Data());
 
   gStyle->SetTextSize(0.05);
@@ -39,22 +54,15 @@ void fitD(TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderDat
   TFile* inf = new TFile(inputdata.Data());
   TFile* infMC = new TFile(inputmc.Data());
 
-  TTree* nt = (TTree*) inf->Get("ntDkpi");
-  TTree* HltTree= (TTree*) inf->Get("ntHlt");
-  HltTree->AddFriend(nt);
-  nt->AddFriend(HltTree);
-  TTree* ntHid = (TTree*) inf->Get("ntHi");
-  nt->AddFriend(ntHid);
-  
+  TTree* nt = (TTree*)inf->Get("ntDkpi");
+  nt->AddFriend("ntHlt");
+  nt->AddFriend("ntHi");
   TTree* ntMC = (TTree*)infMC->Get("ntDkpi");
+  ntMC->AddFriend("ntHlt");
+  ntMC->AddFriend("ntHi");
   TTree* ntGen = (TTree*)infMC->Get("ntGen");
-  TTree* ntHi = (TTree*)infMC->Get("ntHi");
-  
-  ntGen->AddFriend(ntMC);
-  ntGen->AddFriend(ntHi);
-  ntMC->AddFriend(ntGen);
-  ntMC->AddFriend(ntHi);
-  ntHi->AddFriend(ntMC);
+  ntGen->AddFriend("ntHlt");
+  ntGen->AddFriend("ntHi");
   
   TH1D* hPt = new TH1D("hPt","",nBins,ptBins);
   TH1D* hPtRecoTruth = new TH1D("hPtRecoTruth","",nBins,ptBins);
@@ -83,9 +91,9 @@ void fitD(TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderDat
       hRelMagnGaus1Gaus2->SetBinError(i+1,f->GetParError(4));
     }  
 
-  ntMC->Project("hPtMC","Dpt",TCut(weight)*(TCut(selmc.Data())&&"(Dgen==23333)"));
+  ntMC->Project("hPtMC","Dpt",TCut(weight)*(TCut(selmceff.Data())&&"(Dgen==23333)"));
   divideBinWidth(hPtMC);
-  ntMC->Project("hPtRecoTruth","Dpt",TCut(selmc.Data())&&"(Dgen==23333)");
+  ntMC->Project("hPtRecoTruth","Dpt",TCut(selmceff.Data())&&"(Dgen==23333)");
   divideBinWidth(hPtRecoTruth);
   ntGen->Project("hPtGen","Gpt",TCut(weight)*(TCut(selmcgen.Data())));
   divideBinWidth(hPtGen);
@@ -362,14 +370,20 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
 
 int main(int argc, char *argv[])
 {
-  if((argc != 11))
-  {
-    std::cout << "Wrong number of inputs" << std::endl;
-    return 1;
-  }
-  
-  if(argc == 11)
-    fitD(argv[1], argv[2], argv[3], argv[4], argv[5], atoi(argv[6]), atof(argv[7]), atoi(argv[8]),argv[9],argv[10]);
-  return 0;
+  if(argc==12)
+    {
+      fitD(argv[1], argv[2], argv[3], argv[4], argv[5], atoi(argv[6]), atof(argv[7]), atoi(argv[8]),argv[9],argv[10],atof(argv[11]));
+      return 0;
+    }
+  else if(argc==11)
+    {
+      fitD(argv[1], argv[2], argv[3], argv[4], argv[5], atoi(argv[6]), atof(argv[7]), atoi(argv[8]),argv[9],argv[10]);
+      return 0;
+    }
+  else
+    {
+      std::cout << "Wrong number of inputs" << std::endl;
+      return 1;
+    }
 }
 
