@@ -61,6 +61,7 @@ void skimForPbPbTrig(TString infname="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtB
    
    forest.push_back(ntDkpi);
    forest.push_back(ntHlt);
+   forest.push_back(ntHi);
    forest.push_back(ntSkim);
    forest.push_back(ntGen);
    
@@ -69,6 +70,7 @@ void skimForPbPbTrig(TString infname="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtB
 
    AddCloneTree(cloneForest,outf,ntDkpi,"ntDkpi");
    AddCloneTree(cloneForest,outf,ntHlt,"ntHlt");
+   AddCloneTree(cloneForest,outf,ntHi,"ntHi");
    AddCloneTree(cloneForest,outf,ntSkim,"ntSkim");
    AddCloneTree(cloneForest,outf,ntGen,"ntGen");
    

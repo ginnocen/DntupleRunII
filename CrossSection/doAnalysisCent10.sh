@@ -6,9 +6,9 @@ CUTCENTPbPb="%%hiBin<20."
 
 #Central point of the analysis
 
-DOANALYSISPP=0
+DOANALYSISPP=1
 DOANALYSISPbPb=1
-DOANALYSISPPMB=0
+DOANALYSISPPMB=1
 DOANALYSISPbPbMB=1
 
 DONORMPP=0
@@ -74,9 +74,9 @@ INPUTMCPbPbPthat70="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_p
 
 ## PbPb DATA 
 
-#INPUTDATAPbPbSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2_skimmed.root"
+#INPUTDATAPbPbSKIMMED="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160331_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0_FINALJSON_v6.root"
 INPUTDATAPbPbSKIMMED="/data/dmeson2015/DataDntuple/ntD_EvtBase_20160331_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0_FINALJSON_v6_skimmed.root"
-INPUTDATAPbPbUNSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2.root"
+INPUTDATAPbPbUNSKIMMED="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160331_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0_FINALJSON_v6.root"
 INPUTDATAPbPbMBUNSKIMMED="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
 INPUTDATAPbPbMBSKIMMED="/data/jisun/PbPb2015/HF2and_tk1p0_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
 
@@ -163,8 +163,7 @@ OUTPUTFILEPbPb="ROOTfiles/hPtSpectrumDzeroPbPb_Cent10.root"
 OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPb_Cent10.root"
 OUTPUTFILERAA="ROOTfiles/outputRAA_Cent10.root"
 
-LUMIPbPb=1.
-#LUMIPbPb=18.4115 
+LUMIPbPb=7.63533
 ISMCPbPb=0
 ISDOWEIGHTPbPb=0
 SELGENPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
@@ -290,8 +289,7 @@ OUTPUTFILEMCSTUDYNPPbPbMB="ROOTfiles/MCstudiesNPPbPbMB_Cent10.root"
 OUTPUTFILERAAMB="ROOTfiles/outputRAAMB_Cent10.root"
 
 
-LUMIPbPbMB=1.
-#LUMIPbPbMB=0.831646 
+LUMIPbPbMB=0.350197
 ISMCPbPbMB=0
 ISDOWEIGHTPbPbMB=0
 SELGENPbPbMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
