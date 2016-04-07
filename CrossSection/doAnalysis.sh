@@ -6,7 +6,7 @@
 DOANALYSISPP_FONLL=0
 DOANALYSISPP_TRGCOMBINATION=0
 DOANALYSISPP_FIT=0
-DOANALYSISPP_CROSS=0
+DOANALYSISPP_CROSS=1
 DOANALYSISPP_MCSTUDY=0
 
 DOANALYSISPbPb_FONLL=0
@@ -120,7 +120,9 @@ LABELPP="PP"
 LABELNPPP="NPPP"
 USEPRESCALEPP=1
 CUTFORTRIGGERPRESCALEPP=0
-                                  
+
+ISHADDUPL=1                                  
+
 cp config/parametersHighpt.h parameters.h
 
 if [ $DONORMPP -eq 1 ]; then      
@@ -366,7 +368,7 @@ fi
 
 if [ $DOCombineRAA -eq 1 ]; then      
 g++ CombineRAA.C $(root-config --cflags --libs) -g -o CombineRAA.exe 
-./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON"
+./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON" "$ISHADDUPL"
 fi
 
 
