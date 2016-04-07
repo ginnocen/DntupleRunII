@@ -16,8 +16,11 @@ double DKpiBRUncertainty	= 1.29;			// from PDG
 // pp uncertainty
 // =============================================================================================================
 
+// Normalization uncertainty
+double ppLumiUncertainty 	= 5;			// 5% for the moment, to be updated (4/7/2016)
+
+// Point-to-point
 double ppTrackingEfficiency 	= 4;   			// single track systematics from D* studies
-double ppLumiUncertainty 	= 10;			// 10% for the moment, to be updated (from Daniel)
 double ppSignalExtraction	= 7;			// TODO: old number from 2011, to be updated
 double ppDMesonSelection	= 11.4;			// TODO: old number from 2011, to be updated
 double ppBFeedDownCorrection	= 0;			// TODO
@@ -30,12 +33,17 @@ TF1 *fppSignalExtractionBkg = new TF1("fppSignalExtractionBkg","[0]+[1]/(x)+[2]/
 // =============================================================================================================
 // PbPb uncertainty
 // =============================================================================================================
-double PbPbNMBUncertainty	= 2;			// uncertainty associated with minbias events, 
-							// used in RAA for pT < 20 GeV
-double PbPbLumiUncertainty	= 10;			// 10% for the moment, to be updated (from Daniel)
+
+// Normalization uncertainty
+double PbPbNMBUncertainty	= 2;			// uncertainty associated with minbias events,
+							// used in RAA for pT < 20 GeV (4/7/2016)
+double PbPbLumiUncertainty	= 10;			// 10% for the moment, to be updated (from Daniel), NOT used
 double PbPbTrigger		= 0.6;			// Statistical uncertainty of the eff plateau (92.8+-0.6%)
 
-double TAAUncertainty0to100	= 5.7;			// TODO: old number from 2011, to be updated to the latest table
+// Point-to-point
+double TAAUncertainty0to100	= 2.5;			// Updated number (4/7/2016)
+double TAAUncertainty0to10	= 1.8;			// Updated number (4/7/2016)
+
 double PbPbSignalExtraction	= 7;			// TODO: old number from 2011, to be updated
 double PbPbDMesonSelection	= 11.4;			// TODO: old number from 2011, to be updated
 double PbPbBFeedDownCorrection	= 0;			// TODO
@@ -57,6 +65,11 @@ void initialization()
 // =============================================================================================================
 // RAA systematics
 // =============================================================================================================
+float normalizationUncertaintyForRAA()
+{
+   return 0;
+}
+
 float systematicsForRAA(double pt, double HLT=0, int stage=0)
 {
    if (!initialized) initialization();
@@ -90,6 +103,11 @@ float systematicsForRAA(double pt, double HLT=0, int stage=0)
 // =============================================================================================================
 // RCP systematics
 // =============================================================================================================
+float normalizationUncertaintyForRCP()
+{
+   return 0;
+}
+
 float systematicsForRCP(double pt, double HLT=0)
 {
    if (!initialized) initialization();
@@ -101,6 +119,11 @@ float systematicsForRCP(double pt, double HLT=0)
 // =============================================================================================================
 // cross-section systematics for pp
 // =============================================================================================================
+float normalizationUncertaintyForPP()
+{
+   return 0;
+}
+
 float systematicsPP(double pt, double HLT=0)
 {
    if (!initialized) initialization();
@@ -118,6 +141,12 @@ float systematicsPP(double pt, double HLT=0)
 // =============================================================================================================
 // cross-section systematics for PbPb
 // =============================================================================================================
+float normalizationUncertaintyForPbPb()
+{
+   return 0;
+}
+
+
 float systematicsPbPb(double pt, double HLT=0)
 {
    if (!initialized) initialization();
