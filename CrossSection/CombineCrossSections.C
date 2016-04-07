@@ -3,7 +3,7 @@
 #include "TLegendEntry.h"
 
 
-void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root")
+void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", bool isMerged=true)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -83,28 +83,44 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   gaeBplusReference->SetLineColor(4);//2
   gaeBplusReference->Draw("5same");
 
-  hSigmaPPStatMB->SetLineColor(1);
   hSigmaPPStatMB->SetLineWidth(2);
   hSigmaPPStatMB->SetMarkerSize(1);//4
   hSigmaPPStatMB->SetMarkerStyle(20);
+  if (isMerged) {
+      hSigmaPPStatMB->SetLineColor(1);//kGreen+4
+      hSigmaPPStatMB->SetMarkerColor(1);//kGreen+4
+  }
+  else {
+      hSigmaPPStatMB->SetLineColor(kTeal+4);//kGreen+4
+      hSigmaPPStatMB->SetMarkerColor(kTeal+4);//kGreen+4
+  }
   hSigmaPPStatMB->Draw("epsame"); 
 
-  hSigmaPPStat->SetLineColor(1);
   hSigmaPPStat->SetLineWidth(2);
   hSigmaPPStat->SetMarkerSize(1);//4
   hSigmaPPStat->SetMarkerStyle(20);
+  if (isMerged) {
+      hSigmaPPStat->SetLineColor(1);//kGreen+4
+      hSigmaPPStat->SetMarkerColor(1);//kGreen+4
+  }
+  else {
+      hSigmaPPStat->SetLineColor(kAzure+1);//4
+      hSigmaPPStat->SetMarkerColor(kAzure+1);//4
+  }
   hSigmaPPStat->Draw("epsame"); 
 
   gaeCrossSystMB->SetFillColor(1);
   gaeCrossSystMB->SetFillStyle(0); 
   gaeCrossSystMB->SetLineWidth(2);
-  gaeCrossSystMB->SetLineColor(1);
+  if (isMerged) gaeCrossSystMB->SetLineColor(1);//kGreen+4
+  else gaeCrossSystMB->SetLineColor(kTeal+4);
   gaeCrossSystMB->Draw("5same");  
 
   gaeCrossSyst->SetFillColor(1);
   gaeCrossSyst->SetFillStyle(0); 
   gaeCrossSyst->SetLineWidth(2);
-  gaeCrossSyst->SetLineColor(1);
+  if (isMerged) gaeCrossSyst->SetLineColor(1);//kGreen+4
+  else gaeCrossSyst->SetLineColor(kAzure+1);//4
   gaeCrossSyst->Draw("5same");  
 
   TLegend *legendSigma=new TLegend(0.55,0.60,0.80,0.76,"");//0.5100806,0.5868644,0.8084677,0.7605932
@@ -115,7 +131,12 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   legendSigma->SetTextFont(42);
   legendSigma->SetTextSize(0.045);
 
-/*  
+/*
+  TLegendEntry *ent_SigmaPPMB;
+  if (!isMerged) TLegendEntry *ent_SigmaPP;
+  TLegendEntry *ent_SigmaFONLL;
+*/
+  if (!isMerged) {   
   TLegendEntry *ent_SigmaPPMB=legendSigma->AddEntry(hSigmaPPStatMB,"pp MB","pf");
   ent_SigmaPPMB->SetTextFont(42);
   ent_SigmaPPMB->SetLineColor(2);
@@ -125,16 +146,17 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   ent_SigmaPP->SetTextFont(42);
   ent_SigmaPP->SetLineColor(1);
   ent_SigmaPP->SetMarkerColor(1);
-*/
-   TLegendEntry *ent_SigmaPPMB=legendSigma->AddEntry(hSigmaPPStatMB,"pp data","pf");
+  }
+  else {
+  TLegendEntry *ent_SigmaPPMB=legendSigma->AddEntry(hSigmaPPStatMB,"pp data","pf");
   ent_SigmaPPMB->SetTextFont(42);
   ent_SigmaPPMB->SetLineColor(2);
   ent_SigmaPPMB->SetMarkerColor(2);
-
-  TLegendEntry *ent_Sigmapp=legendSigma->AddEntry(gaeBplusReferenceMB,"FONLL pp ref.","f");
-  ent_Sigmapp->SetTextFont(42);
-  ent_Sigmapp->SetLineColor(5);
-  ent_Sigmapp->SetMarkerColor(1);
+  }
+  TLegendEntry *ent_SigmaFONLL=legendSigma->AddEntry(gaeBplusReferenceMB,"FONLL pp ref.","f");
+  ent_SigmaFONLL->SetTextFont(42);
+  ent_SigmaFONLL->SetLineColor(5);
+  ent_SigmaFONLL->SetMarkerColor(1);
   legendSigma->Draw("same");
    
   TLatex * tlatex1=new TLatex(0.55,0.94,"25.8 pb^{-1} (5.02 TeV pp)");
@@ -197,12 +219,20 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   gaeRatioCrossFONLLunityMB->Draw("5same");
 
   gaeRatioCrossFONLLstatMB->SetMarkerSize(1);
-  gaeRatioCrossFONLLstatMB->SetLineColor(1);
   gaeRatioCrossFONLLstatMB->SetLineWidth(2);
+  if (isMerged) {
+      gaeRatioCrossFONLLstatMB->SetLineColor(1);//kGreen+4
+      gaeRatioCrossFONLLstatMB->SetMarkerColor(1);//kGreen+4
+  }
+  else {
+      gaeRatioCrossFONLLstatMB->SetLineColor(kTeal+4);//kGreen+4
+      gaeRatioCrossFONLLstatMB->SetMarkerColor(kTeal+4);//kGreen+4
+  }
   gaeRatioCrossFONLLstatMB->Draw("epsame");
 
   gaeRatioCrossFONLLsystMB->SetLineWidth(3);
-  gaeRatioCrossFONLLsystMB->SetLineColor(1);
+  if (isMerged) gaeRatioCrossFONLLsystMB->SetLineColor(1);//kGreen+4
+  else gaeRatioCrossFONLLsystMB->SetLineColor(kTeal+4);
   gaeRatioCrossFONLLsystMB->Draw("5same");
 
   gaeRatioCrossFONLLunity->SetFillColor(5);
@@ -212,12 +242,20 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   gaeRatioCrossFONLLunity->Draw("5same");
 
   gaeRatioCrossFONLLstat->SetMarkerSize(1);
-  gaeRatioCrossFONLLstat->SetLineColor(1);
   gaeRatioCrossFONLLstat->SetLineWidth(2);
+  if (isMerged) {
+      gaeRatioCrossFONLLstat->SetLineColor(1);//kGreen+4
+      gaeRatioCrossFONLLstat->SetMarkerColor(1);//kGreen+4
+  }
+  else {
+      gaeRatioCrossFONLLstat->SetLineColor(kAzure+1);//4
+      gaeRatioCrossFONLLstat->SetMarkerColor(kAzure+1);//4
+  }
   gaeRatioCrossFONLLstat->Draw("epsame");
 
   gaeRatioCrossFONLLsyst->SetLineWidth(3);
-  gaeRatioCrossFONLLsyst->SetLineColor(1);
+  if (isMerged) gaeRatioCrossFONLLsyst->SetLineColor(1);//kGreen+4
+  else gaeRatioCrossFONLLsyst->SetLineColor(kAzure+1);//4
   gaeRatioCrossFONLLsyst->Draw("5same");
 
   l->Draw("same");
@@ -228,14 +266,14 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
 
 int main(int argc, char *argv[])
 {
-  if((argc != 3))
+  if((argc != 4))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
 
-  if(argc ==3)
-    CombineCrossSections(argv[1], argv[2]);
+  if(argc ==4)
+    CombineCrossSections(argv[1], argv[2], argv[3]);
   return 0;
 }
 

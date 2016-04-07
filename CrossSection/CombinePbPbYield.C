@@ -175,13 +175,13 @@ void CombinePbPbYield(TString fileMB="ROOTfiles/CrossSectionFONLLPbPbMB.root", T
 
 int main(int argc, char *argv[])
 {
-  if((argc != 3))
+  if((argc != 4))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
 
-  if(argc ==3)
+  if(argc ==4)
     CombinePbPbYield(argv[1], argv[2], argv[3]);
   return 0;
 }

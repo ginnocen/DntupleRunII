@@ -3,7 +3,7 @@
 #include "TLegendEntry.h"
 
 
-void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTfiles/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root" )
+void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTfiles/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", bool isHadDupl=true, bool isMerged=true)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -22,7 +22,7 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   TH1D*hTrackPt_trkCorr_PbPb_copy1=(TH1D*)fRAA->Get("RAA_0_100");
   
 
-  TCanvas*canvasRAA=new TCanvas("canvasRAA","canvasRAA",500,500);//550,500
+  TCanvas*canvasRAA=new TCanvas("canvasRAA","canvasRAA",600,600);//550,500
   canvasRAA->cd();
   canvasRAA->SetFillColor(0);
   canvasRAA->SetBorderMode(0);
@@ -34,7 +34,8 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   canvasRAA->SetFrameBorderMode(0);
   canvasRAA->SetLogx();
 
-  TH2F* hemptyEff=new TH2F("hemptyEff","",50,0.7,120.,10.,0,1.45);//50,-2,120.,10.,0,1.5
+  TH2F* hemptyEff;
+  if (isHadDupl) hemptyEff=new TH2F("hemptyEff","",50,0.7,120.,10.,0,1.45); else hemptyEff=new TH2F("hemptyEff","",50,1.0,120.,10.,0,1.45);//50,-2,120.,10.,0,1.5
   hemptyEff->GetXaxis()->CenterTitle();
   hemptyEff->GetYaxis()->CenterTitle();
   hemptyEff->GetYaxis()->SetTitle("D^{0} R_{AA}");
@@ -54,7 +55,8 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   hemptyEff->SetMinimum(0.);
   hemptyEff->Draw();
 
-  TLine *line = new TLine(0.7,1,120,1);
+  TLine *line;
+  if (isHadDupl) line = new TLine(0.7,1,120,1); else line = new TLine(1.0,1,120,1);
   line->SetLineStyle(2);
   line->SetLineWidth(2);
   line->Draw();
@@ -62,38 +64,62 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   gNuclearModification->SetFillColor(5);//1
   gNuclearModification->SetFillStyle(1001);//0 
   gNuclearModification->SetLineWidth(1);//3
-  gNuclearModification->SetLineColor(1);
-  gNuclearModification->SetMarkerColor(1);
   gNuclearModification->SetMarkerSize(1);
   gNuclearModification->SetMarkerStyle(21);
+  if (isMerged) {
+      gNuclearModification->SetLineColor(1);//kGreen+4
+      gNuclearModification->SetMarkerColor(1);//kGreen+4
+  }
+  else {
+      gNuclearModification->SetLineColor(kAzure+1);//4
+      gNuclearModification->SetMarkerColor(kAzure+1);//4
+  }
   gNuclearModification->Draw("5same");
   gNuclearModificationMB->SetFillColor(5);//1
   gNuclearModificationMB->SetFillStyle(1001);//0 
   gNuclearModificationMB->SetLineWidth(1);//3
-  gNuclearModificationMB->SetLineColor(1);
-  gNuclearModificationMB->SetMarkerColor(1);
   gNuclearModificationMB->SetMarkerSize(1);
   gNuclearModificationMB->SetMarkerStyle(21);
+  if (isMerged) {
+      gNuclearModificationMB->SetLineColor(1);//kGreen+4
+      gNuclearModificationMB->SetMarkerColor(1);//kGreen+4
+  }
+  else {
+      gNuclearModificationMB->SetLineColor(kTeal+4);//kGreen+4
+      gNuclearModificationMB->SetMarkerColor(kTeal+4);//kGreen+4
+  }
   gNuclearModificationMB->Draw("5same");
 
-  hNuclearModification->SetLineColor(1);
   hNuclearModification->SetLineWidth(3);
-  hNuclearModification->SetMarkerColor(1);
   hNuclearModification->SetMarkerSize(1);
   hNuclearModification->SetMarkerStyle(21);
+  if (isMerged) {
+      hNuclearModification->SetLineColor(1);//kGreen+4
+      hNuclearModification->SetMarkerColor(1);//kGreen+4
+  }
+  else {
+      hNuclearModification->SetLineColor(kAzure+1);//4
+      hNuclearModification->SetMarkerColor(kAzure+1);//4
+  }
   hNuclearModification->Draw("psame");//same
-  hNuclearModificationMB->SetLineColor(1);
   hNuclearModificationMB->SetLineWidth(3);
-  hNuclearModificationMB->SetMarkerColor(1);
   hNuclearModificationMB->SetMarkerSize(1);
   hNuclearModificationMB->SetMarkerStyle(21);
+  if (isMerged) {
+      hNuclearModificationMB->SetLineColor(1);//kGreen+4
+      hNuclearModificationMB->SetMarkerColor(1);//kGreen+4
+  }
+  else {
+      hNuclearModificationMB->SetLineColor(kTeal+4);//kGreen+4
+      hNuclearModificationMB->SetMarkerColor(kTeal+4);//kGreen+4
+  }
   hNuclearModificationMB->Draw("psame");//same
   
   hTrackPt_trkCorr_PbPb_copy1->SetMarkerColor(2);
   hTrackPt_trkCorr_PbPb_copy1->SetLineColor(2);
   hTrackPt_trkCorr_PbPb_copy1->SetMarkerSize(1);
   hTrackPt_trkCorr_PbPb_copy1->SetMarkerStyle(20);  
-  hTrackPt_trkCorr_PbPb_copy1->Draw("same");
+  if (isHadDupl) hTrackPt_trkCorr_PbPb_copy1->Draw("same");
   hTrackPt_trkCorr_PbPb_copy1->SetLineWidth(3);
 
   TLatex* texlumi = new TLatex(0.19,0.936,"25.8 pb^{-1} (5.02 TeV pp) + 404 #mub^{-1} (5.02 TeV PbPb)");
@@ -134,33 +160,41 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   legendSigma->SetTextFont(42);
   legendSigma->SetTextSize(0.04);//0.05
 
-/*
-  TLegendEntry *ent_Dhighpt=legendSigma->AddEntry(hNuclearModification,"R_{AA} D triggers.","pf");
+  if (!isMerged) {
+  TLegendEntry *ent_Dhighpt=legendSigma->AddEntry(gNuclearModification,"R_{AA} D triggers.","pf");
   ent_Dhighpt->SetTextFont(42);
   ent_Dhighpt->SetLineColor(1);
   ent_Dhighpt->SetMarkerColor(1);
-  ent_Dhighpt->SetTextSize(0.03);
+  ent_Dhighpt->SetTextSize(0.04);
 
-  TLegendEntry *ent_DMB=legendSigma->AddEntry(hNuclearModificationMB,"R_{AA} D MB.","pf");
+  TLegendEntry *ent_DMB=legendSigma->AddEntry(gNuclearModificationMB,"R_{AA} D MB.","pf");
   ent_DMB->SetTextFont(42);
   ent_DMB->SetLineColor(1);
   ent_DMB->SetMarkerColor(1);
-  ent_DMB->SetTextSize(0.03);
-  */
+  ent_DMB->SetTextSize(0.04);
 
+  if (isHadDupl) {TLegendEntry *ent_Charged=legendSigma->AddEntry(hTrackPt_trkCorr_PbPb_copy1,"R_{AA} charged hadrons.","pl");//pf
+  ent_Charged->SetTextFont(42);
+  ent_Charged->SetLineColor(1);
+  ent_Charged->SetMarkerColor(1);
+  ent_Charged->SetTextSize(0.04);//0.03
+  }
+  }
+  else {
   TLegendEntry *ent_Dhighpt=legendSigma->AddEntry(gNuclearModification,"R_{AA} D^{0}","pf");
   ent_Dhighpt->SetTextFont(42);
   ent_Dhighpt->SetLineColor(4);
   ent_Dhighpt->SetMarkerColor(4);
   ent_Dhighpt->SetTextSize(0.04);
 
-  TLegendEntry *ent_Charged=legendSigma->AddEntry(hTrackPt_trkCorr_PbPb_copy1,"R_{AA} charged hadrons.","pl");//pf
+  if (isHadDupl) {TLegendEntry *ent_Charged=legendSigma->AddEntry(hTrackPt_trkCorr_PbPb_copy1,"R_{AA} charged hadrons.","pl");//pf
   ent_Charged->SetTextFont(42);
   ent_Charged->SetLineColor(1);
   ent_Charged->SetMarkerColor(1);
   ent_Charged->SetTextSize(0.04);//0.03
-  
-  legendSigma->Draw();
+  } 
+  }
+  if (isHadDupl || !isMerged) legendSigma->Draw();
   canvasRAA->SaveAs("canvasRAAComparison.pdf");
   canvasRAA->SaveAs("canvasRAAComparison.png");
 
@@ -168,14 +202,14 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
 
 int main(int argc, char *argv[])
 {
-  if((argc != 4))
+  if((argc != 6))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
 
-  if(argc ==4)
-    CombineRAA(argv[1], argv[2],argv[3]);
+  if(argc ==6)
+    CombineRAA(argv[1], argv[2],argv[3],argv[4],argv[5]);
   return 0;
 }
 
