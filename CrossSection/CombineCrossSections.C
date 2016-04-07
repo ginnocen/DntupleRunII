@@ -3,11 +3,7 @@
 #include "TLegendEntry.h"
 
 
-<<<<<<< HEAD
-void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", bool isMerged=true)
-=======
-void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", Int_t isPbPb=1, Float_t cent=100.)
->>>>>>> fa6f325581541e305b1b305bf64b01c4c5392867
+void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", bool isMerged=true, Int_t isPbPb=1, Float_t cent=100.)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -270,32 +266,20 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
 
 int main(int argc, char *argv[])
 {
-<<<<<<< HEAD
-  if((argc != 4))
-  {
-    std::cout << "Wrong number of inputs" << std::endl;
-    return 1;
-  }
-
-  if(argc ==4)
-    CombineCrossSections(argv[1], argv[2], argv[3]);
-  return 0;
-=======
-  if((argc!=4)&&(argc!=5))
+  if((argc!=5)&&(argc!=6))
     {
       std::cout << "Wrong number of inputs" << std::endl;
       return 1;
     }
-  if(argc==4)
-    {
-      CombineCrossSections(argv[1], argv[2], atoi(argv[3]));
-      return 0;
-    }
   if(argc==5)
     {
-      CombineCrossSections(argv[1], argv[2], atoi(argv[3]), atof(argv[4]));
+      CombineCrossSections(argv[1], argv[2], argv[3], atoi(argv[4]));
       return 0;
     }
->>>>>>> fa6f325581541e305b1b305bf64b01c4c5392867
+  if(argc==6)
+    {
+      CombineCrossSections(argv[1], argv[2], argv[3], atoi(argv[4]), atof(argv[5]));
+      return 0;
+    }
 }
 
