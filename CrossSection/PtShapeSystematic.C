@@ -31,18 +31,24 @@ void doplot(TString noweight="ROOTfiles/MCstudiesPPMB.root",TString weight="ROOT
   hEffWeight->SetXTitle("Gen p_{T}");
   hEffWeight->SetYTitle("Efficiency p_{T} weight/no weight");
   hEffWeight->Draw();
+  
+  TF1 *fPbPbSignalExtractionSig = new TF1("fPbPbSignalExtractionSig","[0]+[1]/(x)+[2]/x/x+[3]*x");
+  hEffWeight->Fit("fPbPbSignalExtractionSig","L q","",2,100);
+    
+  std::cout<<"parameter 0="<<fPbPbSignalExtractionSig->GetParameter(0)<<endl;
+  std::cout<<"parameter 1="<<fPbPbSignalExtractionSig->GetParameter(1)<<endl;
+  std::cout<<"parameter 2="<<fPbPbSignalExtractionSig->GetParameter(2)<<endl;
+  std::cout<<"parameter 3="<<fPbPbSignalExtractionSig->GetParameter(3)<<endl;
   canvas->SaveAs(Form("canvasPtreweightedComparison%s.pdf",label.Data()));
 
 }
 
 
-void PtShapeSystematic(){
+void PtShapeSystematic(int isPbPb=0){
 
  void doplot(TString,TString,TString);
- doplot("ROOTfiles/MCstudiesPP.root","ROOTfiles/MCstudiesPPPPptreweighted.root","PP");
- doplot("ROOTfiles/MCstudiesPPMB.root","ROOTfiles/MCstudiesPPMBPPMBptreweighted.root","PPMB");
- doplot("ROOTfiles/MCstudiesPbPb.root","ROOTfiles/MCstudiesPbPbPbPbptreweighted.root","PbPb");
- doplot("ROOTfiles/MCstudiesPbPbMB.root","ROOTfiles/MCstudiesPbPbMBPbPbMBptreweighted.root","PbPbMB");
+ if (isPbPb==0) doplot("ROOTfiles/pthatallPP.root","ROOTfiles/pthatallPPptreweighted.root","PP");
+ if (isPbPb==1) doplot("ROOTfiles/pthatallPbPb.root","ROOTfiles/pthatallPbPbptreweighted.root","PbPb");
  
 }
 
