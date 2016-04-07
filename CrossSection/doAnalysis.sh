@@ -1,28 +1,28 @@
 #!/bin/bash
 #source clean.sh
-
+CENTPbPb=100
 #Central point of the analysis
 
 DOANALYSISPP_FONLL=0
 DOANALYSISPP_TRGCOMBINATION=0
 DOANALYSISPP_FIT=0
-DOANALYSISPP_CROSS=0
+DOANALYSISPP_CROSS=1
 DOANALYSISPP_MCSTUDY=0
 
 DOANALYSISPbPb_FONLL=0
 DOANALYSISPbPb_TRGCOMBINATION=0
 DOANALYSISPbPb_FIT=0
-DOANALYSISPbPb_CROSS=0
+DOANALYSISPbPb_CROSS=1
 DOANALYSISPbPb_MCSTUDY=0
 
 DOANALYSISPPMB_FONLL=0
 DOANALYSISPPMB_FIT=0
-DOANALYSISPPMB_CROSS=0
+DOANALYSISPPMB_CROSS=1
 DOANALYSISPPMB_MCSTUDY=0
 
 DOANALYSISPbPbMB_FONLL=0
 DOANALYSISPbPbMB_FIT=0
-DOANALYSISPbPbMB_CROSS=0
+DOANALYSISPbPbMB_CROSS=1
 DOANALYSISPbPbMB_MCSTUDY=0
 
 DONORMPP=0
@@ -30,11 +30,12 @@ DONORMPPMB=0
 DONORMPbPb=0
 DONORMPbPbMB=0
 
-DORAA=0
-DORAAMB=0
+DORAA=1
+DORAAMB=1
 
-DOCombineCrossSection=0
-DOCombineRAA=0
+DOCombineCrossSectionPP=1
+DOCombineCrossSectionPbPb=1
+DOCombineRAA=1
 
 #systematic section
 
@@ -89,6 +90,7 @@ INPUTMCPbPbPthat70="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_p
 ## PbPb DATA 
 
 INPUTDATAPbPbSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2_skimmed.root"
+#INPUTDATAPbPbSKIMMED="/data/dmeson2015/DataDntuple/ntD_EvtBase_20160331_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0_FINALJSON_v6_skimmed.root"
 INPUTDATAPbPbUNSKIMMED="/data/dmeson2015/DataDntuple/nt_skimmed_DfinderData_PbPb_20160126_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_v6_partialstats_v2.root"
 INPUTDATAPbPbMBUNSKIMMED="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
 INPUTDATAPbPbMBSKIMMED="/data/jisun/PbPb2015/HF2and_tk1p0_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
@@ -154,7 +156,7 @@ fi
 
 if [ $DOANALYSISPP_CROSS -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" "$LABELPP" "$LUMIPP"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" "$LABELPP" "$LUMIPP" 
 fi
 
 if [ $DOANALYSISPP_MCSTUDY -eq 1 ]; then      
@@ -215,7 +217,7 @@ fi
 
 if [ $DOANALYSISPbPb_CROSS -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" "$LABELPbPb" "$LUMIPbPb"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" "$LABELPbPb" "$LUMIPbPb" "$CENTPbPb"
 fi
 
 if [ $DOANALYSISPbPb_MCSTUDY -eq 1 ]; then      
@@ -340,7 +342,7 @@ fi
 
 if [ $DOANALYSISPbPbMB_CROSS -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePP" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB" "$LUMIPbPb"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB" "$LUMIPbPbMB" "$CENTPbPb"
 fi
 
 if [ $DOANALYSISPbPbMB_MCSTUDY -eq 1 ]; then      
@@ -359,14 +361,19 @@ fi
 
 ## COMBINE RESULTS
 
-if [ $DOCombineCrossSection -eq 1 ]; then      
+if [ $DOCombineCrossSectionPP -eq 1 ]; then      
 g++ CombineCrossSections.C $(root-config --cflags --libs) -g -o CombineCrossSections.exe 
-./CombineCrossSections.exe "$OUTPUTFILEPlotPPMB" "$OUTPUTFILEPlotPP" 
+./CombineCrossSections.exe "$OUTPUTFILEPlotPPMB" "$OUTPUTFILEPlotPP" "0"
+fi
+
+if [ $DOCombineCrossSectionPbPb -eq 1 ]; then      
+g++ CombineCrossSections.C $(root-config --cflags --libs) -g -o CombineCrossSections.exe 
+./CombineCrossSections.exe "$OUTPUTFILEPlotPbPbMB" "$OUTPUTFILEPlotPbPb" "1" "$CENTPbPb"
 fi
 
 if [ $DOCombineRAA -eq 1 ]; then      
 g++ CombineRAA.C $(root-config --cflags --libs) -g -o CombineRAA.exe 
-./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON"
+./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON" "$CENTPbPb"
 fi
 
 
@@ -484,10 +491,3 @@ g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe
 g++ ClosureTest.C $(root-config --cflags --libs) -g -o ClosureTest.exe 
 ./ClosureTest.exe "$OUTPUTFILEPbPbMBMCClosure" "$LABELPbPbMB"
 fi
-
-
-
-
-
-
-

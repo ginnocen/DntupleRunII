@@ -3,7 +3,7 @@
 #include "TLegendEntry.h"
 
 
-void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTfiles/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root" )
+void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTfiles/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", Float_t cent=100.)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -19,7 +19,8 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   TH1D* hNuclearModification = (TH1D*)filePP->Get("hNuclearModification");
   
   TFile *fRAA=new TFile(filecharged.Data());
-  TH1D*hTrackPt_trkCorr_PbPb_copy1=(TH1D*)fRAA->Get("RAA_0_100");
+  TH1D*hTrackPt_trkCorr_PbPb_copy1=(TH1D*)fRAA->Get("hTrackPt_trkCorr_PbPb_copy1");
+  //TH1D*hTrackPt_trkCorr_PbPb_copy1=(TH1D*)fRAA->Get("RAA_0_100");
   
 
   TCanvas*canvasRAA=new TCanvas("canvasRAA","canvasRAA",500,500);//550,500
@@ -168,15 +169,21 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
 
 int main(int argc, char *argv[])
 {
-  if((argc != 4))
-  {
-    std::cout << "Wrong number of inputs" << std::endl;
-    return 1;
-  }
-
-  if(argc ==4)
-    CombineRAA(argv[1], argv[2],argv[3]);
-  return 0;
+  if((argc!=4)&&(argc!=5))
+    {
+      std::cout << "Wrong number of inputs" << std::endl;
+      return 1;
+    }
+  if(argc==4)
+    {
+      CombineRAA(argv[1], argv[2],argv[3]);
+      return 0;
+    }
+  if(argc==5)
+    {
+      CombineRAA(argv[1], argv[2],argv[3],atof(argv[4]));
+      return 0;
+    }
 }
 
 

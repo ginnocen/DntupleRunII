@@ -4,9 +4,7 @@
 #include "bFeedDown/bFeedDownCorrection.C"
 #include "../Systematics/systematics.C"
 
-
-
-void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",TString label="PbPb",double lumi=1.)
+void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",TString label="PbPb",double lumi=1.,Float_t cent=100.)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -27,13 +25,13 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   
   hSigmaPPStat->Scale(1./lumi);
   
-    for (int i=0;i<nBins;i++) {
-      double prompt=bFeedDownCorrection(hSigmaPPStat->GetBinCenter(i+1),isPbPb);
-      hfprompt->SetBinContent(i+1,prompt);
-      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)*prompt);
-      hSigmaPPStat->SetBinError(i+1,hSigmaPPStat->GetBinError(i+1)*prompt);
-      std::cout<<"pt center="<<hSigmaPPStat->GetBinCenter(i+1)<<", prompt fraction="<<prompt<<std::endl;
-    }
+  for (int i=0;i<nBins;i++) {
+    double prompt=bFeedDownCorrection(hSigmaPPStat->GetBinCenter(i+1),isPbPb);
+    hfprompt->SetBinContent(i+1,prompt);
+    hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)*prompt);
+    hSigmaPPStat->SetBinError(i+1,hSigmaPPStat->GetBinError(i+1)*prompt);
+    std::cout<<"pt center="<<hSigmaPPStat->GetBinCenter(i+1)<<", prompt fraction="<<prompt<<std::endl;
+  }
   
   if (usePrescaleCorr==1){
     TFile*fprescalesPP=new TFile(inputprescalesPP.Data()); 
@@ -125,11 +123,18 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   pSigma->Draw();
   pSigma->cd();
 
-  TH2F* hemptySigma=new TH2F("hemptySigma","",50,ptBins[0]-5.,ptBins[nBins]+5.,10.,1.1,1.e9);  
+
+  Float_t yaxisMin=1.1,yaxisMax=1.e+9;
+  if(label=="PPMB"||label=="PbPbMB")
+    {
+      yaxisMin=1.e+4;
+      yaxisMax=1.e+13;
+    }
+  TH2F* hemptySigma=new TH2F("hemptySigma","",50,ptBins[0]-5.,ptBins[nBins]+5.,10.,yaxisMin,yaxisMax);  
   hemptySigma->GetXaxis()->CenterTitle();
   hemptySigma->GetYaxis()->CenterTitle();
   hemptySigma->GetYaxis()->SetTitle("d#sigma / dp_{T}( pb GeV^{-1}c)");
-  if (isPbPb) hemptySigma->GetYaxis()->SetTitle("1/T_{AA} * dN / dp_{T}( pb GeV^{-1}c)");
+  if(isPbPb) hemptySigma->GetYaxis()->SetTitle("1/T_{AA} * dN / dp_{T}( pb GeV^{-1}c)");
   hemptySigma->GetXaxis()->SetTitleOffset(1.);
   hemptySigma->GetYaxis()->SetTitleOffset(1.3);
   hemptySigma->GetXaxis()->SetTitleSize(0.045);
@@ -157,38 +162,48 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   gaeCrossSyst->SetLineColor(1);
   gaeCrossSyst->Draw("5same");  
   
-  TLegend *legendSigma=new TLegend(0.5100806,0.5868644,0.8084677,0.7605932,"");
-  legendSigma->SetBorderSize(0);
-  legendSigma->SetLineColor(0);
-  legendSigma->SetFillColor(0);
-  legendSigma->SetFillStyle(1001);
-  legendSigma->SetTextFont(42);
-  legendSigma->SetTextSize(0.045);
+  TLatex* texCms = new TLatex(0.16,0.95, "#scale[1.25]{CMS} Preliminary");
+  texCms->SetNDC();
+  texCms->SetTextAlign(12);
+  texCms->SetTextSize(0.04);
+  texCms->SetTextFont(42);
+  texCms->Draw();
+
+  TLatex* texCol = new TLatex(0.94,0.95, Form("%s #sqrt{s_{NN}} = 5.02 TeV",label.Data()));
+  texCol->SetNDC();
+  texCol->SetTextAlign(32);
+  texCol->SetTextSize(0.04);
+  texCol->SetTextFont(42);
+  texCol->Draw();
+
+  TString texper="%";
+  TLatex* texCent = new TLatex(0.53,0.815,Form("Centrality 0 - %.0f%s",cent,texper.Data()));
+  texCent->SetNDC();
+  texCent->SetTextFont(42);
+  texCent->SetTextSize(0.04);
+  if(isPbPb) texCent->Draw();
+
+  TLatex* texY = new TLatex(0.53,0.77,"|y| < 1.0");
+  texY->SetNDC();
+  texY->SetTextFont(42);
+  texY->SetTextSize(0.04);
+  texY->SetLineWidth(2);
+  texY->Draw();
+
+  TLegend* leg_CS = new TLegend(0.52,0.64,0.85,0.75);
+  leg_CS->SetBorderSize(0);
+  leg_CS->SetFillStyle(0);
+  leg_CS->AddEntry(hSigmaPPStat,"data","pf");
+  leg_CS->AddEntry(gaeBplusReference,"FONLL pp ref.","f");
+  leg_CS->Draw("same");
   
-  TLegendEntry *ent_SigmaPP=legendSigma->AddEntry(hSigmaPPStat,"pp","pf");
-  ent_SigmaPP->SetTextFont(42);
-  ent_SigmaPP->SetLineColor(1);
-  ent_SigmaPP->SetMarkerColor(1);
-  
-  TLegendEntry *ent_Sigmapp=legendSigma->AddEntry(gaeBplusReference,"FONLL pp ref.","f");
-  ent_Sigmapp->SetTextFont(42);
-  ent_Sigmapp->SetLineColor(5);
-  ent_Sigmapp->SetMarkerColor(1);
-  legendSigma->Draw("same");
-    
-  TLatex * tlatex1=new TLatex(0.1612903,0.8625793,"CMS Preliminary     pp #sqrt{s}= 5.02 TeV");
-  tlatex1->SetNDC();
-  tlatex1->SetTextColor(1);
-  tlatex1->SetTextFont(42);
-  tlatex1->SetTextSize(0.045);
-  tlatex1->Draw();
-    
+  /*
   TLatex * tlatexlumi=new TLatex(0.671371,0.7801268,"L = 9.97 pb^{-1}");
   tlatexlumi->SetNDC();
   tlatexlumi->SetTextColor(1);
   tlatexlumi->SetTextFont(42);
   tlatexlumi->SetTextSize(0.045);
-
+  */
   cSigma->cd();
   TPad* pRatio = new TPad("pRatio","",0,0,1,0.25);
   pRatio->SetLeftMargin(0.1451613);
@@ -214,7 +229,7 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   hemptyRatio->GetYaxis()->SetLabelSize(0.1);  
   hemptyRatio->Draw();
 
-  TLine* l = new TLine(10,1,105,1);
+  TLine* l = new TLine(ptBins[0]-5.,1,ptBins[nBins]+5.,1);
   l->SetLineWidth(1);
   l->SetLineStyle(2);
   gaeRatioCrossFONLLunity->Draw("5same");
@@ -313,15 +328,22 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
 
 int main(int argc, char *argv[])
 {
-  if((argc != 8))
-  {
-    std::cout << "Wrong number of inputs" << std::endl;
-    return 1;
-  }
+  if(argc==9)
+    {
+      CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],argv[6],atof(argv[7]),atof(argv[8]));
+      return 0;
+    }
+  else if(argc==8)
+    {
+      CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],argv[6],atof(argv[7]));
+      return 0;
+    }
+  else
+    {
+      std::cout << "Wrong number of inputs" << std::endl;
+      return 1;
+    }
   
-  if(argc == 8)
-    CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],argv[6],atof(argv[7]));
-  return 0;
 }
 
 
