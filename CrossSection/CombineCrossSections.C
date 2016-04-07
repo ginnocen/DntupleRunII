@@ -3,7 +3,7 @@
 #include "TLegendEntry.h"
 
 
-void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root")
+void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", Int_t isPbPb=1, Float_t cent=100.)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -228,14 +228,20 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
 
 int main(int argc, char *argv[])
 {
-  if((argc != 3))
-  {
-    std::cout << "Wrong number of inputs" << std::endl;
-    return 1;
-  }
-
-  if(argc ==3)
-    CombineCrossSections(argv[1], argv[2]);
-  return 0;
+  if((argc!=4)&&(argc!=5))
+    {
+      std::cout << "Wrong number of inputs" << std::endl;
+      return 1;
+    }
+  if(argc==4)
+    {
+      CombineCrossSections(argv[1], argv[2], atoi(argv[3]));
+      return 0;
+    }
+  if(argc==5)
+    {
+      CombineCrossSections(argv[1], argv[2], atoi(argv[3]), atof(argv[4]));
+      return 0;
+    }
 }
 
