@@ -4,7 +4,7 @@
 #include "bFeedDown/bFeedDownCorrection.C"
 #include "../Systematics/systematics.C"
 
-void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",TString label="PbPb",double lumi=1.,Float_t cent=100.)
+void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",TString label="PbPb",double lumi=1.,Float_t centMin=0., Float_t centMax=100.)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -177,7 +177,7 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   texCol->Draw();
 
   TString texper="%";
-  TLatex* texCent = new TLatex(0.53,0.815,Form("Centrality 0 - %.0f%s",cent,texper.Data()));
+  TLatex* texCent = new TLatex(0.53,0.815,Form("Centrality %.0f - %.0f%s",centMin,centMax,texper.Data()));
   texCent->SetNDC();
   texCent->SetTextFont(42);
   texCent->SetTextSize(0.04);
@@ -236,7 +236,8 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   gaeRatioCrossFONLLstat->Draw("epsame");
   gaeRatioCrossFONLLsyst->Draw("5same");
   l->Draw("same");
-  cSigma->SaveAs(Form("canvasSigmaDzeroRatio%s.pdf",label.Data()));
+  if(!isPbPb) cSigma->SaveAs(Form("plotCrossSection/canvasSigmaDzeroRatio%s.pdf",label.Data()));
+  else cSigma->SaveAs(Form("plotCrossSection/canvasSigmaDzeroRatio%s_%.0f_%.0f.pdf",label.Data(),centMin,centMax));
   
   
   TCanvas* cEffPP = new TCanvas("cEffPP","",550,500);
@@ -283,7 +284,8 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   tlatexeff2->SetTextFont(42);
   tlatexeff2->SetTextSize(0.04);
   tlatexeff2->Draw();
-  cEffPP->SaveAs(Form("efficiency%s.pdf",label.Data()));
+  if(!isPbPb) cEffPP->SaveAs(Form("plotOthers/efficiency%s.pdf",label.Data()));
+  else cEffPP->SaveAs(Form("plotOthers/efficiency%s_%.0f_%.0f.pdf",label.Data(),centMin,centMax));
   
   
   TCanvas* cFprompt = new TCanvas("cFprompt","",550,500);
@@ -310,7 +312,8 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   hfprompt->SetLineWidth(2);
   hfprompt->SetLineColor(1);
   hfprompt->Draw("same");
-  cFprompt->SaveAs(Form("cFprompt%s.pdf",label.Data()));
+  if(!isPbPb) cFprompt->SaveAs(Form("plotOthers/cFprompt%s.pdf",label.Data()));
+  else cFprompt->SaveAs(Form("plotOthers/cFprompt%s_%.0f_%.0f.pdf",label.Data(),centMin,centMax));
 
 
   TFile *outputfile=new TFile(outputplot.Data(),"recreate");
@@ -328,9 +331,9 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
 
 int main(int argc, char *argv[])
 {
-  if(argc==9)
+  if(argc==10)
     {
-      CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],argv[6],atof(argv[7]),atof(argv[8]));
+      CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],argv[6],atof(argv[7]),atof(argv[8]),atof(argv[9]));
       return 0;
     }
   else if(argc==8)
