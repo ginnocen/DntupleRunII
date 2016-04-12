@@ -140,7 +140,31 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
       hNuclearModificationMB->SetMarkerColor(kTeal+4);//kGreen+4
     }
   hNuclearModificationMB->Draw("psame");//same
+  
+  
+  /*
+  const int nBinsALL=15;
+  double ptBinsALL[nBinsALL+1] = {2.,3.,4.,5.,6.,8.,10.,15.,20.,25,30.,40.,50.,60.,80,100};
 
+  TH1D* hRAA_All = new TH1D("hPt","",nBinsALL,ptBinsALL);
+  for (int m=0;m<hNuclearModificationMB->GetNbinsX(); m++){
+    hRAA_All->SetBinContent(m+1,hNuclearModificationMB->GetBinContent(m+1));
+    hRAA_All->SetBinError(m+1,hNuclearModificationMB->GetBinError(m+1));
+  }
+  
+    for (int m=0;m<hNuclearModification->GetNbinsX(); m++){
+    double index=m+8;
+    hRAA_All->SetBinContent(index+1,hNuclearModification->GetBinContent(m+1));
+    hRAA_All->SetBinError(index+1,hNuclearModification->GetBinError(m+1));
+  }  
+  
+  TFile *filecompleteRAA=new TFile("totalRAA.root","recreate");
+  filecompleteRAA->cd();
+  hRAA_All->Write();
+  filecompleteRAA->Close();
+  delete filecompleteRAA;
+  */
+    
   /*  
   hTrackPt_trkCorr_PbPb_copy1->SetMarkerColor(2);
   hTrackPt_trkCorr_PbPb_copy1->SetLineColor(2);
