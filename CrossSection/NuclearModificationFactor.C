@@ -3,7 +3,7 @@
 #include "TLegendEntry.h"
 #include "../Systematics/systematics.C"
 
-void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPPMB.root", TString inputPbPb="CrossSectionFONLLPbPbMB.root",TString label="MB",TString outputfile="RAAfileMB.root")
+void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPPMB.root", TString inputPbPb="CrossSectionFONLLPbPbMB.root",TString label="MB",TString outputfile="RAAfileMB.root", Float_t centMin=0., Float_t centMax=100.)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -119,27 +119,26 @@ void NuclearModificationFactor(TString inputPP="CrossSectionFONLLPPMB.root", TSt
 
   legendSigma->Draw("same");
 
-  canvasRAA->SaveAs(Form("canvasRAA%s.pdf",label.Data()));
+  canvasRAA->SaveAs(Form("plotRAA/canvasRAA%s_%.0f_%.0f.pdf",label.Data(),centMin,centMax));
   TFile *fRAA=new TFile(outputfile.Data(),"recreate");
   fRAA->cd();
   gNuclearModification->Write();
   hNuclearModification->Write();
-  
-  
 }
 
 
 int main(int argc, char *argv[])
 {
-  if((argc != 5))
-  {
-    std::cout << "Wrong number of inputs" << std::endl;
-    return 1;
-  }
-
-  if(argc ==5)
-    NuclearModificationFactor(argv[1], argv[2],argv[3], argv[4]);
-  return 0;
+  if(argc==7)
+    {
+      NuclearModificationFactor(argv[1], argv[2], argv[3], argv[4], atof(argv[5]), atof(argv[6]));
+      return 0;
+    }
+  else
+    {
+      std::cout << "Wrong number of inputs" << std::endl;
+      return 1;
+    }
 }
 
 

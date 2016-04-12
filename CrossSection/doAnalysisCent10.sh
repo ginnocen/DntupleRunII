@@ -1,32 +1,33 @@
 #!/bin/bash
 #source clean.sh
 
-CENTPbPb=10
+CENTPbPbMIN=0
+CENTPbPbMAX=10
 CUTCENTPbPb="&&hiBin<20."
 
 #Central point of the analysis
 
-DOANALYSISPP_FONLL=1
-DOANALYSISPP_TRGCOMBINATION=1
-DOANALYSISPP_FIT=1
-DOANALYSISPP_CROSS=1
-DOANALYSISPP_MCSTUDY=1
+DOANALYSISPP_FONLL=0
+DOANALYSISPP_TRGCOMBINATION=0
+DOANALYSISPP_FIT=0
+DOANALYSISPP_CROSS=0
+DOANALYSISPP_MCSTUDY=0
 
-DOANALYSISPbPb_FONLL=1
-DOANALYSISPbPb_TRGCOMBINATION=1
-DOANALYSISPbPb_FIT=1
-DOANALYSISPbPb_CROSS=1
-DOANALYSISPbPb_MCSTUDY=1
+DOANALYSISPbPb_FONLL=0
+DOANALYSISPbPb_TRGCOMBINATION=0
+DOANALYSISPbPb_FIT=0
+DOANALYSISPbPb_CROSS=0
+DOANALYSISPbPb_MCSTUDY=0
 
-DOANALYSISPPMB_FONLL=1
-DOANALYSISPPMB_FIT=1
-DOANALYSISPPMB_CROSS=1
-DOANALYSISPPMB_MCSTUDY=1
+DOANALYSISPPMB_FONLL=0
+DOANALYSISPPMB_FIT=0
+DOANALYSISPPMB_CROSS=0
+DOANALYSISPPMB_MCSTUDY=0
 
-DOANALYSISPbPbMB_FONLL=1
-DOANALYSISPbPbMB_FIT=1
-DOANALYSISPbPbMB_CROSS=1
-DOANALYSISPbPbMB_MCSTUDY=1
+DOANALYSISPbPbMB_FONLL=0
+DOANALYSISPbPbMB_FIT=0
+DOANALYSISPbPbMB_CROSS=0
+DOANALYSISPbPbMB_MCSTUDY=0
 
 DONORMPP=0
 DONORMPPMB=0
@@ -36,8 +37,9 @@ DONORMPbPbMB=0
 DORAA=1
 DORAAMB=1
 
-DOCombineCrossSection=0
-DOCombineRAA=0
+DOCombineCrossSectionPP=1
+DOCombineCrossSectionPbPb=1
+DOCombineRAA=1
 
 #systematic section
 
@@ -102,15 +104,15 @@ CHARGEDHADRON="/afs/cern.ch/work/g/ginnocen/public/PlotRAA.root"
 
 ## ANALYSIS PP TRIGGERED
 
-FONLLOUTPUTFILE="ROOTfiles/output_pp_d0meson_5TeV_y1.root"
-FONLLOUTPUTFILEBtoD="ROOTfiles/output_pp_Btod0meson_5TeV_y1.root"
-FONLLOUTPUTFILEInclusiveD="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root"
-FONLLOUTPUTFILEB="ROOTfiles/output_pp_Bmeson_5TeV_y1.root"
-OUTPUTFILEPP="ROOTfiles/hPtSpectrumDzeroPP.root"
-OUTPUTFILEPlotPP="ROOTfiles/CrossSectionFONLLPP.root"
-OUTPUTFILEMCSTUDYPP="ROOTfiles/MCstudiesPP.root"
-OUTPUTFILEMCSTUDYNPPP="ROOTfiles/MCstudiesNPPP.root"
-OUTPUTPrescalePP="prescalePP.root"
+FONLLOUTPUTFILE="ROOTfilesCent10/output_pp_d0meson_5TeV_y1.root"
+FONLLOUTPUTFILEBtoD="ROOTfilesCent10/output_pp_Btod0meson_5TeV_y1.root"
+FONLLOUTPUTFILEInclusiveD="ROOTfilesCent10/output_inclusiveDd0meson_5TeV_y1.root"
+FONLLOUTPUTFILEB="ROOTfilesCent10/output_pp_Bmeson_5TeV_y1.root"
+OUTPUTFILEPP="ROOTfilesCent10/hPtSpectrumDzeroPP.root"
+OUTPUTFILEPlotPP="ROOTfilesCent10/CrossSectionFONLLPP.root"
+OUTPUTFILEMCSTUDYPP="ROOTfilesCent10/MCstudiesPP.root"
+OUTPUTFILEMCSTUDYNPPP="ROOTfilesCent10/MCstudiesNPPP.root"
+OUTPUTPrescalePP="ROOTfilesCent10/prescalePP.root"
 
 LUMIPP=25.8
 ISMCPP=0
@@ -129,8 +131,8 @@ cp config/parametersHighpt.h parameters.h
 
 if [ $DONORMPP -eq 1 ]; then      
 cp config/parametersHighptPPNorm.h parameters.h
-OUTPUTFILEPlotPP="ROOTfiles/CrossSectionFONLLPPNorm.root"
-OUTPUTPrescalePP="prescalePPNorm.root"
+OUTPUTFILEPlotPP="ROOTfilesCent10/CrossSectionFONLLPPNorm.root"
+OUTPUTPrescalePP="ROOTfilesCent10/prescalePPNorm.root"
 LUMIPP=1
 fi
 
@@ -138,35 +140,47 @@ if [ $DOANALYSISPP_FONLL -eq 1 ]; then
 g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe 
 ./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILE" "$LABELPP"
 ./Dzerodsigmadpt.exe "$FONLLDATINPUTBtoD"  "$FONLLOUTPUTFILEBtoD" "$LABELPP"
+rm Dzerodsigmadpt.exe
+
 g++ BplusAlldsigmadpt.cc $(root-config --cflags --libs) -g -o BplusAlldsigmadpt.exe 
 ./BplusAlldsigmadpt.exe "$FONLLDATINPUTB"  "$FONLLOUTPUTFILEB" "$LABELPP"
+rm BplusAlldsigmadpt.exe
+
 g++ RatioFeedDown.cc $(root-config --cflags --libs) -g -o RatioFeedDown.exe 
 ./RatioFeedDown.exe "$FONLLOUTPUTFILE"  "$FONLLOUTPUTFILEBtoD" "$FONLLOUTPUTFILEInclusiveD" "$LABELPP"
+rm RatioFeedDown.exe
+
 g++ plotFeedDown.C $(root-config --cflags --libs) -g -o plotFeedDown.exe 
 ./plotFeedDown.exe "$FONLLOUTPUTFILE"  "$FONLLOUTPUTFILEB" "$NTUPLAPYTHIA" 1 0 100 
+rm plotFeedDown.exe
 fi 
 
 if [ $DOANALYSISPP_TRGCOMBINATION -eq 1 ]; then      
 g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
 ./triggercombination.exe "$LABELPP"  "$INPUTDATAPPUNSKIMMED" "$INPUTDATAPPMBUNSKIMMED" "$CUTFORTRIGGERPRESCALEPP" "$OUTPUTPrescalePP"
+rm triggercombination.exe
 fi 
 
 if [ $DOANALYSISPP_FIT -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
 ./fitD.exe "$INPUTDATAPPSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   1   "$ISDOWEIGHTPP"   "$LABELPP"  "$OUTPUTFILEPP"
+rm fitD.exe
 fi 
 
 if [ $DOANALYSISPP_CROSS -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
 ./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" "$LABELPP" "$LUMIPP"
+rm CrossSectionRatio.exe
 fi
 
 if [ $DOANALYSISPP_MCSTUDY -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$ISDOWEIGHTPP" "$MINIMUMFIT" "$MAXIMUMFIT"
 ./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELNPPP" "$OUTPUTFILEMCSTUDYNPPP" "$ISDOWEIGHTPP" "$MINIMUMFIT" "$MAXIMUMFIT"
+rm MCefficiency.exe
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
 ./plotPnNP.exe "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$OUTPUTFILEMCSTUDYNPPP"
+rm plotPnNP.exe
 fi
 
 
@@ -174,12 +188,12 @@ fi
 
 cp config/parametersHighpt.h parameters.h
 
-OUTPUTPrescalePbPb="prescalePbPb.root"
-OUTPUTFILEMCSTUDYPbPb="ROOTfiles/MCstudiesPbPb_Cent10.root"
-OUTPUTFILEMCSTUDYNPPbPb="ROOTfiles/MCstudiesNPPbPb_Cent10.root"
-OUTPUTFILEPbPb="ROOTfiles/hPtSpectrumDzeroPbPb_Cent10.root"
-OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPb_Cent10.root"
-OUTPUTFILERAA="ROOTfiles/outputRAA_Cent10.root"
+OUTPUTPrescalePbPb="ROOTfilesCent10/prescalePbPb.root"
+OUTPUTFILEMCSTUDYPbPb="ROOTfilesCent10/MCstudiesPbPb.root"
+OUTPUTFILEMCSTUDYNPPbPb="ROOTfilesCent10/MCstudiesNPPbPb.root"
+OUTPUTFILEPbPb="ROOTfilesCent10/hPtSpectrumDzeroPbPb.root"
+OUTPUTFILEPlotPbPb="ROOTfilesCent10/CrossSectionFONLLPbPb.root"
+OUTPUTFILERAA="ROOTfilesCent10/outputRAA.root"
 
 LUMIPbPb=7.63533
 #LUMIPbPb=18.4115 
@@ -198,56 +212,62 @@ CUTFORTRIGGERPRESCALEPbPb=0
 
 if [ $DONORMPbPb -eq 1 ]; then      
 cp config/parametersHighptPbPbNorm.h parameters.h
-OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPbNorm_Cent10.root"
-OUTPUTPrescalePbPb="prescalePbPbNorm_Cent10.root"
+OUTPUTFILEPlotPbPb="ROOTfilesCent10/CrossSectionFONLLPbPbNorm.root"
+OUTPUTPrescalePbPb="ROOTfilesCent10/prescalePbPbNorm.root"
 LUMIPbPb=1
 fi
 
 if [ $DOANALYSISPbPb_FONLL -eq 1 ]; then
 g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe 
 ./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILE" "$LABELPP"
+rm Dzerodsigmadpt.exe
 fi
 
 if [ $DOANALYSISPbPb_TRGCOMBINATION -eq 1 ]; then
 g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
 ./triggercombination.exe "$LABELPbPb"  "$INPUTDATAPbPbUNSKIMMED" "$INPUTDATAPbPbMBUNSKIMMED" "$CUTFORTRIGGERPRESCALEPbPb" "$OUTPUTPrescalePbPb"
+rm triggercombination.exe
 fi
 
 if [ $DOANALYSISPbPb_FIT -eq 1 ]; then
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPbPbSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPb" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPb"   "1"   "$ISDOWEIGHTPbPb"  "$LABELPbPb"  "$OUTPUTFILEPbPb" "$CENTPbPb"
+./fitD.exe "$INPUTDATAPbPbSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPb" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPb"   "1"   "$ISDOWEIGHTPbPb"  "$LABELPbPb"  "$OUTPUTFILEPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm fitD.exe
 fi
 
 if [ $DOANALYSISPbPb_CROSS -eq 1 ]; then
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" "$LABELPbPb" "$LUMIPbPb"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" "$LABELPbPb" "$LUMIPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm CrossSectionRatio.exe
 fi
 
 if [ $DOANALYSISPbPb_MCSTUDY -eq 1 ]; then
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPbPb"  "${SELGENPbPb}${CUTCENTPbPb}" "${SELGENPPACCPbPb}${CUTCENTPbPb}"  "${RECOONLYPbPb}${CUTCENTPbPb}" "${CUTPbPb}${CUTCENTPbPb}"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
 ./MCefficiency.exe "$INPUTMCNPPbPb"  "${SELGENPbPb}${CUTCENTPbPb}" "${SELGENPPACCPbPb}${CUTCENTPbPb}"  "${RECOONLYPbPb}${CUTCENTPbPb}" "${CUTPbPb}${CUTCENTPbPb}"  "$LABELNPPbPb" "$OUTPUTFILEMCSTUDYNPPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
+rm MCefficiency.exe
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
-./plotPnNP.exe "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$OUTPUTFILEMCSTUDYNPPbPb"
+./plotPnNP.exe "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$OUTPUTFILEMCSTUDYNPPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm plotPnNP.exe
 fi
 
 if [ $DORAA -eq 1 ]; then      
 g++ NuclearModificationFactor.C $(root-config --cflags --libs) -g -o NuclearModificationFactor.exe 
-./NuclearModificationFactor.exe "$OUTPUTFILEPlotPP" "$OUTPUTFILEPlotPbPb"  "$LABELPbPb" "$OUTPUTFILERAA" 
+./NuclearModificationFactor.exe "$OUTPUTFILEPlotPP" "$OUTPUTFILEPlotPbPb"  "$LABELPbPb" "$OUTPUTFILERAA" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm NuclearModificationFactor.exe
 fi
 
 
 ## ANALYSIS PP MB
 
-
-FONLLOUTPUTFILEMB="ROOTfiles/output_pp_d0meson_5TeV_y1MB.root"
-FONLLOUTPUTFILEBtoDMB="ROOTfiles/output_pp_Btod0meson_5TeV_y1MB.root"
-FONLLOUTPUTFILEInclusiveDMB="ROOTfiles/output_inclusiveDd0meson_5TeV_y1MB.root"
-FONLLOUTPUTFILEBMB="ROOTfiles/output_pp_Bmeson_5TeV_y1MB.root"
-OUTPUTFILEPPMB="ROOTfiles/hPtSpectrumDzeroPPMB.root"
-OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMB.root"
-OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB.root"
-OUTPUTFILEMCSTUDYNPPPMB="ROOTfiles/MCstudiesNPPPMB.root"
+FONLLOUTPUTFILEMB="ROOTfilesCent10/output_pp_d0meson_5TeV_y1MB.root"
+FONLLOUTPUTFILEBtoDMB="ROOTfilesCent10/output_pp_Btod0meson_5TeV_y1MB.root"
+FONLLOUTPUTFILEInclusiveDMB="ROOTfilesCent10/output_inclusiveDd0meson_5TeV_y1MB.root"
+FONLLOUTPUTFILEBMB="ROOTfilesCent10/output_pp_Bmeson_5TeV_y1MB.root"
+OUTPUTFILEPPMB="ROOTfilesCent10/hPtSpectrumDzeroPPMB.root"
+OUTPUTFILEPlotPPMB="ROOTfilesCent10/CrossSectionFONLLPPMB.root"
+OUTPUTFILEMCSTUDYPPMB="ROOTfilesCent10/MCstudiesPPMB.root"
+OUTPUTFILEMCSTUDYNPPPMB="ROOTfilesCent10/MCstudiesNPPPMB.root"
 
 LUMIPPMB=0.0378131
 ISMCPPMB=0
@@ -268,48 +288,58 @@ cp config/parametersLowpt.h parameters.h
 if [ $DONORMPPMB -eq 1 ]; then      
 LUMIPPMB=1
 cp config/parametersMBPPNorm.h parameters.h
-OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMBNorm.root"
+OUTPUTFILEPlotPPMB="ROOTfilesCent10/CrossSectionFONLLPPMBNorm.root"
 fi 
 
 if [ $DOANALYSISPPMB_FONLL -eq 1 ]; then
 g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe 
 ./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILEMB" "$LABELPPMB"
 ./Dzerodsigmadpt.exe "$FONLLDATINPUTBtoD"  "$FONLLOUTPUTFILEBtoDMB" "$LABELPPMB"
+rm Dzerodsigmadpt.exe
+
 g++ BplusAlldsigmadpt.cc $(root-config --cflags --libs) -g -o BplusAlldsigmadpt.exe 
 ./BplusAlldsigmadpt.exe "$FONLLDATINPUTB"  "$FONLLOUTPUTFILEBMB" "$LABELPPMB"
+rm BplusAlldsigmadpt.exe
+
 g++ RatioFeedDown.cc $(root-config --cflags --libs) -g -o RatioFeedDown.exe 
 ./RatioFeedDown.exe "$FONLLOUTPUTFILEMB"  "$FONLLOUTPUTFILEBtoDMB" "$FONLLOUTPUTFILEInclusiveDMB" "$LABELPPMB"
+rm RatioFeedDown.exe
+
 g++ plotFeedDown.C $(root-config --cflags --libs) -g -o plotFeedDown.exe 
 ./plotFeedDown.exe "$FONLLOUTPUTFILEMB"  "$FONLLOUTPUTFILEBMB" "$NTUPLAPYTHIA" 1 0 100 
+rm plotFeedDown.exe
 fi
 
 if [ $DOANALYSISPPMB_FIT -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
 ./fitD.exe "$INPUTDATAPPMBSKIMMED"  "$INPUTMCPP"  "$TRGPPMB" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMB"   1   "$ISDOWEIGHTPPMB"   "$LABELPPMB"  "$OUTPUTFILEPPMB"
+rm fitD.exe
 fi
 
 if [ $DOANALYSISPPMB_MCSTUDY -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$ISDOWEIGHTPPMB" "$MINIMUMFIT" "$MAXIMUMFIT"
 ./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELNPPPMB" "$OUTPUTFILEMCSTUDYNPPPMB" "$ISDOWEIGHTPPMB" "$MINIMUMFIT" "$MAXIMUMFIT"
+rm MCefficiency.exe
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
 ./plotPnNP.exe "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$OUTPUTFILEMCSTUDYNPPPMB"
+rm plotPnNP.exe
 fi
 
 if [ $DOANALYSISPPMB_CROSS -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
 ./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" "$LABELPPMB" "$LUMIPPMB"
+rm CrossSectionRatio.exe
 fi
 
 
 ## ANALYSIS PbPb MB
 
-OUTPUTFILEPbPbMB="ROOTfiles/hPtSpectrumDzeroPbPbMB_Cent10.root"
-OUTPUTFILEPlotPbPbMB="ROOTfiles/CrossSectionFONLLPbPbMB_Cent10.root"
-OUTPUTFILEMCSTUDYPbPbMB="ROOTfiles/MCstudiesPbPbMB_Cent10.root"
-OUTPUTFILEMCSTUDYNPPbPbMB="ROOTfiles/MCstudiesNPPbPbMB_Cent10.root"
-OUTPUTFILERAAMB="ROOTfiles/outputRAAMB_Cent10.root"
-
+OUTPUTFILEPbPbMB="ROOTfilesCent10/hPtSpectrumDzeroPbPbMB.root"
+OUTPUTFILEPlotPbPbMB="ROOTfilesCent10/CrossSectionFONLLPbPbMB.root"
+OUTPUTFILEMCSTUDYPbPbMB="ROOTfilesCent10/MCstudiesPbPbMB.root"
+OUTPUTFILEMCSTUDYNPPbPbMB="ROOTfilesCent10/MCstudiesNPPbPbMB.root"
+OUTPUTFILERAAMB="ROOTfilesCent10/outputRAAMB.root"
 
 LUMIPbPbMB=0.350197
 #LUMIPbPbMB=0.831646 
@@ -327,49 +357,61 @@ USEPRESCALEPbPbMB=0
 if [ $DONORMPbPbMB -eq 1 ]; then      
 LUMIPbPbMB=1
 cp config/parametersMBPbPbNorm.h parameters.h
-OUTPUTFILEPlotPbPbMB="ROOTfiles/CrossSectionFONLLPbPbMBNorm_Cent10.root"
+OUTPUTFILEPlotPbPbMB="ROOTfilesCent10/CrossSectionFONLLPbPbMBNorm.root"
 fi
-
 
 if [ $DOANALYSISPbPbMB_FONLL -eq 1 ]; then
 g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe 
 ./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILEMB" "$LABELPPMB"
+rm Dzerodsigmadpt.exe
 fi
 
 if [ $DOANALYSISPbPbMB_FIT -eq 1 ]; then
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPbPbMBSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPbMB" "$CUTPbPbMB"   "$SELGENPbPbMB"   "$ISMCPbPbMB"   1   "$ISDOWEIGHTPbPbMB"   "$LABELPbPbMB"  "$OUTPUTFILEPbPbMB" "$CENTPbPb"
+./fitD.exe "$INPUTDATAPbPbMBSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPbMB" "$CUTPbPbMB"   "$SELGENPbPbMB"   "$ISMCPbPbMB"   1   "$ISDOWEIGHTPbPbMB"   "$LABELPbPbMB"  "$OUTPUTFILEPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm fitD.exe
 fi
 
 if [ $DOANALYSISPbPbMB_CROSS -eq 1 ]; then
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePP" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB" "$LUMIPbPb"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB" "$LUMIPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm CrossSectionRatio.exe
 fi
 
 if [ $DOANALYSISPbPbMB_MCSTUDY -eq 1 ]; then
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPbPb"  "${SELGENPbPbMB}${CUTCENTPbPb}" "${SELGENACCPbPbMB}${CUTCENTPbPb}"  "${RECOONLYPbPbMB}${CUTCENTPbPb}${CUTCENTPbPb}" "${CUTPbPbMB}${CUTCENTPbPb}"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$ISDOWEIGHTPbPbMB" "$MINIMUMFIT" "$MAXIMUMFIT"
 ./MCefficiency.exe "$INPUTMCNPPbPb"  "${SELGENPbPbMB}${CUTCENTPbPb}" "${SELGENACCPbPbMB}${CUTCENTPbPb}"  "${RECOONLYPbPbMB}${CUTCENTPbPb}" "${CUTPbPbMB}${CUTCENTPbPb}"  "$LABELNPPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$ISDOWEIGHTPbPbMB" "$MINIMUMFIT" "$MAXIMUMFIT"
+rm MCefficiency.exe
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
-./plotPnNP.exe "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB"
+./plotPnNP.exe "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm plotPnNP.exe
 fi
 
 if [ $DORAAMB -eq 1 ]; then      
 g++ NuclearModificationFactor.C $(root-config --cflags --libs) -g -o NuclearModificationFactor.exe 
-./NuclearModificationFactor.exe "$OUTPUTFILEPlotPPMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB" "$OUTPUTFILERAAMB"
+./NuclearModificationFactor.exe "$OUTPUTFILEPlotPPMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB" "$OUTPUTFILERAAMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm NuclearModificationFactor.exe
 fi
-
 
 ## COMBINE RESULTS
 
-if [ $DOCombineCrossSection -eq 1 ]; then      
+if [ $DOCombineCrossSectionPP -eq 1 ]; then      
 g++ CombineCrossSections.C $(root-config --cflags --libs) -g -o CombineCrossSections.exe 
-./CombineCrossSections.exe "$OUTPUTFILEPlotPPMB" "$OUTPUTFILEPlotPP" 
+./CombineCrossSections.exe "$OUTPUTFILEPlotPPMB" "$OUTPUTFILEPlotPP" "0"
+rm CombineCrossSections.exe
+fi
+
+if [ $DOCombineCrossSectionPbPb -eq 1 ]; then      
+g++ CombineCrossSections.C $(root-config --cflags --libs) -g -o CombineCrossSections.exe 
+./CombineCrossSections.exe "$OUTPUTFILEPlotPbPbMB" "$OUTPUTFILEPlotPbPb" "1" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm CombineCrossSections.exe
 fi
 
 if [ $DOCombineRAA -eq 1 ]; then      
 g++ CombineRAA.C $(root-config --cflags --libs) -g -o CombineRAA.exe 
-./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON"
+./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm CombineRAA.exe
 fi
 
 
@@ -386,11 +428,11 @@ cp config/parametersAllpt.h parameters.h
 if [ $DOsystematicPthatstudyPP -eq 1 ]; then   
 
  LABELPTHATALL="pthatallPP"
- FILEOUTPTHATALL="ROOTfiles/pthatallPP.root" 
+ FILEOUTPTHATALL="ROOTfilesCent10/pthatallPP.root" 
  LABELPTHATALLPTHATREWEIGHT="pthatallPPpthatreweighted"
- FILEOUTPTHATALLPTHATREWEIGHT="ROOTfiles/pthatallPPpthatreweighted.root" 
+ FILEOUTPTHATALLPTHATREWEIGHT="ROOTfilesCent10/pthatallPPpthatreweighted.root" 
  LABELPTHATALLPTWEIGHT="pthatallPPptreweighted"
- FILEOUTPTHATALLPTWEIGHT="ROOTfiles/pthatallPPptreweighted.root" 
+ FILEOUTPTHATALLPTWEIGHT="ROOTfilesCent10/pthatallPPptreweighted.root" 
 
 g++ FONLLweight.C $(root-config --cflags --libs) -g -o FONLLweight.exe 
 #./FONLLweight.exe 0 "$INPUTMCPP" 2 100 "$LABELPTHATALL"
@@ -407,13 +449,13 @@ if [ $DOsystematicPthatstudyPbPb -eq 1 ]; then
 g++ FONLLweight.C $(root-config --cflags --libs) -g -o FONLLweight.exe 
 
  LABELPTHATALL="pthatallPbPb"
- FILEOUTPTHATALL="ROOTfiles/pthatallPbPb.root" 
+ FILEOUTPTHATALL="ROOTfilesCent10/pthatallPbPb.root" 
  LABELPTHATALLPTHATREWEIGHT="pthatallPbPbpthatreweighted"
- FILEOUTPTHATALLPTHATREWEIGHT="ROOTfiles/pthatallPbPbpthatreweighted.root" 
+ FILEOUTPTHATALLPTHATREWEIGHT="ROOTfilesCent10/pthatallPbPbpthatreweighted.root" 
  LABELPTHATALLPTWEIGHT="pthatallPbPbptreweighted"
- FILEOUTPTHATALLPTWEIGHT="ROOTfiles/pthatallPbPbptreweighted.root" 
+ FILEOUTPTHATALLPTWEIGHT="ROOTfilesCent10/pthatallPbPbptreweighted.root" 
  LABELPTHATALLPTWEIGHTPPMC="pthatallPbPbptreweightedPPMC"
- FILEOUTPTHATALLPTWEIGHTPPMC="ROOTfiles/pthatallPbPbptreweightedPPMC.root" 
+ FILEOUTPTHATALLPTWEIGHTPPMC="ROOTfilesCent10/pthatallPbPbptreweightedPPMC.root" 
 
 #./FONLLweight.exe 0 "$INPUTMCPbPb" 2 100 "$LABELPTHATALL"
 #./FONLLweight.exe 0 "$INPUTMCPbPbPthat10" 2 30 "$LABELPTHAT10"
@@ -430,8 +472,8 @@ fi
 
 cp config/parametersHighpt.h parameters.h
 
-OUTPUTFILEPPMCClosure="ROOTfiles/hPtSpectrumDzeroPPMCClosure.root"
-OUTPUTFILEPbPbMCClosure="ROOTfiles/hPtSpectrumDzeroPbPbMCClosure.root"
+OUTPUTFILEPPMCClosure="ROOTfilesCent10/hPtSpectrumDzeroPPMCClosure.root"
+OUTPUTFILEPbPbMCClosure="ROOTfilesCent10/hPtSpectrumDzeroPbPbMCClosure.root"
 LUMIPPMCClosure=1
 ISMCPPMCClosure=1
 ISDOWEIGHTPPMCClosure=0
@@ -460,8 +502,8 @@ fi
 
 cp config/parametersLowpt.h parameters.h
 
-OUTPUTFILEPPMBMCClosure="ROOTfiles/hPtSpectrumDzeroPPMBMCClosure.root"
-OUTPUTFILEPbPbMBMCClosure="ROOTfiles/hPtSpectrumDzeroPbPbMBMCClosure.root"
+OUTPUTFILEPPMBMCClosure="ROOTfilesCent10/hPtSpectrumDzeroPPMBMCClosure.root"
+OUTPUTFILEPbPbMBMCClosure="ROOTfilesCent10/hPtSpectrumDzeroPbPbMBMCClosure.root"
 LUMIPPMBMCClosure=1
 ISMCPPMBMCClosure=1
 ISDOWEIGHTPPMBMCClosure=0
@@ -487,10 +529,3 @@ g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe
 g++ ClosureTest.C $(root-config --cflags --libs) -g -o ClosureTest.exe 
 ./ClosureTest.exe "$OUTPUTFILEPbPbMBMCClosure" "$LABELPbPbMB"
 fi
-
-
-
-
-
-
-
