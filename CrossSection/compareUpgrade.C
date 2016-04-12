@@ -16,6 +16,8 @@ TString weight = "pthatweight";
 TString seldata;
 TString selmc;
 TString collisionsystem;
+int scalefactor=6;
+double bkgreduction=0.7;
 
 int nBins=1;
 //void testFit(int count=3,Double_t ptmin=30.,Double_t ptmax=40,TString sample="PbPb")
@@ -26,9 +28,9 @@ void compareUpgrade(int option=2)
   int nmin,nmax,mymaxhisto;
   
   if (option==1)
-  {count=3; ptmin=30.; ptmax=40; sample="PbPb"; nmin=2000;nmax=12000; mymaxhisto=2400;  };
+  {count=3; ptmin=30.; ptmax=40; sample="PbPb"; mymaxhisto=2000;  };
   if (option==2)
-  {count=1; ptmin=2.; ptmax=3; sample="PbPbMB"; nmin=1e7/3.3;nmax=6*1e7/3.3;  mymaxhisto=1000000;};
+  {count=1; ptmin=2.; ptmax=3; sample="PbPbMB"; mymaxhisto=600000;};
 
 
   TCanvas* c= new TCanvas(Form("c%d",count),"",600,600);
@@ -180,9 +182,11 @@ void compareUpgrade(int option=2)
   f->Draw("same");
   
   Double_t yield = mass->Integral(minhisto,maxhisto)/binwidthmass;
+  Double_t yieldtotal = f->Integral(minhisto,maxhisto)/binwidthmass;
   Double_t yieldErr = mass->Integral(minhisto,maxhisto)/binwidthmass*mass->GetParError(0)/mass->GetParameter(0);
   
-  std::cout<<"YIELD="<<yield<<std::endl;
+  std::cout<<"yield signal="<<yield<<std::endl;
+  std::cout<<"total counts="<<yieldtotal<<std::endl;
 
   TLegend* leg = new TLegend(0.65,0.58,0.82,0.88,NULL,"brNDC");
   leg->SetBorderSize(0);
@@ -226,24 +230,43 @@ void compareUpgrade(int option=2)
 
  TH1D* hTest = new TH1D("hTest","",nbinsmasshisto,minhisto,maxhisto);
 
- for (int m=0;m<nmin;m++){
+ for (int m=0;m<yieldtotal;m++){
  double r = f->GetRandom();
  hTest->Fill(r);
  
  }
 
- TF1* ffake=(TF1*)f->Clone("ffake");
- ffake->SetParameter(2,ffake->GetParameter(2)*0.8);
- ffake->SetParameter(10,ffake->GetParameter(10)*0.8);
- ffake->SetParameter(3,ffake->GetParameter(3)*0.5);
- ffake->SetParameter(4,ffake->GetParameter(4)*0.5);
- ffake->SetParameter(5,ffake->GetParameter(5)*0.5);
- ffake->SetParameter(6,ffake->GetParameter(6)*0.5);
- ffake->SetParameter(0,ffake->GetParameter(0)*0.8);
+ TF1* ffaketotal=(TF1*)f->Clone("ffake");
+ TF1* ffakemass=(TF1*)mass->Clone("ffakemass");
+ TF1* ffakebackground=(TF1*)background->Clone("ffakebackground");
+ TF1* ffakemassSwap=(TF1*)massSwap->Clone("ffakemassSwap");
+ 
+ Double_t yieldtotal_original = ffaketotal->Integral(minhisto,maxhisto)/binwidthmass;
+ Double_t yieldmass_original = ffakemass->Integral(minhisto,maxhisto)/binwidthmass;
+ Double_t yieldbackground_original = ffakebackground->Integral(minhisto,maxhisto)/binwidthmass;
+ Double_t yieldswapped_original = ffakemassSwap->Integral(minhisto,maxhisto)/binwidthmass;
 
  TH1D* hTestFake = new TH1D("hTestFake","",nbinsmasshisto,minhisto,maxhisto);
- for (int m=0;m<nmax;m++){
-   double r = ffake->GetRandom();
+  ffakemass->SetParameter(2,ffaketotal->GetParameter(2)*0.8);
+  ffakemass->SetParameter(10,ffaketotal->GetParameter(10)*0.8);
+ 
+Double_t yieldmass_modified= ffakemass->Integral(minhisto,maxhisto)/binwidthmass;
+
+cout<<"mass original="<<yieldmass_original<<endl;
+cout<<"mass modified="<<yieldmass_modified<<endl;
+
+ for (int m=0;m<yieldmass_original*scalefactor;m++){
+   double r = ffakemass->GetRandom();
+   hTestFake->Fill(r);
+ }
+
+  for (int m=0;m<(int)(yieldbackground_original*scalefactor*bkgreduction);m++){
+   double r = ffakebackground->GetRandom();
+   hTestFake->Fill(r);
+ }
+ 
+ for (int m=0;m<(int)(yieldswapped_original*scalefactor*bkgreduction);m++){
+   double r = ffakemassSwap->GetRandom();
    hTestFake->Fill(r);
  }
 
@@ -281,13 +304,13 @@ void compareUpgrade(int option=2)
  hTest->Draw("ep");
  hTestFake->Draw("epsame");
 
-  TLegend* myleg = new TLegend(0.2772177,0.6461864,0.7227823,0.7394068,NULL,"brNDC");
+  TLegend* myleg = new TLegend(0.2177419,0.6292373,0.6633065,0.7266949,NULL,"brNDC");
   myleg->SetBorderSize(0);
   myleg->SetTextSize(0.04);
   myleg->SetTextFont(42);
   myleg->SetFillStyle(0);
-  myleg->AddEntry(hTest,"Current CMS, |y|<1","pl");
-  myleg->AddEntry(hTestFake,"Upgraded CMS, |y|<2","l");
+  myleg->AddEntry(hTest,"Current CMS, |y|<1, L_{int}=0.5/pb","pl");
+  myleg->AddEntry(hTestFake,"Upgraded CMS, |y|<2, L_{int}=1.5/pb","l");
   myleg->Draw("same");
 
   TLatex* mytex;
