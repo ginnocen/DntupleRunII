@@ -19,13 +19,19 @@ TString selmc;
 TString selmceff;
 TString selmcgen;
 TString collisionsystem;
-Float_t cent;
+Float_t hiBinMin,hiBinMax,centMin,centMax;
 
-void fitD(TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root", TString inputmc="/afs/cern.ch/work/w/wangj/public/Dmeson/ntD_20151110_DfinderMC_20151110_EvtMatching_Pythia_D0pt15p0_Pthat15_TuneZ2_5020GeV_GENSIM_75x_1015_20151110_ppGlobaTrackingPPmenuHFlowpuv11_MBseed_twang-Pythia_1107.root", TString trgselection="((HLT_DmesonPPTrackingGlobal_Dpt15_v1&&Dpt>25&&Dpt<40)||(HLT_DmesonPPTrackingGlobal_Dpt30_v1&&Dpt>40&&Dpt<60)||(HLT_DmesonPPTrackingGlobal_Dpt50_v1&&Dpt>60))",  TString cut="Dy>-1.&&Dy<1.&&(Dtrk1highPurity&&Dtrk2highPurity)&&(DsvpvDistance/DsvpvDisErr)>3.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1Pt>1.5&&Dtrk2Pt>1.5", TString cutmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))", int isMC=0, Double_t luminosity=26., int doweight=0, TString collsyst="PbPb", TString outputfile="mytest.root", Float_t centrality=-1)
+void fitD(TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root", TString inputmc="/afs/cern.ch/work/w/wangj/public/Dmeson/ntD_20151110_DfinderMC_20151110_EvtMatching_Pythia_D0pt15p0_Pthat15_TuneZ2_5020GeV_GENSIM_75x_1015_20151110_ppGlobaTrackingPPmenuHFlowpuv11_MBseed_twang-Pythia_1107.root", TString trgselection="((HLT_DmesonPPTrackingGlobal_Dpt15_v1&&Dpt>25&&Dpt<40)||(HLT_DmesonPPTrackingGlobal_Dpt30_v1&&Dpt>40&&Dpt<60)||(HLT_DmesonPPTrackingGlobal_Dpt50_v1&&Dpt>60))",  TString cut="Dy>-1.&&Dy<1.&&(Dtrk1highPurity&&Dtrk2highPurity)&&(DsvpvDistance/DsvpvDisErr)>3.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1Pt>1.5&&Dtrk2Pt>1.5", TString cutmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))", int isMC=0, Double_t luminosity=26., int doweight=0, TString collsyst="PbPb", TString outputfile="mytest.root", Float_t centmin=0., Float_t centmax=100.)
 {
   collisionsystem=collsyst;
-  cent = centrality*2;
-  if(cent<0)
+  hiBinMin = centmin*2;
+  hiBinMax = centmax*2;
+  centMin = centmin;
+  centMax = centmax;
+  Bool_t isPbPb = true;
+  if(collisionsystem=="PP"||collisionsystem=="PPMB") isPbPb=false;
+
+  if(!isPbPb)
     {
       seldata = Form("%s&&%s",trgselection.Data(),cut.Data());
       selmceff = Form("%s",cut.Data());
@@ -33,9 +39,9 @@ void fitD(TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderDat
     }
   else
     {
-      seldata = Form("%s&&%s&&hiBin<%f",trgselection.Data(),cut.Data(),cent);
-      selmceff = Form("%s&&hiBin<%f",cut.Data(),cent);
-      selmcgen = Form("%s&&hiBin<%f",cutmcgen.Data(),cent);
+      seldata = Form("%s&&%s&&hiBin>%f&&hiBin<%f",trgselection.Data(),cut.Data(),hiBinMin,hiBinMax);
+      selmceff = Form("%s&&hiBin>%f&&hiBin<%f",cut.Data(),hiBinMin,hiBinMax);
+      selmcgen = Form("%s&&hiBin>%f&&hiBin<%f",cutmcgen.Data(),hiBinMin,hiBinMax);
     }
   selmc = Form("%s",cut.Data());
 
@@ -83,10 +89,10 @@ void fitD(TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderDat
       hPt->SetBinError(i+1,yieldErr/(ptBins[i+1]-ptBins[i]));
       hMean->SetBinContent(i+1,f->GetParameter(1));
       hMean->SetBinError(i+1,f->GetParError(1));
-      hSigmaGaus1->SetBinContent(i+1,f->GetParameter(2));
-      hSigmaGaus1->SetBinError(i+1,f->GetParError(2));
-      hSigmaGaus2->SetBinContent(i+1,f->GetParameter(5));
-      hSigmaGaus2->SetBinError(i+1,f->GetParError(5));
+      hSigmaGaus1->SetBinContent(i+1,f->GetParameter(2)*(1+f->GetParameter(6)));
+      hSigmaGaus1->SetBinError(i+1,f->GetParError(2)*(1+f->GetParameter(6)));
+      hSigmaGaus2->SetBinContent(i+1,f->GetParameter(5)*(1+f->GetParameter(6)));
+      hSigmaGaus2->SetBinError(i+1,f->GetParError(5)*(1+f->GetParameter(6)));
       hRelMagnGaus1Gaus2->SetBinContent(i+1,f->GetParameter(4));
       hRelMagnGaus1Gaus2->SetBinError(i+1,f->GetParError(4));
     }  
@@ -175,21 +181,13 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
   TH1D* hMCSignal = new TH1D(Form("hMCSignal-%d",count),"",nbinsmasshisto,minhisto,maxhisto);
   TH1D* hMCSwapped = new TH1D(Form("hMCSwapped-%d",count),"",nbinsmasshisto,minhisto,maxhisto);
   
-  TF1* f = new TF1(Form("f%d",count),"[0]*([7]*([9]*Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[9])*Gaus(x,[1],[10])/(sqrt(2*3.14159)*[10]))+(1-[7])*Gaus(x,[1],[8])/(sqrt(2*3.14159)*[8]))+[3]+[4]*x+[5]*x*x+[6]*x*x*x", 1.7, 2.0);
+  TF1* f = new TF1(Form("f%d",count),"[0]*([7]*([9]*Gaus(x,[1],[2]*(1+[11]))/(sqrt(2*3.14159)*[2]*(1+[11]))+(1-[9])*Gaus(x,[1],[10]*(1+[11]))/(sqrt(2*3.14159)*[10]*(1+[11])))+(1-[7])*Gaus(x,[1],[8]*(1+[11]))/(sqrt(2*3.14159)*[8]*(1+[11])))+[3]+[4]*x+[5]*x*x+[6]*x*x*x", 1.7, 2.0);
   
   if(isMC==1) nt->Project(Form("h-%d",count),"Dmass",Form("%s*(%s&&Dpt>%f&&Dpt<%f)",weight.Data(),seldata.Data(),ptmin,ptmax));   
   else nt->Project(Form("h-%d",count),"Dmass",Form("(%s&&Dpt>%f&&Dpt<%f)",seldata.Data(),ptmin,ptmax));   
   
   ntMC->Project(Form("hMCSignal-%d",count),"Dmass",Form("%s*(%s&&Dpt>%f&&Dpt<%f&&(Dgen==23333))",weight.Data(),selmc.Data(),ptmin,ptmax));   
   ntMC->Project(Form("hMCSwapped-%d",count),"Dmass",Form("%s*(%s&&Dpt>%f&&Dpt<%f&&(Dgen==23344))",weight.Data(),selmc.Data(),ptmin,ptmax));   
-  
-  /*
-  TFile *fout=new TFile(Form("FitsFiles/Fits_%s_%d.root",collisionsystem.Data(),count),"recreate");
-  fout->cd();
-  hMCSignal->Write();
-  hMCSwapped->Write();
-  h->Write();  
-  */
   
   f->SetParLimits(4,-1000,1000);
   f->SetParLimits(10,0.001,0.05);
@@ -211,6 +209,7 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
   f->FixParameter(4,0);
   f->FixParameter(5,0);
   f->FixParameter(6,0);
+  f->FixParameter(11,0);
   h->GetEntries();
   
   hMCSignal->Fit(Form("f%d",count),"q","",minhisto,maxhisto);
@@ -245,8 +244,9 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
   h->Fit(Form("f%d",count),"q","",minhisto,maxhisto);
   h->Fit(Form("f%d",count),"q","",minhisto,maxhisto);
   f->ReleaseParameter(1);
-  //f->ReleaseParameter(2);                                     // you need to release these two parameters if you want to perform studies on the sigma shape
-  //f->ReleaseParameter(10);                                   // you need to release these two parameters if you want to perform studies on the sigma shape
+  f->SetParLimits(1,1.86,1.87);
+  f->ReleaseParameter(11);
+  f->SetParLimits(11,-1.,1.);
   h->Fit(Form("f%d",count),"L q","",minhisto,maxhisto);
   h->Fit(Form("f%d",count),"L q","",minhisto,maxhisto);
   h->Fit(Form("f%d",count),"L q","",minhisto,maxhisto);
@@ -261,8 +261,8 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
   background->SetRange(minhisto,maxhisto);
   background->SetLineStyle(2);
   
-  TF1* mass = new TF1(Form("fmass%d",count),"[0]*([3]*([4]*Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[4])*Gaus(x,[1],[5])/(sqrt(2*3.14159)*[5])))");
-  mass->SetParameters(f->GetParameter(0),f->GetParameter(1),f->GetParameter(2),f->GetParameter(7),f->GetParameter(9),f->GetParameter(10));
+  TF1* mass = new TF1(Form("fmass_%.0f_%.0f",ptmin,ptmax),"[0]*([3]*([4]*Gaus(x,[1],[2]*(1+[6]))/(sqrt(2*3.14159)*[2]*(1+[6]))+(1-[4])*Gaus(x,[1],[5]*(1+[6]))/(sqrt(2*3.14159)*[5]*(1+[6]))))");
+  mass->SetParameters(f->GetParameter(0),f->GetParameter(1),f->GetParameter(2),f->GetParameter(7),f->GetParameter(9),f->GetParameter(10),f->GetParameter(11));
   mass->SetParError(0,f->GetParError(0));
   mass->SetParError(1,f->GetParError(1));
   mass->SetParError(2,f->GetParError(2));
@@ -275,8 +275,8 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
   mass->SetLineWidth(3);
   mass->SetLineStyle(2);
   
-  TF1* massSwap = new TF1(Form("fmassSwap%d",count),"[0]*(1-[2])*Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3])");
-  massSwap->SetParameters(f->GetParameter(0),f->GetParameter(1),f->GetParameter(7),f->GetParameter(8));
+  TF1* massSwap = new TF1(Form("fmassSwap_%.0f_%.0f",ptmin,ptmax),"[0]*(1-[2])*Gaus(x,[1],[3]*(1+[4]))/(sqrt(2*3.14159)*[3]*(1+[4]))");
+  massSwap->SetParameters(f->GetParameter(0),f->GetParameter(1),f->GetParameter(7),f->GetParameter(8),f->GetParameter(11));
   massSwap->SetParError(0,f->GetParError(0));
   massSwap->SetParError(1,f->GetParError(1));
   massSwap->SetParError(2,f->GetParError(7));
@@ -333,13 +333,19 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
   leg->AddEntry(background,"Combinatorial","l");
   leg->Draw("same");
 
-  TLatex Tl;
-  Tl.SetNDC();
-  Tl.SetTextAlign(12);
-  Tl.SetTextSize(0.04);
-  Tl.SetTextFont(42);
-  Tl.DrawLatex(0.18,0.93, "#scale[1.25]{CMS} Preliminary");
-  Tl.DrawLatex(0.65,0.93, Form("%s #sqrt{s_{NN}} = 5.02 TeV",collisionsystem.Data()));
+  TLatex* texCms = new TLatex(0.18,0.93, "#scale[1.25]{CMS} Preliminary");
+  texCms->SetNDC();
+  texCms->SetTextAlign(12);
+  texCms->SetTextSize(0.04);
+  texCms->SetTextFont(42);
+  texCms->Draw();
+
+  TLatex* texCol = new TLatex(0.96,0.93, Form("%s #sqrt{s_{NN}} = 5.02 TeV",collisionsystem.Data()));
+  texCol->SetNDC();
+  texCol->SetTextAlign(32);
+  texCol->SetTextSize(0.04);
+  texCol->SetTextFont(42);
+  texCol->Draw();
 
   TLatex* tex;
 
@@ -361,8 +367,8 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
   TH1F* histo_copy_nofitfun = ( TH1F * ) h->Clone("histo_copy_nofitfun");
   histo_copy_nofitfun->Draw("esame");
 //
-  if(nBins==1) c->SaveAs(Form("Fits/DMass-inclusive%s_%d.pdf",collisionsystem.Data(),count));
-  else c->SaveAs(Form("Fits/DMass%s_%d.pdf",collisionsystem.Data(),count));
+  if(!isPbPb) c->SaveAs(Form("plotFits/DMass%s_%d.pdf",collisionsystem.Data(),count));
+  else c->SaveAs(Form("plotFits/DMass%s_%.0f_%.0f_%d.pdf",collisionsystem.Data(),centMin,centMax,count));
   
   return mass;
 }
@@ -370,9 +376,9 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
 
 int main(int argc, char *argv[])
 {
-  if(argc==12)
+  if(argc==13)
     {
-      fitD(argv[1], argv[2], argv[3], argv[4], argv[5], atoi(argv[6]), atof(argv[7]), atoi(argv[8]),argv[9],argv[10],atof(argv[11]));
+      fitD(argv[1], argv[2], argv[3], argv[4], argv[5], atoi(argv[6]), atof(argv[7]), atoi(argv[8]),argv[9],argv[10],atof(argv[11]),atof(argv[12]));
       return 0;
     }
   else if(argc==11)

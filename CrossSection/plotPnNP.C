@@ -1,7 +1,7 @@
 using namespace std;
 #include "uti.h"
 
-void plotPnNP(TString collision="PbPb",TString outputfileP="test.root",TString outputfileNP="test.root")
+void plotPnNP(TString collision="PbPb",TString outputfileP="test.root",TString outputfileNP="test.root",Float_t centMin=0.,Float_t centMax=100.)
 {
   gStyle->SetTextSize(0.05);
   gStyle->SetTextFont(42);
@@ -14,6 +14,9 @@ void plotPnNP(TString collision="PbPb",TString outputfileP="test.root",TString o
   gStyle->SetMarkerSize(0.8);
   gStyle->SetTitleOffset(1.3,"X");
   gStyle->SetTitleOffset(1.8,"Y");
+
+  Bool_t isPbPb = true;
+  if(collision=="PP"||collision=="PPMB") isPbPb = false;
 
   TFile* infP = new TFile(Form("%s",outputfileP.Data()));
   TFile* infNP = new TFile(Form("%s",outputfileNP.Data()));
@@ -32,15 +35,22 @@ void plotPnNP(TString collision="PbPb",TString outputfileP="test.root",TString o
   hEffAccP->SetMaximum(1.5);
   hEffP->SetMinimum(0.);
   hEffP->SetMaximum(1.5);
-  hEffAccNP->SetMinimum(0.);
-  hEffAccNP->SetMaximum(1.5);
-  hEffNP->SetMinimum(0.);
-  hEffNP->SetMaximum(1.5);
-
   hEffAccP->SetLineColor(2);
   hEffAccP->SetMarkerColor(2);
+  hEffAccP->GetXaxis()->SetTitleOffset(0.95);//0.9
+  hEffAccP->GetYaxis()->SetTitleOffset(1.15);//1.
+  hEffAccP->GetXaxis()->SetTitleSize(0.055);//0.045
+  hEffAccP->GetYaxis()->SetTitleSize(0.055);//0.045
+  hEffAccP->GetXaxis()->SetTitleFont(42);
+  hEffAccP->GetYaxis()->SetTitleFont(42);
   hEffP->SetLineColor(2);
   hEffP->SetMarkerColor(2);
+  hEffP->GetXaxis()->SetTitleOffset(0.95);//0.9
+  hEffP->GetYaxis()->SetTitleOffset(1.15);//1.
+  hEffP->GetXaxis()->SetTitleSize(0.055);//0.045
+  hEffP->GetYaxis()->SetTitleSize(0.055);//0.045
+  hEffP->GetXaxis()->SetTitleFont(42);
+  hEffP->GetYaxis()->SetTitleFont(42);
   hEffAccNP->SetLineColor(4);
   hEffAccNP->SetMarkerColor(4);
   hEffNP->SetLineColor(4);
@@ -57,8 +67,15 @@ void plotPnNP(TString collision="PbPb",TString outputfileP="test.root",TString o
   texCol->SetTextSize(0.04);
   texCol->SetTextFont(42);
 
+  TString texper = "%";
+  TLatex* texCent = new TLatex(0.57,0.84, Form("Centrality %.0f - %.0f%s",centMin,centMax,texper.Data()));
+  texCent->SetNDC();
+  texCent->SetTextAlign(12);
+  texCent->SetTextSize(0.045);
+  texCent->SetTextFont(42);
+
   TCanvas* cEffAcc = new TCanvas("cEffAcc","",600,600);
-  TLegend* legEffAcc = new TLegend(0.55,0.73,0.90,0.84);
+  TLegend* legEffAcc = new TLegend(0.55,0.70,0.90,0.81);
   legEffAcc->SetBorderSize(0);
   legEffAcc->SetFillStyle(0);
   legEffAcc->AddEntry(hEffAccP,"Prompt","pl");
@@ -67,11 +84,13 @@ void plotPnNP(TString collision="PbPb",TString outputfileP="test.root",TString o
   hEffAccNP->Draw("same");
   texCms->Draw();
   texCol->Draw();
+  if(isPbPb) texCent->Draw();
   legEffAcc->Draw("same");
-  cEffAcc->SaveAs(Form("canvasEffAcc_PnNP_%s.pdf",collision.Data()));
+  if(!isPbPb) cEffAcc->SaveAs(Form("plotEff/canvasEffAcc_PnNP_%s.pdf",collision.Data()));
+  else cEffAcc->SaveAs(Form("plotEff/canvasEffAcc_PnNP_%s_%.0f_%.0f.pdf",collision.Data(),centMin,centMax));
 
   TCanvas* cEff = new TCanvas("cEff","",600,600);
-  TLegend* legEff = new TLegend(0.55,0.73,0.90,0.84);
+  TLegend* legEff = new TLegend(0.55,0.70,0.90,0.81);
   legEff->SetBorderSize(0);
   legEff->SetFillStyle(0);
   legEff->AddEntry(hEffP,"Prompt","pl");
@@ -80,14 +99,20 @@ void plotPnNP(TString collision="PbPb",TString outputfileP="test.root",TString o
   hEffNP->Draw("same");
   texCms->Draw();
   texCol->Draw();
+  if(isPbPb) texCent->Draw();
   legEff->Draw("same");
-  cEff->SaveAs(Form("canvasEff_PnNP_%s.pdf",collision.Data()));
-
+  if(!isPbPb) cEff->SaveAs(Form("plotEff/canvasEff_PnNP_%s.pdf",collision.Data()));
+  else cEff->SaveAs(Form("plotEff/canvasEff_PnNP_%s_%.0f_%.0f.pdf",collision.Data(),centMin,centMax));
 }
 
 int main(int argc, char* argv[])
 {
-  if(argc==4)
+  if(argc==6)
+    {
+      plotPnNP(argv[1],argv[2],argv[3],atof(argv[4]),atof(argv[5]));
+      return 1;
+    }
+  else if(argc==4)
     {
       plotPnNP(argv[1],argv[2],argv[3]);
       return 1;
