@@ -3,9 +3,15 @@
 #include "TLegendEntry.h"
 #include "../Systematics/systematicsUpgrade.C"
 
-void DRAAUpgrade()
+void DRAAUpgrade(int isBflag=0)
 {
   double valuestat=TMath::Sqrt(6);
+  
+  
+  
+  TFile* fB=new TFile("output.root");
+  TH1F*hBstat=(TH1F*)fB->Get("stat");
+  TH1F*hBsyst=(TH1F*)fB->Get("sys");
 
   TString label="PbPb";
   double lumi=1.;
@@ -59,9 +65,7 @@ void DRAAUpgrade()
   }
 
   double apt[nBins];
-  //bin half width
   double aptl[nBins];
-  //number of every rebined bin
   double bin_num[nBins];
 
 
@@ -72,6 +76,25 @@ void DRAAUpgrade()
   }
 
   Double_t xr[nBins], yr[nBins], xrlow[nBins], yrlow[nBins],xrhigh[nBins],yrhigh[nBins];
+
+
+
+  const int BINS=8;
+  double bins[BINS+1] = {5,10,15,20,25,30,40,50,100};
+
+
+  double aptB[nBins];
+  double aptlB[nBins];
+
+
+  for (int ibin=0; ibin<BINS; ibin++){
+    aptB[ibin]=(bins[ibin+1]+bins[ibin])/2.;
+    aptlB[ibin] = (bins[ibin+1]-bins[ibin])/2;
+  }
+
+  Double_t xrB[nBins], yrB[nBins], xrlowB[nBins], yrlowB[nBins],xrhighB[nBins],yrhighB[nBins];
+
+
   
   for(int i=0;i<nBins;i++)
   {
@@ -79,6 +102,14 @@ void DRAAUpgrade()
     double systematic=0.01*systematicsForRAA(hNuclearModification->GetBinCenter(i+1),0.,0.);
     yrlow[i] = hNuclearModification->GetBinContent(i+1)*systematic;
     yrhigh[i] =hNuclearModification->GetBinContent(i+1)*systematic;
+        
+  }
+  
+  for(int i=0;i<BINS;i++)
+  {
+    yrB[i]=hBsyst->GetBinContent(i+1);
+    yrlowB[i]=hBsyst->GetBinError(i+1);
+    yrhighB[i]=hBsyst->GetBinError(i+1);
   }
 
 
@@ -86,6 +117,13 @@ void DRAAUpgrade()
   gNuclearModification->SetName("gNuclearModification");
   gNuclearModification->SetMarkerStyle(20);
   gNuclearModification->SetMarkerSize(0.8);
+  
+
+  TGraphAsymmErrors* gNuclearModificationB = new TGraphAsymmErrors(nBins,aptB,yrB,aptlB,aptlB,yrlowB,yrhighB);
+  gNuclearModificationB->SetName("gNuclearModificationB");
+  gNuclearModificationB->SetMarkerStyle(20);
+  gNuclearModificationB->SetMarkerSize(0.8);
+
 
   TCanvas*canvasRAA=new TCanvas("canvasRAA","canvasRAA",600,600);//550,500
   canvasRAA->cd();
@@ -133,19 +171,31 @@ void DRAAUpgrade()
   gNuclearModification->SetLineWidth(1);//3
   gNuclearModification->SetMarkerSize(1);
   gNuclearModification->SetMarkerStyle(21);
-  gNuclearModification->SetLineColor(1);//kGreen+4
+  gNuclearModification->SetLineColor(5);//kGreen+4
   gNuclearModification->SetMarkerColor(1);//kGreen+4
-  gNuclearModification->Draw("5same");
-  hNuclearModification->Draw("psame");//same
 
-/*
-  TLatex* texlumi = new TLatex(0.19,0.936,"25.8 pb^{-1} (5.02 TeV pp) + 404 #mub^{-1} (5.02 TeV PbPb)");
-  texlumi->SetNDC();
-  texlumi->SetTextFont(42);
-  texlumi->SetTextSize(0.038);
-  texlumi->SetLineWidth(2);
-  texlumi->Draw();
-  */
+
+  gNuclearModificationB->SetFillColor(4);//1
+  gNuclearModificationB->SetFillStyle(0);//0 
+  gNuclearModificationB->SetLineWidth(2);//3
+  gNuclearModificationB->SetMarkerSize(1);
+  gNuclearModificationB->SetMarkerStyle(21);
+  gNuclearModificationB->SetLineColor(4);//kGreen+4
+  gNuclearModificationB->SetMarkerColor(4);//kGreen+4
+
+
+  hBstat->SetLineWidth(3);
+  hBstat->SetMarkerSize(1);
+  hBstat->SetMarkerStyle(21);
+  hBstat->SetLineColor(4);
+  hBstat->SetMarkerColor(4);
+
+ gNuclearModification->Draw("5same");
+ hNuclearModification->Draw("psame");//same
+ if(isBflag){
+ gNuclearModificationB->Draw("5same");
+ hBstat->Draw("psame");
+  }
   TLatex* texcms = new TLatex(0.22,0.90,"CMS");
   texcms->SetNDC();
   texcms->SetTextAlign(13);
@@ -153,7 +203,7 @@ void DRAAUpgrade()
   texcms->SetTextSize(0.06);
   texcms->SetLineWidth(2);
   texcms->Draw();
-  TLatex* texpre = new TLatex(0.22,0.84,"Projection");
+  TLatex* texpre = new TLatex(0.22,0.84,"Performance");
   texpre->SetNDC();
   texpre->SetTextAlign(13);
   texpre->SetTextFont(52);
@@ -171,7 +221,7 @@ void DRAAUpgrade()
   tlatexeff2->SetLineWidth(2);
   tlatexeff2->Draw();
 
-  TLegend *legendSigma=new TLegend(0.3842282,0.5909091,0.6912752,0.701049,"");//0.5100806,0.6268644,0.8084677,0.7805932
+  TLegend *legendSigma=new TLegend(0.3842282,0.5723776,0.6912752,0.701049,"");//0.5100806,0.6268644,0.8084677,0.7805932
   legendSigma->SetBorderSize(0);
   legendSigma->SetLineColor(0);
   legendSigma->SetFillColor(0);
@@ -187,24 +237,41 @@ void DRAAUpgrade()
   ent_Dhighpt->SetTextSize(0.043);
   legendSigma->Draw();
   
-  
-    TLegendEntry *entBmesons=legendSigma->AddEntry(gNuclearModification,"R_{AA} B^{+} mesons, |y|<2.4","pf");
+ if(isBflag){
+
+  TLegendEntry *entBmesons=legendSigma->AddEntry(gNuclearModificationB,"R_{AA} B^{+} mesons, |y|<2.4","pf");
   entBmesons->SetTextFont(42);
   entBmesons->SetLineColor(4);
   entBmesons->SetMarkerColor(4);
   entBmesons->SetTextSize(0.043);
   legendSigma->Draw();
-
+}
   
-  TLatex * texlumi=new TLatex(0.52,0.80,"L_{int}=1.5/pb");//0.2612903,0.8425793
+  TLatex * texlumi=new TLatex(0.52,0.80,"L_{int}=1.5/nb");//0.2612903,0.8425793
   texlumi->SetNDC();
   texlumi->SetTextColor(1);
   texlumi->SetTextFont(42);
   texlumi->SetTextSize(0.043);
   texlumi->SetLineWidth(2);
   texlumi->Draw();
+
+  TLatex myTl;
+  myTl.SetNDC();
+  myTl.SetTextAlign(12);
+  myTl.SetTextSize(0.04);
+  myTl.SetTextFont(42);
+  myTl.DrawLatex(0.52,0.76, "#sqrt{s_{NN}} = 5.02 TeV");
   
-  canvasRAA->SaveAs(Form("plotRAA/canvasRAA%s_%.0f_%.0f.pdf",label.Data(),centMin,centMax));
+ if(isBflag){
+   canvasRAA->SaveAs("PlotsUpgrade/DBpredictions.pdf");
+  canvasRAA->SaveAs("PlotsUpgrade/DBpredictions.png");
+
+ }
+ else{
+   canvasRAA->SaveAs("PlotsUpgrade/Dpredictions.pdf");
+   canvasRAA->SaveAs("PlotsUpgrade/Dpredictions.png");
+
+ }
 }
 
 
