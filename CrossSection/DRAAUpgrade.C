@@ -1,4 +1,5 @@
 #include "uti.h"
+#include "TStyle.h"
 #include "config/parametersAllpt.h"
 #include "TLegendEntry.h"
 #include "../Systematics/systematicsUpgrade.C"
@@ -7,7 +8,7 @@ void DRAAUpgrade(int isBflag=0)
 {
   double valuestat=TMath::Sqrt(6);
   
-  
+ // gStyle->SetCanvasPreferGL(1);
   
   TFile* fB=new TFile("output.root");
   TH1F*hBstat=(TH1F*)fB->Get("stat");
@@ -61,7 +62,7 @@ void DRAAUpgrade(int isBflag=0)
    hNuclearModification->SetBinError(15,0.085353*1.1);
    
   for(int i=0;i<nBins;i++){
-    hNuclearModification->SetBinError(i+1,hNuclearModification->GetBinError(i+1)/valuestat);
+    if(i>=8) hNuclearModification->SetBinError(i+1,hNuclearModification->GetBinError(i+1)/valuestat);
   }
 
   double apt[nBins];
@@ -157,7 +158,7 @@ void DRAAUpgrade(int isBflag=0)
   hemptyEff->SetMaximum(2);
   hemptyEff->SetMinimum(0.);
   hemptyEff->Draw();
-  
+   
   
   hNuclearModification->SetLineWidth(3);
   hNuclearModification->SetMarkerSize(1);
@@ -165,8 +166,16 @@ void DRAAUpgrade(int isBflag=0)
   hNuclearModification->SetLineColor(1);
   hNuclearModification->SetMarkerColor(1);
 
+
+gNuclearModificationB->SetFillColor(4);//1
+gNuclearModificationB->SetFillStyle(0);//0 
+gNuclearModificationB->SetLineWidth(2);//3
+gNuclearModificationB->SetMarkerSize(1);
+gNuclearModificationB->SetMarkerStyle(21);
+gNuclearModificationB->SetLineColor(4);//kGreen+4
+gNuclearModificationB->SetMarkerColor(4);//kGreen+4
   
-  gNuclearModification->SetFillColor(5);//1
+  gNuclearModification->SetFillColorAlpha(5,0.35);//1
   gNuclearModification->SetFillStyle(1001);//0 
   gNuclearModification->SetLineWidth(1);//3
   gNuclearModification->SetMarkerSize(1);
@@ -175,13 +184,6 @@ void DRAAUpgrade(int isBflag=0)
   gNuclearModification->SetMarkerColor(1);//kGreen+4
 
 
-  gNuclearModificationB->SetFillColor(4);//1
-  gNuclearModificationB->SetFillStyle(0);//0 
-  gNuclearModificationB->SetLineWidth(2);//3
-  gNuclearModificationB->SetMarkerSize(1);
-  gNuclearModificationB->SetMarkerStyle(21);
-  gNuclearModificationB->SetLineColor(4);//kGreen+4
-  gNuclearModificationB->SetMarkerColor(4);//kGreen+4
 
 
   hBstat->SetLineWidth(3);
@@ -192,10 +194,13 @@ void DRAAUpgrade(int isBflag=0)
 
  gNuclearModification->Draw("5same");
  hNuclearModification->Draw("psame");//same
+
  if(isBflag){
  gNuclearModificationB->Draw("5same");
  hBstat->Draw("psame");
   }
+
+
   TLatex* texcms = new TLatex(0.22,0.90,"CMS");
   texcms->SetNDC();
   texcms->SetTextAlign(13);
