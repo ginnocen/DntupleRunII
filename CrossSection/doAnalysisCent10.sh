@@ -5,7 +5,7 @@ CENTPbPbMIN=0
 CENTPbPbMAX=10
 CUTCENTPbPb="&&hiBin<20."
 
-#Central point of the analysis
+#Central point of the analysis  
 
 DOANALYSISPP_FONLL=0
 DOANALYSISPP_TRGCOMBINATION=0
@@ -34,11 +34,11 @@ DONORMPPMB=0
 DONORMPbPb=0
 DONORMPbPbMB=0
 
-DORAA=1
-DORAAMB=1
+DORAA=0
+DORAAMB=0
 
-DOCombineCrossSectionPP=1
-DOCombineCrossSectionPbPb=1
+DOCombineCrossSectionPP=0
+DOCombineCrossSectionPbPb=0
 DOCombineRAA=1
 
 #systematic section
@@ -101,6 +101,9 @@ INPUTDATAPbPbMBSKIMMED="/data/jisun/PbPb2015/HF2and_tk1p0_skim_Dntuple_crab_PbPb
 
 ## CHARGED RAA
 CHARGEDHADRON="/afs/cern.ch/work/g/ginnocen/public/PlotRAA.root" 
+
+## Theory prediction
+PREDICTIONS="../TheoryPredictions/PredictionsCUJET3_pt_0_10.root"
 
 ## ANALYSIS PP TRIGGERED
 
@@ -410,7 +413,7 @@ fi
 
 if [ $DOCombineRAA -eq 1 ]; then      
 g++ CombineRAA.C $(root-config --cflags --libs) -g -o CombineRAA.exe 
-./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON" "$PREDICTIONS" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm CombineRAA.exe
 fi
 

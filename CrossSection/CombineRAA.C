@@ -5,9 +5,9 @@ using namespace std;
 #include "parameters.h"
 #include "TLegendEntry.h"
 
-void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTfiles/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", Float_t centMin=0., Float_t centMax=100., Int_t isHadDupl=1, Int_t isMerged=1)
+void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file="ROOTfilesCent10/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", TString predictions="../TheoryPredictions/PredictionsCUJET3_pt_0_10.root", Float_t centMin=0., Float_t centMax=10., Int_t isHadDupl=1, Int_t isMerged=1,Int_t isTheoryComparison=1)
 {
-  gStyle->SetOptTitle(0);
+  gStyle->SetOptTitle(0);   
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
@@ -26,11 +26,11 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   hTrackPt_trkCorr_PbPb_copy1->SetLineWidth(2);
   hTrackPt_trkCorr_PbPb_copy1->SetLineColor(kRed);
   hTrackPt_trkCorr_PbPb_copy1->SetMarkerStyle(20);
-  hTrackPt_trkCorr_PbPb_copy1->SetMarkerSize(0.8);
+  hTrackPt_trkCorr_PbPb_copy1->SetMarkerSize(0.8); 
   hTrackPt_trkCorr_PbPb_copy1->SetMarkerColor(kRed);
   //TH1D* hTrackPt_trkCorr_PbPb_copy1 = (TH1D*)fRAA->Get("hTrackPt_trkCorr_PbPb_copy1");
   //TH1D*hTrackPt_trkCorr_PbPb_copy1=(TH1D*)fRAA->Get("RAA_0_100");  
-
+  
   TCanvas*canvasRAA=new TCanvas("canvasRAA","canvasRAA",600,600);//550,500
   canvasRAA->cd();
   canvasRAA->SetFillColor(0);
@@ -141,7 +141,7 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
     }
   hNuclearModificationMB->Draw("psame");//same
   
-  
+    
   /*
   const int nBinsALL=15;
   double ptBinsALL[nBinsALL+1] = {2.,3.,4.,5.,6.,8.,10.,15.,20.,25,30.,40.,50.,60.,80,100};
@@ -206,7 +206,7 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
   tlatexeff2->SetLineWidth(2);
   tlatexeff2->Draw();
 
-  TLegend *legendSigma=new TLegend(0.50,0.75,0.90,0.90,"");//0.5100806,0.6268644,0.8084677,0.7805932
+  TLegend *legendSigma=new TLegend(0.4110738,0.7062937,0.8104027,0.8846154,"");//0.5100806,0.6268644,0.8084677,0.7805932
   legendSigma->SetBorderSize(0);
   legendSigma->SetLineColor(0);
   legendSigma->SetFillColor(0);
@@ -255,23 +255,61 @@ void CombineRAA(TString fileMB="ROOTfiles/outputRAAMB.root", TString file="ROOTf
         } 
     }
   if(isHadDupl==1||isMerged==0) legendSigma->Draw();
+  
+  
+  if(isTheoryComparison && centMin==0. && centMax==10.){
+  
+  
+    TFile* filePredictions = new TFile(predictions.Data());  
+    TGraphAsymmErrors* gRAApion5TeV = (TGraphAsymmErrors*)filePredictions->Get("gRAApion5TeV");
+    TGraphAsymmErrors* gRAADmeson5TeV = (TGraphAsymmErrors*)filePredictions->Get("gRAADmeson5TeV");
+    TGraphAsymmErrors* gRAABmeson5TeV = (TGraphAsymmErrors*)filePredictions->Get("gRAABmeson5TeV");
+
+    gRAApion5TeV->SetLineColor(kGreen+1);
+    gRAApion5TeV->SetMarkerColor(kGreen+1);
+    gRAApion5TeV->SetLineWidth(3);
+    gRAApion5TeV->SetMarkerSize(0.15);
+    gRAADmeson5TeV->SetLineColor(4);
+    gRAADmeson5TeV->SetMarkerColor(4);
+    gRAADmeson5TeV->SetLineWidth(3);
+    gRAADmeson5TeV->SetMarkerSize(0.15);
+
+
+    gRAApion5TeV->Draw("psame");
+    gRAADmeson5TeV->Draw("psame");
+
+   TLegendEntry *ent_theoryD=legendSigma->AddEntry(gRAADmeson5TeV,"CUJET3.0 D^{0}","l");//pf
+   ent_theoryD->SetTextFont(42);
+   ent_theoryD->SetLineColor(4);  
+   ent_theoryD->SetMarkerColor(4);
+   ent_theoryD->SetTextSize(0.043);//0.03
+    
+   TLegendEntry *ent_theoryCharged=legendSigma->AddEntry(gRAApion5TeV,"CUJET3.0 #pi^{0}, h^{#pm}","l");//pf
+   ent_theoryCharged->SetTextFont(42);
+   ent_theoryCharged->SetLineColor(kGreen+1);
+   ent_theoryCharged->SetMarkerColor(kGreen+1);
+   ent_theoryCharged->SetTextSize(0.043);//0.03
+
+
+  }
+
   canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparison_%.0f_%.0f.pdf",centMin,centMax));
 }
 
 int main(int argc, char *argv[])
 {
-  if(argc==8)
+  if(argc==9)
     {
-      CombineRAA(argv[1], argv[2], argv[3], atof(argv[4]), atof(argv[5]), atoi(argv[6]), atoi(argv[7]));
+      CombineRAA(argv[1], argv[2], argv[3], argv[4], atof(argv[4]), atof(argv[5]), atoi(argv[6]), atoi(argv[7]),atoi(argv[8]));
       return 0;
     }
-  else if(argc==6)
+  else if(argc==7)
     {
-      CombineRAA(argv[1], argv[2], argv[3], atof(argv[4]), atof(argv[5]));
+      CombineRAA(argv[1], argv[2], argv[3], argv[4], atof(argv[5]), atof(argv[6]));
       return 0;
     }
   else
-    {
+    { 
       std::cout << "Wrong number of inputs" << std::endl;
       return 1;
     }
