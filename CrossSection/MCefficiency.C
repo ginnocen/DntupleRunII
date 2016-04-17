@@ -138,7 +138,7 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   canvasEff->cd(2);
   hemptyEff->Draw();
   hEff->Draw("same");
-  canvasEff->SaveAs(Form("canvasEff_study%s.pdf",Form(label.Data())));
+  canvasEff->SaveAs(Form("plotEff/canvasEff_study%s.pdf",Form(label.Data())));
   
   
   TH2F* hemptyPthat=new TH2F("hemptyPthat","",50,0.,500.,10,1e-5,1e9);  
@@ -189,7 +189,7 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   gPad->SetLogy();
   hemptyPthatWeighted->Draw();
   hPthatweight->Draw("same");
- // canvasPthat->SaveAs(Form("canvasPthat_%s.pdf",Form(label.Data())));
+ // canvasPthat->SaveAs(Form("plotEff/canvasPthat_%s.pdf",Form(label.Data())));
   
   TCanvas*canvasSpectra=new TCanvas("canvasSpectra","canvasSpectra",1000.,500);
   canvasSpectra->Divide(2,1);
@@ -201,7 +201,7 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   gPad->SetLogy();
   hemptySpectra->Draw();
   hPtGen->Draw("same");
-  //canvasSpectra->SaveAs(Form("canvasSpectra_%s.pdf",Form(label.Data())));
+  //canvasSpectra->SaveAs(Form("plotEff/canvasSpectra_%s.pdf",Form(label.Data())));
 
   TFile *fout=new TFile(outputfile.Data(),"recreate");
   fout->cd();
