@@ -12,7 +12,7 @@ cd notes/AN-15-308/trunk
 cp "$MYPWD"/plotFits/Fits/DMassP*.pdf Plots/plotFits/Fits/.
 cp "$MYPWD"/plotFits/FitsCent10/DMassP*.pdf Plots/plotFits/FitsCent10/.
 
-cp "$MYPWD"/plotEff/canvasEff_studyPP.pdf Plots/Efficiency/.
+cp "$MYPWD"/plotEff/*PnNP*.pdf Plots/Efficiency/.
 cp "$MYPWD"/plotCrossSection/*.pdf Plots/plotCrossSection/.
 cp "$MYPWD"/plotRAA/*.pdf Plots/plotRAA/.
 
