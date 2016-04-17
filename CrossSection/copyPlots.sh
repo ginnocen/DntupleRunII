@@ -9,8 +9,8 @@ svn update notes/AN-15-308
 eval `./notes/tdr runtime -sh`
 cd notes/AN-15-308/trunk
 
-cp "$MYPWD"/plotFits/Fits/DMassP*.pdf Plots/plotFits/Fits/.
-cp "$MYPWD"/plotFits/FitsCent10/DMassP*.pdf Plots/plotFits/FitsCent10/.
+cp "$MYPWD"/plotFits/DMassP*.pdf Plots/plotFits/.
+cp "$MYPWD"/plotFits/DMassP*.pdf Plots/plotFits/.
 
 cp "$MYPWD"/plotEff/*PnNP*.pdf Plots/Efficiency/.
 cp "$MYPWD"/plotCrossSection/*.pdf Plots/plotCrossSection/.
