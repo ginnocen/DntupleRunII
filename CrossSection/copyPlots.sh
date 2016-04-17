@@ -16,14 +16,15 @@ cp "$MYPWD"/plotEff/*PnNP*.pdf Plots/Efficiency/.
 cp "$MYPWD"/plotCrossSection/*.pdf Plots/plotCrossSection/.
 cp "$MYPWD"/plotRAA/*.pdf Plots/plotRAA/.
 
+cp "$MYPWD"/plotEff/canvasTotAccEfficiencyPtHatWeight_isPbPb0.pdf Plots/Efficiency/.
+cp "$MYPWD"/plotEff/canvasTotAccEfficiencyPtHatWeight_isPbPb1.pdf Plots/Efficiency/.
+
 cp "$MYPWD"/canvasPtreweightedComparisonPP.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPPMB.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPbPb.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPbPbMB.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtReweightPPptreweighted.pdf Plots/SystPtShape/.
 
-cp "$MYPWD"/canvasTotAccEfficiencyPtHatWeight_isPbPb0.pdf Plots/Efficiency/.
-cp "$MYPWD"/canvasTotAccEfficiencyPtHatWeight_isPbPb1.pdf Plots/Efficiency/.
 
 cp "$MYPWD"/canvasClosurePP.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasClosurePbPb.pdf Plots/Efficiency/.
