@@ -205,7 +205,7 @@ void compareUpgrade(int option=2)
   Tl.SetTextAlign(12);
   Tl.SetTextSize(0.04);
   Tl.SetTextFont(42);
-  Tl.DrawLatex(0.18,0.93, "#scale[1.25]{CMS} Preliminary");
+  Tl.DrawLatex(0.18,0.93, "#scale[1.25]{CMS} Performance");
   Tl.DrawLatex(0.65,0.93, Form("%s #sqrt{s_{NN}} = 5.02 TeV",collisionsystem.Data()));
 
   TLatex* tex;
@@ -309,8 +309,8 @@ cout<<"mass modified="<<yieldmass_modified<<endl;
   myleg->SetTextSize(0.04);
   myleg->SetTextFont(42);
   myleg->SetFillStyle(0);
-  myleg->AddEntry(hTest,"Current CMS, |y|<1, L_{int}=0.5/pb","pl");
-  myleg->AddEntry(hTestFake,"Upgraded CMS, |y|<2, L_{int}=1.5/pb","l");
+  myleg->AddEntry(hTest,"Current CMS, |y|<1, L_{int}=0.5/nb","pl");
+  myleg->AddEntry(hTestFake,"Upgraded CMS, |y|<2, L_{int}=1.5/nb","l");
   myleg->Draw("same");
 
   TLatex* mytex;
@@ -336,7 +336,7 @@ cout<<"mass modified="<<yieldmass_modified<<endl;
   myTl.SetTextAlign(12);
   myTl.SetTextSize(0.04);
   myTl.SetTextFont(42);
-  myTl.DrawLatex(0.2,0.90, "#scale[1.25]{CMS} Preliminary");
+  myTl.DrawLatex(0.2,0.90, "#scale[1.25]{CMS} Performance");
   myTl.DrawLatex(0.63,0.90, Form("%s #sqrt{s_{NN}} = 5.02 TeV",collisionsystem.Data()));
   
   
@@ -350,7 +350,8 @@ cout<<"mass modified="<<yieldmass_modified<<endl;
   hTestFake->Write();
   hMCSignal->Write();
   hMCSwapped->Write();
-  c2->SaveAs(Form("%sComparison.pdf",sample.Data()));
+  c2->SaveAs(Form("PlotsUpgrade/canvasPerformance%s.pdf",sample.Data()));
+  c2->SaveAs(Form("PlotsUpgrade/canvasPerformance%s.png",sample.Data()));
 
  
 }
