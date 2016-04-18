@@ -185,7 +185,7 @@ void initializationPbPbCent010()
    PbPbBFeedDownCorrection->SetBinContent(12,	1.6);
    PbPbBFeedDownCorrection->SetBinContent(13,	3.6);
    PbPbBFeedDownCorrection->SetBinContent(14,	3.6);
-   PbPbBFeedDownCorrection->SetBinContent(15,	0);
+   PbPbBFeedDownCorrection->SetBinContent(15,	3.6);
 
    PbPbMesonSelection = new TH1D("PbPbMesonSelection","",nPtBins,PtBins);
    PbPbMesonSelection->SetBinContent(1,		8.1);
@@ -202,7 +202,7 @@ void initializationPbPbCent010()
    PbPbMesonSelection->SetBinContent(12,		1.7);
    PbPbMesonSelection->SetBinContent(13,		1.7);
    PbPbMesonSelection->SetBinContent(14,		1.7);
-   PbPbMesonSelection->SetBinContent(15,		0);
+   PbPbMesonSelection->SetBinContent(15,		1.7);
 
 
    PbPbSignalExtraction = new TH1D("PbPbSignalExtraction","",nPtBins,PtBins);
@@ -220,7 +220,7 @@ void initializationPbPbCent010()
    PbPbSignalExtraction->SetBinContent(12,	6.5);
    PbPbSignalExtraction->SetBinContent(13,	10.1);
    PbPbSignalExtraction->SetBinContent(14,	17.5);
-   PbPbSignalExtraction->SetBinContent(15,	0);
+   PbPbSignalExtraction->SetBinContent(15,	38.3);
     
    fPbPbPtShape->SetParameters(1.00862,-0.277991,0.325087,0.);
 }
@@ -443,5 +443,16 @@ void plotSystematicsRAA(double centL=0,double centH=100)
    leg->AddEntry(h4,"Signal Extraction","l");
    leg->AddEntry(h5,"D Meson Selection and Correction","l");
    leg->Draw();
+
+}
+
+
+void plotNormalisationUnc(){
+
+std::cout<<"normalisation uncertainty RAA 0-100="<<normalizationUncertaintyForRAA(0,100)<<std::endl;
+std::cout<<"normalisation uncertainty RAA 0-10="<<normalizationUncertaintyForRAA(0,10)<<std::endl;
+std::cout<<"normalisation uncertainty pp="<<normalizationUncertaintyForPP()<<std::endl;
+std::cout<<"normalisation uncertainty PbPb 0-100="<<normalizationUncertaintyForPbPb(0,100)<<std::endl;
+std::cout<<"normalisation uncertainty PbPb 0-10="<<normalizationUncertaintyForPbPb(0,10)<<std::endl;
 
 }
