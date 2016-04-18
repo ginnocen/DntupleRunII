@@ -50,7 +50,7 @@ TH1D*  PbPbSignalExtraction;				// (4/7/2016)
 TH1D*  PbPbMesonSelection;				// (4/7/2016)
 TH1D*  PbPbBFeedDownCorrection;				// (4/7/2016)
 
-TF1 *fPbPbPtShape; = new TF1("fPbPbPtShapeSig","[0]+[1]/(x)+[2]/x/x+[3]*x");
+TF1 *fPbPbPtShape= new TF1("fPbPbPtShapeSig","[0]+[1]/(x)+[2]/x/x+[3]*x");
 
 
 bool initialized = 0;
@@ -185,7 +185,7 @@ void initializationPbPbCent010()
    PbPbBFeedDownCorrection->SetBinContent(12,	1.6);
    PbPbBFeedDownCorrection->SetBinContent(13,	3.6);
    PbPbBFeedDownCorrection->SetBinContent(14,	3.6);
-   PbPbBFeedDownCorrection->SetBinContent(15,	3.6);
+   PbPbBFeedDownCorrection->SetBinContent(15,	0);
 
    PbPbMesonSelection = new TH1D("PbPbMesonSelection","",nPtBins,PtBins);
    PbPbMesonSelection->SetBinContent(1,		8.1);
@@ -202,7 +202,7 @@ void initializationPbPbCent010()
    PbPbMesonSelection->SetBinContent(12,		1.7);
    PbPbMesonSelection->SetBinContent(13,		1.7);
    PbPbMesonSelection->SetBinContent(14,		1.7);
-   PbPbMesonSelection->SetBinContent(15,		1.7);
+   PbPbMesonSelection->SetBinContent(15,		0);
 
 
    PbPbSignalExtraction = new TH1D("PbPbSignalExtraction","",nPtBins,PtBins);
@@ -213,14 +213,14 @@ void initializationPbPbCent010()
    PbPbSignalExtraction->SetBinContent(5,	3.7);
    PbPbSignalExtraction->SetBinContent(6,	3,7);
    PbPbSignalExtraction->SetBinContent(7,	3.4);
-   PbPbSignalExtraction->SetBinContent(8,	36.3);
+   PbPbSignalExtraction->SetBinContent(8,	12.0); // TO BE FIXED, TEMPORARY SET TO THE RESULT IN THE BIN 9
    PbPbSignalExtraction->SetBinContent(9,	12.0);
    PbPbSignalExtraction->SetBinContent(10,	8.6);
    PbPbSignalExtraction->SetBinContent(11,	12.7);
    PbPbSignalExtraction->SetBinContent(12,	6.5);
    PbPbSignalExtraction->SetBinContent(13,	10.1);
    PbPbSignalExtraction->SetBinContent(14,	17.5);
-   PbPbSignalExtraction->SetBinContent(15,	38.3);
+   PbPbSignalExtraction->SetBinContent(15,	0);
     
    fPbPbPtShape->SetParameters(1.00862,-0.277991,0.325087,0.);
 }
@@ -398,10 +398,10 @@ void drawSys(double x1,double y1, double x2,double y2, int color = 1)
 // =============================================================================================================
 // Plot systematics for RAA
 // =============================================================================================================
-void plotSystematicsRAA(double centL=0,double centH=10)
+void plotSystematicsRAA(double centL=0,double centH=100)
 {
    TH1D *htmp = new TH1D("htmp","",10000,1,101);
-   htmp->SetAxisRange(-0.2,0.4,"Y");
+   htmp->SetAxisRange(-0.5,0.5,"Y");
    htmp->SetXTitle("D meson p_{T} (GeV/c)");
    htmp->SetYTitle("Systematical Uncertainty");
    TCanvas *c = new TCanvas("c","",600,600);
