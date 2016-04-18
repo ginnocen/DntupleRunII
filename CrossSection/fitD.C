@@ -54,7 +54,7 @@ void fitD(TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderDat
   gStyle->SetTitleX(.0f);
 
   void clean0 (TH1D* h);
-  TF1* fit (TTree* nt, TTree* ntMC, double ptmin, double ptmax, int isMC);
+  TF1* fit (TTree* nt, TTree* ntMC, double ptmin, double ptmax, int isMC,bool);
 
   if(!doweight) weight="1";
   TFile* inf = new TFile(inputdata.Data());
@@ -82,7 +82,7 @@ void fitD(TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderDat
   
   for(int i=0;i<nBins;i++)
     {
-      TF1* f = fit(nt,ntMC,ptBins[i],ptBins[i+1],isMC);
+      TF1* f = fit(nt,ntMC,ptBins[i],ptBins[i+1],isMC,isPbPb);
       double yield = f->Integral(minhisto,maxhisto)/binwidthmass;
       double yieldErr = f->Integral(minhisto,maxhisto)/binwidthmass*f->GetParError(0)/f->GetParameter(0);
       hPt->SetBinContent(i+1,yield/(ptBins[i+1]-ptBins[i]));
@@ -171,7 +171,7 @@ void clean0(TH1D* h)
     }
 }
 
-TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC)
+TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC,bool isPbPb)
 {
   static int count=0;
   count++;

@@ -39,7 +39,7 @@ DORAAMB=0
 
 DOCombineCrossSectionPP=0
 DOCombineCrossSectionPbPb=0
-DOCombineRAA=1
+DOCombineRAA=0
 
 #systematic section
 
@@ -48,10 +48,8 @@ DOFITSPbPbMCClosure=0
 DOFITSPPMBMCClosure=0
 DOFITSPbPbMBMCClosure=0
 
-DOsystematicPtshape=0
-
-DOsystematicPthatstudyPP=0
-DOsystematicPthatstudyPbPb=0
+DOsystematicPthatstudyPP=1
+DOsystematicPthatstudyPbPb=1
 
 UNITY=1
 NULL=0
@@ -420,12 +418,6 @@ fi
 
 ## SYSTEMATIC RESULTS
 
-
-if [ $DOsystematicPtshape -eq 1 ]; then      
-g++ PtShapeSystematic.C $(root-config --cflags --libs) -g -o PtShapeSystematic.exe 
-./PtShapeSystematic.exe 
-fi
-
 cp config/parametersAllpt.h parameters.h
 
 if [ $DOsystematicPthatstudyPP -eq 1 ]; then   
@@ -446,18 +438,23 @@ g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPTHATALL" "$FILEOUTPTHATALL" 0  2 100
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPTHATALLPTHATREWEIGHT" "$FILEOUTPTHATALLPTHATREWEIGHT" 1  2 100
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPTHATALLPTWEIGHT" "$FILEOUTPTHATALLPTWEIGHT" 2  2 100
+
+g++ PtShapeSystematic.C $(root-config --cflags --libs) -g -o PtShapeSystematic.exe 
+./PtShapeSystematic.exe "$FILEOUTPTHATALL" "$FILEOUTPTHATALLPTWEIGHT" "ProtonProton" 0
+
+
 fi
 
 if [ $DOsystematicPthatstudyPbPb -eq 1 ]; then   
 g++ FONLLweight.C $(root-config --cflags --libs) -g -o FONLLweight.exe 
 
- LABELPTHATALL="pthatallPbPb"
+ LABELPTHATALL="pthatallPbPbCent010"
  FILEOUTPTHATALL="ROOTfilesCent10/pthatallPbPb.root" 
- LABELPTHATALLPTHATREWEIGHT="pthatallPbPbpthatreweighted"
+ LABELPTHATALLPTHATREWEIGHT="pthatallPbPbpthatreweightedCent010"
  FILEOUTPTHATALLPTHATREWEIGHT="ROOTfilesCent10/pthatallPbPbpthatreweighted.root" 
- LABELPTHATALLPTWEIGHT="pthatallPbPbptreweighted"
+ LABELPTHATALLPTWEIGHT="pthatallPbPbptreweightedCent010"
  FILEOUTPTHATALLPTWEIGHT="ROOTfilesCent10/pthatallPbPbptreweighted.root" 
- LABELPTHATALLPTWEIGHTPPMC="pthatallPbPbptreweightedPPMC"
+ LABELPTHATALLPTWEIGHTPPMC="pthatallPbPbptreweightedPPMCCent010"
  FILEOUTPTHATALLPTWEIGHTPPMC="ROOTfilesCent10/pthatallPbPbptreweightedPPMC.root" 
 
 #./FONLLweight.exe 0 "$INPUTMCPbPb" 2 100 "$LABELPTHATALL"
@@ -466,10 +463,14 @@ g++ FONLLweight.C $(root-config --cflags --libs) -g -o FONLLweight.exe
 #./FONLLweight.exe 0 "$INPUTMCPbPbPthat50" 2 100 "$LABELPTHAT50"
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB" "$LABELPTHATALL" "$FILEOUTPTHATALL" 0  2 100
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB" "$LABELPTHATALLPTHATREWEIGHT" "$FILEOUTPTHATALLPTHATREWEIGHT" 1  2 100
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB" "$LABELPTHATALLPTWEIGHT" "$FILEOUTPTHATALLPTWEIGHT" 3  2 100
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB" "$LABELPTHATALLPTWEIGHTPPMC" "$FILEOUTPTHATALLPTWEIGHTPPMC" 0  2 100
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB${CUTCENTPbPb}" "$SELGENACCPbPbMB${CUTCENTPbPb}"  "$RECOONLYPbPbMB${CUTCENTPbPb}" "$CUTPbPbMB${CUTCENTPbPb}" "$LABELPTHATALL" "$FILEOUTPTHATALL" 0  2 100
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB${CUTCENTPbPb}" "$SELGENACCPbPbMB${CUTCENTPbPb}"  "$RECOONLYPbPbMB${CUTCENTPbPb}" "$CUTPbPbMB${CUTCENTPbPb}" "$LABELPTHATALLPTHATREWEIGHT" "$FILEOUTPTHATALLPTHATREWEIGHT" 1  2 100
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB${CUTCENTPbPb}" "$SELGENACCPbPbMB${CUTCENTPbPb}"  "$RECOONLYPbPbMB${CUTCENTPbPb}" "$CUTPbPbMB${CUTCENTPbPb}" "$LABELPTHATALLPTWEIGHT" "$FILEOUTPTHATALLPTWEIGHT" 3  2 100
+#./MCefficiency.exe "$INPUTMCPP"  "$SELGENPbPbMB${CUTCENTPbPb}" "$SELGENACCPbPbMB${CUTCENTPbPb}"  "$RECOONLYPbPbMB${CUTCENTPbPb}" "$CUTPbPbMB${CUTCENTPbPb}" "$LABELPTHATALLPTWEIGHTPPMC" "$FILEOUTPTHATALLPTWEIGHTPPMC" 0  2 100
+
+g++ PtShapeSystematic.C $(root-config --cflags --libs) -g -o PtShapeSystematic.exe 
+./PtShapeSystematic.exe "$FILEOUTPTHATALL" "$FILEOUTPTHATALLPTWEIGHT" "PbPbCent010" 0
+
 fi
 
 

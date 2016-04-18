@@ -9,12 +9,19 @@ svn update notes/AN-15-308
 eval `./notes/tdr runtime -sh`
 cd notes/AN-15-308/trunk
 
-cp "$MYPWD"/plotFits/Fits/DMassP*.pdf Plots/plotFits/Fits/.
-cp "$MYPWD"/plotFits/FitsCent10/DMassP*.pdf Plots/plotFits/FitsCent10/.
+cp "$MYPWD"/plotFits/DMassP*.pdf Plots/plotFits/.
+cp "$MYPWD"/plotFits/DMassP*.pdf Plots/plotFits/.
 
-cp "$MYPWD"/plotEff/canvasEff_studyPP.pdf Plots/Efficiency/.
+cp "$MYPWD"/plotEff/*PnNP*.pdf Plots/Efficiency/.
 cp "$MYPWD"/plotCrossSection/*.pdf Plots/plotCrossSection/.
 cp "$MYPWD"/plotRAA/*.pdf Plots/plotRAA/.
+
+cp "$MYPWD"/plotEff/canvasTotAccEfficiencyPtHatWeight_isPbPb0.pdf Plots/Efficiency/.
+cp "$MYPWD"/plotEff/canvasTotAccEfficiencyPtHatWeight_isPbPb1.pdf Plots/Efficiency/.
+
+cp "$MYPWD"/plotEff/canvasPtreweightedComparisonPbPbCent010.pdf Plots/Efficiency/.
+cp "$MYPWD"/plotEff/canvasPtreweightedComparisonPbPbCent0100.pdf Plots/Efficiency/.
+cp "$MYPWD"/plotEff/canvasPtreweightedComparisonProtonProton.pdf Plots/Efficiency/.
 
 cp "$MYPWD"/canvasPtreweightedComparisonPP.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPPMB.pdf Plots/SystPtShape/.
@@ -22,8 +29,6 @@ cp "$MYPWD"/canvasPtreweightedComparisonPbPb.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtreweightedComparisonPbPbMB.pdf Plots/SystPtShape/.
 cp "$MYPWD"/canvasPtReweightPPptreweighted.pdf Plots/SystPtShape/.
 
-cp "$MYPWD"/canvasTotAccEfficiencyPtHatWeight_isPbPb0.pdf Plots/Efficiency/.
-cp "$MYPWD"/canvasTotAccEfficiencyPtHatWeight_isPbPb1.pdf Plots/Efficiency/.
 
 cp "$MYPWD"/canvasClosurePP.pdf Plots/Efficiency/.
 cp "$MYPWD"/canvasClosurePbPb.pdf Plots/Efficiency/.

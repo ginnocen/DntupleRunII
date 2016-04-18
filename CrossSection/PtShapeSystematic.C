@@ -1,9 +1,10 @@
 #include "uti.h"
 #include "TString.h"
+#include "TMath.h"
 #include "TLegendEntry.h"
 
 
-void doplot(TString noweight="ROOTfiles/MCstudiesPPMB.root",TString weight="ROOTfiles/MCstudiesPPMBPPMBptreweighted.root",TString label="PPMB"){
+void PtShapeSystematic(TString noweight="ROOTfiles/pthatallPP.root",TString weight="ROOTfiles/pthatallPPptreweighted.root",TString label="PP",int isHigherPoli=1){
   TFile *filenoweight=new TFile(noweight.Data());
   TFile *fileweight=new TFile(weight.Data());
   TH1F*hEffNoWeight=(TH1F*)filenoweight->Get("hEff");
@@ -32,29 +33,46 @@ void doplot(TString noweight="ROOTfiles/MCstudiesPPMB.root",TString weight="ROOT
   hEffWeight->SetYTitle("Efficiency p_{T} weight/no weight");
   hEffWeight->Draw();
   
-  TF1 *fPbPbSignalExtractionSig = new TF1("fPbPbSignalExtractionSig","[0]+[1]/(x)+[2]/x/x+[3]*x");
-  hEffWeight->Fit("fPbPbSignalExtractionSig","L q","",2,100);
-    
-  std::cout<<"parameter 0="<<fPbPbSignalExtractionSig->GetParameter(0)<<endl;
-  std::cout<<"parameter 1="<<fPbPbSignalExtractionSig->GetParameter(1)<<endl;
-  std::cout<<"parameter 2="<<fPbPbSignalExtractionSig->GetParameter(2)<<endl;
-  std::cout<<"parameter 3="<<fPbPbSignalExtractionSig->GetParameter(3)<<endl;
-  canvas->SaveAs(Form("canvasPtreweightedComparison%s.pdf",label.Data()));
+  TF1 *fSignalExtractionSig;
 
-}
+  if(isHigherPoli==0){
+    fSignalExtractionSig= new TF1("fSignalExtractionSig","[0]+[1]/(x)+[2]/x/x");
+    hEffWeight->Fit("fSignalExtractionSig","L q","",2,100);
+    std::cout<<"parameter 0="<<fSignalExtractionSig->GetParameter(0)<<std::endl;
+    std::cout<<"parameter 1="<<fSignalExtractionSig->GetParameter(1)<<std::endl;
+    std::cout<<"parameter 2="<<fSignalExtractionSig->GetParameter(2)<<std::endl;
+  }
+  
+  if(isHigherPoli==1){
+    fSignalExtractionSig= new TF1("fSignalExtractionSig","[0]+[1]/(x)+[2]/x/x+[3]*x");
+    hEffWeight->Fit("fSignalExtractionSig","L q","",2,100);
+    std::cout<<"parameter 0="<<fSignalExtractionSig->GetParameter(0)<<std::endl;
+    std::cout<<"parameter 1="<<fSignalExtractionSig->GetParameter(1)<<std::endl;
+    std::cout<<"parameter 2="<<fSignalExtractionSig->GetParameter(2)<<std::endl;
+    std::cout<<"parameter 3="<<fSignalExtractionSig->GetParameter(3)<<std::endl; 
+  }
+  canvas->SaveAs(Form("plotEff/canvasPtreweightedComparison%s.pdf",label.Data()));
 
-
-void PtShapeSystematic(int isPbPb=0){
-
- void doplot(TString,TString,TString);
- if (isPbPb==0) doplot("ROOTfiles/pthatallPP.root","ROOTfiles/pthatallPPptreweighted.root","PP");
- if (isPbPb==1) doplot("ROOTfiles/pthatallPbPb.root","ROOTfiles/pthatallPbPbptreweighted.root","PbPb");
- 
+  for (int index=1;index<=hEffWeight->GetNbinsX();index++){
+  double value=TMath::Abs(1-fSignalExtractionSig->Eval(hEffWeight->GetBinCenter(index)));
+  TString form=Form("%.02f",value);
+  std::cout<<"pt bin="<<hEffWeight->GetBinCenter(index)<<", systematic="<<form.Data()<<std::endl;
+  }
 }
 
 
 int main(int argc, char *argv[])
 {
-  PtShapeSystematic();
+
+  if(argc==5)
+    {
+      PtShapeSystematic(argv[1], argv[2], argv[3], atoi(argv[4]));
+      return 0;
+    }
+  else
+    {
+      std::cout << "Wrong number of inputs" << std::endl;
+      return 1;
+    }
   return 1;
 }
