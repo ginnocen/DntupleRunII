@@ -38,10 +38,8 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
     TH1F*hTriggerEfficiencyPtBinsPP=(TH1F*)fprescalesPP->Get("hTriggerEfficiencyPtBins");
     
     for (int i=0;i<nBins;i++) {
-      double prompt=bFeedDownCorrection(hSigmaPPStat->GetBinCenter(i+1),isPbPb);
-      hSigmaPPStat->SetBinContent(i+1,prompt*hSigmaPPStat->GetBinContent(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
-      hSigmaPPStat->SetBinError(i+1,prompt*hSigmaPPStat->GetBinError(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
-      std::cout<<"pt center="<<hSigmaPPStat->GetBinCenter(i+1)<<", prompt fraction="<<prompt<<std::endl;
+      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
+      hSigmaPPStat->SetBinError(i+1,hSigmaPPStat->GetBinError(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
     }
   }
   

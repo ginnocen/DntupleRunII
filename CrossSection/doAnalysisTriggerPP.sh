@@ -95,7 +95,7 @@ OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB_extended.root"
 OUTPUTFILEPPMB="ROOTfiles/hPtSpectrumDzeroPPMB_extended.root"
 OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMB_extended.root"
 
-LUMIPPMB=0.0378131
+LUMIPPMB=0.0334743
 ISMCPPMB=0
 ISDOWEIGHTPPMB=1
 SELGENPPMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
