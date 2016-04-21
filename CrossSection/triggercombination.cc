@@ -8,7 +8,7 @@
 using namespace std;
 
 
-void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root",TString inputdataMB="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root", int threshold=0, TString output="outputtestpp.root"){
+void triggercombination(int usePbPb=0,TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root",TString inputdataMB="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root", int threshold=0, TString output="outputtestpp.root"){
 
   TFile* inf = new TFile(inputdata.Data());
   TTree* nt = (TTree*) inf->Get("ntDkpi");
@@ -31,25 +31,24 @@ void triggercombination(TString ispp="PP",TString inputdata="/data/dmeson2015/Da
   TString triggerHLT[ntriggers];
    int triggerassignment[nBins];
   int triggerHLTthresholds[nBins];
-  bool isPbPb;
   
-  if(ispp=="PP"){
+  if (!(usePbPb==1||usePbPb==0)) std::cout<<"ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!, you are using a non valid isPbPb option"<<std::endl;
+  bool isPbPb=(bool)(usePbPb);
+  
+  if(!isPbPb){
      for (int index=0; index<ntriggers;index++){
        triggerHLT[index]=triggerHLTPP[index];
        triggerHLTthresholds[index]=triggerHLTPPthresholds[index];
     }
      for (int index=0; index<nBins;index++) triggerassignment[index]=triggerassignmentPP[index];
-     isPbPb=false;
 
   }
-  if(ispp=="PbPb"){
+  if(isPbPb){
      for (int index=0; index<ntriggers;index++){
        triggerHLT[index]=triggerHLTPbPb[index];
        triggerHLTthresholds[index]=triggerHLTPbPbthresholds[index];
     }
      for (int index=0; index<nBins;index++) triggerassignment[index]=triggerassignmentPbPb[index];
-     isPbPb=true;
-
   }
 
   double ntriggerscounters[ntriggers];       
@@ -151,7 +150,7 @@ int main(int argc, char *argv[])
   }
 
   if(argc == 6)
-    triggercombination(argv[1],argv[2],argv[3],atoi(argv[4]),argv[5]);
+    triggercombination(atoi(argv[1]),argv[2],argv[3],atoi(argv[4]),argv[5]);
   return 0;
 }
 
