@@ -4,7 +4,7 @@
 #include "bFeedDown/bFeedDownCorrection.C"
 #include "../Systematics/systematics.C"
 
-void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",TString label="PbPb",double lumi=1.,Float_t centMin=0., Float_t centMax=100.)
+void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",int usePbPb=1,TString label="PbPb",double lumi=1.,Float_t centMin=0., Float_t centMax=100.)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
@@ -14,9 +14,8 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   TFile* filePPReference = new TFile(inputFONLL.Data());  
   TGraphAsymmErrors* gaeBplusReference = (TGraphAsymmErrors*)filePPReference->Get("gaeSigmaDzero");
   
-  bool isPbPb;
-  if(label=="PP"||label=="PPMB" ) isPbPb=false;
-  if(label=="PbPb"||label=="PbPbMB" ) isPbPb=true;
+  if (!(usePbPb==1||usePbPb==0)) std::cout<<"ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!, you are using a non valid isPbPb option"<<std::endl;
+  bool isPbPb=(bool)(usePbPb);
   
   TFile* filePP = new TFile(inputPP.Data());
   TH1F* hEffPP = (TH1F*)filePP->Get("hEff");
@@ -331,14 +330,14 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
 
 int main(int argc, char *argv[])
 {
-  if(argc==10)
+  if(argc==11)
     {
-      CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],argv[6],atof(argv[7]),atof(argv[8]),atof(argv[9]));
+      CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],atoi(argv[6]),argv[7],atof(argv[8]),atof(argv[9]),atof(argv[10]));
       return 0;
     }
-  else if(argc==8)
+  else if(argc==9)
     {
-      CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],argv[6],atof(argv[7]));
+      CrossSectionRatio(argv[1], argv[2], argv[3],atoi(argv[4]),argv[5],atoi(argv[6]),argv[7],atof(argv[8]));
       return 0;
     }
   else
