@@ -108,6 +108,7 @@ void BuildNormalisationPP(double pt=17.5,double lumiPP=25.8 )
   double ncountsMBPbPb=hcountsMBPbPb->GetEntries();
 
   double lumiPbPbMB=ncountsMBPbPb*TAA;
+  cout<<"ncountsMBPbPb="<<ncountsMBPbPb<<endl;
   cout<<"luminosity MB="<<lumiPbPbMB<<endl;
 
   TString fileMBinput="ROOTfiles/CrossSectionFONLLPbPbMBNorm.root"; 

@@ -6,7 +6,7 @@
 #include "../TriggerStudies/triggerEfficiency.C"
 
 using namespace std;
-
+double TAA=392.4/(70.*1e9);
 
 void triggercombination(int usePbPb=0,TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root",TString inputdataMB="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root", int threshold=0, TString output="outputtestpp.root"){
 
@@ -114,13 +114,18 @@ void triggercombination(int usePbPb=0,TString inputdata="/data/dmeson2015/DataDn
     }
     
     TH1D*htrg=new TH1D("htrg","htrg",2,-100,100);
+    TH1D*hcountsMB=new TH1D("hcountsMB","hcountsMB",2,-100,100);
     TH1D*hMB=new TH1D("hMB","hMB",2,-100,100);
+    
+    
+    TString cuttrigger="(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)";
     
     //TString mypath="(HLT_L1MinimumBiasHF1OR_part1_v1||HLT_L1MinimumBiasHF1OR_part2_v1||HLT_L1MinimumBiasHF1OR_part3_v1||HLT_L1MinimumBiasHF1OR_part4_v1||HLT_L1MinimumBiasHF1OR_part5_v1||HLT_L1MinimumBiasHF1OR_part6_v1||HLT_L1MinimumBiasHF1OR_part7_v1||HLT_L1MinimumBiasHF1OR_part8_v1||HLT_L1MinimumBiasHF1OR_part9_v1||HLT_L1MinimumBiasHF1OR_part10_v1||HLT_L1MinimumBiasHF1OR_part11_v1||HLT_L1MinimumBiasHF1OR_part12_v1||HLT_L1MinimumBiasHF1OR_part13_v1||HLT_L1MinimumBiasHF1OR_part14_v1||HLT_L1MinimumBiasHF1OR_part15_v1||HLT_L1MinimumBiasHF1OR_part16_v1||HLT_L1MinimumBiasHF1OR_part17_v1||HLT_L1MinimumBiasHF1OR_part18_v1||HLT_L1MinimumBiasHF1OR_part19_v1)";
     //HltTree->Draw("1>>htrg",Form("%s",triggerHLT[ntriggers-1].Data()));
     //HltTreeMB->Draw("1>>hMB",Form("%s&&%s",triggerHLT[ntriggers-1].Data(),mypath.Data()));
     HltTree->Draw("1>>htrg",triggerHLT[ntriggers-1].Data());
     HltTreeMB->Draw("1>>hMB",triggerHLT[ntriggers-1].Data());
+    HltTreeMB->Draw("1>>hcountsMB",cuttrigger.Data());
 
     double ncountstrg=htrg->GetEntries();
     double ncountsMB=hMB->GetEntries();
@@ -128,8 +133,21 @@ void triggercombination(int usePbPb=0,TString inputdata="/data/dmeson2015/DataDn
     double relerrortrg=TMath::Sqrt(ncountstrg)/ncountstrg;
     double relerrorMB=TMath::Sqrt(ncountsMB)/ncountsMB;
     double relratio=TMath::Sqrt(relerrortrg*relerrortrg+relerrorMB*relerrorMB);
-
     std::cout<<"ratio of unprescaled triggers in MB over triggered sample="<<ratio<<"with relative uncertainty="<<relratio<<std::endl; 
+
+    if(usePbPb==0){
+      double lumi=25.8*ratio;
+      double errlumi=25.8*relratio;
+      std::cout<<"Luminosity="<<lumi<<", with relative error="<<relratio<<std::endl;
+    }
+    if(usePbPb==1){
+      double ncountsMBPbPb=hcountsMB->GetEntries();
+      std::cout<<"all events MB PbPb="<<ncountsMBPbPb<<std::endl;
+      double lumiMB=TAA*ncountsMBPbPb;
+      double lumiHighpt=lumiMB/ratio;      
+      std::cout<<"Luminosity MB="<<lumiMB<<std::endl;
+      std::cout<<"Luminosity high pt="<<lumiHighpt<<", with relative error="<<relratio<<std::endl;
+    }
 
       
     hTriggerEfficiencyPtBins->Draw();
