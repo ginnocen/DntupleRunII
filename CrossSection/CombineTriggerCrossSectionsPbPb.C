@@ -130,6 +130,7 @@ void CombineTriggerCrossSectionsPP()
     hTriggerEfficiency[ifile] ->Draw("psame");  
   }
     legendSigma->Draw("same");
+
   cTriggerEff->SaveAs("TriggerEffPP.pdf");
 
 
