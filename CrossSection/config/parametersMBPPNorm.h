@@ -1,6 +1,6 @@
 
-const int nBins=2;
-double ptBins[nBins+1] = {10.,15.,20.};
+const int nBins=3;
+double ptBins[nBins+1] = {10.,15.,20.,25};
 
 //nothing from here on needs to be changed
 const int BIN_NUM= 1196;

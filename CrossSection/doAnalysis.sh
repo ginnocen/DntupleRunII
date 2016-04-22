@@ -133,7 +133,9 @@ if [ $DONORMPP -eq 1 ]; then
 cp config/parametersHighptPPNorm.h parameters.h
 OUTPUTFILEPlotPP="ROOTfiles/CrossSectionFONLLPPNorm.root"
 OUTPUTPrescalePP="ROOTfiles/prescalePPNorm.root"
+OUTPUTFILEPP="ROOTfiles/hPtSpectrumDzeroPPNorm.root"
 LUMIPP=1
+TRGPP="((HLT_DmesonPPTrackingGlobal_Dpt8_v1))"
 fi
 
 if [ $DOANALYSISPP_FONLL -eq 1 ]; then      
@@ -195,7 +197,8 @@ OUTPUTFILEPbPb="ROOTfiles/hPtSpectrumDzeroPbPb.root"
 OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPb.root"
 OUTPUTFILERAA="ROOTfiles/outputRAA.root"
 
-LUMIPbPb=17.1001
+LUMIPbPb=16.8097   # from fit
+#LUMIPbPb=14.3868 #from HLT counting
 ISMCPbPb=0
 ISDOWEIGHTPbPb=0
 SELGENPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
@@ -212,6 +215,7 @@ if [ $DONORMPbPb -eq 1 ]; then
 cp config/parametersHighptPbPbNorm.h parameters.h
 OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPbNorm.root"
 OUTPUTPrescalePbPb="ROOTfiles/prescalePbPbNorm.root"
+OUTPUTFILEPbPb="ROOTfiles/hPtSpectrumDzeroPbPbNorm.root"
 LUMIPbPb=1
 fi
 
@@ -269,8 +273,8 @@ OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMB.root"
 OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB.root"
 OUTPUTFILEMCSTUDYNPPPMB="ROOTfiles/MCstudiesNPPPMB.root"
 
-#LUMIPPMB=0.0378131
-LUMIPPMB=0.0334743
+LUMIPPMB=0.0313588 # from fit
+#LUMIPPMB=0.0282867 # from HLT
 ISMCPPMB=0
 ISDOWEIGHTPPMB=1
 SELGENPPMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
@@ -291,6 +295,8 @@ LUMIPPMB=1
 cp config/parametersMBPPNorm.h parameters.h
 OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMBNorm.root"
 ISDOWEIGHTPPMB=0
+OUTPUTFILEPPMB="ROOTfiles/hPtSpectrumDzeroPPMBNorm.root"
+
 fi 
 
 if [ $DOANALYSISPPMB_FONLL -eq 1 ]; then
@@ -360,6 +366,8 @@ if [ $DONORMPbPbMB -eq 1 ]; then
 LUMIPbPbMB=1
 cp config/parametersMBPbPbNorm.h parameters.h
 OUTPUTFILEPlotPbPbMB="ROOTfiles/CrossSectionFONLLPbPbMBNorm.root"
+OUTPUTFILEPbPbMB="ROOTfiles/hPtSpectrumDzeroPbPbMBNorm.root"
+
 fi
 
 if [ $DOANALYSISPbPbMB_FONLL -eq 1 ]; then      

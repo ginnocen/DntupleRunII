@@ -4,7 +4,7 @@ CENTPbPbMIN=0
 CENTPbPbMAX=100
 
 DOTriggered=1
-DOMB=1
+DOMB=0
 
 
 UNITY=1
@@ -32,6 +32,8 @@ do
 
 cp config/parametersHighHLT20.h parameters.h
 
+FONLLDATINPUT="pp_d0meson_5TeV_y1"
+FONLLOUTPUTFILEPbPb="ROOTfiles/output_pp_d0meson_5TeV_y1_$VARIABLE.root"
 OUTPUTPrescalePbPb="ROOTfiles/prescalePbPb_$VARIABLE.root"
 OUTPUTFILEMCSTUDYPbPb="ROOTfiles/MCstudiesPbPb_$VARIABLE.root"
 OUTPUTFILEMCSTUDYNPPbPb="ROOTfiles/MCstudiesNPPbPb_$VARIABLE.root"
@@ -67,13 +69,16 @@ cp config/parametersHighHLT60.h parameters.h
 TRGPbPb="HLT_HIDmesonHITrackingGlobal_Dpt60_v1"
 fi 
  
-#g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
-#./triggercombination.exe 1  "$INPUTDATAPbPbUNSKIMMED" "$INPUTDATAPbPbMBUNSKIMMED" "$CUTFORTRIGGERPRESCALEPbPb" "$OUTPUTPrescalePbPb"
-#rm triggercombination.exe
+ g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe 
+./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILEPbPb" "$LABELPbPb"
+ 
+g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
+./triggercombination.exe 1  "$INPUTDATAPbPbUNSKIMMED" "$INPUTDATAPbPbMBUNSKIMMED" "$CUTFORTRIGGERPRESCALEPbPb" "$OUTPUTPrescalePbPb"
+rm triggercombination.exe
 
-#g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-#./fitD.exe 1 "$INPUTDATAPbPbSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPb" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPb"   1   "$ISDOWEIGHTPbPb"  "$LABELPbPbPlots"  "$OUTPUTFILEPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
-#rm fitD.exe
+g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
+./fitD.exe 1 "$INPUTDATAPbPbSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPb" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPb"   1   "$ISDOWEIGHTPbPb"  "$LABELPbPbPlots"  "$OUTPUTFILEPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm fitD.exe
 
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
 ./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" 1 "$LABELPbPb" "$LUMIPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
@@ -112,9 +117,9 @@ g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe
 ./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILEPbPbMB" "$LABELPbPbMB"
 
 
-#g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-#./fitD.exe 1 "$INPUTDATAPbPbMBSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPbMB" "$CUTPbPbMB"   "$SELGENPbPbMB"   "$ISMCPbPbMB"   1   "$ISDOWEIGHTPbPbMB"   "$LABELPbPbMB"  "$OUTPUTFILEPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
-#rm fitD.exe
+g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
+./fitD.exe 1 "$INPUTDATAPbPbMBSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPbMB" "$CUTPbPbMB"   "$SELGENPbPbMB"   "$ISMCPbPbMB"   1   "$ISDOWEIGHTPbPbMB"   "$LABELPbPbMB"  "$OUTPUTFILEPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm fitD.exe
 
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
 ./CrossSectionRatio.exe "$FONLLOUTPUTFILEPbPbMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" 1 "$LABELPbPbMB" "$LUMIPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"

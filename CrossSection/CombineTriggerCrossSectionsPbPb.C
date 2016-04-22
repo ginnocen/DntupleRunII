@@ -22,6 +22,7 @@ void CombineTriggerCrossSectionsPP()
   int colors[nFiles] = {1,2,3,4,6};
 
   TH1D* hSigma[nFiles];
+  TH1D* hTriggerEfficiency[nFiles];
   TH1D* graphFONLLratio[nFiles];
   TFile* files[nFiles];
   TLegendEntry *entry[nFiles];
@@ -30,6 +31,7 @@ void CombineTriggerCrossSectionsPP()
     files[ifile]=new TFile(myfiles[ifile].Data());  
     hSigma[ifile] = (TH1D*)files[ifile]->Get("hPtSigma");
     graphFONLLratio[ifile] = (TH1D*)files[ifile]->Get("gaeRatioCrossFONLLstat");
+    if(ifile>0) hTriggerEfficiency[ifile] = (TH1D*)files[ifile]->Get("hTriggerEfficiencyPtBins");
   }
     
   TCanvas* cSigma = new TCanvas("cSigma","",1000,500);
@@ -37,7 +39,7 @@ void CombineTriggerCrossSectionsPP()
   cSigma->cd(1);
   gPad->SetLogy();
   gPad->SetLogx();
-  TH2F* hemptySigma=new TH2F("hemptySigma","",50,0.,110.,10.,1e0,1.e9);  
+  TH2F* hemptySigma=new TH2F("hemptySigma","",50,0.,110.,10.,1e0,1.e12);  
   hemptySigma->GetXaxis()->CenterTitle();
   hemptySigma->GetYaxis()->CenterTitle();
   hemptySigma->GetYaxis()->SetTitle("1/T_{AA} * dN / dp_{T}( pb GeV^{-1}c)");
@@ -53,7 +55,7 @@ void CombineTriggerCrossSectionsPP()
   hemptySigma->GetYaxis()->SetLabelSize(0.04);  
   hemptySigma->Draw();
   
-  TLegend *legendSigma=new TLegend(0.54,0.66,0.87,0.84,"");//0.5100806,0.5868644,0.8084677,0.7605932
+  TLegend *legendSigma=new TLegend(0.311747,0.6945694,0.6401439,0.8740055,"");//0.5100806,0.5868644,0.8084677,0.7605932
   legendSigma->SetBorderSize(0);
   legendSigma->SetLineColor(0);
   legendSigma->SetFillColor(0);
@@ -75,8 +77,7 @@ void CombineTriggerCrossSectionsPP()
   legendSigma->Draw("same");
   
   cSigma->cd(2);
-  gPad->SetLogx();
-  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,0,100.,10.,0.,3.1);
+  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,10,100.,10.,0.,4.1);
   hemptyRatio->GetXaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->SetTitle("RATIO/FONLL");
@@ -96,10 +97,43 @@ void CombineTriggerCrossSectionsPP()
     graphFONLLratio[ifile] ->SetLineColor(colors[ifile]);
     graphFONLLratio[ifile] ->SetLineWidth(3);
     graphFONLLratio[ifile] ->SetMarkerColor(colors[ifile]);
-    graphFONLLratio[ifile] ->Draw("psame");  
+    if(ifile>0) graphFONLLratio[ifile] ->Draw("psame");  
   }
     legendSigma->Draw("same");
   cSigma->SaveAs("TriggerCrossSectionPP.pdf");
+  
+  
+  TCanvas* cTriggerEff = new TCanvas("cTriggerEff","",500,500);
+  cTriggerEff->cd();
+  TH2F* hemptyEff=new TH2F("hemptyEff","",50,10,100.,10.,0.,1.9);
+  hemptyEff->GetXaxis()->CenterTitle();
+  hemptyEff->GetYaxis()->CenterTitle();
+  hemptyEff->GetYaxis()->SetTitle("Triggere efficiency");
+  hemptyEff->GetXaxis()->SetTitleOffset(1.);
+  hemptyEff->GetYaxis()->SetTitleOffset(1.4);//1.3
+  hemptyEff->GetXaxis()->SetTitleSize(0.045);
+  hemptyEff->GetYaxis()->SetTitleSize(0.045);
+  hemptyEff->GetXaxis()->SetTitleFont(42);
+  hemptyEff->GetYaxis()->SetTitleFont(42);
+  hemptyEff->GetXaxis()->SetLabelFont(42);
+  hemptyEff->GetYaxis()->SetLabelFont(42);
+  hemptyEff->GetXaxis()->SetLabelSize(0.04);
+  hemptyEff->GetYaxis()->SetLabelSize(0.04);   
+  hemptyEff->Draw();
+  
+  for (int ifile=1;ifile<nFiles;ifile++){
+    hTriggerEfficiency[ifile] ->SetLineColor(colors[ifile]);
+    hTriggerEfficiency[ifile] ->SetLineWidth(3);
+    hTriggerEfficiency[ifile] ->SetMarkerColor(colors[ifile]);
+    hTriggerEfficiency[ifile] ->SetMarkerStyle(23);
+    hTriggerEfficiency[ifile] ->SetMarkerSize(1);
+    hTriggerEfficiency[ifile] ->Draw("psame");  
+  }
+    legendSigma->Draw("same");
+
+  cTriggerEff->SaveAs("TriggerEffPP.pdf");
+
+
 }
 
 
@@ -173,7 +207,6 @@ void CombineTriggerCrossSectionsPbPb()
   legendSigma->Draw("same");
   
   cSigma->cd(2);
-  gPad->SetLogx();
   TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,10,100.,10.,0.,3.1);
   hemptyRatio->GetXaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->CenterTitle();

@@ -20,6 +20,7 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   TGraphAsymmErrors* gaeBplusReferenceMB = (TGraphAsymmErrors*)filePPMB->Get("gaeSigmaDzero");
   TGraphAsymmErrors* gaeRatioCrossFONLLunityMB = (TGraphAsymmErrors*)filePPMB->Get("gaeRatioCrossFONLLunity");
   TH1D* hSigmaPPStatMB = (TH1D*)filePPMB->Get("hPtSigma");
+  TH1D* hfPromptMB = (TH1D*)filePPMB->Get("hfprompt");
 
   TFile* filePP = new TFile(file.Data());  
   TGraphAsymmErrors* gaeRatioCrossFONLLstat = (TGraphAsymmErrors*)filePP->Get("gaeRatioCrossFONLLstat");
@@ -28,6 +29,8 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   TGraphAsymmErrors* gaeBplusReference = (TGraphAsymmErrors*)filePP->Get("gaeSigmaDzero");
   TGraphAsymmErrors* gaeRatioCrossFONLLunity = (TGraphAsymmErrors*)filePP->Get("gaeRatioCrossFONLLunity");
   TH1D* hSigmaPPStat = (TH1D*)filePP->Get("hPtSigma");
+  TH1D* hfPrompt = (TH1D*)filePP->Get("hfprompt");
+
 
   TCanvas* cSigma = new TCanvas("cSigma","",600,750);
   cSigma->SetFrameBorderMode(0);
@@ -297,6 +300,43 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   l->Draw("same");
   if(isPbPb==1) cSigma->SaveAs(Form("plotCrossSection/CrossSectionComparison_%s_%.0f_%.0f.pdf",texPbPb.Data(),centMin,centMax));
   else cSigma->SaveAs(Form("plotCrossSection/CrossSectionComparison_%s.pdf",texPbPb.Data()));
+  
+  
+  TCanvas* cFprompt = new TCanvas("cFprompt","",550,500);
+  TH2F* hemptyPrompt=new TH2F("hemptyPrompt","",50,0.,110.,10.,0,1.3);  
+  hemptyPrompt->GetXaxis()->CenterTitle();
+  hemptyPrompt->GetYaxis()->CenterTitle();
+  hemptyPrompt->GetYaxis()->SetTitle("f_{prompt}");
+  hemptyPrompt->GetXaxis()->SetTitle("p_{T} (GeV/c)");
+  hemptyPrompt->GetXaxis()->SetTitleOffset(0.9);
+  hemptyPrompt->GetYaxis()->SetTitleOffset(1.05);
+  hemptyPrompt->GetXaxis()->SetTitleSize(0.045);
+  hemptyPrompt->GetYaxis()->SetTitleSize(0.045);
+  hemptyPrompt->GetXaxis()->SetTitleFont(42);
+  hemptyPrompt->GetYaxis()->SetTitleFont(42);
+  hemptyPrompt->GetXaxis()->SetLabelFont(42);
+  hemptyPrompt->GetYaxis()->SetLabelFont(42);
+  hemptyPrompt->GetXaxis()->SetLabelSize(0.04);
+  hemptyPrompt->GetYaxis()->SetLabelSize(0.04);  
+  hemptyPrompt->SetMaximum(2);
+  hemptyPrompt->SetMinimum(0.);
+  hemptyPrompt->Draw();
+  cFprompt->cd();
+  hemptyPrompt->Draw();
+  hfPromptMB->SetLineWidth(2);
+  hfPromptMB->SetLineColor(1);
+  hfPromptMB->SetMarkerStyle(23);
+  hfPromptMB->SetMarkerSize(1);
+  hfPromptMB->Draw("psame");
+  hfPrompt->SetLineWidth(2);
+  hfPrompt->SetLineColor(1);
+  hfPrompt->SetMarkerStyle(23);
+  hfPrompt->SetMarkerSize(1);
+  hfPrompt->Draw("psame");
+  
+  if(!isPbPb) cFprompt->SaveAs("plotOthers/cFpromptTotalPP.pdf");
+  else cFprompt->SaveAs("plotOthers/cFpromptTotalPbPb.pdf");
+
 }
 
 
