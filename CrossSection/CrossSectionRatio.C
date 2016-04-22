@@ -22,6 +22,9 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   TH1F* hSigmaStat = (TH1F*)file->Get("hPtSigma");
   TH1F* hfprompt = new TH1F("hfprompt","",nBins,ptBins);
   
+  TH1F*hPrescalesPtBins;
+  TH1F*hTriggerEfficiencyPtBins;
+  
   hSigmaStat->Scale(1./lumi);
   
   for (int i=0;i<nBins;i++) {
@@ -34,8 +37,8 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   
   if (usePrescaleCorr==1){
     TFile*fprescales=new TFile(inputprescales.Data()); 
-    TH1F*hPrescalesPtBins=(TH1F*)fprescales->Get("hPrescalesPtBins");
-    TH1F*hTriggerEfficiencyPtBins=(TH1F*)fprescales->Get("hTriggerEfficiencyPtBins");
+    hPrescalesPtBins=(TH1F*)fprescales->Get("hPrescalesPtBins");
+    hTriggerEfficiencyPtBins=(TH1F*)fprescales->Get("hTriggerEfficiencyPtBins");
     
     for (int i=0;i<nBins;i++) {
       hSigmaStat->SetBinContent(i+1,hSigmaStat->GetBinContent(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
@@ -322,7 +325,11 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   gaeRatioCrossFONLLstat->Write();
   gaeRatioCrossFONLLsyst->Write();
   gaeRatioCrossFONLLunity->Write();
+  hEff->Write();
   hfprompt->Write();
+  if (usePrescaleCorr==1){
+  hPrescalesPtBins->Write();
+  }
 }
 
 
