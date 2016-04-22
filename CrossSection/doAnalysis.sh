@@ -13,7 +13,7 @@ DOANALYSISPP_MCSTUDY=0
 DOANALYSISPbPb_FONLL=0
 DOANALYSISPbPb_TRGCOMBINATION=0
 DOANALYSISPbPb_FIT=0
-DOANALYSISPbPb_CROSS=1
+DOANALYSISPbPb_CROSS=0
 DOANALYSISPbPb_MCSTUDY=0
 
 DOANALYSISPPMB_FONLL=0
@@ -23,20 +23,20 @@ DOANALYSISPPMB_MCSTUDY=0
 
 DOANALYSISPbPbMB_FONLL=0
 DOANALYSISPbPbMB_FIT=0
-DOANALYSISPbPbMB_CROSS=1
+DOANALYSISPbPbMB_CROSS=0
 DOANALYSISPbPbMB_MCSTUDY=0
 
-DONORMPP=0
-DONORMPPMB=0
-DONORMPbPb=0
-DONORMPbPbMB=0
+DONORMPP=1
+DONORMPPMB=1
+DONORMPbPb=1
+DONORMPbPbMB=1
 
-DORAA=1
-DORAAMB=1
+DORAA=0
+DORAAMB=0
 
-DOCombineCrossSectionPP=1
-DOCombineCrossSectionPbPb=1
-DOCombineRAA=1
+DOCombineCrossSectionPP=0
+DOCombineCrossSectionPbPb=0
+DOCombineRAA=0
 
 #systematic section
 
@@ -133,7 +133,9 @@ if [ $DONORMPP -eq 1 ]; then
 cp config/parametersHighptPPNorm.h parameters.h
 OUTPUTFILEPlotPP="ROOTfiles/CrossSectionFONLLPPNorm.root"
 OUTPUTPrescalePP="ROOTfiles/prescalePPNorm.root"
+OUTPUTFILEPP="ROOTfiles/hPtSpectrumDzeroPPNorm.root"
 LUMIPP=1
+TRGPP="((HLT_DmesonPPTrackingGlobal_Dpt8_v1))"
 fi
 
 if [ $DOANALYSISPP_FONLL -eq 1 ]; then      
@@ -212,6 +214,7 @@ if [ $DONORMPbPb -eq 1 ]; then
 cp config/parametersHighptPbPbNorm.h parameters.h
 OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPbNorm.root"
 OUTPUTPrescalePbPb="ROOTfiles/prescalePbPbNorm.root"
+OUTPUTFILEPbPb="ROOTfiles/hPtSpectrumDzeroPbPbNorm.root"
 LUMIPbPb=1
 fi
 
@@ -291,6 +294,8 @@ LUMIPPMB=1
 cp config/parametersMBPPNorm.h parameters.h
 OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMBNorm.root"
 ISDOWEIGHTPPMB=0
+OUTPUTFILEPPMB="ROOTfiles/hPtSpectrumDzeroPPMBNorm.root"
+
 fi 
 
 if [ $DOANALYSISPPMB_FONLL -eq 1 ]; then
@@ -360,6 +365,8 @@ if [ $DONORMPbPbMB -eq 1 ]; then
 LUMIPbPbMB=1
 cp config/parametersMBPbPbNorm.h parameters.h
 OUTPUTFILEPlotPbPbMB="ROOTfiles/CrossSectionFONLLPbPbMBNorm.root"
+OUTPUTFILEPbPbMB="ROOTfiles/hPtSpectrumDzeroPbPbMBNorm.root"
+
 fi
 
 if [ $DOANALYSISPbPbMB_FONLL -eq 1 ]; then      

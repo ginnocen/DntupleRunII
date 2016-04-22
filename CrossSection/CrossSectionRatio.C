@@ -329,6 +329,7 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   hfprompt->Write();
   if (usePrescaleCorr==1){
   hPrescalesPtBins->Write();
+  hTriggerEfficiencyPtBins->Write();
   }
 }
 
