@@ -4,42 +4,42 @@
 #include "bFeedDown/bFeedDownCorrection.C"
 #include "../Systematics/systematics.C"
 
-void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString inputPP="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescalesPP="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",int usePbPb=1,TString label="PbPb",double lumi=1.,Float_t centMin=0., Float_t centMax=100.)
+void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5TeV_y1.root", TString input="ROOTfiles/hPtSpectrumDzeroPP.root", TString inputprescales="prescalePP.root",int usePrescaleCorr=1,TString outputplot="myplot.root",int usePbPb=1,TString label="PbPb",double lumi=1.,Float_t centMin=0., Float_t centMax=100.)
 {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
 
-  TFile* filePPReference = new TFile(inputFONLL.Data());  
-  TGraphAsymmErrors* gaeBplusReference = (TGraphAsymmErrors*)filePPReference->Get("gaeSigmaDzero");
+  TFile* fileReference = new TFile(inputFONLL.Data());  
+  TGraphAsymmErrors* gaeBplusReference = (TGraphAsymmErrors*)fileReference->Get("gaeSigmaDzero");
   
   if (!(usePbPb==1||usePbPb==0)) std::cout<<"ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!, you are using a non valid isPbPb option"<<std::endl;
   bool isPbPb=(bool)(usePbPb);
   
-  TFile* filePP = new TFile(inputPP.Data());
-  TH1F* hEffPP = (TH1F*)filePP->Get("hEff");
-  TH1F* hSigmaPPStat = (TH1F*)filePP->Get("hPtSigma");
+  TFile* file = new TFile(input.Data());
+  TH1F* hEff = (TH1F*)file->Get("hEff");
+  TH1F* hSigmaStat = (TH1F*)file->Get("hPtSigma");
   TH1F* hfprompt = new TH1F("hfprompt","",nBins,ptBins);
   
-  hSigmaPPStat->Scale(1./lumi);
+  hSigmaStat->Scale(1./lumi);
   
   for (int i=0;i<nBins;i++) {
-    double prompt=bFeedDownCorrection(hSigmaPPStat->GetBinCenter(i+1),isPbPb);
+    double prompt=bFeedDownCorrection(hSigmaStat->GetBinCenter(i+1),isPbPb);
     hfprompt->SetBinContent(i+1,prompt);
-    hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)*prompt);
-    hSigmaPPStat->SetBinError(i+1,hSigmaPPStat->GetBinError(i+1)*prompt);
-    std::cout<<"pt center="<<hSigmaPPStat->GetBinCenter(i+1)<<", prompt fraction="<<prompt<<std::endl;
+    hSigmaStat->SetBinContent(i+1,hSigmaStat->GetBinContent(i+1)*prompt);
+    hSigmaStat->SetBinError(i+1,hSigmaStat->GetBinError(i+1)*prompt);
+    std::cout<<"pt center="<<hSigmaStat->GetBinCenter(i+1)<<", prompt fraction="<<prompt<<std::endl;
   }
   
   if (usePrescaleCorr==1){
-    TFile*fprescalesPP=new TFile(inputprescalesPP.Data()); 
-    TH1F*hPrescalesPtBinsPP=(TH1F*)fprescalesPP->Get("hPrescalesPtBins");
-    TH1F*hTriggerEfficiencyPtBinsPP=(TH1F*)fprescalesPP->Get("hTriggerEfficiencyPtBins");
+    TFile*fprescales=new TFile(inputprescales.Data()); 
+    TH1F*hPrescalesPtBins=(TH1F*)fprescales->Get("hPrescalesPtBins");
+    TH1F*hTriggerEfficiencyPtBins=(TH1F*)fprescales->Get("hTriggerEfficiencyPtBins");
     
     for (int i=0;i<nBins;i++) {
-      hSigmaPPStat->SetBinContent(i+1,hSigmaPPStat->GetBinContent(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
-      hSigmaPPStat->SetBinError(i+1,hSigmaPPStat->GetBinError(i+1)/hPrescalesPtBinsPP->GetBinContent(i+1)/hTriggerEfficiencyPtBinsPP->GetBinContent(i+1));
+      hSigmaStat->SetBinContent(i+1,hSigmaStat->GetBinContent(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
+      hSigmaStat->SetBinError(i+1,hSigmaStat->GetBinError(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
     }
   }
   
@@ -54,13 +54,13 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
       gaeBplusReference->GetPoint(i,xr[i],yFONLL[i]);
       xrlow[i] = gaeBplusReference->GetErrorXlow(i);
       xrhigh[i] = gaeBplusReference->GetErrorXhigh(i);
-      ycross[i] = hSigmaPPStat->GetBinContent(i+1);
-      ycrossstat[i] = hSigmaPPStat->GetBinError(i+1);
+      ycross[i] = hSigmaStat->GetBinContent(i+1);
+      ycrossstat[i] = hSigmaStat->GetBinError(i+1);
       double systematic=0.;
       if (!isPbPb) systematic=0.01*systematicsPP(xr[i],0.);
       else  systematic=0.01*systematicsPbPb(xr[i],centMin,centMax,0.);     
-      ycrosssysthigh[i]= hSigmaPPStat->GetBinContent(i+1)*systematic;
-      ycrosssystlow[i]= hSigmaPPStat->GetBinContent(i+1)*systematic;
+      ycrosssysthigh[i]= hSigmaStat->GetBinContent(i+1)*systematic;
+      ycrosssystlow[i]= hSigmaStat->GetBinContent(i+1)*systematic;
       yratiocrossFONLL[i] = ycross[i]/yFONLL[i];
       yratiocrossFONLLstat[i] = ycrossstat[i]/yFONLL[i];
       yratiocrossFONLLsysthigh[i] = ycrosssysthigh[i]/yFONLL[i];
@@ -150,9 +150,9 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   gaeBplusReference->SetLineWidth(3);
   gaeBplusReference->SetLineColor(2);
   gaeBplusReference->Draw("5same");
-  hSigmaPPStat->SetLineColor(1);
-  hSigmaPPStat->SetLineWidth(2);
-  hSigmaPPStat->Draw("epsame"); 
+  hSigmaStat->SetLineColor(1);
+  hSigmaStat->SetLineWidth(2);
+  hSigmaStat->Draw("epsame"); 
   gaeCrossSyst->SetFillColor(1);
   gaeCrossSyst->SetFillStyle(0); 
   gaeCrossSyst->SetLineWidth(2);
@@ -190,7 +190,7 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   TLegend* leg_CS = new TLegend(0.52,0.64,0.85,0.75);
   leg_CS->SetBorderSize(0);
   leg_CS->SetFillStyle(0);
-  leg_CS->AddEntry(hSigmaPPStat,"data","pf");
+  leg_CS->AddEntry(hSigmaStat,"data","pf");
   leg_CS->AddEntry(gaeBplusReference,"FONLL pp ref.","f");
   leg_CS->Draw("same");
   
@@ -237,7 +237,7 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   else cSigma->SaveAs(Form("plotCrossSection/canvasSigmaDzeroRatio%s_%.0f_%.0f.pdf",label.Data(),centMin,centMax));
   
   
-  TCanvas* cEffPP = new TCanvas("cEffPP","",550,500);
+  TCanvas* cEff = new TCanvas("cEff","",550,500);
   
   TH2F* hemptyEff=new TH2F("hemptyEff","",50,0.,110.,10.,0,1.);  
   hemptyEff->GetXaxis()->CenterTitle();
@@ -257,11 +257,11 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   hemptyEff->SetMaximum(2);
   hemptyEff->SetMinimum(0.);
   hemptyEff->Draw();
-  cEffPP->cd();
+  cEff->cd();
   hemptyEff->Draw();
-  hEffPP->SetLineWidth(2);
-  hEffPP->SetLineColor(1);
-  hEffPP->Draw("same");
+  hEff->SetLineWidth(2);
+  hEff->SetLineColor(1);
+  hEff->Draw("same");
 
   
   TString text;
@@ -281,8 +281,8 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   tlatexeff2->SetTextFont(42);
   tlatexeff2->SetTextSize(0.04);
   tlatexeff2->Draw();
-  if(!isPbPb) cEffPP->SaveAs(Form("plotOthers/efficiency%s.pdf",label.Data()));
-  else cEffPP->SaveAs(Form("plotOthers/efficiency%s_%.0f_%.0f.pdf",label.Data(),centMin,centMax));
+  if(!isPbPb) cEff->SaveAs(Form("plotOthers/efficiency%s.pdf",label.Data()));
+  else cEff->SaveAs(Form("plotOthers/efficiency%s_%.0f_%.0f.pdf",label.Data(),centMin,centMax));
   
   
   TCanvas* cFprompt = new TCanvas("cFprompt","",550,500);
@@ -318,7 +318,7 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   gaeCrossSyst->Write();
   gaeRatioCrossFONLLstat->Write();
   gaeBplusReference->Write();
-  hSigmaPPStat->Write();
+  hSigmaStat->Write();
   gaeRatioCrossFONLLstat->Write();
   gaeRatioCrossFONLLsyst->Write();
   gaeRatioCrossFONLLunity->Write();
