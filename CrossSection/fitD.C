@@ -106,7 +106,7 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/nt_2016
   divideBinWidth(hPtRecoTruth);
   ntGen->Project("hPtGen","Gpt",TCut(weight)*(TCut(selmcgen.Data())));
   divideBinWidth(hPtGen);
-  nt->Project("hDcandidates","Dpt",seldata.Data());
+  nt->Project("hDcandidates","Dpt",Form("%s&&Dmass>1.8&&Dmass<1.9",seldata.Data()));
   divideBinWidth(hDcandidates);
 
   TCanvas* cPt =  new TCanvas("cPt","",600,600);

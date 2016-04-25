@@ -25,19 +25,26 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   TH1F* hYieldTriggerCorrectedFONLLnorm = (TH1F*)file->Get("hPt");
   hYieldTriggerCorrectedFONLLnorm->SetName("hYieldTriggerCorrectedFONLLnorm");
   TH1F* hfprompt = new TH1F("hfprompt","",nBins,ptBins);
-  
+  TH1F* hDcandidatesTriggerCorrected = (TH1F*)file->Get("hDcandidates");
+  hDcandidatesTriggerCorrected->SetName("hDcandidatesTriggerCorrected");  
+  TH1F* hDcandidatesTriggerCorrectedFONLLnorm = (TH1F*)file->Get("hDcandidates");
+  hDcandidatesTriggerCorrectedFONLLnorm->SetName("hDcandidatesTriggerCorrectedFONLLnorm");  
+
   TH1F*hPrescalesPtBins;
   TH1F*hTriggerEfficiencyPtBins;
   
   hSigmaStat->Scale(1./lumi);
   hYieldTriggerCorrected->Scale(1./lumi);
   hYieldTriggerCorrectedFONLLnorm->Scale(1./lumi);
+  hDcandidatesTriggerCorrected->Scale(1./lumi);
+  hDcandidatesTriggerCorrectedFONLLnorm->Scale(1./lumi);
   
   for (int i=0;i<nBins;i++) {
     double prompt=bFeedDownCorrection(hSigmaStat->GetBinCenter(i+1),isPbPb);
     hfprompt->SetBinContent(i+1,prompt);
     hSigmaStat->SetBinContent(i+1,hSigmaStat->GetBinContent(i+1)*prompt);
     hSigmaStat->SetBinError(i+1,hSigmaStat->GetBinError(i+1)*prompt);
+        
     std::cout<<"pt center="<<hSigmaStat->GetBinCenter(i+1)<<", prompt fraction="<<prompt<<std::endl;
   }
   
@@ -53,6 +60,12 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
       hYieldTriggerCorrected->SetBinError(i+1,hYieldTriggerCorrected->GetBinError(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
       hYieldTriggerCorrectedFONLLnorm->SetBinContent(i+1,hYieldTriggerCorrectedFONLLnorm->GetBinContent(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
       hYieldTriggerCorrectedFONLLnorm->SetBinError(i+1,hYieldTriggerCorrectedFONLLnorm->GetBinError(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
+      hDcandidatesTriggerCorrected->SetBinContent(i+1,hDcandidatesTriggerCorrected->GetBinContent(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
+      hDcandidatesTriggerCorrected->SetBinError(i+1,hDcandidatesTriggerCorrected->GetBinError(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
+      hDcandidatesTriggerCorrectedFONLLnorm->SetBinContent(i+1,hDcandidatesTriggerCorrectedFONLLnorm->GetBinContent(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
+      hDcandidatesTriggerCorrectedFONLLnorm->SetBinError(i+1,hDcandidatesTriggerCorrectedFONLLnorm->GetBinError(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
+
+
     }
   }
 
@@ -82,6 +95,8 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
       
       hYieldTriggerCorrectedFONLLnorm->SetBinContent(i+1,hYieldTriggerCorrectedFONLLnorm->GetBinContent(i+1)/yFONLL[i]);
       hYieldTriggerCorrectedFONLLnorm->SetBinError(i+1,hYieldTriggerCorrectedFONLLnorm->GetBinError(i+1)/yFONLL[i]);
+      hDcandidatesTriggerCorrectedFONLLnorm->SetBinContent(i+1,hDcandidatesTriggerCorrectedFONLLnorm->GetBinContent(i+1)/yFONLL[i]);
+      hDcandidatesTriggerCorrectedFONLLnorm->SetBinError(i+1,hDcandidatesTriggerCorrectedFONLLnorm->GetBinError(i+1)/yFONLL[i]);
     }
 
   TGraphAsymmErrors* gaeCrossSyst = new TGraphAsymmErrors(nBins,xr,ycross,xrlow,xrhigh,ycrosssystlow,ycrosssysthigh);
@@ -340,6 +355,8 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   hfprompt->Write();
   hYieldTriggerCorrected->Write();
   hYieldTriggerCorrectedFONLLnorm->Write();
+  hDcandidatesTriggerCorrected->Write();
+  hDcandidatesTriggerCorrectedFONLLnorm->Write();
   if (usePrescaleCorr==1){
   hPrescalesPtBins->Write();
   hTriggerEfficiencyPtBins->Write();
