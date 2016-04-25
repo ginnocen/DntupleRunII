@@ -80,7 +80,9 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/nt_2016
   TH1D* hSigmaGaus1 = new TH1D("hSigmaGaus1","",nBins,ptBins); 
   TH1D* hSigmaGaus2 = new TH1D("hSigmaGaus2","",nBins,ptBins); 
   TH1D* hRelMagnGaus1Gaus2 = new TH1D("hRelMagnGaus1Gaus2","",nBins,ptBins); 
-  
+
+  TH1D* hDcandidates = new TH1D("hDcandidates","",nBins,ptBins);
+
   for(int i=0;i<nBins;i++)
     {
       TF1* f = fit(nt,ntMC,ptBins[i],ptBins[i+1],isMC,isPbPb);
@@ -104,6 +106,8 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/nt_2016
   divideBinWidth(hPtRecoTruth);
   ntGen->Project("hPtGen","Gpt",TCut(weight)*(TCut(selmcgen.Data())));
   divideBinWidth(hPtGen);
+  nt->Project("hDcandidates","Dpt",seldata.Data());
+  divideBinWidth(hDcandidates);
 
   TCanvas* cPt =  new TCanvas("cPt","",600,600);
   cPt->SetLogy();
@@ -161,6 +165,7 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/nt_2016
   hSigmaGaus1->Write();
   hSigmaGaus2->Write();
   hRelMagnGaus1Gaus2->Write();
+  hDcandidates->Write();
   outf->Close();
 }
 

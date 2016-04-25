@@ -2,9 +2,9 @@
 #source clean.sh
 
 DOTriggered=1
-DOMB=1
+DOMB=0
 
-DONORM=0
+DONORM=1
 
 UNITY=1
 NULL=0
@@ -34,6 +34,7 @@ OUTPUTFILEMCSTUDYPP="ROOTfiles/MCstudiesPP_$VARIABLE.root"
 OUTPUTFILEMCSTUDYNPPP="ROOTfiles/MCstudiesNPPP_$VARIABLE.root"
 OUTPUTFILEPP="ROOTfiles/hPtSpectrumDzeroPP_$VARIABLE.root"
 OUTPUTFILEPlotPP="ROOTfiles/CrossSectionFONLLPP_$VARIABLE.root"
+OUTPUTFILEPPDcandidates="ROOTfiles/hDcandidatesPP_$VARIABLE.root"
 
 
 ISMCPP=0
@@ -76,12 +77,12 @@ fi
 g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe 
 ./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILE" "$LABELPPPLOT"
  
-#g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
+g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
 ./triggercombination.exe 0 "$INPUTDATAPPUNSKIMMED" "$INPUTDATAPPMBUNSKIMMED" "$CUTFORTRIGGERPRESCALEPP" "$OUTPUTPrescalePP"
 rm triggercombination.exe
 
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-#./fitD.exe 0 "$INPUTDATAPPSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   1   "$ISDOWEIGHTPP"   "$LABELPPPLOT"  "$OUTPUTFILEPP"
+./fitD.exe 0 "$INPUTDATAPPSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   1   "$ISDOWEIGHTPP"   "$LABELPPPLOT"  "$OUTPUTFILEPP"
 rm fitD.exe
 
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
@@ -101,6 +102,7 @@ OUTPUTPrescalePPMB="ROOTfiles/prescalePPMB_extended.root"
 OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB_extended.root"
 OUTPUTFILEPPMB="ROOTfiles/hPtSpectrumDzeroPPMB_extended.root"
 OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMB_extended.root"
+OUTPUTFILEPPDcandidatesMB="ROOTfiles/hDcandidatesPP_extended.root"
 
 LUMIPPMB=0.0344167
 ISMCPPMB=0
@@ -125,6 +127,7 @@ g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
 #./fitD.exe 0 "$INPUTDATAPPMBSKIMMED"  "$INPUTMCPP"  "$TRGPPMB" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMB"   1   "$ISDOWEIGHTPPMB"   "$LABELPPPLOT"  "$OUTPUTFILEPPMB" 
 rm fitD.exe
+
 
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
 ./CrossSectionRatio.exe "$FONLLOUTPUTFILEPPMB"  "$OUTPUTFILEPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" 0 "$LABELPPPLOT" "$LUMIPPMB" 
