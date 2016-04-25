@@ -4,6 +4,8 @@
 DOTriggered=1
 DOMB=1
 
+DONORM=0
+
 UNITY=1
 NULL=0
 
@@ -66,15 +68,20 @@ cp config/parametersHighHLTD50PP.h parameters.h
 TRGPP="HLT_DmesonPPTrackingGlobal_Dpt50_v1"
 fi 
 
+if [ $DONORM -eq 1 ]; then     
+LUMIPP=1
+fi 
+
+
 g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe 
 ./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILE" "$LABELPPPLOT"
  
-g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
+#g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
 ./triggercombination.exe 0 "$INPUTDATAPPUNSKIMMED" "$INPUTDATAPPMBUNSKIMMED" "$CUTFORTRIGGERPRESCALEPP" "$OUTPUTPrescalePP"
 rm triggercombination.exe
 
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe 0 "$INPUTDATAPPSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   1   "$ISDOWEIGHTPP"   "$LABELPPPLOT"  "$OUTPUTFILEPP"
+#./fitD.exe 0 "$INPUTDATAPPSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   1   "$ISDOWEIGHTPP"   "$LABELPPPLOT"  "$OUTPUTFILEPP"
 rm fitD.exe
 
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
@@ -95,7 +102,7 @@ OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB_extended.root"
 OUTPUTFILEPPMB="ROOTfiles/hPtSpectrumDzeroPPMB_extended.root"
 OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMB_extended.root"
 
-LUMIPPMB=0.0332189
+LUMIPPMB=0.0344167
 ISMCPPMB=0
 ISDOWEIGHTPPMB=0
 SELGENPPMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
@@ -107,12 +114,16 @@ USEPRESCALEPPMB=0
 TRGPPMB="(HLT_L1MinimumBiasHF1OR_part1_v1||HLT_L1MinimumBiasHF1OR_part2_v1||HLT_L1MinimumBiasHF1OR_part3_v1||HLT_L1MinimumBiasHF1OR_part4_v1||HLT_L1MinimumBiasHF1OR_part5_v1||HLT_L1MinimumBiasHF1OR_part6_v1||HLT_L1MinimumBiasHF1OR_part7_v1||HLT_L1MinimumBiasHF1OR_part8_v1||HLT_L1MinimumBiasHF1OR_part9_v1||HLT_L1MinimumBiasHF1OR_part10_v1||HLT_L1MinimumBiasHF1OR_part11_v1||HLT_L1MinimumBiasHF1OR_part12_v1||HLT_L1MinimumBiasHF1OR_part13_v1||HLT_L1MinimumBiasHF1OR_part14_v1||HLT_L1MinimumBiasHF1OR_part15_v1||HLT_L1MinimumBiasHF1OR_part16_v1||HLT_L1MinimumBiasHF1OR_part17_v1||HLT_L1MinimumBiasHF1OR_part18_v1||HLT_L1MinimumBiasHF1OR_part19_v1)"
 
 
+if [ $DONORM -eq 1 ]; then     
+LUMIPPMB=1
+fi 
+
 g++ Dzerodsigmadpt.cc $(root-config --cflags --libs) -g -o Dzerodsigmadpt.exe 
 ./Dzerodsigmadpt.exe "$FONLLDATINPUT"  "$FONLLOUTPUTFILEPPMB" "$LABELPPPLOT"
 
 
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe 0 "$INPUTDATAPPMBSKIMMED"  "$INPUTMCPP"  "$TRGPPMB" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMB"   1   "$ISDOWEIGHTPPMB"   "$LABELPPPLOT"  "$OUTPUTFILEPPMB" 
+#./fitD.exe 0 "$INPUTDATAPPMBSKIMMED"  "$INPUTMCPP"  "$TRGPPMB" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMB"   1   "$ISDOWEIGHTPPMB"   "$LABELPPPLOT"  "$OUTPUTFILEPPMB" 
 rm fitD.exe
 
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 

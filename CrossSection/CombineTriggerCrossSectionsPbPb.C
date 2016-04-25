@@ -131,10 +131,55 @@ void CombineTriggerCrossSectionsPP()
     hTriggerEfficiency[ifile] ->SetMarkerSize(1);
     hTriggerEfficiency[ifile] ->Draw("psame");  
   }
-    legendSigma->Draw("same");
+  
+ legendSigma->Draw("same");
+ cTriggerEff->SaveAs("TriggerEffPP.pdf");
 
-  cTriggerEff->SaveAs("TriggerEffPP.pdf");
+  const int nbinsstudy=3;
+  double binsstudy[nbinsstudy+1]={10.,15.,20.,25.};
+  double binmedium[nbinsstudy]={12.5,17.5,22.5};
+  
+  TH1D* hValuesMB = new TH1D("hValuesMB","",nbinsstudy,binsstudy);
+  TH1D* hValuesD8 = new TH1D("hValuesD8","",nbinsstudy,binsstudy);
+  
+  for (int i=0;i<nbinsstudy;i++){
+    hValuesMB->SetBinContent(i+1,hYieldTriggerCorrected[0]->GetBinContent(hYieldTriggerCorrected[0]->FindBin(binmedium[i])));
+    hValuesMB->SetBinError(i+1,hYieldTriggerCorrected[0]->GetBinError(hYieldTriggerCorrected[0]->FindBin(binmedium[i])));
+    hValuesD8->SetBinContent(i+1,hYieldTriggerCorrected[1]->GetBinContent(hYieldTriggerCorrected[1]->FindBin(binmedium[i])));
+    hValuesD8->SetBinError(i+1,hYieldTriggerCorrected[1]->GetBinError(hYieldTriggerCorrected[1]->FindBin(binmedium[i])));
+  }
 
+  hValuesD8->Sumw2();
+  hValuesMB->Sumw2();
+  
+  TH1D* hRatioMBOverTriggered = (TH1D*)hValuesMB->Clone("hRatioMBOverTriggered");
+  hRatioMBOverTriggered->Divide(hValuesD8);
+
+  hRatioMBOverTriggered->Scale(25.8);  
+  for (int i=1;i<nbinsstudy+1;i++) cout<<"luminosity="<<hRatioMBOverTriggered->GetBinContent(i)<<"with error="<<hRatioMBOverTriggered->GetBinError(i)<<endl;
+
+  TCanvas*canvasLumi=new TCanvas("canvasLumi","canvasLumi",500,500);
+  canvasLumi->cd(1);
+  TH2F* hemptyLumi=new TH2F("hemptyLumi","",50,5,30,10.,0,0.05); 
+  hemptyLumi->GetXaxis()->CenterTitle();
+  hemptyLumi->GetYaxis()->CenterTitle();
+  hemptyLumi->GetYaxis()->SetTitle("Luminosity (pb)");
+  hemptyLumi->GetXaxis()->SetTitle("p_{T} (GeV/c)");
+  hemptyLumi->GetXaxis()->SetTitleOffset(0.95);//0.9
+  hemptyLumi->GetYaxis()->SetTitleOffset(1.24);//1.
+  hemptyLumi->GetXaxis()->SetTitleSize(0.060);//0.045
+  hemptyLumi->GetYaxis()->SetTitleSize(0.060);//0.045
+  hemptyLumi->GetXaxis()->SetTitleFont(42);
+  hemptyLumi->GetYaxis()->SetTitleFont(42);
+  hemptyLumi->GetXaxis()->SetLabelFont(42);
+  hemptyLumi->GetYaxis()->SetLabelFont(42);
+  hemptyLumi->GetXaxis()->SetLabelSize(0.040);//0.035
+  hemptyLumi->GetYaxis()->SetLabelSize(0.040);//0.035  
+  hemptyLumi->GetXaxis()->SetLabelOffset(0.01);
+  hemptyLumi->Draw();
+  hRatioMBOverTriggered->Draw("same");
+  hRatioMBOverTriggered->Fit("pol0","","",10,25);
+ canvasLumi->SaveAs("canvasLumiPP.pdf");
 
 }
 
@@ -232,7 +277,7 @@ void CombineTriggerCrossSectionsPbPb()
     hYieldTriggerCorrectedFONLLnorm[ifile] ->SetMarkerColor(colors[ifile]);
     hYieldTriggerCorrectedFONLLnorm[ifile] ->Draw("psame");  
   }
-    legendSigma->Draw("same");
+  legendSigma->Draw("same");
   cSigma->SaveAs("TriggerCrossSectionPbPb.pdf");
 }
 
