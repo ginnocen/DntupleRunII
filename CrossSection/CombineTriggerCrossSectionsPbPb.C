@@ -39,7 +39,7 @@ void CombineTriggerCrossSectionsPP()
   cSigma->cd(1);
   gPad->SetLogy();
   gPad->SetLogx();
-  TH2F* hemptySigma=new TH2F("hemptySigma","",50,0.,110.,10.,1e0,1.e12);  
+  TH2F* hemptySigma=new TH2F("hemptySigma","",50,0.,110.,10.,1e-3,1.e12);  
   hemptySigma->GetXaxis()->CenterTitle();
   hemptySigma->GetYaxis()->CenterTitle();
   hemptySigma->GetYaxis()->SetTitle("1/T_{AA} * dN / dp_{T}( pb GeV^{-1}c)");
@@ -79,7 +79,7 @@ void CombineTriggerCrossSectionsPP()
   cSigma->cd(2);
   gPad->SetLogy();
   gPad->SetLogx();
-  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,3,100.,10.,1,20);
+  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,3,100.,10.,0.001,5);
   hemptyRatio->GetXaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->SetTitle("RATIO/FONLL");

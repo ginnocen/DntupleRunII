@@ -20,14 +20,18 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   TFile* file = new TFile(input.Data());
   TH1F* hEff = (TH1F*)file->Get("hEff");
   TH1F* hSigmaStat = (TH1F*)file->Get("hPtSigma");
-  TH1F* hYieldTriggerCorrected = (TH1F*)hSigmaStat->Clone("hYieldTriggerCorrected");
-  TH1F* hYieldTriggerCorrectedFONLLnorm = (TH1F*)hSigmaStat->Clone("hYieldTriggerCorrectedFONLLnorm");
+  TH1F* hYieldTriggerCorrected = (TH1F*)file->Get("hPt");
+  hYieldTriggerCorrected->SetName("hYieldTriggerCorrected");  
+  TH1F* hYieldTriggerCorrectedFONLLnorm = (TH1F*)file->Get("hPt");
+  hYieldTriggerCorrectedFONLLnorm->SetName("hYieldTriggerCorrectedFONLLnorm");
   TH1F* hfprompt = new TH1F("hfprompt","",nBins,ptBins);
   
   TH1F*hPrescalesPtBins;
   TH1F*hTriggerEfficiencyPtBins;
   
   hSigmaStat->Scale(1./lumi);
+  hYieldTriggerCorrected->Scale(1./lumi);
+  hYieldTriggerCorrectedFONLLnorm->Scale(1./lumi);
   
   for (int i=0;i<nBins;i++) {
     double prompt=bFeedDownCorrection(hSigmaStat->GetBinCenter(i+1),isPbPb);
@@ -51,10 +55,6 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
       hYieldTriggerCorrectedFONLLnorm->SetBinError(i+1,hYieldTriggerCorrectedFONLLnorm->GetBinError(i+1)/hPrescalesPtBins->GetBinContent(i+1)/hTriggerEfficiencyPtBins->GetBinContent(i+1));
     }
   }
-
-  hYieldTriggerCorrected->Scale(1./lumi);
-  hYieldTriggerCorrectedFONLLnorm->Scale(1./lumi);
-
 
   Double_t xr[nBins], xrlow[nBins], xrhigh[nBins], ycross[nBins],ycrossstat[nBins],ycrosssysthigh[nBins],ycrosssystlow[nBins], yFONLL[nBins];
   Double_t yratiocrossFONLL[nBins], yratiocrossFONLLstat[nBins], yratiocrossFONLLsysthigh[nBins], yratiocrossFONLLsystlow[nBins];
