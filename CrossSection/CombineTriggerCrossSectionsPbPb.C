@@ -170,6 +170,52 @@ void CombineTriggerCrossSectionsPbPb()
   
  legendSigma->Draw("same");
  cTriggerEff->SaveAs("TriggerEffPP.pdf");
+ 
+  TH1D* ratioHLT40_60=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[2]->Clone("ratioHLT40_60");
+  ratioHLT40_60->Divide(hDcandidatesTriggerCorrectedFONLLnorm[3]);
+  ratioHLT40_60->SetMaximum(100);
+
+  TH1D* ratioHLT20_40=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[1]->Clone("ratioHLT20_40");
+  ratioHLT20_40->Divide(hDcandidatesTriggerCorrectedFONLLnorm[2]);
+  ratioHLT20_40->SetMaximum(100);
+  
+  TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",1500,500);
+  canvasPrescale->Divide(2,1);
+  TH2F* hemptyPrescale=new TH2F("hemptyPrescale","",50,0,100,10.,0,2.); 
+  hemptyPrescale->GetXaxis()->CenterTitle();
+  hemptyPrescale->GetYaxis()->CenterTitle();
+  hemptyPrescale->GetYaxis()->SetTitle("Data driven prescale / HLT prescales");
+  hemptyPrescale->GetXaxis()->SetTitle("p_{T} (GeV/c)");
+  hemptyPrescale->GetXaxis()->SetTitleOffset(0.95);//0.9
+  hemptyPrescale->GetYaxis()->SetTitleOffset(1.24);//1.
+  hemptyPrescale->GetXaxis()->SetTitleSize(0.060);//0.045
+  hemptyPrescale->GetYaxis()->SetTitleSize(0.060);//0.045
+  hemptyPrescale->GetXaxis()->SetTitleFont(42);
+  hemptyPrescale->GetYaxis()->SetTitleFont(42);
+  hemptyPrescale->GetXaxis()->SetLabelFont(42);
+  hemptyPrescale->GetYaxis()->SetLabelFont(42);
+  hemptyPrescale->GetXaxis()->SetLabelSize(0.040);//0.035
+  hemptyPrescale->GetYaxis()->SetLabelSize(0.040);//0.035  
+  hemptyPrescale->GetXaxis()->SetLabelOffset(0.01);
+  canvasPrescale->cd(1);
+ // gPad->SetLogy();
+  hemptyPrescale->Draw();
+  ratioHLT20_40->SetLineColor(1);
+  ratioHLT20_40->Draw("same");
+  TF1 *pol0_0= new TF1("pol0_0","pol0_0",40,60);
+  ratioHLT20_40->Fit("pol0_0","","",40,60);
+  TLatex *  tex_0 = new TLatex(1.82,1.836,Form("Ratio= %f #pm %f",pol0_0->GetParameter(0),pol0_0->GetParError(0)));
+  tex_0->Draw();
+  canvasPrescale->cd(2);
+  hemptyPrescale->Draw();
+  ratioHLT40_60->SetLineColor(1);
+  ratioHLT40_60->Draw("same");
+  TF1 *pol0_1= new TF1("pol0_1","pol0_1",60,100);
+  ratioHLT40_60->Fit("pol0_1","","",60,100);
+  TLatex *  tex_1 = new TLatex(1.82,1.836,Form("Ratio= %f #pm %f",pol0_1->GetParameter(0),pol0_1->GetParError(0)));
+  tex_1->Draw();
+  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPbPb.pdf");
+
 
  /*
   TString inputfilePbPbMB="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root";

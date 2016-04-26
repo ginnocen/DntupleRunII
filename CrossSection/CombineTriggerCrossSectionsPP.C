@@ -165,16 +165,76 @@ void CombineTriggerCrossSectionsPP()
   
  legendSigma->Draw("same");
  cTriggerEff->SaveAs("TriggerEffPP.pdf");
+  
+  TH1D* ratioHLT30_50=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[3]->Clone("ratioHLT30_50");
+  ratioHLT30_50->Divide(hDcandidatesTriggerCorrectedFONLLnorm[4]);
+  ratioHLT30_50->SetMaximum(100);
+
+  TH1D* ratioHLT15_30=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[2]->Clone("ratioHLT15_30");
+  ratioHLT15_30->Divide(hDcandidatesTriggerCorrectedFONLLnorm[3]);
+  ratioHLT15_30->SetMaximum(100);
+
+  TH1D* ratioHLT8_15=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[1]->Clone("ratioHLT8_15");
+  ratioHLT8_15->Divide(hDcandidatesTriggerCorrectedFONLLnorm[2]);
+  ratioHLT8_15->SetMaximum(100);
+  
+  TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",1500,500);
+  canvasPrescale->Divide(3,1);
+  TH2F* hemptyPrescale=new TH2F("hemptyPrescale","",50,0,100,10.,0,2.); 
+  hemptyPrescale->GetXaxis()->CenterTitle();
+  hemptyPrescale->GetYaxis()->CenterTitle();
+  hemptyPrescale->GetYaxis()->SetTitle("Data driven prescale / HLT prescales");
+  hemptyPrescale->GetXaxis()->SetTitle("p_{T} (GeV/c)");
+  hemptyPrescale->GetXaxis()->SetTitleOffset(0.95);//0.9
+  hemptyPrescale->GetYaxis()->SetTitleOffset(1.24);//1.
+  hemptyPrescale->GetXaxis()->SetTitleSize(0.060);//0.045
+  hemptyPrescale->GetYaxis()->SetTitleSize(0.060);//0.045
+  hemptyPrescale->GetXaxis()->SetTitleFont(42);
+  hemptyPrescale->GetYaxis()->SetTitleFont(42);
+  hemptyPrescale->GetXaxis()->SetLabelFont(42);
+  hemptyPrescale->GetYaxis()->SetLabelFont(42);
+  hemptyPrescale->GetXaxis()->SetLabelSize(0.040);//0.035
+  hemptyPrescale->GetYaxis()->SetLabelSize(0.040);//0.035  
+  hemptyPrescale->GetXaxis()->SetLabelOffset(0.01);
+  canvasPrescale->cd(1);
+ // gPad->SetLogy();
+  hemptyPrescale->Draw();
+  ratioHLT8_15->SetLineColor(1);
+  ratioHLT8_15->Draw("same");
+  TF1 *pol0_0= new TF1("pol0_0","pol0_0",20,30);
+  ratioHLT8_15->Fit("pol0_0","","",20,30);
+  TLatex *  tex_0 = new TLatex(1.82,1.836,Form("Ratio= %f #pm %f",pol0_0->GetParameter(0),pol0_0->GetParError(0)));
+  tex_0->Draw();
+  canvasPrescale->cd(2);
+  hemptyPrescale->Draw();
+  ratioHLT15_30->SetLineColor(1);
+  ratioHLT15_30->Draw("same");
+  TF1 *pol0_1= new TF1("pol0_1","pol0_1",30,50);
+  ratioHLT15_30->Fit("pol0_1","","",30,50);
+  TLatex *  tex_1 = new TLatex(1.82,1.836,Form("Ratio= %f #pm %f",pol0_1->GetParameter(0),pol0_1->GetParError(0)));
+  tex_1->Draw();
+  canvasPrescale->cd(3);
+  hemptyPrescale->Draw();
+  ratioHLT30_50->SetLineColor(1);
+  ratioHLT30_50->Draw("same");
+  TF1 *pol0_2;
+  pol0_2= new TF1("pol0_2","pol0_2",20,30);
+  ratioHLT30_50->Fit("pol0_2","","",50,80);
+  TLatex *  tex_2 = new TLatex(1.82,1.836,Form("Ratio= %f #pm %f",pol0_2->GetParameter(0),pol0_2->GetParError(0)));
+  tex_2->Draw();
+  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPP.pdf");
+
 
   const int nbinsstudy=3;
   double binsstudy[nbinsstudy+1]={10.,15.,20.,25.};
   double binmedium[nbinsstudy]={12.5,17.5,22.5};
-  
+    
   TH1D* hValuesMB = new TH1D("hValuesMB","",nbinsstudy,binsstudy);
   TH1D* hValuesD8 = new TH1D("hValuesD8","",nbinsstudy,binsstudy);
   TH1D* hDcandValuesMB = new TH1D("hDcandValuesMB","",nbinsstudy,binsstudy);
   TH1D* hDcandValuesD8 = new TH1D("hDcandValuesD8","",nbinsstudy,binsstudy);
-  
+
+
   for (int i=0;i<nbinsstudy;i++){
 
     double valueMB=hYieldTriggerCorrected[0]->GetBinContent(hYieldTriggerCorrected[0]->FindBin(binmedium[i]));
