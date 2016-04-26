@@ -116,16 +116,12 @@ void triggercombination(int usePbPb=0,TString inputdata="/data/dmeson2015/DataDn
     TH1D*htrg=new TH1D("htrg","htrg",2,-100,100);
     TH1D*hcountsMB=new TH1D("hcountsMB","hcountsMB",2,-100,100);
     TH1D*hMB=new TH1D("hMB","hMB",2,-100,100);
-    
-    
-    TString cuttrigger="(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)";
-    
+        
     //TString mypath="(HLT_L1MinimumBiasHF1OR_part1_v1||HLT_L1MinimumBiasHF1OR_part2_v1||HLT_L1MinimumBiasHF1OR_part3_v1||HLT_L1MinimumBiasHF1OR_part4_v1||HLT_L1MinimumBiasHF1OR_part5_v1||HLT_L1MinimumBiasHF1OR_part6_v1||HLT_L1MinimumBiasHF1OR_part7_v1||HLT_L1MinimumBiasHF1OR_part8_v1||HLT_L1MinimumBiasHF1OR_part9_v1||HLT_L1MinimumBiasHF1OR_part10_v1||HLT_L1MinimumBiasHF1OR_part11_v1||HLT_L1MinimumBiasHF1OR_part12_v1||HLT_L1MinimumBiasHF1OR_part13_v1||HLT_L1MinimumBiasHF1OR_part14_v1||HLT_L1MinimumBiasHF1OR_part15_v1||HLT_L1MinimumBiasHF1OR_part16_v1||HLT_L1MinimumBiasHF1OR_part17_v1||HLT_L1MinimumBiasHF1OR_part18_v1||HLT_L1MinimumBiasHF1OR_part19_v1)";
     //HltTree->Draw("1>>htrg",Form("%s",triggerHLT[ntriggers-1].Data()));
     //HltTreeMB->Draw("1>>hMB",Form("%s&&%s",triggerHLT[ntriggers-1].Data(),mypath.Data()));
     HltTree->Draw("1>>htrg",triggerHLT[ntriggers-1].Data());
     HltTreeMB->Draw("1>>hMB",triggerHLT[ntriggers-1].Data());
-    HltTreeMB->Draw("1>>hcountsMB",cuttrigger.Data());
 
     double ncountstrg=htrg->GetEntries();
     double ncountsMB=hMB->GetEntries();
@@ -141,6 +137,8 @@ void triggercombination(int usePbPb=0,TString inputdata="/data/dmeson2015/DataDn
       std::cout<<"Luminosity="<<lumi<<", with relative error="<<relratio<<std::endl;
     }
     if(usePbPb==1){
+      TString cuttrigger="(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)";
+      HltTreeMB->Draw("1>>hcountsMB",cuttrigger.Data());
       double ncountsMBPbPb=hcountsMB->GetEntries();
       std::cout<<"all events MB PbPb="<<ncountsMBPbPb<<std::endl;
       double lumiMB=TAA*ncountsMBPbPb;

@@ -3,32 +3,27 @@
 #include "TLegendEntry.h"
 #include "../Systematics/systematics.C"
 
-void CombineTriggerCrossSectionsPbPb()
+void CombineTriggerCrossSectionsPP()
 {
-
-  TString cut="(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)";
-  TString selection="1";
-  double TAA=392.4/(70.*1e9);
-
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
 
-  const int nFiles = 4;
-  TString myfiles[nFiles] = {"ROOTfiles/CrossSectionFONLLPbPbMB_extended.root", 
-                                            "ROOTfiles/CrossSectionFONLLPbPb_20.root",
-                                            "ROOTfiles/CrossSectionFONLLPbPb_40.root",
-                                            "ROOTfiles/CrossSectionFONLLPbPb_60.root"};
-  TString label[nFiles] = {"MB", "HLTD20", "HLTD40", "HLTD60"};
+  const int nFiles = 5;
+  TString myfiles[nFiles] = {"ROOTfiles/CrossSectionFONLLPPMB_extended.root", 
+                                            "ROOTfiles/CrossSectionFONLLPP_8.root",
+                                            "ROOTfiles/CrossSectionFONLLPP_15.root",
+                                            "ROOTfiles/CrossSectionFONLLPP_30.root",
+                                            "ROOTfiles/CrossSectionFONLLPP_50.root"};
+  TString label[nFiles] = {"MB", "HLTD8", "HLTD15", "HLTD30","HLTD30"};
 
-  int colors[nFiles] = {1,2,3,4};
+  int colors[nFiles] = {1,2,3,4,6};
 
   TH1D* hYieldTriggerCorrected[nFiles];
   TH1D* hTriggerEfficiency[nFiles];
   TH1D* hYieldTriggerCorrectedFONLLnorm[nFiles];
   TH1D* hDcandidatesTriggerCorrectedFONLLnorm[nFiles];
-  
   TFile* files[nFiles];
   TLegendEntry *entry[nFiles];
   
@@ -44,7 +39,7 @@ void CombineTriggerCrossSectionsPbPb()
   cSigmaAll->cd(1);
   gPad->SetLogy();
   gPad->SetLogx();
-  TH2F* hemptySigma=new TH2F("hemptySigma","",50,0.,110.,10.,1e-5,1.e12);  
+  TH2F* hemptySigma=new TH2F("hemptySigma","",50,0.,110.,10.,1e-3,1.e12);  
   hemptySigma->GetXaxis()->CenterTitle();
   hemptySigma->GetYaxis()->CenterTitle();
   hemptySigma->GetYaxis()->SetTitle("1/T_{AA} * dN / dp_{T}( pb GeV^{-1}c)");
@@ -87,7 +82,7 @@ void CombineTriggerCrossSectionsPbPb()
   cSigma->cd(1);
   gPad->SetLogy();
   gPad->SetLogx();
-  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,3,100.,10.,0.00001,5);
+  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,3,100.,10.,0.001,5);
   hemptyRatio->GetXaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->SetTitle("Corrected yields/FONLL");
@@ -115,7 +110,7 @@ void CombineTriggerCrossSectionsPbPb()
   cSigma->cd(2);
   gPad->SetLogy();
   gPad->SetLogx();
-  TH2F* hemptyRatioCounting=new TH2F("hemptyRatioCounting","",50,3,100.,10.,0.00001,5);
+  TH2F* hemptyRatioCounting=new TH2F("hemptyRatioCounting","",50,3,100.,10.,0.001,5);
   hemptyRatioCounting->GetXaxis()->CenterTitle();
   hemptyRatioCounting->GetYaxis()->CenterTitle();
   hemptyRatioCounting->GetYaxis()->SetTitle("D counting/FONLL");
@@ -170,17 +165,21 @@ void CombineTriggerCrossSectionsPbPb()
   
  legendSigma->Draw("same");
  cTriggerEff->SaveAs("TriggerEffPP.pdf");
- 
-  TH1D* ratioHLT40_60=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[2]->Clone("ratioHLT40_60");
-  ratioHLT40_60->Divide(hDcandidatesTriggerCorrectedFONLLnorm[3]);
-  ratioHLT40_60->SetMaximum(100);
+  
+  TH1D* ratioHLT30_50=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[3]->Clone("ratioHLT30_50");
+  ratioHLT30_50->Divide(hDcandidatesTriggerCorrectedFONLLnorm[4]);
+  ratioHLT30_50->SetMaximum(100);
 
-  TH1D* ratioHLT20_40=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[1]->Clone("ratioHLT20_40");
-  ratioHLT20_40->Divide(hDcandidatesTriggerCorrectedFONLLnorm[2]);
-  ratioHLT20_40->SetMaximum(100);
+  TH1D* ratioHLT15_30=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[2]->Clone("ratioHLT15_30");
+  ratioHLT15_30->Divide(hDcandidatesTriggerCorrectedFONLLnorm[3]);
+  ratioHLT15_30->SetMaximum(100);
+
+  TH1D* ratioHLT8_15=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[1]->Clone("ratioHLT8_15");
+  ratioHLT8_15->Divide(hDcandidatesTriggerCorrectedFONLLnorm[2]);
+  ratioHLT8_15->SetMaximum(100);
   
   TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",1500,500);
-  canvasPrescale->Divide(2,1);
+  canvasPrescale->Divide(3,1);
   TH2F* hemptyPrescale=new TH2F("hemptyPrescale","",50,0,100,10.,0,2.); 
   hemptyPrescale->GetXaxis()->CenterTitle();
   hemptyPrescale->GetYaxis()->CenterTitle();
@@ -200,93 +199,85 @@ void CombineTriggerCrossSectionsPbPb()
   canvasPrescale->cd(1);
  // gPad->SetLogy();
   hemptyPrescale->Draw();
-  ratioHLT20_40->SetLineColor(1);
-  ratioHLT20_40->Draw("same");
-  TF1 *pol0_0= new TF1("pol0_0","pol0_0",40,60);
-  ratioHLT20_40->Fit("pol0_0","","",40,60);
+  ratioHLT8_15->SetLineColor(1);
+  ratioHLT8_15->Draw("same");
+  TF1 *pol0_0= new TF1("pol0_0","pol0_0",20,30);
+  ratioHLT8_15->Fit("pol0_0","","",20,30);
   TLatex *  tex_0 = new TLatex(1.82,1.836,Form("Ratio= %f #pm %f",pol0_0->GetParameter(0),pol0_0->GetParError(0)));
   tex_0->Draw();
   canvasPrescale->cd(2);
   hemptyPrescale->Draw();
-  ratioHLT40_60->SetLineColor(1);
-  ratioHLT40_60->Draw("same");
-  TF1 *pol0_1= new TF1("pol0_1","pol0_1",60,100);
-  ratioHLT40_60->Fit("pol0_1","","",60,100);
+  ratioHLT15_30->SetLineColor(1);
+  ratioHLT15_30->Draw("same");
+  TF1 *pol0_1= new TF1("pol0_1","pol0_1",30,50);
+  ratioHLT15_30->Fit("pol0_1","","",30,50);
   TLatex *  tex_1 = new TLatex(1.82,1.836,Form("Ratio= %f #pm %f",pol0_1->GetParameter(0),pol0_1->GetParError(0)));
   tex_1->Draw();
-  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPbPb.pdf");
-
-
- /*
-  TString inputfilePbPbMB="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root";
-  TFile* filePbPbMBraw = new TFile(inputfilePbPbMB.Data());  
-  TTree* HltTreePbPbMB= (TTree*) filePbPbMBraw->Get("ntHlt");
-  TTree* HltHiPbPbMB= (TTree*) filePbPbMBraw->Get("ntHi");
-  HltTreePbPbMB->AddFriend(HltHiPbPbMB);
-  
-  TH1D*hcountsMBPbPb=new TH1D("hcountsMBPbPb","hcountsMBPbPb",2,-200,200);
-  HltTreePbPbMB->Draw("1>>hcountsMBPbPb",Form("%s&&%s",cut.Data(),selection.Data()));
-  double ncountsMBPbPb=hcountsMBPbPb->GetEntries();
-  */
-  double ncountsMBPbPb=1.48357e+08;
-  double lumiPbPbMB=ncountsMBPbPb*TAA;
-  cout<<"ncountsMBPbPb="<<ncountsMBPbPb<<endl;
-  cout<<"luminosity MB="<<lumiPbPbMB<<endl;
+  canvasPrescale->cd(3);
+  hemptyPrescale->Draw();
+  ratioHLT30_50->SetLineColor(1);
+  ratioHLT30_50->Draw("same");
+  TF1 *pol0_2;
+  pol0_2= new TF1("pol0_2","pol0_2",20,30);
+  ratioHLT30_50->Fit("pol0_2","","",50,80);
+  TLatex *  tex_2 = new TLatex(1.82,1.836,Form("Ratio= %f #pm %f",pol0_2->GetParameter(0),pol0_2->GetParError(0)));
+  tex_2->Draw();
+  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPP.pdf");
 
 
   const int nbinsstudy=3;
-  double binsstudy[nbinsstudy+1]={15.,20.,25.,30.};
-  double binmedium[nbinsstudy]={17.5,22.5,27.5};
-  
+  double binsstudy[nbinsstudy+1]={10.,15.,20.,25.};
+  double binmedium[nbinsstudy]={12.5,17.5,22.5};
+    
   TH1D* hValuesMB = new TH1D("hValuesMB","",nbinsstudy,binsstudy);
-  TH1D* hValuesD20 = new TH1D("hValuesD20","",nbinsstudy,binsstudy);
+  TH1D* hValuesD8 = new TH1D("hValuesD8","",nbinsstudy,binsstudy);
   TH1D* hDcandValuesMB = new TH1D("hDcandValuesMB","",nbinsstudy,binsstudy);
-  TH1D* hDcandValuesD20 = new TH1D("hDcandValuesD20","",nbinsstudy,binsstudy);
+  TH1D* hDcandValuesD8 = new TH1D("hDcandValuesD8","",nbinsstudy,binsstudy);
+
 
   for (int i=0;i<nbinsstudy;i++){
-  
+
     double valueMB=hYieldTriggerCorrected[0]->GetBinContent(hYieldTriggerCorrected[0]->FindBin(binmedium[i]));
     double errvalueMB=hYieldTriggerCorrected[0]->GetBinError(hYieldTriggerCorrected[0]->FindBin(binmedium[i]));
-    double valueD20=hYieldTriggerCorrected[1]->GetBinContent(hYieldTriggerCorrected[1]->FindBin(binmedium[i]));
-    double errvalueD20=hYieldTriggerCorrected[1]->GetBinError(hYieldTriggerCorrected[1]->FindBin(binmedium[i]));
+    double valueD8=hYieldTriggerCorrected[1]->GetBinContent(hYieldTriggerCorrected[1]->FindBin(binmedium[i]));
+    double errvalueD8=hYieldTriggerCorrected[1]->GetBinError(hYieldTriggerCorrected[1]->FindBin(binmedium[i]));
     
     double DcandvalueMB=hDcandidatesTriggerCorrectedFONLLnorm[0]->GetBinContent(hDcandidatesTriggerCorrectedFONLLnorm[0]->FindBin(binmedium[i]));
     double DcanderrvalueMB=hDcandidatesTriggerCorrectedFONLLnorm[0]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[0]->FindBin(binmedium[i]));
-    double DcandvalueD20=hDcandidatesTriggerCorrectedFONLLnorm[1]->GetBinContent(hDcandidatesTriggerCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
-    double DcanderrvalueD20=hDcandidatesTriggerCorrectedFONLLnorm[1]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
+    double DcandvalueD8=hDcandidatesTriggerCorrectedFONLLnorm[1]->GetBinContent(hDcandidatesTriggerCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
+    double DcanderrvalueD8=hDcandidatesTriggerCorrectedFONLLnorm[1]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
 
     hValuesMB->SetBinContent(i+1,valueMB);
     hValuesMB->SetBinError(i+1,errvalueMB);
-    hValuesD20->SetBinContent(i+1,valueD20);
-    hValuesD20->SetBinError(i+1,errvalueD20);
+    hValuesD8->SetBinContent(i+1,valueD8);
+    hValuesD8->SetBinError(i+1,errvalueD8);
     
     hDcandValuesMB->SetBinContent(i+1,DcandvalueMB);
     hDcandValuesMB->SetBinError(i+1,DcanderrvalueMB);
-    hDcandValuesD20->SetBinContent(i+1,DcandvalueD20);
-    hDcandValuesD20->SetBinError(i+1,DcanderrvalueD20);
-
+    hDcandValuesD8->SetBinContent(i+1,DcandvalueD8);
+    hDcandValuesD8->SetBinError(i+1,DcanderrvalueD8);
+    
   }
-
-  hValuesD20->Sumw2();
+  
+  hValuesD8->Sumw2();
   hValuesMB->Sumw2();
-  hDcandValuesD20->Sumw2();
-  hDcandValuesMB->Sumw2();
   
-  TH1D* hRatioTriggeredOverMB = (TH1D*)hValuesD20->Clone("hRatioTriggeredOverMB");
-  hRatioTriggeredOverMB->Divide(hValuesMB);
-  hRatioTriggeredOverMB->Scale(lumiPbPbMB);  
+  TH1D* hRatioMBOverTriggered = (TH1D*)hValuesMB->Clone("hRatioMBOverTriggered");
+  hRatioMBOverTriggered->Divide(hValuesD8);
+  hRatioMBOverTriggered->Scale(25.8);  
   
-  TH1D* hRatioTriggeredOverMBDcand = (TH1D*)hDcandValuesD20->Clone("hRatioTriggeredOverMBDcand");
-  hRatioTriggeredOverMBDcand->Divide(hDcandValuesMB);
-  hRatioTriggeredOverMBDcand->Scale(lumiPbPbMB);  
+  TH1D* hRatioMBOverTriggeredDcand = (TH1D*)hDcandValuesMB->Clone("hRatioMBOverTriggeredDcand");
+  hRatioMBOverTriggeredDcand->Divide(hDcandValuesD8);
+  hRatioMBOverTriggeredDcand->Scale(25.8);  
 
-  for (int i=1;i<3;i++) cout<<"luminosity="<<hRatioTriggeredOverMB->GetBinContent(i)<<"with error="<<hRatioTriggeredOverMB->GetBinError(i)<<endl;
-  for (int i=1;i<3;i++) cout<<"luminosity Dcand="<<hRatioTriggeredOverMBDcand->GetBinContent(i)<<"with error="<<hRatioTriggeredOverMBDcand->GetBinError(i)<<endl;
+  
+  for (int i=1;i<nbinsstudy+1;i++) cout<<"luminosity="<<hRatioMBOverTriggered->GetBinContent(i)<<"with error="<<hRatioMBOverTriggered->GetBinError(i)<<endl;
+  for (int i=1;i<nbinsstudy+1;i++) cout<<"luminosity D cand="<<hRatioMBOverTriggeredDcand->GetBinContent(i)<<"with error="<<hRatioMBOverTriggeredDcand->GetBinError(i)<<endl;
 
-  TCanvas*canvas=new TCanvas("canvas","canvas",1000,500);
-  canvas->Divide(2,1);
-  canvas->cd(1);
-  TH2F* hemptyLumi=new TH2F("hemptyLumi","",50,15,35,10.,0,30); 
+  TCanvas*canvasLumi=new TCanvas("canvasLumi","canvasLumi",1000,500);
+  canvasLumi->Divide(2,1);
+  canvasLumi->cd(1);
+  TH2F* hemptyLumi=new TH2F("hemptyLumi","",50,5,30,10.,0,0.10); 
   hemptyLumi->GetXaxis()->CenterTitle();
   hemptyLumi->GetYaxis()->CenterTitle();
   hemptyLumi->GetYaxis()->SetTitle("Luminosity (pb)");
@@ -303,11 +294,12 @@ void CombineTriggerCrossSectionsPbPb()
   hemptyLumi->GetYaxis()->SetLabelSize(0.040);//0.035  
   hemptyLumi->GetXaxis()->SetLabelOffset(0.01);
   hemptyLumi->Draw();
-  hRatioTriggeredOverMB->Draw("same");
-  hRatioTriggeredOverMB->Fit("pol0","","",20,30);
-  canvas->cd(2);
+  hRatioMBOverTriggered->Draw("same");
+  hRatioMBOverTriggered->Fit("pol0","","",10,25);
+  canvasLumi->cd(2);
   hemptyLumi->Draw();
-  hRatioTriggeredOverMBDcand->Draw("same");
-  hRatioTriggeredOverMBDcand->Fit("pol0","","",20,30);
+  hRatioMBOverTriggeredDcand->Draw("same");
+  hRatioMBOverTriggeredDcand->Fit("pol0","","",10,25);
+  canvasLumi->SaveAs("canvasLumiPP.pdf");
 
 }
