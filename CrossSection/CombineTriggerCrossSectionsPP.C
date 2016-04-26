@@ -172,26 +172,52 @@ void CombineTriggerCrossSectionsPP()
   
   TH1D* hValuesMB = new TH1D("hValuesMB","",nbinsstudy,binsstudy);
   TH1D* hValuesD8 = new TH1D("hValuesD8","",nbinsstudy,binsstudy);
+  TH1D* hDcandValuesMB = new TH1D("hDcandValuesMB","",nbinsstudy,binsstudy);
+  TH1D* hDcandValuesD8 = new TH1D("hDcandValuesD8","",nbinsstudy,binsstudy);
   
   for (int i=0;i<nbinsstudy;i++){
-    hValuesMB->SetBinContent(i+1,hYieldTriggerCorrected[0]->GetBinContent(hYieldTriggerCorrected[0]->FindBin(binmedium[i])));
-    hValuesMB->SetBinError(i+1,hYieldTriggerCorrected[0]->GetBinError(hYieldTriggerCorrected[0]->FindBin(binmedium[i])));
-    hValuesD8->SetBinContent(i+1,hYieldTriggerCorrected[1]->GetBinContent(hYieldTriggerCorrected[1]->FindBin(binmedium[i])));
-    hValuesD8->SetBinError(i+1,hYieldTriggerCorrected[1]->GetBinError(hYieldTriggerCorrected[1]->FindBin(binmedium[i])));
-  }
 
+    double valueMB=hYieldTriggerCorrected[0]->GetBinContent(hYieldTriggerCorrected[0]->FindBin(binmedium[i]));
+    double errvalueMB=hYieldTriggerCorrected[0]->GetBinError(hYieldTriggerCorrected[0]->FindBin(binmedium[i]));
+    double valueD8=hYieldTriggerCorrected[1]->GetBinContent(hYieldTriggerCorrected[1]->FindBin(binmedium[i]));
+    double errvalueD8=hYieldTriggerCorrected[1]->GetBinError(hYieldTriggerCorrected[1]->FindBin(binmedium[i]));
+    
+    double DcandvalueMB=hDcandidatesTriggerCorrectedFONLLnorm[0]->GetBinContent(hDcandidatesTriggerCorrectedFONLLnorm[0]->FindBin(binmedium[i]));
+    double DcanderrvalueMB=hDcandidatesTriggerCorrectedFONLLnorm[0]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[0]->FindBin(binmedium[i]));
+    double DcandvalueD8=hDcandidatesTriggerCorrectedFONLLnorm[1]->GetBinContent(hDcandidatesTriggerCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
+    double DcanderrvalueD8=hDcandidatesTriggerCorrectedFONLLnorm[1]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
+
+    hValuesMB->SetBinContent(i+1,valueMB);
+    hValuesMB->SetBinError(i+1,errvalueMB);
+    hValuesD8->SetBinContent(i+1,valueD8);
+    hValuesD8->SetBinError(i+1,errvalueD8);
+    
+    hDcandValuesMB->SetBinContent(i+1,DcandvalueMB);
+    hDcandValuesMB->SetBinError(i+1,DcanderrvalueMB);
+    hDcandValuesD8->SetBinContent(i+1,DcandvalueD8);
+    hDcandValuesD8->SetBinError(i+1,DcanderrvalueD8);
+    
+  }
+  
   hValuesD8->Sumw2();
   hValuesMB->Sumw2();
   
   TH1D* hRatioMBOverTriggered = (TH1D*)hValuesMB->Clone("hRatioMBOverTriggered");
   hRatioMBOverTriggered->Divide(hValuesD8);
-
   hRatioMBOverTriggered->Scale(25.8);  
-  for (int i=1;i<nbinsstudy+1;i++) cout<<"luminosity="<<hRatioMBOverTriggered->GetBinContent(i)<<"with error="<<hRatioMBOverTriggered->GetBinError(i)<<endl;
+  
+  TH1D* hRatioMBOverTriggeredDcand = (TH1D*)hDcandValuesMB->Clone("hRatioMBOverTriggeredDcand");
+  hRatioMBOverTriggeredDcand->Divide(hDcandValuesD8);
+  hRatioMBOverTriggeredDcand->Scale(25.8);  
 
-  TCanvas*canvasLumi=new TCanvas("canvasLumi","canvasLumi",500,500);
+  
+  for (int i=1;i<nbinsstudy+1;i++) cout<<"luminosity="<<hRatioMBOverTriggered->GetBinContent(i)<<"with error="<<hRatioMBOverTriggered->GetBinError(i)<<endl;
+  for (int i=1;i<nbinsstudy+1;i++) cout<<"luminosity D cand="<<hRatioMBOverTriggeredDcand->GetBinContent(i)<<"with error="<<hRatioMBOverTriggeredDcand->GetBinError(i)<<endl;
+
+  TCanvas*canvasLumi=new TCanvas("canvasLumi","canvasLumi",1000,500);
+  canvasLumi->Divide(2,1);
   canvasLumi->cd(1);
-  TH2F* hemptyLumi=new TH2F("hemptyLumi","",50,5,30,10.,0,0.05); 
+  TH2F* hemptyLumi=new TH2F("hemptyLumi","",50,5,30,10.,0,0.10); 
   hemptyLumi->GetXaxis()->CenterTitle();
   hemptyLumi->GetYaxis()->CenterTitle();
   hemptyLumi->GetYaxis()->SetTitle("Luminosity (pb)");
@@ -210,6 +236,10 @@ void CombineTriggerCrossSectionsPP()
   hemptyLumi->Draw();
   hRatioMBOverTriggered->Draw("same");
   hRatioMBOverTriggered->Fit("pol0","","",10,25);
- canvasLumi->SaveAs("canvasLumiPP.pdf");
+  canvasLumi->cd(2);
+  hemptyLumi->Draw();
+  hRatioMBOverTriggeredDcand->Draw("same");
+  hRatioMBOverTriggeredDcand->Fit("pol0","","",10,25);
+  canvasLumi->SaveAs("canvasLumiPP.pdf");
 
 }

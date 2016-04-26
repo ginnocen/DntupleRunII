@@ -28,6 +28,7 @@ void CombineTriggerCrossSectionsPbPb()
   TH1D* hTriggerEfficiency[nFiles];
   TH1D* hYieldTriggerCorrectedFONLLnorm[nFiles];
   TH1D* hDcandidatesTriggerCorrectedFONLLnorm[nFiles];
+  
   TFile* files[nFiles];
   TLegendEntry *entry[nFiles];
   
@@ -169,8 +170,8 @@ void CombineTriggerCrossSectionsPbPb()
   
  legendSigma->Draw("same");
  cTriggerEff->SaveAs("TriggerEffPP.pdf");
+
  /*
- 
   TString inputfilePbPbMB="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root";
   TFile* filePbPbMBraw = new TFile(inputfilePbPbMB.Data());  
   TTree* HltTreePbPbMB= (TTree*) filePbPbMBraw->Get("ntHlt");
@@ -180,7 +181,8 @@ void CombineTriggerCrossSectionsPbPb()
   TH1D*hcountsMBPbPb=new TH1D("hcountsMBPbPb","hcountsMBPbPb",2,-200,200);
   HltTreePbPbMB->Draw("1>>hcountsMBPbPb",Form("%s&&%s",cut.Data(),selection.Data()));
   double ncountsMBPbPb=hcountsMBPbPb->GetEntries();
-
+  */
+  double ncountsMBPbPb=1.48357e+08;
   double lumiPbPbMB=ncountsMBPbPb*TAA;
   cout<<"ncountsMBPbPb="<<ncountsMBPbPb<<endl;
   cout<<"luminosity MB="<<lumiPbPbMB<<endl;
@@ -192,26 +194,53 @@ void CombineTriggerCrossSectionsPbPb()
   
   TH1D* hValuesMB = new TH1D("hValuesMB","",nbinsstudy,binsstudy);
   TH1D* hValuesD20 = new TH1D("hValuesD20","",nbinsstudy,binsstudy);
-  
+  TH1D* hDcandValuesMB = new TH1D("hDcandValuesMB","",nbinsstudy,binsstudy);
+  TH1D* hDcandValuesD20 = new TH1D("hDcandValuesD20","",nbinsstudy,binsstudy);
+
   for (int i=0;i<nbinsstudy;i++){
-    hValuesMB->SetBinContent(i+1,hYieldTriggerCorrected[0]->GetBinContent(hYieldTriggerCorrected[0]->FindBin(binmedium[i])));
-    hValuesMB->SetBinError(i+1,hYieldTriggerCorrected[0]->GetBinError(hYieldTriggerCorrected[0]->FindBin(binmedium[i])));
-    hValuesD20->SetBinContent(i+1,hYieldTriggerCorrected[1]->GetBinContent(hYieldTriggerCorrected[1]->FindBin(binmedium[i])));
-    hValuesD20->SetBinError(i+1,hYieldTriggerCorrected[1]->GetBinError(hYieldTriggerCorrected[1]->FindBin(binmedium[i])));
+  
+    double valueMB=hYieldTriggerCorrected[0]->GetBinContent(hYieldTriggerCorrected[0]->FindBin(binmedium[i]));
+    double errvalueMB=hYieldTriggerCorrected[0]->GetBinError(hYieldTriggerCorrected[0]->FindBin(binmedium[i]));
+    double valueD20=hYieldTriggerCorrected[1]->GetBinContent(hYieldTriggerCorrected[1]->FindBin(binmedium[i]));
+    double errvalueD20=hYieldTriggerCorrected[1]->GetBinError(hYieldTriggerCorrected[1]->FindBin(binmedium[i]));
+    
+    double DcandvalueMB=hDcandidatesTriggerCorrectedFONLLnorm[0]->GetBinContent(hDcandidatesTriggerCorrectedFONLLnorm[0]->FindBin(binmedium[i]));
+    double DcanderrvalueMB=hDcandidatesTriggerCorrectedFONLLnorm[0]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[0]->FindBin(binmedium[i]));
+    double DcandvalueD20=hDcandidatesTriggerCorrectedFONLLnorm[1]->GetBinContent(hDcandidatesTriggerCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
+    double DcanderrvalueD20=hDcandidatesTriggerCorrectedFONLLnorm[1]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
+
+    hValuesMB->SetBinContent(i+1,valueMB);
+    hValuesMB->SetBinError(i+1,errvalueMB);
+    hValuesD20->SetBinContent(i+1,valueD20);
+    hValuesD20->SetBinError(i+1,errvalueD20);
+    
+    hDcandValuesMB->SetBinContent(i+1,DcandvalueMB);
+    hDcandValuesMB->SetBinError(i+1,DcanderrvalueMB);
+    hDcandValuesD20->SetBinContent(i+1,DcandvalueD20);
+    hDcandValuesD20->SetBinError(i+1,DcanderrvalueD20);
+
   }
 
   hValuesD20->Sumw2();
   hValuesMB->Sumw2();
+  hDcandValuesD20->Sumw2();
+  hDcandValuesMB->Sumw2();
   
   TH1D* hRatioTriggeredOverMB = (TH1D*)hValuesD20->Clone("hRatioTriggeredOverMB");
   hRatioTriggeredOverMB->Divide(hValuesMB);
   hRatioTriggeredOverMB->Scale(lumiPbPbMB);  
   
+  TH1D* hRatioTriggeredOverMBDcand = (TH1D*)hDcandValuesD20->Clone("hRatioTriggeredOverMBDcand");
+  hRatioTriggeredOverMBDcand->Divide(hDcandValuesMB);
+  hRatioTriggeredOverMBDcand->Scale(lumiPbPbMB);  
+
   for (int i=1;i<3;i++) cout<<"luminosity="<<hRatioTriggeredOverMB->GetBinContent(i)<<"with error="<<hRatioTriggeredOverMB->GetBinError(i)<<endl;
+  for (int i=1;i<3;i++) cout<<"luminosity Dcand="<<hRatioTriggeredOverMBDcand->GetBinContent(i)<<"with error="<<hRatioTriggeredOverMBDcand->GetBinError(i)<<endl;
 
   TCanvas*canvas=new TCanvas("canvas","canvas",1000,500);
+  canvas->Divide(2,1);
   canvas->cd(1);
-  TH2F* hemptyLumi=new TH2F("hemptyLumi","",50,15,35,10.,1e-3,1e3); 
+  TH2F* hemptyLumi=new TH2F("hemptyLumi","",50,15,35,10.,0,30); 
   hemptyLumi->GetXaxis()->CenterTitle();
   hemptyLumi->GetYaxis()->CenterTitle();
   hemptyLumi->GetYaxis()->SetTitle("Luminosity (pb)");
@@ -230,5 +259,9 @@ void CombineTriggerCrossSectionsPbPb()
   hemptyLumi->Draw();
   hRatioTriggeredOverMB->Draw("same");
   hRatioTriggeredOverMB->Fit("pol0","","",20,30);
-*/
+  canvas->cd(2);
+  hemptyLumi->Draw();
+  hRatioTriggeredOverMBDcand->Draw("same");
+  hRatioTriggeredOverMBDcand->Fit("pol0","","",20,30);
+
 }
