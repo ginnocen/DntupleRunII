@@ -3,26 +3,22 @@
 #include "TLegendEntry.h"
 #include "../Systematics/systematics.C"
 
-void CombineTriggerCrossSectionsPbPb()
+void CombineTriggerCrossSectionsPP()
 {
-
-  TString cut="(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)";
-  TString selection="1";
-  double TAA=392.4/(70.*1e9);
-
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
 
-  const int nFiles = 4;
-  TString myfiles[nFiles] = {"ROOTfiles/CrossSectionFONLLPbPbMB_extended.root", 
-                                            "ROOTfiles/CrossSectionFONLLPbPb_20.root",
-                                            "ROOTfiles/CrossSectionFONLLPbPb_40.root",
-                                            "ROOTfiles/CrossSectionFONLLPbPb_60.root"};
-  TString label[nFiles] = {"MB", "HLTD20", "HLTD40", "HLTD60"};
+  const int nFiles = 5;
+  TString myfiles[nFiles] = {"ROOTfiles/CrossSectionFONLLPPMB_extended.root", 
+                                            "ROOTfiles/CrossSectionFONLLPP_8.root",
+                                            "ROOTfiles/CrossSectionFONLLPP_15.root",
+                                            "ROOTfiles/CrossSectionFONLLPP_30.root",
+                                            "ROOTfiles/CrossSectionFONLLPP_50.root"};
+  TString label[nFiles] = {"MB", "HLTD8", "HLTD15", "HLTD30","HLTD30"};
 
-  int colors[nFiles] = {1,2,3,4};
+  int colors[nFiles] = {1,2,3,4,6};
 
   TH1D* hYieldTriggerCorrected[nFiles];
   TH1D* hTriggerEfficiency[nFiles];
@@ -43,7 +39,7 @@ void CombineTriggerCrossSectionsPbPb()
   cSigmaAll->cd(1);
   gPad->SetLogy();
   gPad->SetLogx();
-  TH2F* hemptySigma=new TH2F("hemptySigma","",50,0.,110.,10.,1e-5,1.e12);  
+  TH2F* hemptySigma=new TH2F("hemptySigma","",50,0.,110.,10.,1e-3,1.e12);  
   hemptySigma->GetXaxis()->CenterTitle();
   hemptySigma->GetYaxis()->CenterTitle();
   hemptySigma->GetYaxis()->SetTitle("1/T_{AA} * dN / dp_{T}( pb GeV^{-1}c)");
@@ -86,7 +82,7 @@ void CombineTriggerCrossSectionsPbPb()
   cSigma->cd(1);
   gPad->SetLogy();
   gPad->SetLogx();
-  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,3,100.,10.,0.00001,5);
+  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,3,100.,10.,0.001,5);
   hemptyRatio->GetXaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->SetTitle("Corrected yields/FONLL");
@@ -114,7 +110,7 @@ void CombineTriggerCrossSectionsPbPb()
   cSigma->cd(2);
   gPad->SetLogy();
   gPad->SetLogx();
-  TH2F* hemptyRatioCounting=new TH2F("hemptyRatioCounting","",50,3,100.,10.,0.00001,5);
+  TH2F* hemptyRatioCounting=new TH2F("hemptyRatioCounting","",50,3,100.,10.,0.001,5);
   hemptyRatioCounting->GetXaxis()->CenterTitle();
   hemptyRatioCounting->GetYaxis()->CenterTitle();
   hemptyRatioCounting->GetYaxis()->SetTitle("D counting/FONLL");
@@ -169,49 +165,33 @@ void CombineTriggerCrossSectionsPbPb()
   
  legendSigma->Draw("same");
  cTriggerEff->SaveAs("TriggerEffPP.pdf");
- /*
- 
-  TString inputfilePbPbMB="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root";
-  TFile* filePbPbMBraw = new TFile(inputfilePbPbMB.Data());  
-  TTree* HltTreePbPbMB= (TTree*) filePbPbMBraw->Get("ntHlt");
-  TTree* HltHiPbPbMB= (TTree*) filePbPbMBraw->Get("ntHi");
-  HltTreePbPbMB->AddFriend(HltHiPbPbMB);
-  
-  TH1D*hcountsMBPbPb=new TH1D("hcountsMBPbPb","hcountsMBPbPb",2,-200,200);
-  HltTreePbPbMB->Draw("1>>hcountsMBPbPb",Form("%s&&%s",cut.Data(),selection.Data()));
-  double ncountsMBPbPb=hcountsMBPbPb->GetEntries();
-
-  double lumiPbPbMB=ncountsMBPbPb*TAA;
-  cout<<"ncountsMBPbPb="<<ncountsMBPbPb<<endl;
-  cout<<"luminosity MB="<<lumiPbPbMB<<endl;
-
 
   const int nbinsstudy=3;
-  double binsstudy[nbinsstudy+1]={15.,20.,25.,30.};
-  double binmedium[nbinsstudy]={17.5,22.5,27.5};
+  double binsstudy[nbinsstudy+1]={10.,15.,20.,25.};
+  double binmedium[nbinsstudy]={12.5,17.5,22.5};
   
   TH1D* hValuesMB = new TH1D("hValuesMB","",nbinsstudy,binsstudy);
-  TH1D* hValuesD20 = new TH1D("hValuesD20","",nbinsstudy,binsstudy);
+  TH1D* hValuesD8 = new TH1D("hValuesD8","",nbinsstudy,binsstudy);
   
   for (int i=0;i<nbinsstudy;i++){
     hValuesMB->SetBinContent(i+1,hYieldTriggerCorrected[0]->GetBinContent(hYieldTriggerCorrected[0]->FindBin(binmedium[i])));
     hValuesMB->SetBinError(i+1,hYieldTriggerCorrected[0]->GetBinError(hYieldTriggerCorrected[0]->FindBin(binmedium[i])));
-    hValuesD20->SetBinContent(i+1,hYieldTriggerCorrected[1]->GetBinContent(hYieldTriggerCorrected[1]->FindBin(binmedium[i])));
-    hValuesD20->SetBinError(i+1,hYieldTriggerCorrected[1]->GetBinError(hYieldTriggerCorrected[1]->FindBin(binmedium[i])));
+    hValuesD8->SetBinContent(i+1,hYieldTriggerCorrected[1]->GetBinContent(hYieldTriggerCorrected[1]->FindBin(binmedium[i])));
+    hValuesD8->SetBinError(i+1,hYieldTriggerCorrected[1]->GetBinError(hYieldTriggerCorrected[1]->FindBin(binmedium[i])));
   }
 
-  hValuesD20->Sumw2();
+  hValuesD8->Sumw2();
   hValuesMB->Sumw2();
   
-  TH1D* hRatioTriggeredOverMB = (TH1D*)hValuesD20->Clone("hRatioTriggeredOverMB");
-  hRatioTriggeredOverMB->Divide(hValuesMB);
-  hRatioTriggeredOverMB->Scale(lumiPbPbMB);  
-  
-  for (int i=1;i<3;i++) cout<<"luminosity="<<hRatioTriggeredOverMB->GetBinContent(i)<<"with error="<<hRatioTriggeredOverMB->GetBinError(i)<<endl;
+  TH1D* hRatioMBOverTriggered = (TH1D*)hValuesMB->Clone("hRatioMBOverTriggered");
+  hRatioMBOverTriggered->Divide(hValuesD8);
 
-  TCanvas*canvas=new TCanvas("canvas","canvas",1000,500);
-  canvas->cd(1);
-  TH2F* hemptyLumi=new TH2F("hemptyLumi","",50,15,35,10.,1e-3,1e3); 
+  hRatioMBOverTriggered->Scale(25.8);  
+  for (int i=1;i<nbinsstudy+1;i++) cout<<"luminosity="<<hRatioMBOverTriggered->GetBinContent(i)<<"with error="<<hRatioMBOverTriggered->GetBinError(i)<<endl;
+
+  TCanvas*canvasLumi=new TCanvas("canvasLumi","canvasLumi",500,500);
+  canvasLumi->cd(1);
+  TH2F* hemptyLumi=new TH2F("hemptyLumi","",50,5,30,10.,0,0.05); 
   hemptyLumi->GetXaxis()->CenterTitle();
   hemptyLumi->GetYaxis()->CenterTitle();
   hemptyLumi->GetYaxis()->SetTitle("Luminosity (pb)");
@@ -228,7 +208,8 @@ void CombineTriggerCrossSectionsPbPb()
   hemptyLumi->GetYaxis()->SetLabelSize(0.040);//0.035  
   hemptyLumi->GetXaxis()->SetLabelOffset(0.01);
   hemptyLumi->Draw();
-  hRatioTriggeredOverMB->Draw("same");
-  hRatioTriggeredOverMB->Fit("pol0","","",20,30);
-*/
+  hRatioMBOverTriggered->Draw("same");
+  hRatioMBOverTriggered->Fit("pol0","","",10,25);
+ canvasLumi->SaveAs("canvasLumiPP.pdf");
+
 }
