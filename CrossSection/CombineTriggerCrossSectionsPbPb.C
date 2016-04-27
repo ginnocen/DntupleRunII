@@ -139,7 +139,7 @@ void CombineTriggerCrossSectionsPbPb()
     hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->Draw("psame");  
   }
     legendSigma->Draw("same");
-  cSigma->SaveAs("TriggerCrossSectionPP.pdf");
+  cSigma->SaveAs("TriggerCrossSectionPbPb.pdf");
 
   TCanvas* cTriggerEff = new TCanvas("cTriggerEff","",500,500);
   cTriggerEff->cd();
@@ -169,7 +169,7 @@ void CombineTriggerCrossSectionsPbPb()
   }
   
  legendSigma->Draw("same");
- cTriggerEff->SaveAs("TriggerEffPP.pdf");
+ cTriggerEff->SaveAs("TriggerEffPbPb.pdf");
  
   TH1D* ratioHLT40_60=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[2]->Clone("ratioHLT40_60");
   ratioHLT40_60->Divide(hDcandidatesTriggerCorrectedFONLLnorm[3]);
@@ -309,5 +309,6 @@ void CombineTriggerCrossSectionsPbPb()
   hemptyLumi->Draw();
   hRatioTriggeredOverMBDcand->Draw("same");
   hRatioTriggeredOverMBDcand->Fit("pol0","","",20,30);
+  canvas->SaveAs("canvasLumiPbPb.pdf");
 
 }
