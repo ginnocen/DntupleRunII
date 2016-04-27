@@ -3,7 +3,7 @@
 #include "TLegendEntry.h"
 #include "../Systematics/systematics.C"
 
-void CombineTriggerCrossSectionsPbPb(bool isLumiNorm=true)
+void CombineTriggerCrossSectionsPbPb(bool isLumiNorm=false)
 {
   double lumi=17.1001;
   double lumiMB=0.831646;
@@ -327,10 +327,19 @@ void CombineTriggerCrossSectionsPbPb(bool isLumiNorm=true)
   hemptyLumi->Draw();
   hRatioTriggeredOverMB->Draw("same");
   hRatioTriggeredOverMB->Fit("pol0","","",20,30);
+  TF1 *pol0_yield = hRatioTriggeredOverMB->GetFunction("pol0");
+  TLatex *  tex_yield = new TLatex(20.82,25.836,Form("Lumi= %f #pm %f",pol0_yield->GetParameter(0),pol0_yield->GetParError(0)));
+  tex_yield->SetTextSize(0.04);
+  tex_yield->Draw();
   canvas->cd(2);
   hemptyLumi->Draw();
   hRatioTriggeredOverMBDcand->Draw("same");
   hRatioTriggeredOverMBDcand->Fit("pol0","","",20,30);
+  TF1 *pol0_cand = hRatioTriggeredOverMBDcand->GetFunction("pol0");
+  TLatex *  tex_cand = new TLatex(20.82,25.836,Form("Lumi= %f #pm %f",pol0_cand->GetParameter(0),pol0_cand->GetParError(0)));
+  tex_cand->SetTextSize(0.04);
+  tex_cand->Draw();
+
   canvas->SaveAs("canvasLumiPbPb.pdf");
 
 }
