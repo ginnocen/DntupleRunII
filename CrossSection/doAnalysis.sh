@@ -197,8 +197,7 @@ OUTPUTFILEPbPb="ROOTfiles/hPtSpectrumDzeroPbPb.root"
 OUTPUTFILEPlotPbPb="ROOTfiles/CrossSectionFONLLPbPb.root"
 OUTPUTFILERAA="ROOTfiles/outputRAA.root"
 
-LUMIPbPb=16.8097   # from fit
-#LUMIPbPb=14.3868 #from HLT counting
+LUMIPbPb=15.5097   # from brilcalc
 ISMCPbPb=0
 ISDOWEIGHTPbPb=0
 SELGENPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
@@ -273,8 +272,7 @@ OUTPUTFILEPlotPPMB="ROOTfiles/CrossSectionFONLLPPMB.root"
 OUTPUTFILEMCSTUDYPPMB="ROOTfiles/MCstudiesPPMB.root"
 OUTPUTFILEMCSTUDYNPPPMB="ROOTfiles/MCstudiesNPPPMB.root"
 
-LUMIPPMB=0.0313588 # from fit
-#LUMIPPMB=0.0282867 # from HLT
+LUMIPPMB=0.0361128 # from brilcalc
 ISMCPPMB=0
 ISDOWEIGHTPPMB=1
 SELGENPPMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
