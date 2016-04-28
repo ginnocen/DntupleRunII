@@ -135,6 +135,7 @@ cp config/parametersHighptPPNorm.h parameters.h
 OUTPUTFILEPlotPP="ROOTfilesCent10/CrossSectionFONLLPPNorm.root"
 OUTPUTPrescalePP="ROOTfilesCent10/prescalePPNorm.root"
 LUMIPP=1
+TRGPP="((HLT_DmesonPPTrackingGlobal_Dpt8_v1))"
 fi
 
 if [ $DOANALYSISPP_FONLL -eq 1 ]; then
@@ -158,19 +159,19 @@ fi
 
 if [ $DOANALYSISPP_TRGCOMBINATION -eq 1 ]; then      
 g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
-./triggercombination.exe "$LABELPP"  "$INPUTDATAPPUNSKIMMED" "$INPUTDATAPPMBUNSKIMMED" "$CUTFORTRIGGERPRESCALEPP" "$OUTPUTPrescalePP"
+./triggercombination.exe 0  "$INPUTDATAPPUNSKIMMED" "$INPUTDATAPPMBUNSKIMMED" "$CUTFORTRIGGERPRESCALEPP" "$OUTPUTPrescalePP"
 rm triggercombination.exe
 fi 
 
 if [ $DOANALYSISPP_FIT -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPPSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   1   "$ISDOWEIGHTPP"   "$LABELPP"  "$OUTPUTFILEPP"
+./fitD.exe 0 "$INPUTDATAPPSKIMMED"  "$INPUTMCPP"  "$TRGPP" "$CUTPP"   "$SELGENPP"   "$ISMCPP"   1   "$ISDOWEIGHTPP"   "$LABELPP"  "$OUTPUTFILEPP"
 rm fitD.exe
 fi 
 
 if [ $DOANALYSISPP_CROSS -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" "$LABELPP" "$LUMIPP"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" 0 "$LABELPP" "$LUMIPP"
 rm CrossSectionRatio.exe
 fi
 
@@ -196,8 +197,7 @@ OUTPUTFILEPbPb="ROOTfilesCent10/hPtSpectrumDzeroPbPb.root"
 OUTPUTFILEPlotPbPb="ROOTfilesCent10/CrossSectionFONLLPbPb.root"
 OUTPUTFILERAA="ROOTfilesCent10/outputRAA.root"
 
-LUMIPbPb=7.63533
-#LUMIPbPb=18.4115 
+LUMIPbPb=6.53096 #from brilcalc
 ISMCPbPb=0
 ISDOWEIGHTPbPb=0
 SELGENPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
@@ -226,19 +226,19 @@ fi
 
 if [ $DOANALYSISPbPb_TRGCOMBINATION -eq 1 ]; then
 g++ triggercombination.cc $(root-config --cflags --libs) -g -o triggercombination.exe 
-./triggercombination.exe "$LABELPbPb"  "$INPUTDATAPbPbUNSKIMMED" "$INPUTDATAPbPbMBUNSKIMMED" "$CUTFORTRIGGERPRESCALEPbPb" "$OUTPUTPrescalePbPb"
+./triggercombination.exe 1 "$INPUTDATAPbPbUNSKIMMED" "$INPUTDATAPbPbMBUNSKIMMED" "$CUTFORTRIGGERPRESCALEPbPb" "$OUTPUTPrescalePbPb"
 rm triggercombination.exe
 fi
 
 if [ $DOANALYSISPbPb_FIT -eq 1 ]; then
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPbPbSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPb" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPb"   "1"   "$ISDOWEIGHTPbPb"  "$LABELPbPb"  "$OUTPUTFILEPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./fitD.exe 1 "$INPUTDATAPbPbSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPb" "$CUTPbPb"   "$SELGENPbPb"   "$ISMCPbPb"   "1"   "$ISDOWEIGHTPbPb"  "$LABELPbPb"  "$OUTPUTFILEPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm fitD.exe
 fi
 
 if [ $DOANALYSISPbPb_CROSS -eq 1 ]; then
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" "$LABELPbPb" "$LUMIPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" 1 "$LABELPbPb" "$LUMIPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm CrossSectionRatio.exe
 fi
 
@@ -270,7 +270,7 @@ OUTPUTFILEPlotPPMB="ROOTfilesCent10/CrossSectionFONLLPPMB.root"
 OUTPUTFILEMCSTUDYPPMB="ROOTfilesCent10/MCstudiesPPMB.root"
 OUTPUTFILEMCSTUDYNPPPMB="ROOTfilesCent10/MCstudiesNPPPMB.root"
 
-LUMIPPMB=0.0378131
+LUMIPPMB=0.0361128  #from brilcalc
 ISMCPPMB=0
 ISDOWEIGHTPPMB=1
 SELGENPPMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
@@ -313,7 +313,7 @@ fi
 
 if [ $DOANALYSISPPMB_FIT -eq 1 ]; then      
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPPMBSKIMMED"  "$INPUTMCPP"  "$TRGPPMB" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMB"   1   "$ISDOWEIGHTPPMB"   "$LABELPPMB"  "$OUTPUTFILEPPMB"
+./fitD.exe 0 "$INPUTDATAPPMBSKIMMED"  "$INPUTMCPP"  "$TRGPPMB" "$CUTPPMB"   "$SELGENPPMB"   "$ISMCPPMB"   1   "$ISDOWEIGHTPPMB"   "$LABELPPMB"  "$OUTPUTFILEPPMB"
 rm fitD.exe
 fi
 
@@ -329,7 +329,7 @@ fi
 
 if [ $DOANALYSISPPMB_CROSS -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" "$LABELPPMB" "$LUMIPPMB"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" 0 "$LABELPPMB" "$LUMIPPMB"
 rm CrossSectionRatio.exe
 fi
 
@@ -342,8 +342,7 @@ OUTPUTFILEMCSTUDYPbPbMB="ROOTfilesCent10/MCstudiesPbPbMB.root"
 OUTPUTFILEMCSTUDYNPPbPbMB="ROOTfilesCent10/MCstudiesNPPbPbMB.root"
 OUTPUTFILERAAMB="ROOTfilesCent10/outputRAAMB.root"
 
-LUMIPbPbMB=0.350197
-#LUMIPbPbMB=0.831646 
+LUMIPbPbMB=0.350197  #from brilcalc
 ISMCPbPbMB=0
 ISDOWEIGHTPbPbMB=0
 SELGENPbPbMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
@@ -369,13 +368,13 @@ fi
 
 if [ $DOANALYSISPbPbMB_FIT -eq 1 ]; then
 g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe 
-./fitD.exe "$INPUTDATAPbPbMBSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPbMB" "$CUTPbPbMB"   "$SELGENPbPbMB"   "$ISMCPbPbMB"   1   "$ISDOWEIGHTPbPbMB"   "$LABELPbPbMB"  "$OUTPUTFILEPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./fitD.exe 1 "$INPUTDATAPbPbMBSKIMMED"  "$INPUTMCPbPb"  "$TRGPbPbMB" "$CUTPbPbMB"   "$SELGENPbPbMB"   "$ISMCPbPbMB"   1   "$ISDOWEIGHTPbPbMB"   "$LABELPbPbMB"  "$OUTPUTFILEPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm fitD.exe
 fi
 
 if [ $DOANALYSISPbPbMB_CROSS -eq 1 ]; then
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" "$LABELPbPbMB" "$LUMIPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" 1 "$LABELPbPbMB" "$LUMIPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm CrossSectionRatio.exe
 fi
 

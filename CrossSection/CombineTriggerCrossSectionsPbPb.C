@@ -3,9 +3,9 @@
 #include "TLegendEntry.h"
 #include "../Systematics/systematics.C"
 
-void CombineTriggerCrossSectionsPbPb(bool isLumiNorm=false)
+void CombineTriggerCrossSectionsPbPb(bool isLumiNorm=true)
 {
-  double lumi=17.1001;
+  double lumi=15.5097;
   double lumiMB=0.831646;
 
   TString cut="(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)";

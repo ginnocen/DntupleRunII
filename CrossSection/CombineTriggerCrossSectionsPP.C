@@ -3,11 +3,11 @@
 #include "TLegendEntry.h"
 #include "../Systematics/systematics.C"
 
-void CombineTriggerCrossSectionsPP(bool isLumiNorm=false)
+void CombineTriggerCrossSectionsPP(bool isLumiNorm=true)
 {
 
   double lumiPP=25.8;
-  double lumiPPMB=0.0344167;
+  double lumiPPMB=0.0361128;
   
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
