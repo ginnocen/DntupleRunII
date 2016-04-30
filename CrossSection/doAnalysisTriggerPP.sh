@@ -1,7 +1,7 @@
 #!/bin/bash
 #source clean.sh
 
-DOTriggered=1
+DOTriggered=0
 DOMB=1
 
 DONORM=1
@@ -23,7 +23,7 @@ INPUTDATAPPMBSKIMMED="/data/dmeson2015/DataDntuple/skim_ncand_D0Dntuple_crab_pp_
 
 if [ $DOTriggered -eq 1 ]; then      
 
-for VARIABLE in 8 15 30 50
+for VARIABLE in 8 15 30 50 999
 
 do
 
@@ -68,6 +68,13 @@ if [ $VARIABLE -eq 50 ]; then
 cp config/parametersHighHLTD50PP.h parameters.h
 TRGPP="HLT_DmesonPPTrackingGlobal_Dpt50_v1"
 fi 
+
+if [ $VARIABLE -eq 999 ]; then      
+cp config/parametersHighpt.h parameters.h
+TRGPP="((HLT_DmesonPPTrackingGlobal_Dpt8_v1&&Dpt>10&&Dpt<20)||(HLT_DmesonPPTrackingGlobal_Dpt15_v1&&Dpt>20&&Dpt<40)||(HLT_DmesonPPTrackingGlobal_Dpt30_v1&&Dpt>40&&Dpt<60)||(HLT_DmesonPPTrackingGlobal_Dpt50_v1&&Dpt>60))"
+
+fi 
+
 
 if [ $DONORM -eq 1 ]; then     
 LUMIPP=1
