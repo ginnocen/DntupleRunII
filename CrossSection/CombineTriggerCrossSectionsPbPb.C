@@ -411,6 +411,11 @@ void ComparisonTriggerPbPb()
   line40->SetLineWidth(3);
   line60->SetLineWidth(3);
   
+  line20->SetLineStyle(2);
+  line40->SetLineStyle(2);
+  line60->SetLineStyle(2);
+
+  
   TLegend *legendSigma=new TLegend(0.311747,0.6945694,0.6401439,0.8740055,"");//0.5100806,0.5868644,0.8084677,0.7605932
   legendSigma->SetBorderSize(0);
   legendSigma->SetLineColor(0);

@@ -20,7 +20,7 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true)
                                             "ROOTfiles/CrossSectionFONLLPP_15.root",
                                             "ROOTfiles/CrossSectionFONLLPP_30.root",
                                             "ROOTfiles/CrossSectionFONLLPP_50.root"};
-  TString label[nFiles] = {"MB", "HLTD8", "HLTD15", "HLTD30","HLTD30"};
+  TString label[nFiles] = {"MB", "HLTD8", "HLTD15", "HLTD30","HLTD50"};
 
   int colors[nFiles] = {1,2,3,4,6};
 
@@ -403,6 +403,10 @@ void ComparisonTriggerPP()
   line20->SetLineWidth(3);
   line40->SetLineWidth(3);
   line60->SetLineWidth(3);
+  
+  line20->SetLineStyle(2);
+  line40->SetLineStyle(2);
+  line60->SetLineStyle(2);
   
   TLegend *legendSigma=new TLegend(0.311747,0.6945694,0.6401439,0.8740055,"");//0.5100806,0.5868644,0.8084677,0.7605932
   legendSigma->SetBorderSize(0);
