@@ -1,7 +1,7 @@
 #!/bin/bash
 #source clean.sh
 
-DOTriggered=0
+DOTriggered=1
 DOMB=1
 
 DONORM=1

@@ -489,6 +489,6 @@ void ComparisonTriggerPP()
   line20->Draw();
   line40->Draw();
   line60->Draw();
-  cSigma->SaveAs("TriggerCrossSectionPP.pdf");
+  cSigma->SaveAs("TriggerCrossSectionRatioPbPb.pdf");
 
 }
