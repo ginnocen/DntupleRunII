@@ -28,7 +28,7 @@ INPUTDATAPbPbMBSKIMMED="/data/jisun/PbPb2015/HF2and_tk1p0_skim_Dntuple_crab_PbPb
 
 if [ $DOTriggered -eq 1 ]; then      
 
-for VARIABLE in 20 40 60
+for VARIABLE in 20 40 60 999
 do
 
 cp config/parametersHighHLT20.h parameters.h
@@ -70,6 +70,12 @@ cp config/parametersHighHLT60.h parameters.h
 TRGPbPb="HLT_HIDmesonHITrackingGlobal_Dpt60_v1"
 fi 
 
+if [ $VARIABLE -eq 999 ]; then     
+cp config/parametersHighpt.h parameters.h
+TRGPbPb="((HLT_HIDmesonHITrackingGlobal_Dpt20_v1&&Dpt>20&&Dpt<40)||(HLT_HIDmesonHITrackingGlobal_Dpt40_v1&&Dpt>40&&Dpt<60)||(HLT_HIDmesonHITrackingGlobal_Dpt60_v1&&Dpt>60))"
+fi 
+
+
 if [ $DONORM -eq 1 ]; then     
 LUMIPbPb=1
 fi 
@@ -96,7 +102,7 @@ fi
 
 if [ $DOMB -eq 1 ]; then      
 
-cp config/parametersLowptPbPb_extended.h parameters.h
+cp config/parametersLowpt_extended.h parameters.h
 
 ## ANALYSIS PbPb MB
 FONLLDATINPUT="pp_d0meson_5TeV_y1"
