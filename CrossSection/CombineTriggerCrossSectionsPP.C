@@ -191,20 +191,20 @@ void CombineTriggerCrossSectionsPP(bool isTriggerCorrected=true,bool isLumiNorm=
   
  legendSigma->Draw("same");
 
-  TH1D* ratioHLT30_50=(TH1D*)hDcandidatesCorrectedFONLLnorm[3]->Clone("ratioHLT30_50");
-  ratioHLT30_50->Divide(hDcandidatesCorrectedFONLLnorm[4]);
+  TH1D* ratioHLT30_50=(TH1D*)hYieldCorrectedFONLLnorm[3]->Clone("ratioHLT30_50");
+  ratioHLT30_50->Divide(hYieldCorrectedFONLLnorm[4]);
 
-  TH1D* ratioHLT15_30=(TH1D*)hDcandidatesCorrectedFONLLnorm[2]->Clone("ratioHLT15_30");
-  ratioHLT15_30->Divide(hDcandidatesCorrectedFONLLnorm[3]);
+  TH1D* ratioHLT15_30=(TH1D*)hYieldCorrectedFONLLnorm[2]->Clone("ratioHLT15_30");
+  ratioHLT15_30->Divide(hYieldCorrectedFONLLnorm[3]);
 
-  TH1D* ratioHLT8_15=(TH1D*)hDcandidatesCorrectedFONLLnorm[1]->Clone("ratioHLT8_15");
-  ratioHLT8_15->Divide(hDcandidatesCorrectedFONLLnorm[2]);
+  TH1D* ratioHLT8_15=(TH1D*)hYieldCorrectedFONLLnorm[1]->Clone("ratioHLT8_15");
+  ratioHLT8_15->Divide(hYieldCorrectedFONLLnorm[2]);
   
-  TH1D* ratioHLTMB_8=(TH1D*)hDcandidatesCorrectedFONLLnorm[0]->Clone("ratioHLTMB_8");
-  ratioHLTMB_8->Divide(hDcandidatesCorrectedFONLLnorm[1]);
+  TH1D* ratioHLTMB_8=(TH1D*)hYieldCorrectedFONLLnorm[0]->Clone("ratioHLTMB_8");
+  ratioHLTMB_8->Divide(hYieldCorrectedFONLLnorm[1]);
 
-  TH1D* ratioHLT15_50=(TH1D*)hDcandidatesCorrectedFONLLnorm[2]->Clone("ratioHLT15_50");
-  ratioHLT15_50->Divide(hDcandidatesCorrectedFONLLnorm[4]);
+  TH1D* ratioHLT15_50=(TH1D*)hYieldCorrectedFONLLnorm[2]->Clone("ratioHLT15_50");
+  ratioHLT15_50->Divide(hYieldCorrectedFONLLnorm[4]);
   
   TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",800,800);
   canvasPrescale->Divide(2,2);
@@ -475,18 +475,18 @@ void CombineTriggerCrossSectionsPP(bool isTriggerCorrected=true,bool isLumiNorm=
   line60->Draw();
 
   if(isTriggerCorrected){
-  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPP.pdf");
-  cTriggerEff->SaveAs("TriggerEffPP.pdf");
-  canvasLumi->SaveAs("canvasLumiPP.pdf");
-  cSigma->SaveAs("TriggerCrossSectionPP.pdf");
-  cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPP.pdf");
+  canvasPrescale->SaveAs("TriggerTests/canvasPrescaleDataDrivenPP.pdf");
+  cTriggerEff->SaveAs("TriggerTests/TriggerEffPP.pdf");
+  canvasLumi->SaveAs("TriggerTests/canvasLumiPP.pdf");
+  cSigma->SaveAs("TriggerTests/TriggerCrossSectionPP.pdf");
+  cSigmaRatioTrigger->SaveAs("TriggerTests/TriggerCrossSectionRatioPP.pdf");
   }
   else{
-  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPP_TriggerUncorrected.pdf");
-  cTriggerEff->SaveAs("TriggerEffPP_TriggerUncorrected.pdf");
-  canvasLumi->SaveAs("canvasLumiPP_TriggerUncorrected.pdf");
-  cSigma->SaveAs("TriggerCrossSectionPP_TriggerUncorrected.pdf");
-  cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPP_TriggerUncorrected.pdf");
+  canvasPrescale->SaveAs("TriggerTests/canvasPrescaleDataDrivenPP_TriggerUncorrected.pdf");
+  cTriggerEff->SaveAs("TriggerTests/TriggerEffPP_TriggerUncorrected.pdf");
+  canvasLumi->SaveAs("TriggerTests/canvasLumiPP_TriggerUncorrected.pdf");
+  cSigma->SaveAs("TriggerTests/TriggerCrossSectionPP_TriggerUncorrected.pdf");
+  cSigmaRatioTrigger->SaveAs("TriggerTests/TriggerCrossSectionRatioPP_TriggerUncorrected.pdf");
   }
 }
 

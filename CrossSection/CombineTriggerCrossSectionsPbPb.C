@@ -488,17 +488,17 @@ double lumiMB=0.831646;
   line60->Draw();
 
   if(isTriggerCorrected){
-  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPbPb.pdf");
-  cTriggerEff->SaveAs("TriggerEffPbPb.pdf");
-  canvas->SaveAs("canvasLumiPbPb.pdf");
-  cSigma->SaveAs("TriggerCrossSectionPbPb.pdf");
-  cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPbPb.pdf");
+  canvasPrescale->SaveAs("TriggerTests/canvasPrescaleDataDrivenPbPb.pdf");
+  cTriggerEff->SaveAs("TriggerTests/TriggerEffPbPb.pdf");
+  canvas->SaveAs("TriggerTests/canvasLumiPbPb.pdf");
+  cSigma->SaveAs("TriggerTests/TriggerCrossSectionPbPb.pdf");
+  cSigmaRatioTrigger->SaveAs("TriggerTests/TriggerCrossSectionRatioPbPb.pdf");
   }
   else{
-  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPbPb_TriggerUncorrected.pdf");
-  cTriggerEff->SaveAs("TriggerEffPbPb_TriggerUncorrected.pdf");
-  canvas->SaveAs("canvasLumiPbPb_TriggerUncorrected.pdf");
-  cSigma->SaveAs("TriggerCrossSectionPbPb_TriggerUncorrected.pdf");
-  cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPbPb_TriggerUncorrected.pdf");
+  canvasPrescale->SaveAs("TriggerTests/canvasPrescaleDataDrivenPbPb_TriggerUncorrected.pdf");
+  cTriggerEff->SaveAs("TriggerTests/TriggerEffPbPb_TriggerUncorrected.pdf");
+  canvas->SaveAs("TriggerTests/canvasLumiPbPb_TriggerUncorrected.pdf");
+  cSigma->SaveAs("TriggerTests/TriggerCrossSectionPbPb_TriggerUncorrected.pdf");
+  cSigmaRatioTrigger->SaveAs("TriggerTests/TriggerCrossSectionRatioPbPb_TriggerUncorrected.pdf");
   }
 }
