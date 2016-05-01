@@ -27,29 +27,29 @@ double lumiMB=0.831646;
 
   int colors[nFiles] = {1,2,3,4};
 
-  TH1D* hYieldTriggerCorrected[nFiles];
+  TH1D* hYieldCorrected[nFiles];
   TH1D* hTriggerEfficiency[nFiles];
-  TH1D* hYieldTriggerCorrectedFONLLnorm[nFiles];
-  TH1D* hDcandidatesTriggerCorrectedFONLLnorm[nFiles];
+  TH1D* hYieldCorrectedFONLLnorm[nFiles];
+  TH1D* hDcandidatesCorrectedFONLLnorm[nFiles];
   
   TFile* files[nFiles];
   TLegendEntry *entry[nFiles];
   
   for (int ifile=0;ifile<nFiles;ifile++){
     files[ifile]=new TFile(myfiles[ifile].Data());  
-    hYieldTriggerCorrected[ifile] = (TH1D*)files[ifile]->Get("hYieldTriggerCorrected");
-    hYieldTriggerCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hYieldTriggerCorrectedFONLLnorm");
-    hDcandidatesTriggerCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hDcandidatesTriggerCorrectedFONLLnorm");
+    hYieldCorrected[ifile] = (TH1D*)files[ifile]->Get("hYieldTriggerCorrected");
+    hYieldCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hYieldTriggerCorrectedFONLLnorm");
+    hDcandidatesCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hDcandidatesTriggerCorrectedFONLLnorm");
     if(ifile>0) hTriggerEfficiency[ifile] = (TH1D*)files[ifile]->Get("hTriggerEfficiencyPtBins");
     if(isLumiNorm&&ifile==0) {
-      hYieldTriggerCorrected[ifile]->Scale(1/lumiMB);
-      hYieldTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiMB);
-      hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiMB);
+      hYieldCorrected[ifile]->Scale(1/lumiMB);
+      hYieldCorrectedFONLLnorm[ifile]->Scale(1/lumiMB);
+      hDcandidatesCorrectedFONLLnorm[ifile]->Scale(1/lumiMB);
     }
     if(isLumiNorm&&ifile>0) {
-      hYieldTriggerCorrected[ifile]->Scale(1/lumi);
-      hYieldTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumi);
-      hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumi);
+      hYieldCorrected[ifile]->Scale(1/lumi);
+      hYieldCorrectedFONLLnorm[ifile]->Scale(1/lumi);
+      hDcandidatesCorrectedFONLLnorm[ifile]->Scale(1/lumi);
     }
   }
     
@@ -83,11 +83,11 @@ double lumiMB=0.831646;
 
       
   for (int ifile=0;ifile<nFiles;ifile++){
-    hYieldTriggerCorrected[ifile] ->SetLineColor(colors[ifile]);
-    hYieldTriggerCorrected[ifile] ->SetLineWidth(3);
-    hYieldTriggerCorrected[ifile] ->SetMarkerColor(colors[ifile]);
-    hYieldTriggerCorrected[ifile] ->Draw("same");  
-    entry[ifile]=legendSigma->AddEntry(hYieldTriggerCorrected[ifile],label[ifile].Data(),"f");
+    hYieldCorrected[ifile] ->SetLineColor(colors[ifile]);
+    hYieldCorrected[ifile] ->SetLineWidth(3);
+    hYieldCorrected[ifile] ->SetMarkerColor(colors[ifile]);
+    hYieldCorrected[ifile] ->Draw("same");  
+    entry[ifile]=legendSigma->AddEntry(hYieldCorrected[ifile],label[ifile].Data(),"f");
     entry[ifile]->SetTextFont(42);
     entry[ifile]->SetLineColor(colors[ifile]);
     entry[ifile]->SetMarkerColor(colors[ifile]);
@@ -116,11 +116,11 @@ double lumiMB=0.831646;
   hemptyRatio->Draw();
 
   for (int ifile=0;ifile<nFiles;ifile++){
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->SetLineColor(colors[ifile]);
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->SetLineWidth(3);
-    if(ifile==0)hYieldTriggerCorrectedFONLLnorm[ifile] ->SetLineWidth(6);
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->SetMarkerColor(colors[ifile]);
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->Draw("psame");  
+    hYieldCorrectedFONLLnorm[ifile] ->SetLineColor(colors[ifile]);
+    hYieldCorrectedFONLLnorm[ifile] ->SetLineWidth(3);
+    if(ifile==0)hYieldCorrectedFONLLnorm[ifile] ->SetLineWidth(6);
+    hYieldCorrectedFONLLnorm[ifile] ->SetMarkerColor(colors[ifile]);
+    hYieldCorrectedFONLLnorm[ifile] ->Draw("psame");  
   }
     legendSigma->Draw("same");
     
@@ -143,11 +143,11 @@ double lumiMB=0.831646;
   hemptyRatioCounting->Draw();
 
   for (int ifile=0;ifile<nFiles;ifile++){
-    hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->SetLineColor(colors[ifile]);
-    hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->SetLineWidth(3);
-    if(ifile==0)hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->SetLineWidth(6);
-    hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->SetMarkerColor(colors[ifile]);
-    hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->Draw("psame");  
+    hDcandidatesCorrectedFONLLnorm[ifile] ->SetLineColor(colors[ifile]);
+    hDcandidatesCorrectedFONLLnorm[ifile] ->SetLineWidth(3);
+    if(ifile==0)hDcandidatesCorrectedFONLLnorm[ifile] ->SetLineWidth(6);
+    hDcandidatesCorrectedFONLLnorm[ifile] ->SetMarkerColor(colors[ifile]);
+    hDcandidatesCorrectedFONLLnorm[ifile] ->Draw("psame");  
   }
     legendSigma->Draw("same");
   cSigma->SaveAs("TriggerCrossSectionPbPb.pdf");
@@ -182,14 +182,14 @@ double lumiMB=0.831646;
  legendSigma->Draw("same");
  cTriggerEff->SaveAs("TriggerEffPbPb.pdf");
  
-  TH1D* ratioHLT40_60=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[2]->Clone("ratioHLT40_60");
-  ratioHLT40_60->Divide(hDcandidatesTriggerCorrectedFONLLnorm[3]);
+  TH1D* ratioHLT40_60=(TH1D*)hDcandidatesCorrectedFONLLnorm[2]->Clone("ratioHLT40_60");
+  ratioHLT40_60->Divide(hDcandidatesCorrectedFONLLnorm[3]);
 
-  TH1D* ratioHLT20_40=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[1]->Clone("ratioHLT20_40");
-  ratioHLT20_40->Divide(hDcandidatesTriggerCorrectedFONLLnorm[2]);
+  TH1D* ratioHLT20_40=(TH1D*)hDcandidatesCorrectedFONLLnorm[1]->Clone("ratioHLT20_40");
+  ratioHLT20_40->Divide(hDcandidatesCorrectedFONLLnorm[2]);
   
-  TH1D* ratioHLT20_60=(TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[1]->Clone("ratioHLT20_60");
-  ratioHLT20_60->Divide(hDcandidatesTriggerCorrectedFONLLnorm[3]);
+  TH1D* ratioHLT20_60=(TH1D*)hDcandidatesCorrectedFONLLnorm[1]->Clone("ratioHLT20_60");
+  ratioHLT20_60->Divide(hDcandidatesCorrectedFONLLnorm[3]);
 
   TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",1500,500);
   canvasPrescale->Divide(3,1);
@@ -268,15 +268,15 @@ double lumiMB=0.831646;
 
   for (int i=0;i<nbinsstudy;i++){
   
-    double valueMB=hYieldTriggerCorrected[0]->GetBinContent(hYieldTriggerCorrected[0]->FindBin(binmedium[i]));
-    double errvalueMB=hYieldTriggerCorrected[0]->GetBinError(hYieldTriggerCorrected[0]->FindBin(binmedium[i]));
-    double valueD20=hYieldTriggerCorrected[1]->GetBinContent(hYieldTriggerCorrected[1]->FindBin(binmedium[i]));
-    double errvalueD20=hYieldTriggerCorrected[1]->GetBinError(hYieldTriggerCorrected[1]->FindBin(binmedium[i]));
+    double valueMB=hYieldCorrected[0]->GetBinContent(hYieldCorrected[0]->FindBin(binmedium[i]));
+    double errvalueMB=hYieldCorrected[0]->GetBinError(hYieldCorrected[0]->FindBin(binmedium[i]));
+    double valueD20=hYieldCorrected[1]->GetBinContent(hYieldCorrected[1]->FindBin(binmedium[i]));
+    double errvalueD20=hYieldCorrected[1]->GetBinError(hYieldCorrected[1]->FindBin(binmedium[i]));
     
-    double DcandvalueMB=hDcandidatesTriggerCorrectedFONLLnorm[0]->GetBinContent(hDcandidatesTriggerCorrectedFONLLnorm[0]->FindBin(binmedium[i]));
-    double DcanderrvalueMB=hDcandidatesTriggerCorrectedFONLLnorm[0]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[0]->FindBin(binmedium[i]));
-    double DcandvalueD20=hDcandidatesTriggerCorrectedFONLLnorm[1]->GetBinContent(hDcandidatesTriggerCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
-    double DcanderrvalueD20=hDcandidatesTriggerCorrectedFONLLnorm[1]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
+    double DcandvalueMB=hDcandidatesCorrectedFONLLnorm[0]->GetBinContent(hDcandidatesCorrectedFONLLnorm[0]->FindBin(binmedium[i]));
+    double DcanderrvalueMB=hDcandidatesCorrectedFONLLnorm[0]->GetBinError(hDcandidatesCorrectedFONLLnorm[0]->FindBin(binmedium[i]));
+    double DcandvalueD20=hDcandidatesCorrectedFONLLnorm[1]->GetBinContent(hDcandidatesCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
+    double DcanderrvalueD20=hDcandidatesCorrectedFONLLnorm[1]->GetBinError(hDcandidatesCorrectedFONLLnorm[1]->FindBin(binmedium[i]));
 
     hValuesMB->SetBinContent(i+1,valueMB);
     hValuesMB->SetBinError(i+1,errvalueMB);
@@ -347,8 +347,8 @@ double lumiMB=0.831646;
   TH1D* hDcandidatesRatios[nFiles];
   
   for (int ifile=0;ifile<nFiles;ifile++){
-    hYieldRatios[ifile] = (TH1D*)hYieldTriggerCorrectedFONLLnorm[ifile]->Clone(Form("hYieldTriggerCorrectedFONLLnorm_%d"));
-    hDcandidatesRatios[ifile] = (TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Clone(Form("hDcandidatesTriggerCorrectedFONLLnorm_%d"));
+    hYieldRatios[ifile] = (TH1D*)hYieldCorrectedFONLLnorm[ifile]->Clone(Form("hYieldCorrectedFONLLnorm_%d"));
+    hDcandidatesRatios[ifile] = (TH1D*)hDcandidatesCorrectedFONLLnorm[ifile]->Clone(Form("hDcandidatesCorrectedFONLLnorm_%d"));
   }
   
 
@@ -361,16 +361,25 @@ double lumiMB=0.831646;
   TH1D* hYieldTrigger=new TH1D("hYieldTrigger","hYieldTrigger",binstotal,ptBinsTotal);
   
   for (int i=0;i<binstotal;i++){
-    hDcandidates->SetBinContent(i+1,hDcandidatesTriggerCorrectedFONLLnorm[assignment[i]]->GetBinContent(hDcandidatesTriggerCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
-    hYieldTrigger->SetBinContent(i+1,hYieldTriggerCorrectedFONLLnorm[assignment[i]]->GetBinContent(hYieldTriggerCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
-    hDcandidates->SetBinError(i+1,hDcandidatesTriggerCorrectedFONLLnorm[assignment[i]]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
-    hYieldTrigger->SetBinError(i+1,hYieldTriggerCorrectedFONLLnorm[assignment[i]]->GetBinError(hYieldTriggerCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
+    hDcandidates->SetBinContent(i+1,hDcandidatesCorrectedFONLLnorm[assignment[i]]->GetBinContent(hDcandidatesCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
+    hYieldTrigger->SetBinContent(i+1,hYieldCorrectedFONLLnorm[assignment[i]]->GetBinContent(hYieldCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
+    hDcandidates->SetBinError(i+1,hDcandidatesCorrectedFONLLnorm[assignment[i]]->GetBinError(hDcandidatesCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
+    hYieldTrigger->SetBinError(i+1,hYieldCorrectedFONLLnorm[assignment[i]]->GetBinError(hYieldCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
   }
 
   for (int ifile=0;ifile<nFiles;ifile++){
      hYieldRatios[ifile]->Divide(hYieldTrigger);
      hDcandidatesRatios[ifile]->Divide(hDcandidates);
   }
+  
+    for (int i=3;i<binstotal;i++){
+    hYieldRatios[0]->SetBinContent(i+1,0.);
+    hYieldRatios[0]->SetBinError(i+1,0.);
+    hDcandidatesRatios[0]->SetBinContent(i+1,0.);
+    hDcandidatesRatios[0]->SetBinError(i+1,0.);
+    
+  }
+
 
   TLine *line20 = new TLine(20,0,20,2);
   TLine *line40 = new TLine(40,0,40,2);
