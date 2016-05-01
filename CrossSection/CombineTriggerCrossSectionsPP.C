@@ -187,11 +187,14 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   TH1D* ratioHLT8_15=(TH1D*)hDcandidatesCorrectedFONLLnorm[1]->Clone("ratioHLT8_15");
   ratioHLT8_15->Divide(hDcandidatesCorrectedFONLLnorm[2]);
   
+  TH1D* ratioHLTMB_8=(TH1D*)hDcandidatesCorrectedFONLLnorm[0]->Clone("ratioHLTMB_8");
+  ratioHLTMB_8->Divide(hDcandidatesCorrectedFONLLnorm[1]);
+
   TH1D* ratioHLT15_50=(TH1D*)hDcandidatesCorrectedFONLLnorm[2]->Clone("ratioHLT15_50");
   ratioHLT15_50->Divide(hDcandidatesCorrectedFONLLnorm[4]);
   
-  TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",1000,1000);
-  canvasPrescale->Divide(2,2);
+  TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",1500,1000);
+  canvasPrescale->Divide(3,2);
   TH2F* hemptyPrescale=new TH2F("hemptyPrescale","",50,0,100,10.,0,2.); 
   hemptyPrescale->GetXaxis()->CenterTitle();
   hemptyPrescale->GetYaxis()->CenterTitle();
@@ -211,6 +214,16 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   canvasPrescale->cd(1);
  // gPad->SetLogy();
   hemptyPrescale->Draw();
+  ratioHLTMB_8->SetLineColor(1);
+  ratioHLTMB_8->Draw("same");
+  TF1 *pol0_MB= new TF1("pol0_MB","pol0_MB",20,30);
+  ratioHLTMB_8->Fit("pol0_MB","","",20,30);
+  TLatex *  tex_MB = new TLatex(1.82,1.836,Form("Ratio(HLTMB/HLT8)= %f #pm %f",pol0_MB->GetParameter(0),pol0_MB->GetParError(0)));
+  tex_MB->SetTextSize(0.04);
+  tex_MB->Draw();
+  canvasPrescale->cd(2);
+ // gPad->SetLogy();
+  hemptyPrescale->Draw();
   ratioHLT8_15->SetLineColor(1);
   ratioHLT8_15->Draw("same");
   TF1 *pol0_0= new TF1("pol0_0","pol0_0",20,30);
@@ -218,7 +231,7 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   TLatex *  tex_0 = new TLatex(1.82,1.836,Form("Ratio(HLT8/HLT15)= %f #pm %f",pol0_0->GetParameter(0),pol0_0->GetParError(0)));
   tex_0->SetTextSize(0.04);
   tex_0->Draw();
-  canvasPrescale->cd(2);
+  canvasPrescale->cd(3);
   hemptyPrescale->Draw();
   ratioHLT15_30->SetLineColor(1);
   ratioHLT15_30->Draw("same");
@@ -227,7 +240,7 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   TLatex *  tex_1 = new TLatex(1.82,1.836,Form("Ratio(HLT15/HLT30)= %f #pm %f",pol0_1->GetParameter(0),pol0_1->GetParError(0)));
   tex_1->SetTextSize(0.04);
   tex_1->Draw();
-  canvasPrescale->cd(3);
+  canvasPrescale->cd(4);
   hemptyPrescale->Draw();
   ratioHLT30_50->SetLineColor(1);
   ratioHLT30_50->Draw("same");
@@ -237,7 +250,7 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   TLatex *  tex_2 = new TLatex(1.82,1.836,Form("Ratio(HLT30/HLT50)= %f #pm %f",pol0_2->GetParameter(0),pol0_2->GetParError(0)));
   tex_2->SetTextSize(0.04);
   tex_2->Draw();
-  canvasPrescale->cd(4);
+  canvasPrescale->cd(5);
   hemptyPrescale->Draw();
   ratioHLT15_50->SetLineColor(1);
   ratioHLT15_50->Draw("same");
@@ -451,4 +464,10 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPbPb.pdf");
 
 
+
+
+
 }
+
+
+
