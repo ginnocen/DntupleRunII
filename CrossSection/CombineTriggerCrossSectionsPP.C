@@ -363,6 +363,14 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true)
      hYieldRatios[ifile]->Divide(hYieldTrigger);
      hDcandidatesRatios[ifile]->Divide(hDcandidates);
   }
+  
+    for (int i=4;i<binstotal;i++){
+    hYieldRatios[0]->SetBinContent(i+1,0.);
+    hYieldRatios[0]->SetBinError(i+1,0.);
+    hDcandidatesRatios[0]->SetBinContent(i+1,0.);
+    hDcandidatesRatios[0]->SetBinError(i+1,0.);
+    
+  }
 
   TLine *line20 = new TLine(20,0,20,2);
   TLine *line40 = new TLine(40,0,40,2);
