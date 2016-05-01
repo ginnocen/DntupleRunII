@@ -20,7 +20,7 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true)
                                             "ROOTfiles/CrossSectionFONLLPP_15.root",
                                             "ROOTfiles/CrossSectionFONLLPP_30.root",
                                             "ROOTfiles/CrossSectionFONLLPP_50.root"};
-  TString label[nFiles] = {"MB", "HLTD8", "HLTD15", "HLTD30","HLTD30"};
+  TString label[nFiles] = {"MB", "HLTD8", "HLTD15", "HLTD30","HLTD50"};
 
   int colors[nFiles] = {1,2,3,4,6};
 
@@ -334,46 +334,15 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true)
   tex_cand->SetTextSize(0.04);
   tex_cand->Draw();
   canvasLumi->SaveAs("canvasLumiPP.pdf");
-
-}
-
-
-void ComparisonTriggerPP()
-{
   
-  gStyle->SetOptTitle(0);
-  gStyle->SetOptStat(0);
-  gStyle->SetEndErrorSize(0);
-  gStyle->SetMarkerStyle(20);
-
-  const int nFiles = 5;
-  TString myfiles[nFiles] = {"ROOTfiles/CrossSectionFONLLPPMB_extended.root", 
-                                            "ROOTfiles/CrossSectionFONLLPP_8.root",
-                                            "ROOTfiles/CrossSectionFONLLPP_15.root",
-                                            "ROOTfiles/CrossSectionFONLLPP_30.root",
-                                            "ROOTfiles/CrossSectionFONLLPP_50.root"};
-  TString label[nFiles] = {"MB", "HLTD8", "HLTD15", "HLTD30","HLTD30"};
-
-  int colors[nFiles] = {1,2,3,4,6};
-
-  TH1D* hYieldTriggerCorrectedFONLLnorm[nFiles];
-  TH1D* hDcandidatesTriggerCorrectedFONLLnorm[nFiles];
-  TFile* files[nFiles];
-  TLegendEntry *entry[nFiles];
+  TH1D* hYieldRatios[nFiles];
+  TH1D* hDcandidatesRatios[nFiles];
   
   for (int ifile=0;ifile<nFiles;ifile++){
-    files[ifile]=new TFile(myfiles[ifile].Data());  
-    hYieldTriggerCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hYieldTriggerCorrectedFONLLnorm");
-    hDcandidatesTriggerCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hDcandidatesTriggerCorrectedFONLLnorm");
-    if(ifile==0) {
-      hYieldTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiPPMB);
-      hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiPPMB);
-    }
-    if(ifile>0) {
-      hYieldTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiPP);
-      hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiPP);
-    }
+    hYieldRatios[ifile] = (TH1D*)hYieldTriggerCorrectedFONLLnorm[ifile]->Clone(Form("hYieldTriggerCorrectedFONLLnorm_%d"));
+    hDcandidatesRatios[ifile] = (TH1D*)hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Clone(Form("hDcandidatesTriggerCorrectedFONLLnorm_%d"));
   }
+  
 
   const int binstotal=9;
   double ptBinsTotal[binstotal+1] = {10.,15.,20.,25,30.,40.,50.,60.,80,100};
@@ -389,14 +358,12 @@ void ComparisonTriggerPP()
     hDcandidates->SetBinError(i+1,hDcandidatesTriggerCorrectedFONLLnorm[assignment[i]]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
     hYieldTrigger->SetBinError(i+1,hYieldTriggerCorrectedFONLLnorm[assignment[i]]->GetBinError(hYieldTriggerCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
   }
-  
-  
+
   for (int ifile=0;ifile<nFiles;ifile++){
-     hYieldTriggerCorrectedFONLLnorm[ifile]->Divide(hYieldTrigger);
-     hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Divide(hDcandidates);
+     hYieldRatios[ifile]->Divide(hYieldTrigger);
+     hDcandidatesRatios[ifile]->Divide(hDcandidates);
   }
-  
-  
+
   TLine *line20 = new TLine(20,0,20,2);
   TLine *line40 = new TLine(40,0,40,2);
   TLine *line60 = new TLine(60,0,60,2);
@@ -404,53 +371,37 @@ void ComparisonTriggerPP()
   line40->SetLineWidth(3);
   line60->SetLineWidth(3);
   
-  TLegend *legendSigma=new TLegend(0.311747,0.6945694,0.6401439,0.8740055,"");//0.5100806,0.5868644,0.8084677,0.7605932
-  legendSigma->SetBorderSize(0);
-  legendSigma->SetLineColor(0);
-  legendSigma->SetFillColor(0);
-  legendSigma->SetFillStyle(1001);
-  legendSigma->SetTextFont(42);
-  legendSigma->SetTextSize(0.045);
+  line20->SetLineStyle(2);
+  line40->SetLineStyle(2);
+  line60->SetLineStyle(2);
 
-      
-  for (int ifile=0;ifile<nFiles;ifile++){
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->SetLineColor(colors[ifile]);
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->SetLineWidth(3);
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->SetMarkerColor(colors[ifile]);
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->Draw("same");  
-    entry[ifile]=legendSigma->AddEntry(hYieldTriggerCorrectedFONLLnorm[ifile],label[ifile].Data(),"f");
-    entry[ifile]->SetTextFont(42);
-    entry[ifile]->SetLineColor(colors[ifile]);
-    entry[ifile]->SetMarkerColor(colors[ifile]);
-  }
+  legendSigma->Draw();
 
-
-  TCanvas* cSigma = new TCanvas("cSigma","",1000,500);
-  cSigma->Divide(2,1);
-  cSigma->cd(1);
-  gPad->SetLogx();
-  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,3,100.,10.,0.,3);
-  hemptyRatio->GetXaxis()->CenterTitle();
-  hemptyRatio->GetYaxis()->CenterTitle();
-  hemptyRatio->GetYaxis()->SetTitle("Corrected yields/FONLL");
-  hemptyRatio->GetXaxis()->SetTitleOffset(1.);
-  hemptyRatio->GetYaxis()->SetTitleOffset(1.4);//1.3
-  hemptyRatio->GetXaxis()->SetTitleSize(0.045);
-  hemptyRatio->GetYaxis()->SetTitleSize(0.045);
-  hemptyRatio->GetXaxis()->SetTitleFont(42);
-  hemptyRatio->GetYaxis()->SetTitleFont(42);
-  hemptyRatio->GetXaxis()->SetLabelFont(42);
-  hemptyRatio->GetYaxis()->SetLabelFont(42);
-  hemptyRatio->GetXaxis()->SetLabelSize(0.04);
-  hemptyRatio->GetYaxis()->SetLabelSize(0.04);  
-  hemptyRatio->Draw();
+  TCanvas* cSigmaRatioTrigger = new TCanvas("cSigmaRatioTrigger","",1000,500);
+  cSigmaRatioTrigger->Divide(2,1);
+  cSigmaRatioTrigger->cd(1);
+  TH2F* hemptyRatioTrigger=new TH2F("hemptyRatioTrigger","",50,5,100.,10.,0.,3);
+  hemptyRatioTrigger->GetXaxis()->CenterTitle();
+  hemptyRatioTrigger->GetYaxis()->CenterTitle();
+  hemptyRatioTrigger->GetYaxis()->SetTitle("Corrected yields/FONLL");
+  hemptyRatioTrigger->GetXaxis()->SetTitleOffset(1.);
+  hemptyRatioTrigger->GetYaxis()->SetTitleOffset(1.4);//1.3
+  hemptyRatioTrigger->GetXaxis()->SetTitleSize(0.045);
+  hemptyRatioTrigger->GetYaxis()->SetTitleSize(0.045);
+  hemptyRatioTrigger->GetXaxis()->SetTitleFont(42);
+  hemptyRatioTrigger->GetYaxis()->SetTitleFont(42);
+  hemptyRatioTrigger->GetXaxis()->SetLabelFont(42);
+  hemptyRatioTrigger->GetYaxis()->SetLabelFont(42);
+  hemptyRatioTrigger->GetXaxis()->SetLabelSize(0.04);
+  hemptyRatioTrigger->GetYaxis()->SetLabelSize(0.04);  
+  hemptyRatioTrigger->Draw();
 
   for (int ifile=0;ifile<nFiles;ifile++){
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->SetLineColor(colors[ifile]);
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->SetLineWidth(3);
-    if(ifile==0)hYieldTriggerCorrectedFONLLnorm[ifile] ->SetLineWidth(6);
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->SetMarkerColor(colors[ifile]);
-    hYieldTriggerCorrectedFONLLnorm[ifile] ->Draw("psame");  
+    hYieldRatios[ifile] ->SetLineColor(colors[ifile]);
+    hYieldRatios[ifile] ->SetLineWidth(3);
+    if(ifile==0)hYieldRatios[ifile] ->SetLineWidth(6);
+    hYieldRatios[ifile] ->SetMarkerColor(colors[ifile]);
+    hYieldRatios[ifile] ->Draw("psame");  
   }
   
   line20->Draw();
@@ -460,35 +411,36 @@ void ComparisonTriggerPP()
   
   legendSigma->Draw("same");
 
-  cSigma->cd(2);
-  gPad->SetLogx();
-  TH2F* hemptyRatioCounting=new TH2F("hemptyRatioCounting","",50,3,100.,10.,0.,3);
-  hemptyRatioCounting->GetXaxis()->CenterTitle();
-  hemptyRatioCounting->GetYaxis()->CenterTitle();
-  hemptyRatioCounting->GetYaxis()->SetTitle("D counting/FONLL");
-  hemptyRatioCounting->GetXaxis()->SetTitleOffset(1.);
-  hemptyRatioCounting->GetYaxis()->SetTitleOffset(1.4);//1.3
-  hemptyRatioCounting->GetXaxis()->SetTitleSize(0.045);
-  hemptyRatioCounting->GetYaxis()->SetTitleSize(0.045);
-  hemptyRatioCounting->GetXaxis()->SetTitleFont(42);
-  hemptyRatioCounting->GetYaxis()->SetTitleFont(42);
-  hemptyRatioCounting->GetXaxis()->SetLabelFont(42);
-  hemptyRatioCounting->GetYaxis()->SetLabelFont(42);
-  hemptyRatioCounting->GetXaxis()->SetLabelSize(0.04);
-  hemptyRatioCounting->GetYaxis()->SetLabelSize(0.04);  
-  hemptyRatioCounting->Draw();
+  cSigmaRatioTrigger->cd(2);
+  TH2F* hemptyRatioCountingTrigger=new TH2F("hemptyRatioCountingTrigger","",50,5,100.,10.,0.,3);
+  hemptyRatioCountingTrigger->GetXaxis()->CenterTitle();
+  hemptyRatioCountingTrigger->GetYaxis()->CenterTitle();
+  hemptyRatioCountingTrigger->GetYaxis()->SetTitle("D counting/FONLL");
+  hemptyRatioCountingTrigger->GetXaxis()->SetTitleOffset(1.);
+  hemptyRatioCountingTrigger->GetYaxis()->SetTitleOffset(1.4);//1.3
+  hemptyRatioCountingTrigger->GetXaxis()->SetTitleSize(0.045);
+  hemptyRatioCountingTrigger->GetYaxis()->SetTitleSize(0.045);
+  hemptyRatioCountingTrigger->GetXaxis()->SetTitleFont(42);
+  hemptyRatioCountingTrigger->GetYaxis()->SetTitleFont(42);
+  hemptyRatioCountingTrigger->GetXaxis()->SetLabelFont(42);
+  hemptyRatioCountingTrigger->GetYaxis()->SetLabelFont(42);
+  hemptyRatioCountingTrigger->GetXaxis()->SetLabelSize(0.04);
+  hemptyRatioCountingTrigger->GetYaxis()->SetLabelSize(0.04);  
+  hemptyRatioCountingTrigger->Draw();
 
   for (int ifile=0;ifile<nFiles;ifile++){
-    hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->SetLineColor(colors[ifile]);
-    hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->SetLineWidth(3);
-    if(ifile==0)hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->SetLineWidth(6);
-    hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->SetMarkerColor(colors[ifile]);
-    hDcandidatesTriggerCorrectedFONLLnorm[ifile] ->Draw("psame");  
+    hDcandidatesRatios[ifile] ->SetLineColor(colors[ifile]);
+    hDcandidatesRatios[ifile] ->SetLineWidth(3);
+    if(ifile==0)hDcandidatesRatios[ifile] ->SetLineWidth(6);
+    hDcandidatesRatios[ifile] ->SetMarkerColor(colors[ifile]);
+    hDcandidatesRatios[ifile] ->Draw("psame");  
   }
+  
   legendSigma->Draw("same");
   line20->Draw();
   line40->Draw();
   line60->Draw();
-  cSigma->SaveAs("TriggerCrossSectionRatioPbPb.pdf");
+  cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPbPb.pdf");
+
 
 }
