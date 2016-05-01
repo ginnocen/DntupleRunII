@@ -6,7 +6,7 @@
 double lumiPP=25.8;
 double lumiPPMB=0.0361128;
 
-void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected=true)
+void CombineTriggerCrossSectionsPP(bool isTriggerCorrected=true,bool isLumiNorm=true)
 {
   
   gStyle->SetOptTitle(0);
@@ -31,11 +31,26 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   TFile* files[nFiles];
   TLegendEntry *entry[nFiles];
   
+  TString histoYield;
+  TString histoYieldNorm;
+  TString histoCandNorm;
+  
+  if(isTriggerCorrected){
+    histoYield="hYieldTriggerCorrected";
+    histoYieldNorm="hYieldTriggerCorrectedFONLLnorm";
+    histoCandNorm="hDcandidatesTriggerCorrectedFONLLnorm";
+  }
+  else{
+    histoYield="hYieldNoTriggerCorrected";
+    histoYieldNorm="hYieldNoTriggerCorrectedFONLLnorm";
+    histoCandNorm="hDcandidatesNoTriggerCorrectedFONLLnorm";
+  }
+  
   for (int ifile=0;ifile<nFiles;ifile++){
     files[ifile]=new TFile(myfiles[ifile].Data());  
-    hYieldCorrected[ifile] = (TH1D*)files[ifile]->Get("hYieldTriggerCorrected");
-    hYieldCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hYieldTriggerCorrectedFONLLnorm");
-    hDcandidatesCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hDcandidatesTriggerCorrectedFONLLnorm");
+    hYieldCorrected[ifile] = (TH1D*)files[ifile]->Get(histoYield.Data());
+    hYieldCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get(histoYieldNorm.Data());
+    hDcandidatesCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get(histoCandNorm.Data());
     if(ifile>0) hTriggerEfficiency[ifile] = (TH1D*)files[ifile]->Get("hTriggerEfficiencyPtBins");
     if(isLumiNorm&&ifile==0) {
       hYieldCorrected[ifile]->Scale(1/lumiPPMB);
@@ -146,7 +161,6 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
     hDcandidatesCorrectedFONLLnorm[ifile] ->Draw("psame");  
   }
     legendSigma->Draw("same");
-  cSigma->SaveAs("TriggerCrossSectionPP.pdf");
 
   TCanvas* cTriggerEff = new TCanvas("cTriggerEff","",500,500);
   cTriggerEff->cd();
@@ -176,7 +190,6 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   }
   
  legendSigma->Draw("same");
- cTriggerEff->SaveAs("TriggerEffPP.pdf");
 
   TH1D* ratioHLT30_50=(TH1D*)hDcandidatesCorrectedFONLLnorm[3]->Clone("ratioHLT30_50");
   ratioHLT30_50->Divide(hDcandidatesCorrectedFONLLnorm[4]);
@@ -193,12 +206,12 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   TH1D* ratioHLT15_50=(TH1D*)hDcandidatesCorrectedFONLLnorm[2]->Clone("ratioHLT15_50");
   ratioHLT15_50->Divide(hDcandidatesCorrectedFONLLnorm[4]);
   
-  TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",1500,1000);
-  canvasPrescale->Divide(3,2);
+  TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",800,800);
+  canvasPrescale->Divide(2,2);
   TH2F* hemptyPrescale=new TH2F("hemptyPrescale","",50,0,100,10.,0,2.); 
   hemptyPrescale->GetXaxis()->CenterTitle();
   hemptyPrescale->GetYaxis()->CenterTitle();
-  hemptyPrescale->GetYaxis()->SetTitle("Data driven prescale / HLT prescales");
+  hemptyPrescale->GetYaxis()->SetTitle("Ratio of HLT corrected yields");
   hemptyPrescale->GetXaxis()->SetTitle("p_{T} (GeV/c)");
   hemptyPrescale->GetXaxis()->SetTitleOffset(0.95);//0.9
   hemptyPrescale->GetYaxis()->SetTitleOffset(1.24);//1.
@@ -250,6 +263,7 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   TLatex *  tex_2 = new TLatex(1.82,1.836,Form("Ratio(HLT30/HLT50)= %f #pm %f",pol0_2->GetParameter(0),pol0_2->GetParError(0)));
   tex_2->SetTextSize(0.04);
   tex_2->Draw();
+  /*
   canvasPrescale->cd(5);
   hemptyPrescale->Draw();
   ratioHLT15_50->SetLineColor(1);
@@ -260,8 +274,7 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   TLatex *  tex_3 = new TLatex(1.82,1.836,Form("Ratio(HLT15/HLT50)= %f #pm %f",pol0_3->GetParameter(0),pol0_3->GetParError(0)));
   tex_3->SetTextSize(0.04);
   tex_3->Draw();
-  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPP.pdf");
-
+  */
 
   const int nbinsstudy=3;
   double binsstudy[nbinsstudy+1]={10.,15.,20.,25.};
@@ -346,14 +359,13 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   TLatex *  tex_cand = new TLatex(10.82,0.07,Form("Lumi= %f #pm %f",pol0_cand->GetParameter(0),pol0_cand->GetParError(0)));
   tex_cand->SetTextSize(0.04);
   tex_cand->Draw();
-  canvasLumi->SaveAs("canvasLumiPP.pdf");
   
   TH1D* hYieldRatios[nFiles];
   TH1D* hDcandidatesRatios[nFiles];
   
   for (int ifile=0;ifile<nFiles;ifile++){
-    hYieldRatios[ifile] = (TH1D*)hYieldCorrectedFONLLnorm[ifile]->Clone(Form("hYieldCorrectedFONLLnorm_%d"));
-    hDcandidatesRatios[ifile] = (TH1D*)hDcandidatesCorrectedFONLLnorm[ifile]->Clone(Form("hDcandidatesCorrectedFONLLnorm_%d"));
+    hYieldRatios[ifile] = (TH1D*)hYieldCorrectedFONLLnorm[ifile]->Clone(Form("hYieldRatios_%d",ifile));
+    hDcandidatesRatios[ifile] = (TH1D*)hDcandidatesCorrectedFONLLnorm[ifile]->Clone(Form("hDcandidatesRatios_%d",ifile));
   }
   
 
@@ -461,12 +473,21 @@ void CombineTriggerCrossSectionsPP(bool isLumiNorm=true, bool isTriggerCorrected
   line20->Draw();
   line40->Draw();
   line60->Draw();
-  cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPbPb.pdf");
 
-
-
-
-
+  if(isTriggerCorrected){
+  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPP.pdf");
+  cTriggerEff->SaveAs("TriggerEffPP.pdf");
+  canvasLumi->SaveAs("canvasLumiPP.pdf");
+  cSigma->SaveAs("TriggerCrossSectionPP.pdf");
+  cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPP.pdf");
+  }
+  else{
+  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPP_TriggerUncorrected.pdf");
+  cTriggerEff->SaveAs("TriggerEffPP_TriggerUncorrected.pdf");
+  canvasLumi->SaveAs("canvasLumiPP_TriggerUncorrected.pdf");
+  cSigma->SaveAs("TriggerCrossSectionPP_TriggerUncorrected.pdf");
+  cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPP_TriggerUncorrected.pdf");
+  }
 }
 
 

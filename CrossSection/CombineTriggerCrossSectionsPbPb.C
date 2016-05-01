@@ -4,7 +4,7 @@
 #include "../Systematics/systematics.C"
 
 
-void CombineTriggerCrossSectionsPbPb(bool isLumiNorm=true)
+void CombineTriggerCrossSectionsPbPb(bool isTriggerCorrected=true,bool isLumiNorm=true)
 {
 double lumi=15.5097;
 double lumiMB=0.831646;
@@ -35,11 +35,27 @@ double lumiMB=0.831646;
   TFile* files[nFiles];
   TLegendEntry *entry[nFiles];
   
+  
+  TString histoYield;
+  TString histoYieldNorm;
+  TString histoCandNorm;
+  
+  if(isTriggerCorrected){
+    histoYield="hYieldTriggerCorrected";
+    histoYieldNorm="hYieldTriggerCorrectedFONLLnorm";
+    histoCandNorm="hDcandidatesTriggerCorrectedFONLLnorm";
+  }
+  else{
+    histoYield="hYieldNoTriggerCorrected";
+    histoYieldNorm="hYieldNoTriggerCorrectedFONLLnorm";
+    histoCandNorm="hDcandidatesNoTriggerCorrectedFONLLnorm";
+  }
+  
   for (int ifile=0;ifile<nFiles;ifile++){
     files[ifile]=new TFile(myfiles[ifile].Data());  
-    hYieldCorrected[ifile] = (TH1D*)files[ifile]->Get("hYieldTriggerCorrected");
-    hYieldCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hYieldTriggerCorrectedFONLLnorm");
-    hDcandidatesCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hDcandidatesTriggerCorrectedFONLLnorm");
+    hYieldCorrected[ifile] = (TH1D*)files[ifile]->Get(histoYield.Data());
+    hYieldCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get(histoYieldNorm.Data());
+    hDcandidatesCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get(histoCandNorm.Data());
     if(ifile>0) hTriggerEfficiency[ifile] = (TH1D*)files[ifile]->Get("hTriggerEfficiencyPtBins");
     if(isLumiNorm&&ifile==0) {
       hYieldCorrected[ifile]->Scale(1/lumiMB);
@@ -150,7 +166,6 @@ double lumiMB=0.831646;
     hDcandidatesCorrectedFONLLnorm[ifile] ->Draw("psame");  
   }
     legendSigma->Draw("same");
-  cSigma->SaveAs("TriggerCrossSectionPbPb.pdf");
 
   TCanvas* cTriggerEff = new TCanvas("cTriggerEff","",500,500);
   cTriggerEff->cd();
@@ -180,7 +195,9 @@ double lumiMB=0.831646;
   }
   
  legendSigma->Draw("same");
- cTriggerEff->SaveAs("TriggerEffPbPb.pdf");
+
+  TH1D* ratioHLTMB_20=(TH1D*)hDcandidatesCorrectedFONLLnorm[0]->Clone("ratioHLTMB_20");
+  ratioHLTMB_20->Divide(hDcandidatesCorrectedFONLLnorm[1]);
  
   TH1D* ratioHLT40_60=(TH1D*)hDcandidatesCorrectedFONLLnorm[2]->Clone("ratioHLT40_60");
   ratioHLT40_60->Divide(hDcandidatesCorrectedFONLLnorm[3]);
@@ -191,12 +208,21 @@ double lumiMB=0.831646;
   TH1D* ratioHLT20_60=(TH1D*)hDcandidatesCorrectedFONLLnorm[1]->Clone("ratioHLT20_60");
   ratioHLT20_60->Divide(hDcandidatesCorrectedFONLLnorm[3]);
 
+  const int binstotal=7;
+  double ptBinsTotal[binstotal+1] = {20.,25,30.,40.,50.,60.,80,100};
+  double ptBinsTotalCenter[binstotal] = {22.5,27.5,35.,45.,55.,70.,90};
+  
+    for (int i=3;i<binstotal;i++){
+    ratioHLTMB_20->SetBinContent(i+1,0.);
+    ratioHLTMB_20->SetBinError(i+1,0.);
+  }
+
   TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",1500,500);
-  canvasPrescale->Divide(3,1);
+  canvasPrescale->Divide(2,2);
   TH2F* hemptyPrescale=new TH2F("hemptyPrescale","",50,0,100,10.,0,2.); 
   hemptyPrescale->GetXaxis()->CenterTitle();
   hemptyPrescale->GetYaxis()->CenterTitle();
-  hemptyPrescale->GetYaxis()->SetTitle("Data driven prescale / HLT prescales");
+  hemptyPrescale->GetYaxis()->SetTitle("Ratio of HLT corrected yields");
   hemptyPrescale->GetXaxis()->SetTitle("p_{T} (GeV/c)");
   hemptyPrescale->GetXaxis()->SetTitleOffset(0.95);//0.9
   hemptyPrescale->GetYaxis()->SetTitleOffset(1.24);//1.
@@ -212,6 +238,16 @@ double lumiMB=0.831646;
   canvasPrescale->cd(1);
  // gPad->SetLogy();
   hemptyPrescale->Draw();
+  ratioHLTMB_20->SetLineColor(1);
+  ratioHLTMB_20->Draw("same");
+  TF1 *pol0_MB= new TF1("pol0_MB","pol0_MB",40,60);
+  ratioHLTMB_20->Fit("pol0_MB","","",20,40);
+  TLatex *  tex_MB = new TLatex(1.82,1.836,Form("Ratio(HLTMB/HLT20)= %f #pm %f",pol0_MB->GetParameter(0),pol0_MB->GetParError(0)));
+  tex_MB->SetTextSize(0.04);
+  tex_MB->Draw();
+  canvasPrescale->cd(2);
+ // gPad->SetLogy();
+  hemptyPrescale->Draw();
   ratioHLT20_40->SetLineColor(1);
   ratioHLT20_40->Draw("same");
   TF1 *pol0_0= new TF1("pol0_0","pol0_0",40,60);
@@ -219,7 +255,7 @@ double lumiMB=0.831646;
   TLatex *  tex_0 = new TLatex(1.82,1.836,Form("Ratio(HLT20/HLT40)= %f #pm %f",pol0_0->GetParameter(0),pol0_0->GetParError(0)));
   tex_0->SetTextSize(0.04);
   tex_0->Draw();
-  canvasPrescale->cd(2);
+  canvasPrescale->cd(3);
   hemptyPrescale->Draw();
   ratioHLT40_60->SetLineColor(1);
   ratioHLT40_60->Draw("same");
@@ -228,7 +264,7 @@ double lumiMB=0.831646;
   TLatex *  tex_1 = new TLatex(1.82,1.836,Form("Ratio(HLT40/HLT60)= %f #pm %f",pol0_1->GetParameter(0),pol0_1->GetParError(0)));
   tex_1->SetTextSize(0.04);
   tex_1->Draw();
-  canvasPrescale->cd(3);
+  canvasPrescale->cd(4);
   hemptyPrescale->Draw();
   ratioHLT20_60->SetLineColor(1);
   ratioHLT20_60->Draw("same");
@@ -237,7 +273,6 @@ double lumiMB=0.831646;
   TLatex *  tex_2 = new TLatex(1.82,1.836,Form("Ratio(HLT20/HLT60)= %f #pm %f",pol0_2->GetParameter(0),pol0_2->GetParError(0)));
   tex_2->SetTextSize(0.04);
   tex_2->Draw();
-  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPbPb.pdf");
 
 
  /*
@@ -340,21 +375,16 @@ double lumiMB=0.831646;
   TLatex *  tex_cand = new TLatex(20.82,25.836,Form("Lumi= %f #pm %f",pol0_cand->GetParameter(0),pol0_cand->GetParError(0)));
   tex_cand->SetTextSize(0.04);
   tex_cand->Draw();
-
-  canvas->SaveAs("canvasLumiPbPb.pdf");
   
   TH1D* hYieldRatios[nFiles];
   TH1D* hDcandidatesRatios[nFiles];
   
   for (int ifile=0;ifile<nFiles;ifile++){
-    hYieldRatios[ifile] = (TH1D*)hYieldCorrectedFONLLnorm[ifile]->Clone(Form("hYieldCorrectedFONLLnorm_%d"));
-    hDcandidatesRatios[ifile] = (TH1D*)hDcandidatesCorrectedFONLLnorm[ifile]->Clone(Form("hDcandidatesCorrectedFONLLnorm_%d"));
+    hYieldRatios[ifile] = (TH1D*)hYieldCorrectedFONLLnorm[ifile]->Clone(Form("hYieldRatios_%d",ifile));
+    hDcandidatesRatios[ifile] = (TH1D*)hDcandidatesCorrectedFONLLnorm[ifile]->Clone(Form("hDcandidatesRatios_%d",ifile));
   }
   
 
-  const int binstotal=7;
-  double ptBinsTotal[binstotal+1] = {20.,25,30.,40.,50.,60.,80,100};
-  double ptBinsTotalCenter[binstotal] = {22.5,27.5,35.,45.,55.,70.,90};
   
   int assignment[binstotal]={1,1,1,2,2,3,3};
   TH1D* hDcandidates=new TH1D("hDcandidates","hDcandidates",binstotal,ptBinsTotal);
@@ -377,7 +407,6 @@ double lumiMB=0.831646;
     hYieldRatios[0]->SetBinError(i+1,0.);
     hDcandidatesRatios[0]->SetBinContent(i+1,0.);
     hDcandidatesRatios[0]->SetBinError(i+1,0.);
-    
   }
 
 
@@ -457,5 +486,19 @@ double lumiMB=0.831646;
   line20->Draw();
   line40->Draw();
   line60->Draw();
+
+  if(isTriggerCorrected){
+  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPbPb.pdf");
+  cTriggerEff->SaveAs("TriggerEffPbPb.pdf");
+  canvas->SaveAs("canvasLumiPbPb.pdf");
+  cSigma->SaveAs("TriggerCrossSectionPbPb.pdf");
   cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPbPb.pdf");
+  }
+  else{
+  canvasPrescale->SaveAs("canvasPrescaleDataDrivenPbPb_TriggerUncorrected.pdf");
+  cTriggerEff->SaveAs("TriggerEffPbPb_TriggerUncorrected.pdf");
+  canvas->SaveAs("canvasLumiPbPb_TriggerUncorrected.pdf");
+  cSigma->SaveAs("TriggerCrossSectionPbPb_TriggerUncorrected.pdf");
+  cSigmaRatioTrigger->SaveAs("TriggerCrossSectionRatioPbPb_TriggerUncorrected.pdf");
+  }
 }
