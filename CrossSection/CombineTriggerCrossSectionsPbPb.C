@@ -3,11 +3,11 @@
 #include "TLegendEntry.h"
 #include "../Systematics/systematics.C"
 
-double lumi=15.5097;
-double lumiMB=0.831646;
 
 void CombineTriggerCrossSectionsPbPb(bool isLumiNorm=true)
 {
+double lumi=15.5097;
+double lumiMB=0.831646;
 
   TString cut="(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)";
   TString selection="1";
@@ -348,12 +348,15 @@ void CombineTriggerCrossSectionsPbPb(bool isLumiNorm=true)
 
 void ComparisonTriggerPbPb()
 {
-  
+  double lumi=15.5097;
+  double lumiMB=0.831646;
+
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
 
+/*
   const int nFiles = 4;
   TString myfiles[nFiles] = {"ROOTfiles/CrossSectionFONLLPbPbMB_extended.root", 
                                             "ROOTfiles/CrossSectionFONLLPbPb_20.root",
@@ -362,6 +365,14 @@ void ComparisonTriggerPbPb()
   TString label[nFiles] = {"MB", "HLTD20", "HLTD40", "HLTD60"};
 
   int colors[nFiles] = {1,2,3,4};
+*/
+  const int nFiles = 3;
+  TString myfiles[nFiles] = { "ROOTfiles/CrossSectionFONLLPbPb_20.root",
+                                            "ROOTfiles/CrossSectionFONLLPbPb_40.root",
+                                            "ROOTfiles/CrossSectionFONLLPbPb_60.root"};
+  TString label[nFiles] = {"HLTD20", "HLTD40", "HLTD60"};
+
+  int colors[nFiles] = {1,2,4};
 
   TH1D* hYieldTriggerCorrectedFONLLnorm[nFiles];
   TH1D* hDcandidatesTriggerCorrectedFONLLnorm[nFiles];
@@ -373,20 +384,20 @@ void ComparisonTriggerPbPb()
     hYieldTriggerCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hYieldTriggerCorrectedFONLLnorm");
     hDcandidatesTriggerCorrectedFONLLnorm[ifile] = (TH1D*)files[ifile]->Get("hDcandidatesTriggerCorrectedFONLLnorm");
     if(ifile==0) {
-      hYieldTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiPPMB);
-      hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiPPMB);
+      hYieldTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiMB);
+      hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiMB);
     }
-    if(ifile>0) {
-      hYieldTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiPP);
-      hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumiPP);
+    if(ifile>=0) {
+      hYieldTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumi);
+      hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Scale(1/lumi);
     }
   }
 
-  const int binstotal=9;
-  double ptBinsTotal[binstotal+1] = {10.,15.,20.,25,30.,40.,50.,60.,80,100};
-  double ptBinsTotalCenter[binstotal] = {12.5,17.5,22.5,27.5,35.,45.,55.,70.,90};
+  const int binstotal=7;
+  double ptBinsTotal[binstotal+1] = {20.,25,30.,40.,50.,60.,80,100};
+  double ptBinsTotalCenter[binstotal] = {22.5,27.5,35.,45.,55.,70.,90};
   
-  int assignment[binstotal]={0,0,2,2,2,3,3,4,4};
+  int assignment[binstotal]={0,0,0,1,1,2,2};
   TH1D* hDcandidates=new TH1D("hDcandidates","hDcandidates",binstotal,ptBinsTotal);
   TH1D* hYieldTrigger=new TH1D("hYieldTrigger","hYieldTrigger",binstotal,ptBinsTotal);
   
@@ -396,14 +407,14 @@ void ComparisonTriggerPbPb()
     hDcandidates->SetBinError(i+1,hDcandidatesTriggerCorrectedFONLLnorm[assignment[i]]->GetBinError(hDcandidatesTriggerCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
     hYieldTrigger->SetBinError(i+1,hYieldTriggerCorrectedFONLLnorm[assignment[i]]->GetBinError(hYieldTriggerCorrectedFONLLnorm[assignment[i]]->FindBin(ptBinsTotalCenter[i])));
   }
-  
-  
+
+
   for (int ifile=0;ifile<nFiles;ifile++){
      hYieldTriggerCorrectedFONLLnorm[ifile]->Divide(hYieldTrigger);
      hDcandidatesTriggerCorrectedFONLLnorm[ifile]->Divide(hDcandidates);
   }
   
-  
+
   TLine *line20 = new TLine(20,0,20,2);
   TLine *line40 = new TLine(40,0,40,2);
   TLine *line60 = new TLine(60,0,60,2);
