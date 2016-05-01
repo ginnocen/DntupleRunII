@@ -3,7 +3,7 @@
 CENTPbPbMIN=0
 CENTPbPbMAX=100
 
-DOTriggered=1
+DOTriggered=0
 DOMB=1
 
 DONORM=1
@@ -102,7 +102,7 @@ fi
 
 if [ $DOMB -eq 1 ]; then      
 
-cp config/parametersLowpt_extended.h parameters.h
+cp config/parametersLowptPbPb_extended.h parameters.h
 
 ## ANALYSIS PbPb MB
 FONLLDATINPUT="pp_d0meson_5TeV_y1"
