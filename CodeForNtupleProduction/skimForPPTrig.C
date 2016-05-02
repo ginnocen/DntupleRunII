@@ -71,6 +71,7 @@ void skimForPPTrig(TString infname="/data/wangj/Data2015/Dntuple/pp/ntD_EvtBase_
    AddCloneTree(cloneForest,outf,ntHlt,"ntHlt");
    AddCloneTree(cloneForest,outf,ntSkim,"ntSkim");
    AddCloneTree(cloneForest,outf,ntGen,"ntGen");
+   AddCloneTree(cloneForest,outf,ntHi,"ntHi");
    
    // You only need the branches which can help you decide if you want to keep the event
    int Dsize;   

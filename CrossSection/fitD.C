@@ -64,9 +64,11 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/nt_2016
   TTree* nt = (TTree*)inf->Get("ntDkpi");
   nt->AddFriend("ntHlt");
   nt->AddFriend("ntHi");
+  nt->AddFriend("ntSkim");
   TTree* ntMC = (TTree*)infMC->Get("ntDkpi");
   ntMC->AddFriend("ntHlt");
   ntMC->AddFriend("ntHi");
+  ntMC->AddFriend("ntSkim");
   TTree* ntGen = (TTree*)infMC->Get("ntGen");
   ntGen->AddFriend("ntHlt");
   ntGen->AddFriend("ntHi");
