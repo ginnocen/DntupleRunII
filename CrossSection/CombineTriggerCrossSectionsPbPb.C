@@ -217,7 +217,7 @@ double lumiMB=0.831646;
     ratioHLTMB_20->SetBinError(i+1,0.);
   }
 
-  TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",1500,500);
+  TCanvas*canvasPrescale=new TCanvas("canvasPrescale","canvasPrescale",1000,1000);
   canvasPrescale->Divide(2,2);
   TH2F* hemptyPrescale=new TH2F("hemptyPrescale","",50,0,100,10.,0,2.); 
   hemptyPrescale->GetXaxis()->CenterTitle();
@@ -429,7 +429,7 @@ double lumiMB=0.831646;
   TH2F* hemptyRatioTrigger=new TH2F("hemptyRatioTrigger","",50,20,100.,10.,0.,3);
   hemptyRatioTrigger->GetXaxis()->CenterTitle();
   hemptyRatioTrigger->GetYaxis()->CenterTitle();
-  hemptyRatioTrigger->GetYaxis()->SetTitle("Corrected yields/FONLL");
+  hemptyRatioTrigger->GetYaxis()->SetTitle("Corrected D yields/Central values");
   hemptyRatioTrigger->GetXaxis()->SetTitleOffset(1.);
   hemptyRatioTrigger->GetYaxis()->SetTitleOffset(1.4);//1.3
   hemptyRatioTrigger->GetXaxis()->SetTitleSize(0.045);
@@ -461,7 +461,7 @@ double lumiMB=0.831646;
   TH2F* hemptyRatioCountingTrigger=new TH2F("hemptyRatioCountingTrigger","",50,20,100.,10.,0.,3);
   hemptyRatioCountingTrigger->GetXaxis()->CenterTitle();
   hemptyRatioCountingTrigger->GetYaxis()->CenterTitle();
-  hemptyRatioCountingTrigger->GetYaxis()->SetTitle("D counting/FONLL");
+  hemptyRatioCountingTrigger->GetYaxis()->SetTitle("Corrected D counting/Central values");
   hemptyRatioCountingTrigger->GetXaxis()->SetTitleOffset(1.);
   hemptyRatioCountingTrigger->GetYaxis()->SetTitleOffset(1.4);//1.3
   hemptyRatioCountingTrigger->GetXaxis()->SetTitleSize(0.045);
@@ -489,16 +489,16 @@ double lumiMB=0.831646;
 
   if(isTriggerCorrected){
   canvasPrescale->SaveAs("TriggerTests/canvasPrescaleDataDrivenPbPb.pdf");
-  cTriggerEff->SaveAs("TriggerTests/TriggerEffPbPb.pdf");
-  canvas->SaveAs("TriggerTests/canvasLumiPbPb.pdf");
-  cSigma->SaveAs("TriggerTests/TriggerCrossSectionPbPb.pdf");
+  //cTriggerEff->SaveAs("TriggerTests/TriggerEffPbPb.pdf");
+  //canvas->SaveAs("TriggerTests/canvasLumiPbPb.pdf");
+  //cSigma->SaveAs("TriggerTests/TriggerCrossSectionPbPb.pdf");
   cSigmaRatioTrigger->SaveAs("TriggerTests/TriggerCrossSectionRatioPbPb.pdf");
   }
   else{
   canvasPrescale->SaveAs("TriggerTests/canvasPrescaleDataDrivenPbPb_TriggerUncorrected.pdf");
-  cTriggerEff->SaveAs("TriggerTests/TriggerEffPbPb_TriggerUncorrected.pdf");
-  canvas->SaveAs("TriggerTests/canvasLumiPbPb_TriggerUncorrected.pdf");
-  cSigma->SaveAs("TriggerTests/TriggerCrossSectionPbPb_TriggerUncorrected.pdf");
+  //cTriggerEff->SaveAs("TriggerTests/TriggerEffPbPb_TriggerUncorrected.pdf");
+  //canvas->SaveAs("TriggerTests/canvasLumiPbPb_TriggerUncorrected.pdf");
+  //cSigma->SaveAs("TriggerTests/TriggerCrossSectionPbPb_TriggerUncorrected.pdf");
   cSigmaRatioTrigger->SaveAs("TriggerTests/TriggerCrossSectionRatioPbPb_TriggerUncorrected.pdf");
   }
 }
