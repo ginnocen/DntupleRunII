@@ -2,7 +2,6 @@ using namespace std;
 #include "uti.h"
 #include "ChargedHad/RAA_0_10.C"
 #include "ChargedHad/RAA_0_100.C"
-#include "parameters.h"
 #include "TLegendEntry.h"
 #include "../Systematics/systematics.C"
 
