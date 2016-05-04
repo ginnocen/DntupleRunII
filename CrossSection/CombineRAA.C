@@ -219,11 +219,11 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   texY->SetLineWidth(2);
   texY->Draw();
 
-  TLegend *legendSigma=new TLegend(0.4110738,0.7062937,0.8104027,0.8846154,"");//0.5100806,0.6268644,0.8084677,0.7805932
+  TLegend *legendSigma=new TLegend(0.4110738,0.6762937,0.8104027,0.8846154,"");//0.5100806,0.6268644,0.8084677,0.7805932
   legendSigma->SetBorderSize(0);
   legendSigma->SetLineColor(0);
   legendSigma->SetFillColor(0);
-  legendSigma->SetFillStyle(1001);
+  legendSigma->SetFillStyle(0);
   legendSigma->SetTextFont(42);
   legendSigma->SetTextSize(0.045);//0.05
 
@@ -271,7 +271,9 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       TGraphAsymmErrors* gRAApion5TeV = (TGraphAsymmErrors*)filePredictions->Get("gRAApion5TeV");
       TGraphAsymmErrors* gRAADmeson5TeV = (TGraphAsymmErrors*)filePredictions->Get("gRAADmeson5TeV");
       TGraphAsymmErrors* gRAABmeson5TeV = (TGraphAsymmErrors*)filePredictions->Get("gRAABmeson5TeV");
-      
+//      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV.txt");
+      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV-plot.txt");
+      TGraph *gShanshanD5TeV = new TGraph("Shanshan-D-RAA_PbPb5020_00-10.dat");
       gRAApion5TeV->SetLineColor(kGreen+1);
       gRAApion5TeV->SetMarkerColor(kGreen+1);
       gRAApion5TeV->SetLineWidth(3);
@@ -280,8 +282,15 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gRAADmeson5TeV->SetMarkerColor(4);
       gRAADmeson5TeV->SetLineWidth(3);
       gRAADmeson5TeV->SetMarkerSize(0.15);
-      
-      gRAApion5TeV->Draw("psame");
+      gMagdalenaD5TeV->SetLineColor(kGreen+1);
+      gMagdalenaD5TeV->SetFillColor(kGreen+1);
+      gMagdalenaD5TeV->SetFillStyle(3002);
+      gMagdalenaD5TeV->Draw("f same");
+      gMagdalenaD5TeV->Draw("l same");
+      gShanshanD5TeV->SetLineWidth(3);
+      gShanshanD5TeV->SetLineColor(kGray+1);
+      gShanshanD5TeV->Draw("c same");
+      //gRAApion5TeV->Draw("psame");
       gRAADmeson5TeV->Draw("psame");
       
       TLegendEntry *ent_theoryD=legendSigma->AddEntry(gRAADmeson5TeV,"CUJET3.0 D^{0}","l");//pf
@@ -290,11 +299,14 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       ent_theoryD->SetMarkerColor(4);
       ent_theoryD->SetTextSize(0.043);//0.03
       
-      TLegendEntry *ent_theoryCharged=legendSigma->AddEntry(gRAApion5TeV,"CUJET3.0 #pi^{0}, h^{#pm}","l");//pf
-      ent_theoryCharged->SetTextFont(42);
-      ent_theoryCharged->SetLineColor(kGreen+1);
-      ent_theoryCharged->SetMarkerColor(kGreen+1);
-      ent_theoryCharged->SetTextSize(0.043);//0.03
+      //TLegendEntry *ent_theoryCharged=legendSigma->AddEntry(gRAApion5TeV,"CUJET3.0 #pi^{0}, h^{#pm}","l");//pf
+      //ent_theoryCharged->SetTextFont(42);
+      //ent_theoryCharged->SetLineColor(kGreen+1);
+      //ent_theoryCharged->SetMarkerColor(kGreen+1);
+      //ent_theoryCharged->SetTextSize(0.043);//0.03
+      
+      TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"Magdalena 5.1 TeV","lf");
+      TLegendEntry *ent_theory_Shanshan =legendSigma->AddEntry(gShanshanD5TeV,"Shanshan 5.02 TeV","l");
     }
   
   TLatex* texSystnorm = new TLatex(0.23,0.70,"T_{AA} and lumi.");
