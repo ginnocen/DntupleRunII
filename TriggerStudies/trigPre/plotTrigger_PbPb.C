@@ -1,6 +1,8 @@
-#include <TH1D.h>
+#include <TH1.h>
+#include <TH2.h>
 #include <TTree.h>
 #include <TLegend.h>
+#include <TLegendEntry.h>
 #include <TCut.h>
 #include <TFile.h>
 #include <TCanvas.h>
@@ -16,18 +18,35 @@ TGraphAsymmErrors* getEfficiency(TTree *t, char *variable, TCut preselection, TC
    TH1D *hAll = new TH1D (Form("hAll%d",count),"",nBin,bins);
    t->Draw(Form("%s>>hAll%d",variable,count),preselection);
    t->Draw(Form("%s>>hPass%d",variable,count),preselection&&cut);
+//   t->Draw(Form("%s>>hAll%d",variable,count),preselection,"",10000000);
+//   t->Draw(Form("%s>>hPass%d",variable,count),preselection&&cut,"",10000000);
 
    TGraphAsymmErrors *g = new TGraphAsymmErrors;
    g->BayesDivide(hPass,hAll);
    return g;
 }
 
-void plotTrigger_PbPb(char *infname="/data/jisun/PbPb2015/skim_Dntuple_crab_PbPb_HIMinimumBias2_ForestAOD_Track_AK4CaloJet_D0_tkpt0p9eta1p5_01142016_tkpt8p0fortrigstudy.root")
+void plotTrigger_PbPb(string infname="/data/jisun/PbPb2015/skim_Dntuple_crab_PbPb_HIMinimumBias2_ForestAOD_Track_AK4CaloJet_D0_tkpt0p9eta1p5_01142016_tkpt8p0fortrigstudy.root")
 {
+   bool sideband = false;
+   bool cent = false;
+
+   //infname="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root";
+   infname="/data/jisun/PbPb2015/Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016.root";
+   TString outf = "result";
+
+   //infname="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_jettriggerskim.root";a
+   //TString outf = "result_PbPbHP";
+   
+   //infname="/data/jisun/PbPb2015/Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016.root";
+   //sideband = true; TString outf = "result_sideband";
+   
+   //infname="/data/jisun/PbPb2015/Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016.root";
+   //cent = true; TString outf = "result_cent10";
 
    // ============== Open file and basic settings ===============   
    // Open Dntuple file
-   TFile *inf = new TFile(infname);
+   TFile *inf = new TFile(infname.c_str());
 
    TTree *ntDkpi = (TTree*)inf->Get("ntDkpi");
    TTree *ntHlt = (TTree*)inf->Get("ntHlt");
@@ -35,6 +54,11 @@ void plotTrigger_PbPb(char *infname="/data/jisun/PbPb2015/skim_Dntuple_crab_PbPb
    
    ntDkpi->AddFriend(ntHlt);
    ntDkpi->AddFriend(ntSkim);   
+
+   if(cent){
+      TTree *ntHi = (TTree*)inf->Get("ntHi");
+      ntDkpi->AddFriend(ntHi);
+   }
 
    // Define bin size and bin width for trigger turnon curve histograms
    const int nBin = 15;
@@ -46,13 +70,13 @@ void plotTrigger_PbPb(char *infname="/data/jisun/PbPb2015/skim_Dntuple_crab_PbPb
    
    // ============== Selection Criteria ===============
 
-   //TCut mbCut = "(HLT_HIL1MinimumBiasHF1AND_v1||  \
-                  HLT_HIL1MinimumBiasHF2AND_v1||  \
-                  HLT_HIL1MinimumBiasHF2AND_part1_v1)";
-   TCut mbCut = "(HLT_HIL1MinimumBiasHF1AND_v1)";
+   //TCut mbCut = "(HLT_HIL1MinimumBiasHF1AND_v1 || HLT_HIL1MinimumBiasHF2AND_v1 || HLT_HIL1MinimumBiasHF2AND_part1_v1)";
+   //TCut mbCut = "(HLT_HIL1MinimumBiasHF1AND_v1)";
+   TCut mbCut ="(HLT_HIL1MinimumBiasHF2AND_part1_v1 || HLT_HIL1MinimumBiasHF2AND_part2_v1 || HLT_HIL1MinimumBiasHF2AND_part3_v1)";
    
    // L1 trigger thresholds
    TCut l1CutMBHF1And = "L1_MinimumBiasHF1_AND==1";
+   TCut l1CutMBHF2And = "L1_MinimumBiasHF2_AND==1";
    TCut l1Cut28 = "L1_SingleS1Jet28_BptxAND==1";
    TCut l1Cut44 = "L1_SingleJet44_BptxAND==1";
 
@@ -66,20 +90,28 @@ void plotTrigger_PbPb(char *infname="/data/jisun/PbPb2015/skim_Dntuple_crab_PbPb
    TCut DmesonDaughterTrkCut = "Dtrk1Pt>8.5&&abs(Dtrk1Eta)<2.0&&(Dtrk1PixelHit+Dtrk1StripHit)>=10.5&&Dtrk1PtErr/Dtrk1Pt<0.1&& \
                                 Dtrk2Pt>8.5&&abs(Dtrk2Eta)<2.0&&(Dtrk2PixelHit+Dtrk2StripHit)>=10.5&&Dtrk2PtErr/Dtrk2Pt<0.1";
 
+   if (sideband) DmassCut = "(abs(Dmass-1.8696)>0.06 && abs(Dmass-1.8696)>0.12)";
+   TCut CentCut = "hiBin<=20";
+
    // Final selection for D candidates for trigger turnon studies
    TCut DAnaCut = DmassCut && DmesonCut && DmesonDaughterTrkCut;
+   if(cent) DAnaCut = DmassCut && DmesonCut && DmesonDaughterTrkCut && CentCut;
 
    // HLT trigger thresholds
-   TCut HLTCut20  = "HLT_HIDmesonHITrackingGlobal_Dpt20_v1";
+   //TCut HLTCut20 = "HLT_HIDmesonHITrackingGlobal_Dpt20_v1";
+   TCut HLTCut20 = "HLT_HIDmesonHITrackingGlobal_Dpt20_v2";
    TCut HLTCut40 = "HLT_HIDmesonHITrackingGlobal_Dpt40_v1";
    TCut HLTCut60 = "HLT_HIDmesonHITrackingGlobal_Dpt60_v1";
 
    // ============== L1 trigger efficiency study ===============
    TCanvas *c = new TCanvas("c","",600,600);
    
-   TGraphAsymmErrors* g20  = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1CutMBHF1And), HLTCut20, nBin, bins);
+   TGraphAsymmErrors* g20  = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1CutMBHF2And), HLTCut20, nBin, bins);
    TGraphAsymmErrors* g40 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1Cut28), HLTCut40, nBin, bins);
    TGraphAsymmErrors* g60 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1Cut44), HLTCut60, nBin, bins);
+//   TGraphAsymmErrors* g20  = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut), HLTCut20, nBin, bins);
+//   TGraphAsymmErrors* g40 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut), HLTCut40, nBin, bins);
+//   TGraphAsymmErrors* g60 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut), HLTCut60, nBin, bins);
 
    hTmp->Draw();
    hTmp->SetXTitle("D Meson p_{T} (GeV/c)");
@@ -105,12 +137,13 @@ void plotTrigger_PbPb(char *infname="/data/jisun/PbPb2015/skim_Dntuple_crab_PbPb
    leg->AddEntry(g60,"HLT D meson 60","pl");
    leg->Draw();
 
-   c->SaveAs("result/Dmeson-HIHLTriggerEfficiency.pdf");
-   c->SaveAs("result/Dmeson-HIHLTriggerEfficiency.png");
-   c->SaveAs("result/Dmeson-HIHLTriggerEfficiency.C");
+   c->SaveAs(outf+"/Dmeson-HIHLTriggerEfficiency.pdf");
+   c->SaveAs(outf+"/Dmeson-HIHLTriggerEfficiency.png");
+   c->SaveAs(outf+"/Dmeson-HIHLTriggerEfficiency.C");
 
    
    // ============== L1 trigger efficiency study ===============
+/*
    TCanvas *c2 = new TCanvas("c2","",600,600);
    
    TGraphAsymmErrors* gLMBHF1And = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&"L1_MinimumBiasHF1_AND_Prescl==1"), l1CutMBHF1And, nBin, bins);
@@ -142,14 +175,14 @@ void plotTrigger_PbPb(char *infname="/data/jisun/PbPb2015/skim_Dntuple_crab_PbPb
    leg2->AddEntry(gL44,"Level 1 Jet 44","pl");
    leg2->Draw();
 
-   c2->SaveAs("result/Dmeson-HIL1TriggerEfficiency.pdf");
-   c2->SaveAs("result/Dmeson-HIL1TriggerEfficiency.png");
-   c2->SaveAs("result/Dmeson-HIL1TriggerEfficiency.C");
-   
+   c2->SaveAs(outf+"/Dmeson-HIL1TriggerEfficiency.pdf");
+   c2->SaveAs(outf+"/Dmeson-HIL1TriggerEfficiency.png");
+   c2->SaveAs(outf+"/Dmeson-HIL1TriggerEfficiency.C");
    
    // ============== Plot an example D mass distribution ===============
    TCanvas *c3 = new TCanvas("c3","",600,600);
    ntDkpi->Draw("Dmass>>h(100,1.7696,1.9696)",DmesonCut&&DmesonDaughterTrkCut&&mbCut&&l1CutMBHF1And);
+*/   
    
    // ..done 
 }
