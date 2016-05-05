@@ -8,6 +8,8 @@ void StudyTrackingPP()
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
 //PPstdtrack PPnochi2 PPnohit PPlooseptresolution
+
+/*
   const int nFiles = 8;
   TString myfiles[nFiles] = { "ROOTfiles/hPtSpectrumDzero_PPstdtrack.root", 
                                             "ROOTfiles/hPtSpectrumDzero_PPnochi2.root",
@@ -21,6 +23,17 @@ void StudyTrackingPP()
   TString label[nFiles] = {"std track sel", "no track chi2 cut", "no track hit","loose selection", "MB std track", "MB with chi2","MB with nhit","MB tight resolution"};
 
   int colors[nFiles] = {1,2,3,4,5,6,7,8};
+  */
+  const int nFiles = 4;
+  TString myfiles[nFiles] = { "ROOTfiles/hPtSpectrumDzero_PPstdtrack.root", 
+                                            "ROOTfiles/hPtSpectrumDzero_PPnochi2.root",
+                                            "ROOTfiles/hPtSpectrumDzero_PPnohit.root",
+                                            "ROOTfiles/hPtSpectrumDzero_PPlooseptresolution.root"};
+                                            
+  TString label[nFiles] = {"std track sel", "no track chi2 cut", "no track hit","loose selection"};
+
+  int colors[nFiles] = {1,2,3,4};
+
 
   TH1D* hPtSigma[nFiles];
   TFile* files[nFiles];
@@ -33,10 +46,11 @@ void StudyTrackingPP()
   }
   
   TH1D*hRefhigh=(TH1D*)hPtSigma[0]->Clone("hRefhigh");
-  TH1D*hReflow=(TH1D*)hPtSigma[4]->Clone("hReflow");
+  //TH1D*hReflow=(TH1D*)hPtSigma[4]->Clone("hReflow");
   for (int ifile=0;ifile<nFiles;ifile++){
-    if(ifile>=4) hPtSigma[ifile]->Divide(hReflow);
-    else hPtSigma[ifile]->Divide(hRefhigh);
+    hPtSigma[ifile]->Divide(hRefhigh);
+   // if(ifile>=4) hPtSigma[ifile]->Divide(hReflow);
+   // else hPtSigma[ifile]->Divide(hRefhigh);
   }
 
   TCanvas* cRatio = new TCanvas("cRatio","",500,500);
@@ -96,7 +110,7 @@ void StudyTrackingPbPb()
                                             "ROOTfiles/hPtSpectrumDzero_PbPbnohit.root",
                                             "ROOTfiles/hPtSpectrumDzero_PbPblooseptresolution.root"};
                                             
-  TString label[nFiles] = {"std track", "no chi2", "no track hit, loose pt selection"};
+  TString label[nFiles] = {"std track", "no chi2", "no track hits","loose pt resolution cut"};
 
   int colors[nFiles] = {1,2,3,4};
 
@@ -117,7 +131,7 @@ void StudyTrackingPbPb()
   TCanvas* cRatio = new TCanvas("cRatio","",500,500);
   cRatio->cd(1);
   gPad->SetLogx();
-  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,0,100.,10.,0.,2.0);
+  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,20,100.,10.,0.,2.0);
   hemptyRatio->GetXaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->SetTitle("Modified track selection/std track selection");
