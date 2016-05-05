@@ -1,9 +1,11 @@
-#include <TH1D.h>
+#include <TH1.h>
+#include <TH2.h>
 #include <TTree.h>
 #include <TLegend.h>
+#include <TLegendEntry.h>
 #include <TCut.h>
 #include <TFile.h>
-#include <TCanvas.h>  
+#include <TCanvas.h>
 #include <TGraphAsymmErrors.h>
 #include "CMS_lumi.C"
 
@@ -24,11 +26,25 @@ TGraphAsymmErrors* getEfficiency(TTree *t, char *variable, TCut preselection, TC
    return g;
 }
 //void plotTriggerForTDR(char *infname="/data/yjlee/dmeson/2015/trigger/mb.root")
-void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root")
+void plotTrigger(string infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root")
 {  
+   bool sideband = false;
+
+   infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root";
+   TString outf = "result";
+   
+   //infname="/data/wangj/Data2015/Dntuple/pp/ntD_EvtBase_20160425_HighPtJet80_DfinderData_pp_20160329_dPt0tkPt0p5_D0Dstar_skim.root";
+   //TString outf = "result_ppJet80";
+   
+   //infname="/data/wangj/Data2015/Dntuple/pp/ntD_EvtBase_20160425_HighPtLowerJets_DfinderData_pp_20160329_dPt0tkPt0p5_D0Dstar_skim.root";
+   //TString outf = "result_ppLowerJets";
+   
+   //infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root";
+   //sideband = true; TString outf = "result_sideband"; 
+   
    // ============== Open file and basic settings ===============   
    // Open Dntuple file
-   TFile *inf = new TFile(infname);
+   TFile *inf = new TFile(infname.c_str());
 
    TTree *ntDkpi = (TTree*)inf->Get("ntDkpi");
    TTree *ntHlt = (TTree*)inf->Get("ntHlt");
@@ -37,8 +53,8 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
    ntDkpi->AddFriend(ntSkim);   
 
    // Define bin size and bin width for trigger turnon curve histograms
-   const int nBin = 7;
-   Float_t bins[nBin+1]={0,6,8,10,15,20,30,50};
+   const int nBin = 8;
+   Float_t bins[nBin+1]={0,6,8,10,15,20,30,50,80};
    //const int nBin = 12;
    //Float_t bins[nBin+1]={0,5,6,8,10,12,15,20,25,30,35,40,70};
 
@@ -75,12 +91,13 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
    TCut l1Cut24 = "L1_SingleJet24_BptxAND==1";
    TCut l1Cut28 = "L1_SingleJet28_BptxAND==1";
    TCut l1Cut40 = "L1_SingleJet40_BptxAND==1";
+   TCut l1Cut48 = "L1_SingleJet48_BptxAND==1";
 
    // D meson selection
    TCut DmassCut             = "(abs(Dmass-1.8696)<0.03)";
    TCut DmesonCut            = "Dy>-1.&&Dy<1&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>2.0&&Dchi2cl>0.05&&Dalpha<0.12";
    TCut DmesonDaughterTrkCut = "Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&Dtrk2Algo>3&&Dtrk2Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)";
-
+   if (sideband) DmassCut = "(abs(Dmass-1.8696)>0.06 && abs(Dmass-1.8696)>0.12)";
 
    // Final selection for D candidates for trigger turnon studies
    TCut DAnaCut = DmassCut && DmesonCut && DmesonDaughterTrkCut;
@@ -90,6 +107,7 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
    TCut HLTCut15 = "HLT_DmesonPPTrackingGlobal_Dpt15_v1";
    TCut HLTCut20 = "HLT_DmesonPPTrackingGlobal_Dpt20_v1";
    TCut HLTCut30 = "HLT_DmesonPPTrackingGlobal_Dpt30_v1";
+   TCut HLTCut50 = "HLT_DmesonPPTrackingGlobal_Dpt50_v1";
 
    // ============== L1 trigger efficiency study ===============
    
@@ -137,10 +155,11 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
     hTmp->GetYaxis()->SetLabelSize(0.05);
        
 
-   TGraphAsymmErrors* g8  = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1Cut16), HLTCut8, nBin, bins);
-   TGraphAsymmErrors* g15 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1Cut24), HLTCut15, nBin, bins);
+//   TGraphAsymmErrors* g8  = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1Cut16), HLTCut8, nBin, bins);
+//   TGraphAsymmErrors* g15 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1Cut24), HLTCut15, nBin, bins);
    TGraphAsymmErrors* g20 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1Cut28), HLTCut20, nBin, bins);
    TGraphAsymmErrors* g30 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1Cut40), HLTCut30, nBin, bins);
+   TGraphAsymmErrors* g50 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&mbCut&&l1Cut48), HLTCut50, nBin, bins);
 
 /*
    TGraphAsymmErrors* g8  = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&l1Cut16), HLTCut8, nBin, bins);
@@ -150,21 +169,25 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
 */
     hTmp->Draw();
 
-   g8->SetLineColor(1);
-   g8->SetMarkerColor(1);
-   g8->Draw("p same");
+//   g8->SetLineColor(1);
+//   g8->SetMarkerColor(1);
+//   g8->Draw("p same");
    
-   g15->SetLineColor(2);
-   g15->SetMarkerColor(2);
-   g15->Draw("p same");
+//   g15->SetLineColor(2);
+//   g15->SetMarkerColor(2);
+//   g15->Draw("pl same");
 
    g20->SetLineColor(4);
    g20->SetMarkerColor(4);
-   g20->Draw("p same");
+   g20->Draw("pl same");
    
    g30->SetLineColor(kGreen+2);
    g30->SetMarkerColor(kGreen+2);
-   //g30->Draw("p same");
+   g30->Draw("pl same");
+
+   g50->SetLineColor(kOrange);
+   g50->SetMarkerColor(kOrange);
+   g50->Draw("pl same");
    
  TLegend *legend=new TLegend(0.4579866,0.2472028,0.8389262,0.4342657,"");
   legend->SetBorderSize(0);
@@ -174,22 +197,26 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
   legend->SetTextFont(42);
   legend->SetTextSize(0.04);
 
-  TLegendEntry *ent_g8=legend->AddEntry(g8,"HLT D meson p_{T} #geq 8","pl");
-  ent_g8->SetTextFont(42);
-  ent_g8->SetLineColor(1);
-  ent_g8->SetMarkerColor(1);
-  TLegendEntry *ent_g15=legend->AddEntry(g15,"HLT D meson p_{T} #geq15","pl");
-  ent_g15->SetTextFont(42);
-  ent_g15->SetLineColor(1);
-  ent_g15->SetMarkerColor(1);
+//  TLegendEntry *ent_g8=legend->AddEntry(g8,"HLT D meson p_{T} #geq 8","pl");
+//  ent_g8->SetTextFont(42);
+//  ent_g8->SetLineColor(1);
+//  ent_g8->SetMarkerColor(1);
+//  TLegendEntry *ent_g15=legend->AddEntry(g15,"HLT D meson p_{T} #geq15","pl");
+//  ent_g15->SetTextFont(42);
+//  ent_g15->SetLineColor(1);
+//  ent_g15->SetMarkerColor(1);
   TLegendEntry *ent_g20=legend->AddEntry(g20,"HLT D meson p_{T} #geq 20","pl");
   ent_g20->SetTextFont(42);
   ent_g20->SetLineColor(1);
   ent_g20->SetMarkerColor(1);
-  //TLegendEntry *ent_g30=legend->AddEntry(g30,"HLT D meson p_{T} #geq 30","pl");
-  //ent_g30->SetTextFont(42);
-  //ent_g30->SetLineColor(1);
-  //ent_g30->SetMarkerColor(1);
+  TLegendEntry *ent_g30=legend->AddEntry(g30,"HLT D meson p_{T} #geq 30","pl");
+  ent_g30->SetTextFont(42);
+  ent_g30->SetLineColor(1);
+  ent_g30->SetMarkerColor(1);
+  TLegendEntry *ent_g50=legend->AddEntry(g50,"HLT D meson p_{T} #geq 50","pl");
+  ent_g50->SetTextFont(42);
+  ent_g50->SetLineColor(1);
+  ent_g50->SetMarkerColor(1);
   legend->Draw("same");
    
    CMS_lumi( c, 1, 11 );
@@ -202,15 +229,13 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
   tlatexeff->SetTextSize(0.040);
  // tlatexeff->Draw("same");
 
-   
+   c->SaveAs(outf+"/Dmeson-HLTriggerEfficiency.pdf");
+   c->SaveAs(outf+"/Dmeson-HLTriggerEfficiency.png");
+//   c->SaveAs(outf+"/Dmeson-HLTriggerEfficiency.jpeg");
+//   c->SaveAs(outf+"/Dmeson-HLTriggerEfficiency.eps");
+   c->SaveAs(outf+"/Dmeson-HLTriggerEfficiency.C");
 
-   c->SaveAs("result/Dmeson-HLTriggerEfficiency.pdf");
-   c->SaveAs("result/Dmeson-HLTriggerEfficiency.png");
-   c->SaveAs("result/Dmeson-HLTriggerEfficiency.jpeg");
-   c->SaveAs("result/Dmeson-HLTriggerEfficiency.eps");
-   c->SaveAs("result/Dmeson-HLTriggerEfficiency.C");
-
-   
+/*   
    // ============== HLT trigger efficiency study ===============
    TCanvas *c2 = new TCanvas("c2","",600,600);
    
@@ -249,10 +274,10 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
    leg2->AddEntry(gL40,"Level 1 Jet 40","pl");
    leg2->Draw();
 
-   c2->SaveAs("result/Dmeson-L1TriggerEfficiency.pdf");
-   c2->SaveAs("result/Dmeson-L1TriggerEfficiency.png");
-   c2->SaveAs("result/Dmeson-L1TriggerEfficiency.jpeg");
-   c2->SaveAs("result/Dmeson-L1TriggerEfficiency.C");
+   c2->SaveAs(outf+"/Dmeson-L1TriggerEfficiency.pdf");
+   c2->SaveAs(outf+"/Dmeson-L1TriggerEfficiency.png");
+//   c2->SaveAs(outf+"/Dmeson-L1TriggerEfficiency.jpeg");
+   c2->SaveAs(outf+"/Dmeson-L1TriggerEfficiency.C");
    
    
    // ============== Plot an example D mass distribution ===============
@@ -260,5 +285,6 @@ void plotTrigger(char *infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntup
    ntDkpi->Draw("Dmass>>h(100,1.7696,1.9696)",DmesonCut&&DmesonDaughterTrkCut&&mbCut&&l1Cut16);
    
    // ..done 
+*/
 }
 
