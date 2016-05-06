@@ -41,24 +41,29 @@ TGraphAsymmErrors* getEfficiencySum(TTree *t,TTree *t2, char *variable, TCut pre
    t2->Draw(Form("%s>>hAll2%d",variable,count),preselection2);
    t2->Draw(Form("%s>>hPass2%d",variable,count),preselection2&&cut);
       
-   hPass->Add(hPass2);
-   hAll->Add(hAll2);
+   TH1D *hPassTot = (TH1D*)hPass->Clone("hPassTot");
+   TH1D *hAllTot = (TH1D*)hAll->Clone("hAllTot");
+
+   hPassTot->Add(hPass2);
+   hAllTot->Add(hAll2);
    
-   TFile*f=new TFile("test.root","recreate");
+   TFile*f=new TFile(Form("test%d.root",count),"recreate");
    f->cd();
    hPass->Write();
    hAll->Write();
    hPass2->Write();
    hAll2->Write();
+   hAllTot->Write();
+   hPassTot->Write();
    f->Close();
 
    TGraphAsymmErrors *g = new TGraphAsymmErrors;
-   g->BayesDivide(hPass,hAll);
+   g->BayesDivide(hPassTot,hAllTot);
    return g;
 }
 
 
-void plotTrigger_PbPbGMI(TString sample="MB")
+void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
 {
    bool sideband = false;
    bool cent = false;   
@@ -184,9 +189,9 @@ void plotTrigger_PbPbGMI(TString sample="MB")
      g60 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut44), HLTCut60, nBin, bins);
    }
    if(isSample==2){
-     g20  = getEfficiencySum(ntDkpi,ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1CutMBHF2And),TCut(DAnaCut&&triggerHLTselMB&&l1CutMBHF2And), HLTCut20, nBin, bins);
-     g40 = getEfficiencySum(ntDkpi,ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut28),TCut(DAnaCut&&triggerHLTselMB&&l1Cut28), HLTCut40, nBin, bins);
-     g60 = getEfficiencySum(ntDkpi,ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut44),TCut(DAnaCut&&triggerHLTselMB&&l1Cut44), HLTCut60, nBin, bins);
+     g20  = getEfficiencySum(ntDkpi,ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1CutMBHF2And),TCut(DAnaCut&&triggerHLTselMB&&l1CutMBHF2And), HLTCut20, nBin, bins);
+     g40 = getEfficiencySum(ntDkpi,ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut28),TCut(DAnaCut&&triggerHLTselMB&&l1Cut28), HLTCut40, nBin, bins);
+     g60 = getEfficiencySum(ntDkpi,ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut44),TCut(DAnaCut&&triggerHLTselMB&&l1Cut44), HLTCut60, nBin, bins);
    }
 
 
