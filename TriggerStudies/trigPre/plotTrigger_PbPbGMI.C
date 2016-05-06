@@ -24,32 +24,7 @@ TGraphAsymmErrors* getEfficiency(TTree *t, char *variable, TCut preselection, TC
    return g;
 }
 
-
-TGraphAsymmErrors* getEfficiencySum(TTree *t, char *variable, TCut preselection, TTree *t2, char *variable2, TCut preselection2,TCut cut2, int nBin, Float_t *bins)
-{
-   static int count = 0;
-   count++;
-   TH1D *hPass = new TH1D (Form("hPass%d",count),"",nBin,bins);
-   TH1D *hAll = new TH1D (Form("hAll%d",count),"",nBin,bins);
-   TH1D *hPass2 = new TH1D (Form("hPass2%d",count),"",nBin,bins);
-   TH1D *hAll2 = new TH1D (Form("hAll2%d",count),"",nBin,bins);
-
-   t->Draw(Form("%s>>hAll%d",variable,count),preselection);
-   t->Draw(Form("%s>>hPass%d",variable,count),preselection&&cut);
-
-   t2->Draw(Form("%s>>hAll%d",variable2,count),preselection2);
-   t2->Draw(Form("%s>>hPass%d",variable2,count),preselection2&&cut2);
-   
-   hPass->Add(hPass2);
-   hAll->Add(hAll2);
-   
-   TGraphAsymmErrors *g = new TGraphAsymmErrors;
-   g->BayesDivide(hPass,hAll);
-   return g;
-}
-
-
-void plotTrigger_PbPb(TString sample="MB")
+void plotTrigger_PbPbGMI(TString sample="JetTriggered")
 {
    bool sideband = false;
    bool cent = false;
@@ -134,8 +109,6 @@ void plotTrigger_PbPb(TString sample="MB")
 
    // ============== L1 trigger efficiency study ===============
    TCanvas *c = new TCanvas("c","",600,600);
-
-   cout<<"DAnaCut.GetTitle())="<<DAnaCut.GetTitle()<<endl;
    
    TGraphAsymmErrors* g20  = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1CutMBHF2And), HLTCut20, nBin, bins);
    TGraphAsymmErrors* g40 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut28), HLTCut40, nBin, bins);
@@ -169,50 +142,5 @@ void plotTrigger_PbPb(TString sample="MB")
    c->SaveAs(outf+"/Dmeson-HIHLTriggerEfficiency.pdf");
    c->SaveAs(outf+"/Dmeson-HIHLTriggerEfficiency.png");
    c->SaveAs(outf+"/Dmeson-HIHLTriggerEfficiency.C");
-
-   
-   // ============== L1 trigger efficiency study ===============
-/*
-   TCanvas *c2 = new TCanvas("c2","",600,600);
-   
-   TGraphAsymmErrors* gLMBHF1And = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&"L1_MinimumBiasHF1_AND_Prescl==1"), l1CutMBHF1And, nBin, bins);
-   TGraphAsymmErrors* gL28 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&"L1_SingleS1Jet28_BptxAND_Prescl==1"), l1Cut28, nBin, bins);
-   TGraphAsymmErrors* gL44 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&"L1_SingleJet44_BptxAND_Prescl==1"), l1Cut44, nBin, bins);
-   
-   hTmp2->Draw();
-   hTmp2->SetXTitle("D meson p_{T} (GeV/c)");
-   hTmp2->SetYTitle("L1 Trigger Efficiency");
-   
-   gLMBHF1And->SetMarkerColor(1);
-   gLMBHF1And->SetLineColor(1);
-   gLMBHF1And->Draw("pl same");
-
-   gL28->SetMarkerColor(4);
-   gL28->SetLineColor(4);
-   gL28->Draw("pl same");
-
-   gL44->SetMarkerColor(kGreen+2);
-   gL44->SetLineColor(kGreen+2);
-   gL44->Draw("pl same");
-
-   TLegend *leg2 = new TLegend(0.53,0.2,0.93,0.6);
-   leg2->SetBorderSize(0);
-   leg2->SetFillStyle(0);
-   leg2->AddEntry(gLMBHF1And,"PbPb #sqrt{s} = 5.02 TeV","");
-   leg2->AddEntry(gLMBHF1And,"Level 1 Jet 16","pl");
-   leg2->AddEntry(gL28,"Level 1 Jet 28","pl");
-   leg2->AddEntry(gL44,"Level 1 Jet 44","pl");
-   leg2->Draw();
-
-   c2->SaveAs(outf+"/Dmeson-HIL1TriggerEfficiency.pdf");
-   c2->SaveAs(outf+"/Dmeson-HIL1TriggerEfficiency.png");
-   c2->SaveAs(outf+"/Dmeson-HIL1TriggerEfficiency.C");
-   
-   // ============== Plot an example D mass distribution ===============
-   TCanvas *c3 = new TCanvas("c3","",600,600);
-   ntDkpi->Draw("Dmass>>h(100,1.7696,1.9696)",DmesonCut&&DmesonDaughterTrkCut&&triggerHLTsel&&l1CutMBHF1And);
-*/   
-   
-   // ..done 
 }
 
