@@ -105,15 +105,15 @@ PREDICTIONS="../TheoryPredictions/PredictionsCUJET3_pt_0_10.root"
 
 ## ANALYSIS PP TRIGGERED
 
-FONLLOUTPUTFILE="ROOTfilesCent10/output_pp_d0meson_5TeV_y1.root"
-FONLLOUTPUTFILEBtoD="ROOTfilesCent10/output_pp_Btod0meson_5TeV_y1.root"
-FONLLOUTPUTFILEInclusiveD="ROOTfilesCent10/output_inclusiveDd0meson_5TeV_y1.root"
-FONLLOUTPUTFILEB="ROOTfilesCent10/output_pp_Bmeson_5TeV_y1.root"
-OUTPUTFILEPP="ROOTfilesCent10/hPtSpectrumDzeroPP.root"
-OUTPUTFILEPlotPP="ROOTfilesCent10/CrossSectionFONLLPP.root"
-OUTPUTFILEMCSTUDYPP="ROOTfilesCent10/MCstudiesPP.root"
-OUTPUTFILEMCSTUDYNPPP="ROOTfilesCent10/MCstudiesNPPP.root"
-OUTPUTPrescalePP="ROOTfilesCent10/prescalePP.root"
+FONLLOUTPUTFILE="ROOTfilesCent10NoTrack/output_pp_d0meson_5TeV_y1.root"
+FONLLOUTPUTFILEBtoD="ROOTfilesCent10NoTrack/output_pp_Btod0meson_5TeV_y1.root"
+FONLLOUTPUTFILEInclusiveD="ROOTfilesCent10NoTrack/output_inclusiveDd0meson_5TeV_y1.root"
+FONLLOUTPUTFILEB="ROOTfilesCent10NoTrack/output_pp_Bmeson_5TeV_y1.root"
+OUTPUTFILEPP="ROOTfilesCent10NoTrack/hPtSpectrumDzeroPP.root"
+OUTPUTFILEPlotPP="ROOTfilesCent10NoTrack/CrossSectionFONLLPP.root"
+OUTPUTFILEMCSTUDYPP="ROOTfilesCent10NoTrack/MCstudiesPP.root"
+OUTPUTFILEMCSTUDYNPPP="ROOTfilesCent10NoTrack/MCstudiesNPPP.root"
+OUTPUTPrescalePP="ROOTfilesCent10NoTrack/prescalePP.root"
 
 LUMIPP=25.8
 ISMCPP=0
@@ -132,8 +132,8 @@ cp config/parametersHighpt.h parameters.h
 
 if [ $DONORMPP -eq 1 ]; then      
 cp config/parametersHighptPPNorm.h parameters.h
-OUTPUTFILEPlotPP="ROOTfilesCent10/CrossSectionFONLLPPNorm.root"
-OUTPUTPrescalePP="ROOTfilesCent10/prescalePPNorm.root"
+OUTPUTFILEPlotPP="ROOTfilesCent10NoTrack/CrossSectionFONLLPPNorm.root"
+OUTPUTPrescalePP="ROOTfilesCent10NoTrack/prescalePPNorm.root"
 LUMIPP=1
 TRGPP="((HLT_DmesonPPTrackingGlobal_Dpt8_v1))"
 fi
@@ -190,12 +190,12 @@ fi
 
 cp config/parametersHighpt.h parameters.h
 
-OUTPUTPrescalePbPb="ROOTfilesCent10/prescalePbPb.root"
-OUTPUTFILEMCSTUDYPbPb="ROOTfilesCent10/MCstudiesPbPb.root"
-OUTPUTFILEMCSTUDYNPPbPb="ROOTfilesCent10/MCstudiesNPPbPb.root"
-OUTPUTFILEPbPb="ROOTfilesCent10/hPtSpectrumDzeroPbPb.root"
-OUTPUTFILEPlotPbPb="ROOTfilesCent10/CrossSectionFONLLPbPb.root"
-OUTPUTFILERAA="ROOTfilesCent10/outputRAA.root"
+OUTPUTPrescalePbPb="ROOTfilesCent10NoTrack/prescalePbPb.root"
+OUTPUTFILEMCSTUDYPbPb="ROOTfilesCent10NoTrack/MCstudiesPbPb.root"
+OUTPUTFILEMCSTUDYNPPbPb="ROOTfilesCent10NoTrack/MCstudiesNPPbPb.root"
+OUTPUTFILEPbPb="ROOTfilesCent10NoTrack/hPtSpectrumDzeroPbPb.root"
+OUTPUTFILEPlotPbPb="ROOTfilesCent10NoTrack/CrossSectionFONLLPbPb.root"
+OUTPUTFILERAA="ROOTfilesCent10NoTrack/outputRAA.root"
 
 LUMIPbPb=6.53096 #from brilcalc
 ISMCPbPb=0
@@ -213,8 +213,8 @@ CUTFORTRIGGERPRESCALEPbPb=0
 
 if [ $DONORMPbPb -eq 1 ]; then      
 cp config/parametersHighptPbPbNorm.h parameters.h
-OUTPUTFILEPlotPbPb="ROOTfilesCent10/CrossSectionFONLLPbPbNorm.root"
-OUTPUTPrescalePbPb="ROOTfilesCent10/prescalePbPbNorm.root"
+OUTPUTFILEPlotPbPb="ROOTfilesCent10NoTrack/CrossSectionFONLLPbPbNorm.root"
+OUTPUTPrescalePbPb="ROOTfilesCent10NoTrack/prescalePbPbNorm.root"
 LUMIPbPb=1
 fi
 
@@ -261,14 +261,14 @@ fi
 
 ## ANALYSIS PP MB
 
-FONLLOUTPUTFILEMB="ROOTfilesCent10/output_pp_d0meson_5TeV_y1MB.root"
-FONLLOUTPUTFILEBtoDMB="ROOTfilesCent10/output_pp_Btod0meson_5TeV_y1MB.root"
-FONLLOUTPUTFILEInclusiveDMB="ROOTfilesCent10/output_inclusiveDd0meson_5TeV_y1MB.root"
-FONLLOUTPUTFILEBMB="ROOTfilesCent10/output_pp_Bmeson_5TeV_y1MB.root"
-OUTPUTFILEPPMB="ROOTfilesCent10/hPtSpectrumDzeroPPMB.root"
-OUTPUTFILEPlotPPMB="ROOTfilesCent10/CrossSectionFONLLPPMB.root"
-OUTPUTFILEMCSTUDYPPMB="ROOTfilesCent10/MCstudiesPPMB.root"
-OUTPUTFILEMCSTUDYNPPPMB="ROOTfilesCent10/MCstudiesNPPPMB.root"
+FONLLOUTPUTFILEMB="ROOTfilesCent10NoTrack/output_pp_d0meson_5TeV_y1MB.root"
+FONLLOUTPUTFILEBtoDMB="ROOTfilesCent10NoTrack/output_pp_Btod0meson_5TeV_y1MB.root"
+FONLLOUTPUTFILEInclusiveDMB="ROOTfilesCent10NoTrack/output_inclusiveDd0meson_5TeV_y1MB.root"
+FONLLOUTPUTFILEBMB="ROOTfilesCent10NoTrack/output_pp_Bmeson_5TeV_y1MB.root"
+OUTPUTFILEPPMB="ROOTfilesCent10NoTrack/hPtSpectrumDzeroPPMB.root"
+OUTPUTFILEPlotPPMB="ROOTfilesCent10NoTrack/CrossSectionFONLLPPMB.root"
+OUTPUTFILEMCSTUDYPPMB="ROOTfilesCent10NoTrack/MCstudiesPPMB.root"
+OUTPUTFILEMCSTUDYNPPPMB="ROOTfilesCent10NoTrack/MCstudiesNPPPMB.root"
 
 LUMIPPMB=0.0361128  #from brilcalc
 ISMCPPMB=0
@@ -289,7 +289,7 @@ cp config/parametersLowpt.h parameters.h
 if [ $DONORMPPMB -eq 1 ]; then      
 LUMIPPMB=1
 cp config/parametersMBPPNorm.h parameters.h
-OUTPUTFILEPlotPPMB="ROOTfilesCent10/CrossSectionFONLLPPMBNorm.root"
+OUTPUTFILEPlotPPMB="ROOTfilesCent10NoTrack/CrossSectionFONLLPPMBNorm.root"
 fi 
 
 if [ $DOANALYSISPPMB_FONLL -eq 1 ]; then
@@ -336,11 +336,11 @@ fi
 
 ## ANALYSIS PbPb MB
 
-OUTPUTFILEPbPbMB="ROOTfilesCent10/hPtSpectrumDzeroPbPbMB.root"
-OUTPUTFILEPlotPbPbMB="ROOTfilesCent10/CrossSectionFONLLPbPbMB.root"
-OUTPUTFILEMCSTUDYPbPbMB="ROOTfilesCent10/MCstudiesPbPbMB.root"
-OUTPUTFILEMCSTUDYNPPbPbMB="ROOTfilesCent10/MCstudiesNPPbPbMB.root"
-OUTPUTFILERAAMB="ROOTfilesCent10/outputRAAMB.root"
+OUTPUTFILEPbPbMB="ROOTfilesCent10NoTrack/hPtSpectrumDzeroPbPbMB.root"
+OUTPUTFILEPlotPbPbMB="ROOTfilesCent10NoTrack/CrossSectionFONLLPbPbMB.root"
+OUTPUTFILEMCSTUDYPbPbMB="ROOTfilesCent10NoTrack/MCstudiesPbPbMB.root"
+OUTPUTFILEMCSTUDYNPPbPbMB="ROOTfilesCent10NoTrack/MCstudiesNPPbPbMB.root"
+OUTPUTFILERAAMB="ROOTfilesCent10NoTrack/outputRAAMB.root"
 
 LUMIPbPbMB=0.350197  #from brilcalc
 ISMCPbPbMB=0
@@ -357,7 +357,7 @@ USEPRESCALEPbPbMB=0
 if [ $DONORMPbPbMB -eq 1 ]; then      
 LUMIPbPbMB=1
 cp config/parametersMBPbPbNorm.h parameters.h
-OUTPUTFILEPlotPbPbMB="ROOTfilesCent10/CrossSectionFONLLPbPbMBNorm.root"
+OUTPUTFILEPlotPbPbMB="ROOTfilesCent10NoTrack/CrossSectionFONLLPbPbMBNorm.root"
 fi
 
 if [ $DOANALYSISPbPbMB_FONLL -eq 1 ]; then
@@ -422,11 +422,11 @@ cp config/parametersAllpt.h parameters.h
 if [ $DOsystematicPthatstudyPP -eq 1 ]; then   
 
  LABELPTHATALL="pthatallPP"
- FILEOUTPTHATALL="ROOTfilesCent10/pthatallPP.root" 
+ FILEOUTPTHATALL="ROOTfilesCent10NoTrack/pthatallPP.root" 
  LABELPTHATALLPTHATREWEIGHT="pthatallPPpthatreweighted"
- FILEOUTPTHATALLPTHATREWEIGHT="ROOTfilesCent10/pthatallPPpthatreweighted.root" 
+ FILEOUTPTHATALLPTHATREWEIGHT="ROOTfilesCent10NoTrack/pthatallPPpthatreweighted.root" 
  LABELPTHATALLPTWEIGHT="pthatallPPptreweighted"
- FILEOUTPTHATALLPTWEIGHT="ROOTfilesCent10/pthatallPPptreweighted.root" 
+ FILEOUTPTHATALLPTWEIGHT="ROOTfilesCent10NoTrack/pthatallPPptreweighted.root" 
 
 g++ FONLLweight.C $(root-config --cflags --libs) -g -o FONLLweight.exe 
 #./FONLLweight.exe 0 "$INPUTMCPP" 2 100 "$LABELPTHATALL"
@@ -448,13 +448,13 @@ if [ $DOsystematicPthatstudyPbPb -eq 1 ]; then
 g++ FONLLweight.C $(root-config --cflags --libs) -g -o FONLLweight.exe 
 
  LABELPTHATALL="pthatallPbPbCent010"
- FILEOUTPTHATALL="ROOTfilesCent10/pthatallPbPb.root" 
+ FILEOUTPTHATALL="ROOTfilesCent10NoTrack/pthatallPbPb.root" 
  LABELPTHATALLPTHATREWEIGHT="pthatallPbPbpthatreweightedCent010"
- FILEOUTPTHATALLPTHATREWEIGHT="ROOTfilesCent10/pthatallPbPbpthatreweighted.root" 
+ FILEOUTPTHATALLPTHATREWEIGHT="ROOTfilesCent10NoTrack/pthatallPbPbpthatreweighted.root" 
  LABELPTHATALLPTWEIGHT="pthatallPbPbptreweightedCent010"
- FILEOUTPTHATALLPTWEIGHT="ROOTfilesCent10/pthatallPbPbptreweighted.root" 
+ FILEOUTPTHATALLPTWEIGHT="ROOTfilesCent10NoTrack/pthatallPbPbptreweighted.root" 
  LABELPTHATALLPTWEIGHTPPMC="pthatallPbPbptreweightedPPMCCent010"
- FILEOUTPTHATALLPTWEIGHTPPMC="ROOTfilesCent10/pthatallPbPbptreweightedPPMC.root" 
+ FILEOUTPTHATALLPTWEIGHTPPMC="ROOTfilesCent10NoTrack/pthatallPbPbptreweightedPPMC.root" 
 
 #./FONLLweight.exe 0 "$INPUTMCPbPb" 2 100 "$LABELPTHATALL"
 #./FONLLweight.exe 0 "$INPUTMCPbPbPthat10" 2 30 "$LABELPTHAT10"
@@ -475,8 +475,8 @@ fi
 
 cp config/parametersHighpt.h parameters.h
 
-OUTPUTFILEPPMCClosure="ROOTfilesCent10/hPtSpectrumDzeroPPMCClosure.root"
-OUTPUTFILEPbPbMCClosure="ROOTfilesCent10/hPtSpectrumDzeroPbPbMCClosure.root"
+OUTPUTFILEPPMCClosure="ROOTfilesCent10NoTrack/hPtSpectrumDzeroPPMCClosure.root"
+OUTPUTFILEPbPbMCClosure="ROOTfilesCent10NoTrack/hPtSpectrumDzeroPbPbMCClosure.root"
 LUMIPPMCClosure=1
 ISMCPPMCClosure=1
 ISDOWEIGHTPPMCClosure=0
@@ -505,8 +505,8 @@ fi
 
 cp config/parametersLowpt.h parameters.h
 
-OUTPUTFILEPPMBMCClosure="ROOTfilesCent10/hPtSpectrumDzeroPPMBMCClosure.root"
-OUTPUTFILEPbPbMBMCClosure="ROOTfilesCent10/hPtSpectrumDzeroPbPbMBMCClosure.root"
+OUTPUTFILEPPMBMCClosure="ROOTfilesCent10NoTrack/hPtSpectrumDzeroPPMBMCClosure.root"
+OUTPUTFILEPbPbMBMCClosure="ROOTfilesCent10NoTrack/hPtSpectrumDzeroPbPbMBMCClosure.root"
 LUMIPPMBMCClosure=1
 ISMCPPMBMCClosure=1
 ISDOWEIGHTPPMBMCClosure=0

@@ -12,22 +12,77 @@ Double_t maxhisto=2.0;
 Double_t nbinsmasshisto=60;
 Double_t binwidthmass=(maxhisto-minhisto)/nbinsmasshisto;
 
-TString mvatk = "(Dtrk1highPurity&&Dtrk2highPurity)";
-TString mbtrg = "L1_SingleS1Jet28_BptxAND==1&&(HLT_HIPuAK4CaloJet40_Eta5p1_v1||HLT_HIPuAK4CaloJet60_Eta5p1_v1||HLT_HIPuAK4CaloJet80_Eta5p1_v1)";
-TString prefilter = Form("Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&(DlxyBS/DlxyBSErr)>1.5&&Dalpha<0.12&&(DsvpvDistance/DsvpvDisErr)>2.97&&Dchi2cl>0.050&&%s&&%s",mvatk.Data(),mbtrg.Data());
-TString prefilterMC = Form("Dgen==23333&&Dy>-1.&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&(DlxyBS/DlxyBSErr)>1.5&&Dalpha<0.12&&(DsvpvDistance/DsvpvDisErr)>2.97&&Dchi2cl>0.050&&%s",mvatk.Data());
-TString prefilterSW = Form("Dgen==23344&&Dy>-1.&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&(DlxyBS/DlxyBSErr)>1.5&&Dalpha<0.12&&(DsvpvDistance/DsvpvDisErr)>2.97&&Dchi2cl>0.050&&%s",mvatk.Data());
-bool isPbPb=false;
+TString mvatk,mbtrg,prefilter,prefilterMC,prefilterSW,infname,infnameMC,mypath;
+bool isPbPb;
 
 
-void triggerturnondataPbPb(TString trigger="HLT_HIDmesonHITrackingGlobal_Dpt40_v1")
+void doAll(){
+void triggerturnondataPbPb(TString);
+triggerturnondataPbPb("HLT20");
+triggerturnondataPbPb("HLT40");
+triggerturnondataPbPb("HLT60");
+
+}
+
+void triggerturnondataPbPb(TString hlt="HLT20"){
+
+  void extract(TString,double,double,double);
+  double nbins,minpt,maxpt;
+  
+  mvatk = "(Dtrk1highPurity&&Dtrk2highPurity)";
+
+  if(hlt=="HLT60"){
+
+  mypath="HLT_HIDmesonHITrackingGlobal_Dpt60_v1";
+  mbtrg = "L1_SingleJet44_BptxAND==1&&(HLT_HIPuAK4CaloJet40_Eta5p1_v1||HLT_HIPuAK4CaloJet60_Eta5p1_v1||HLT_HIPuAK4CaloJet80_Eta5p1_v1)";
+  isPbPb=false;
+  infnameMC ="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0_dPt1tkPt1_pthatweight.root";
+  infname = "/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_jettriggerskim.root";
+  nbins=2;
+  minpt=60;
+  maxpt=100;
+  }
+
+
+  if(hlt=="HLT40"){
+
+  mypath="HLT_HIDmesonHITrackingGlobal_Dpt40_v1";
+  mbtrg = "L1_SingleS1Jet28_BptxAND==1&&(HLT_HIPuAK4CaloJet40_Eta5p1_v1||HLT_HIPuAK4CaloJet60_Eta5p1_v1||HLT_HIPuAK4CaloJet80_Eta5p1_v1)";
+  isPbPb=false;
+  infnameMC ="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0_dPt1tkPt1_pthatweight.root";
+  infname = "/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_jettriggerskim.root";
+  nbins=2;
+  minpt=40;
+  maxpt=80;
+  }
+  
+  if(hlt=="HLT20"){
+  
+  mypath="HLT_HIDmesonHITrackingGlobal_Dpt20_v2";
+  mbtrg = "(L1_MinimumBiasHF2_AND==1)&&(HLT_HIL1MinimumBiasHF2AND_part1_v1 || HLT_HIL1MinimumBiasHF2AND_part2_v1 || HLT_HIL1MinimumBiasHF2AND_part3_v1)";
+  isPbPb=false;
+  infnameMC ="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0_dPt1tkPt1_pthatweight.root";
+  //infname = "/data/jisun/PbPb2015/Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016.root";
+  infname="/data/dmeson2015/DataDntuple/Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016_skim.root";
+  nbins=2;
+  minpt=20;
+  maxpt=40;
+  }
+
+  prefilter = Form("Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&(DlxyBS/DlxyBSErr)>1.5&&Dalpha<0.12&&(DsvpvDistance/DsvpvDisErr)>2.97&&Dchi2cl>0.050&&%s&&%s",mvatk.Data(),mbtrg.Data());
+  prefilterMC = Form("Dgen==23333&&Dy>-1.&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&(DlxyBS/DlxyBSErr)>1.5&&Dalpha<0.12&&(DsvpvDistance/DsvpvDisErr)>2.97&&Dchi2cl>0.050&&%s",mvatk.Data());
+  prefilterSW = Form("Dgen==23344&&Dy>-1.&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&(DlxyBS/DlxyBSErr)>1.5&&Dalpha<0.12&&(DsvpvDistance/DsvpvDisErr)>2.97&&Dchi2cl>0.050&&%s",mvatk.Data());
+
+  extract(mypath.Data(),nbins,minpt,maxpt);
+
+}
+
+
+void extract(TString trigger="HLT_HIDmesonHITrackingGlobal_Dpt40_v1",double nbins=2,double minpt=2,double maxpt=2)
 {
   TH1D* getYield(TTree* nt, TTree* ntMC, TString triggerpass, TString triggername, TString prescale, TString variable, TString varname, TString varlatex, Int_t BIN_NUM, Double_t BIN_MIN, Double_t BIN_MAX, TString addcut="");
   void plotTurnOn(TH1D* hnominator, TH1D* hdenominator, TString triggerlegend, TString triggername, TString varname, TString varlatex, Int_t BIN_NUM, Double_t BIN_MIN, Double_t BIN_MAX);
 
-  TString infnameMC,infname;
-  infnameMC ="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0_dPt1tkPt1_pthatweight.root";
-  infname = "/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_jettriggerskim.root";
   TFile* infile = new TFile(infname);
   TTree* root = (TTree*)infile->Get("ntDkpi");
   root->AddFriend("ntHlt");
@@ -38,9 +93,9 @@ void triggerturnondataPbPb(TString trigger="HLT_HIDmesonHITrackingGlobal_Dpt40_v
 
   if(!isPbPb)
   {
-    TH1D* hpp_pt = getYield(root,rootMC,"","","","Dpt","pt","p_{T} (GeV/c)",2,40,100);
-    TH1D* hpp_pt_Hlt = getYield(root,rootMC,Form("&&%s",trigger.Data()),Form("_%s",trigger.Data()),"","Dpt","pt","p_{T} (GeV/c)",2,40,100);
-    plotTurnOn(hpp_pt_Hlt,hpp_pt,trigger,Form("_%s",trigger.Data()),"pt","p_{T} (GeV/c)",2,40,100);
+    TH1D* hpp_pt = getYield(root,rootMC,"","","","Dpt","pt","p_{T} (GeV/c)",nbins,minpt,maxpt);
+    TH1D* hpp_pt_Hlt = getYield(root,rootMC,Form("&&%s",trigger.Data()),Form("_%s",trigger.Data()),"","Dpt","pt","p_{T} (GeV/c)",nbins,minpt,maxpt);
+    plotTurnOn(hpp_pt_Hlt,hpp_pt,trigger,Form("_%s",trigger.Data()),"pt","p_{T} (GeV/c)",nbins,minpt,maxpt);
   }
 }
 

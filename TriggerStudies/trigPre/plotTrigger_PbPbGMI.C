@@ -101,11 +101,20 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
    // ============== Open file and basic settings ===============   
    // Open Dntuple file
    
+      // L1 trigger thresholds
+   TCut l1CutMBHF2And = "L1_MinimumBiasHF2_AND==1";
+   TCut l1Cut28 = "L1_SingleS1Jet28_BptxAND==1&&L1_SingleJet44_BptxAND==1";
+   TCut l1Cut44 = "L1_SingleJet44_BptxAND==1";
+   
+   TCut l1CutMBHF2AndMB = "L1_MinimumBiasHF2_AND==1";
+   TCut l1Cut28MB = "L1_SingleS1Jet28_BptxAND==1";
+   TCut l1Cut44MB = "L1_SingleJet44_BptxAND==1";
+
    TCut triggerHLTselMB = "(HLT_HIL1MinimumBiasHF2AND_part1_v1 || HLT_HIL1MinimumBiasHF2AND_part2_v1 || HLT_HIL1MinimumBiasHF2AND_part3_v1)";
    TCut triggerHLTsel = "(HLT_HIPuAK4CaloJet40_Eta5p1_v1||HLT_HIPuAK4CaloJet60_Eta5p1_v1||HLT_HIPuAK4CaloJet80_Eta5p1_v1)";
 
-   //TFile *inf = new TFile("/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_jettriggerskim.root");
-   TFile *inf = new TFile("/data/dmeson2015/DataDntuple/checktriggered.root");
+   TFile *inf = new TFile("/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_jettriggerskim.root");
+   //TFile *inf = new TFile("/data/dmeson2015/DataDntuple/checktriggered.root");
    TTree *ntDkpi = (TTree*)inf->Get("ntDkpi");
    TTree *ntHlt = (TTree*)inf->Get("ntHlt");
    TTree *ntSkim = (TTree*)inf->Get("ntSkim");
@@ -118,8 +127,8 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
       ntDkpi->AddFriend(ntHi);
    }
    
-   //TFile *infMB = new TFile("/data/jisun/PbPb2015/Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016.root");
-   TFile *infMB = new TFile("/data/dmeson2015/DataDntuple/smalltest.root");
+   TFile *infMB = new TFile("/data/jisun/PbPb2015/Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016.root");
+   //TFile *infMB = new TFile("/data/dmeson2015/DataDntuple/smalltest.root");
    TTree *ntDkpiMB = (TTree*)infMB->Get("ntDkpi");
    TTree *ntHltMB = (TTree*)infMB->Get("ntHlt");
    TTree *ntSkimMB = (TTree*)infMB->Get("ntSkim");
@@ -145,13 +154,6 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
    TH1D *hTmp = new TH1D ("hTmp","",nBin,bins);
    TH1D *hTmp2 = new TH1D ("hTmp2","",nBin,bins);
       
-   
-   // L1 trigger thresholds
-   TCut l1CutMBHF1And = "L1_MinimumBiasHF1_AND==1";
-   TCut l1CutMBHF2And = "L1_MinimumBiasHF2_AND==1";
-   TCut l1Cut28 = "L1_SingleS1Jet28_BptxAND==1";
-   TCut l1Cut44 = "L1_SingleJet44_BptxAND==1";
-
    // D meson selection
    TCut DmassCut             = "(abs(Dmass-1.8696)<0.03)";
    TCut DmesonCut            = "(DsvpvDistance/DsvpvDisErr)>3.5&&Dchi2cl>0.10&&Dalpha<0.12";
@@ -178,9 +180,9 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
    //TTree *t,TTree *t2, char *variable, TCut preselection,TCut preselection2, TCut cut, int nBin, Float_t *bins
    
    if(isSample==1){
-     g20  = getEfficiency(ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTselMB&&l1CutMBHF2And), HLTCut20, nBin, bins);
-     g40 = getEfficiency(ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTselMB&&l1Cut28), HLTCut40, nBin, bins);
-     g60 = getEfficiency(ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTselMB&&l1Cut44), HLTCut60, nBin, bins);
+     g20  = getEfficiency(ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTselMB&&l1CutMBHF2AndMB), HLTCut20, nBin, bins);
+     g40 = getEfficiency(ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTselMB&&l1Cut28MB), HLTCut40, nBin, bins);
+     g60 = getEfficiency(ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTselMB&&l1Cut44MB), HLTCut60, nBin, bins);
    }
 
    if(isSample==0){
@@ -189,9 +191,9 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
      g60 = getEfficiency(ntDkpi,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut44), HLTCut60, nBin, bins);
    }
    if(isSample==2){
-     g20  = getEfficiencySum(ntDkpi,ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1CutMBHF2And),TCut(DAnaCut&&triggerHLTselMB&&l1CutMBHF2And), HLTCut20, nBin, bins);
-     g40 = getEfficiencySum(ntDkpi,ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut28),TCut(DAnaCut&&triggerHLTselMB&&l1Cut28), HLTCut40, nBin, bins);
-     g60 = getEfficiencySum(ntDkpi,ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut44),TCut(DAnaCut&&triggerHLTselMB&&l1Cut44), HLTCut60, nBin, bins);
+     g20  = getEfficiencySum(ntDkpi,ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1CutMBHF2And),TCut(DAnaCut&&triggerHLTselMB&&l1CutMBHF2AndMB), HLTCut20, nBin, bins);
+     g40 = getEfficiencySum(ntDkpi,ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut28),TCut(DAnaCut&&triggerHLTselMB&&l1Cut28MB), HLTCut40, nBin, bins);
+     g60 = getEfficiencySum(ntDkpi,ntDkpiMB,Form("Max$(Dpt*(%s))",DAnaCut.GetTitle()), TCut(DAnaCut&&triggerHLTsel&&l1Cut44),TCut(DAnaCut&&triggerHLTselMB&&l1Cut44MB), HLTCut60, nBin, bins);
    }
 
 
