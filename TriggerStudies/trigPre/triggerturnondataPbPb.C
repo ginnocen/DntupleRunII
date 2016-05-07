@@ -38,9 +38,9 @@ void triggerturnondataPbPb(TString trigger="HLT_HIDmesonHITrackingGlobal_Dpt40_v
 
   if(!isPbPb)
   {
-    TH1D* hpp_pt = getYield(root,rootMC,"","","","Dpt","pt","p_{T} (GeV/c)",3,40,100);
-    TH1D* hpp_pt_Hlt = getYield(root,rootMC,Form("&&%s",trigger.Data()),Form("_%s",trigger.Data()),Form("*%s_Prescl",trigger.Data()),"Dpt","pt","p_{T} (GeV/c)",3,40,100);
-    plotTurnOn(hpp_pt_Hlt,hpp_pt,trigger,Form("_%s",trigger.Data()),"pt","p_{T} (GeV/c)",3,40,100);
+    TH1D* hpp_pt = getYield(root,rootMC,"","","","Dpt","pt","p_{T} (GeV/c)",2,40,100);
+    TH1D* hpp_pt_Hlt = getYield(root,rootMC,Form("&&%s",trigger.Data()),Form("_%s",trigger.Data()),"","Dpt","pt","p_{T} (GeV/c)",2,40,100);
+    plotTurnOn(hpp_pt_Hlt,hpp_pt,trigger,Form("_%s",trigger.Data()),"pt","p_{T} (GeV/c)",2,40,100);
   }
 }
 
@@ -234,12 +234,13 @@ TH1D* getYield(TTree* nt, TTree* ntMC, TString triggerpass, TString triggername,
 
 void plotTurnOn(TH1D* hnominator, TH1D* hdenominator, TString triggerlegend, TString triggername, TString varname, TString varlatex, Int_t BIN_NUM, Double_t BIN_MIN, Double_t BIN_MAX)
 {
-  TEfficiency* pEff = new TEfficiency(*hnominator,*hdenominator);
+  TH1D* hEff=(TH1D*)hnominator->Clone("hEff");
+  hEff->Divide(hEff, hdenominator,1,1,"b");
   TCanvas* cEff = new TCanvas(Form("c%s_Eff_%s",triggername.Data(),varname.Data()),"",500,500);
   TH2D* hempty = new TH2D(Form("hempty_%s_Eff_%s",triggername.Data(),varname.Data()),Form(";D^{0} %s;Pass efficiency",varlatex.Data()),BIN_NUM,BIN_MIN,BIN_MAX,10,0,1.2);
   hempty->SetStats(0);
   hempty->Draw();
-  pEff->Draw("PSAME");
+  hEff->Draw("PSAME");
   TLatex* tex = new TLatex(0.18,0.96,triggerlegend);
   tex->SetNDC();
   tex->SetTextFont(42);
@@ -247,4 +248,10 @@ void plotTurnOn(TH1D* hnominator, TH1D* hdenominator, TString triggerlegend, TSt
   tex->Draw();
   if(isPbPb) cEff->SaveAs(Form("triggerturnonPlots/data/pbpb/c%s_Eff_%s.pdf",triggername.Data(),varname.Data()));
   else cEff->SaveAs(Form("triggerturnonPlots/data/pp/c%s_Eff_%s.pdf",triggername.Data(),varname.Data()));
+  TFile *fout=new TFile(Form("fileoutput_%s_%s.root",triggername.Data(),varname.Data()),"recreate");
+  fout->cd();
+  hnominator->Write();
+  hdenominator->Write();
+  hEff->Write();
+  fout->Close();
 }
