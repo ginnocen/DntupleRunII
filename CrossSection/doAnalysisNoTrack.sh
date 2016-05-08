@@ -4,22 +4,21 @@ CENTPbPbMIN=0
 CENTPbPbMAX=100
 #Central point of the analysis
 
-DOANALYSISPP_FONLL=0
-DOANALYSISPP_TRGCOMBINATION=0
-DOANALYSISPP_FIT=0
-DOANALYSISPP_CROSS=0
-
+DOANALYSISPP_FONLL=1
+DOANALYSISPP_TRGCOMBINATION=1
+DOANALYSISPP_FIT=1
+DOANALYSISPP_CROSS=1
 DOANALYSISPP_MCSTUDY=0
 
-DOANALYSISPbPb_FONLL=0
-DOANALYSISPbPb_TRGCOMBINATION=0
-DOANALYSISPbPb_FIT=0
-DOANALYSISPbPb_CROSS=0
+DOANALYSISPbPb_FONLL=1
+DOANALYSISPbPb_TRGCOMBINATION=1
+DOANALYSISPbPb_FIT=1
+DOANALYSISPbPb_CROSS=1
 DOANALYSISPbPb_MCSTUDY=0
 
-DOANALYSISPPMB_FONLL=0
-DOANALYSISPPMB_FIT=0
-DOANALYSISPPMB_CROSS=0
+DOANALYSISPPMB_FONLL=1
+DOANALYSISPPMB_FIT=1
+DOANALYSISPPMB_CROSS=1
 DOANALYSISPPMB_MCSTUDY=0
 
 DOANALYSISPbPbMB_FONLL=1
@@ -91,7 +90,7 @@ INPUTDATAPPMBSKIMMED="/data/dmeson2015/DataDntuple/skim_Dntuple_crab_pp_MinimumB
 ## PbPb MONTE CARLO
 
 INPUTMCPbPb="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0_dPt1tkPt1_pthatweight.root"
-INPUTMCPbPbMB="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0pt0p0_Pthat10_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt1tkPt1_D0Ds.root"
+INPUTMCPbPbMB="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160330_Dfinder_20160329_PbPb_Pythia8_prompt_D0_dPt1tkPt0p5_pthatweight.root"
 INPUTMCNPPbPb="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_nonprompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_nonprompt_D0_dPt1tkPt1_pthatweight.root"
 INPUTMCPbPbPthat10="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0pt0p0_Pthat10_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt1tkPt1_D0Ds.root"
 INPUTMCPbPbPthat30="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_PbPb_Pythia8_prompt_D0pt0p0_Pthat30_TuneCUETP8M1_5020GeV_evtgen130_GEN_SIM_20160229_dPt1tkPt1_D0Ds.root"
@@ -102,13 +101,11 @@ INPUTMCPbPbPthat70="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_p
 
 INPUTDATAPbPbSKIMMED="/data/dmeson2015/DataDntuple/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_skimmed.root"
 INPUTDATAPbPbUNSKIMMED="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON.root"
-INPUTDATAPbPbMBUNSKIMMED="/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root"
-INPUTDATAPbPbMBSKIMMED="/data/dmeson2015/DataDntuple/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skim.root"
+INPUTDATAPbPbMBUNSKIMMED="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
+INPUTDATAPbPbMBSKIMMED="/data/dmeson2015/DataDntuple/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skim_newfilterPt2GeV.root"
 
-#old files
-#INPUTDATAPbPbMBUNSKIMMED="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
-#INPUTDATAPbPbMBSKIMMED="/data/jisun/PbPb2015/HF2and_tk1p0_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
-
+#for 1-2 GeV study
+#INPUTDATAPbPbMBSKIMMED="/data/dmeson2015/DataDntuple/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skim.root"
 
 ## CHARGED RAA
 CHARGEDHADRON="/afs/cern.ch/work/g/ginnocen/public/PlotRAA.root" 
