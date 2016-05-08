@@ -32,7 +32,8 @@ void StudyTrackingPP()
                                             
   TString label[nFiles] = {"std track sel", "no track chi2 cut", "no track hit","loose selection"};
 
-  int colors[nFiles] = {1,2,3,4};
+  int colors[nFiles] = {1,2,3};
+  int colors2[nFiles] = {4,6,7};
 
 
   TH1D* hPtSigma[nFiles];
@@ -157,14 +158,14 @@ void StudyTrackingPbPb()
   legendSigma->SetTextSize(0.045);
       
   for (int ifile=1;ifile<nFiles;ifile++){
-    hPtSigma[ifile] ->SetLineColor(colors[ifile]);
+    hPtSigma[ifile] ->SetLineColor(colors2[ifile]);
     hPtSigma[ifile] ->SetLineWidth(3);
-    hPtSigma[ifile] ->SetMarkerColor(colors[ifile]);
+    hPtSigma[ifile] ->SetMarkerColor(colors2[ifile]);
     hPtSigma[ifile] ->Draw("same");  
     entry[ifile]=legendSigma->AddEntry(hPtSigma[ifile],label[ifile].Data(),"f");
     entry[ifile]->SetTextFont(42);
-    entry[ifile]->SetLineColor(colors[ifile]);
-    entry[ifile]->SetMarkerColor(colors[ifile]);
+    entry[ifile]->SetLineColor(colors2[ifile]);
+    entry[ifile]->SetMarkerColor(colors2[ifile]);
   }
   legendSigma->Draw("same");
   

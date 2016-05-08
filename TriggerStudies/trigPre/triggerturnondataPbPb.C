@@ -18,8 +18,8 @@ bool isPbPb;
 
 void doAll(){
 void triggerturnondataPbPb(TString);
-triggerturnondataPbPb("HLT20");
-triggerturnondataPbPb("HLT40");
+//triggerturnondataPbPb("HLT20");
+//triggerturnondataPbPb("HLT40");
 triggerturnondataPbPb("HLT60");
 
 }
@@ -40,7 +40,7 @@ void triggerturnondataPbPb(TString hlt="HLT20"){
   infname = "/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_jettriggerskim.root";
   nbins=2;
   minpt=60;
-  maxpt=100;
+  maxpt=80;
   }
 
 
@@ -53,7 +53,7 @@ void triggerturnondataPbPb(TString hlt="HLT20"){
   infname = "/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_jettriggerskim.root";
   nbins=2;
   minpt=40;
-  maxpt=80;
+  maxpt=60;
   }
   
   if(hlt=="HLT20"){
@@ -275,14 +275,14 @@ TH1D* getYield(TTree* nt, TTree* ntMC, TString triggerpass, TString triggername,
     hDistrib->SetBinContent(ivar+1,yield);
     hDistrib->SetBinError(ivar+1,yieldErr);
 
-    if(isPbPb) c->SaveAs(Form("triggerturnonPlots/data/pbpb/c%s_Fit_%s_%.0f.pdf",triggername.Data(),varname.Data(),ivar));
-    else c->SaveAs(Form("triggerturnonPlots/data/pp/c%s_Fit_%s_%.0f.pdf",triggername.Data(),varname.Data(),ivar));
+    if(isPbPb) c->SaveAs(Form("fitefficiencyPbPb/c%s_Fit_%s_%.0f.pdf",triggername.Data(),varname.Data(),ivar));
+    else c->SaveAs(Form("fitefficiencyPP/c%s_Fit_%s_%.0f.pdf",triggername.Data(),varname.Data(),ivar));
   }
   TCanvas* cDistrib = new TCanvas(Form("c%s_Distrib_%s",triggername.Data(),varname.Data()),"",500,500);
   hDistrib->Draw();
   hDistrib->SetStats(0);
-  if(isPbPb) cDistrib->SaveAs(Form("triggerturnonPlots/data/pbpb/c%s_Distrib_%s.pdf",triggername.Data(),varname.Data()));
-  else cDistrib->SaveAs(Form("triggerturnonPlots/data/pp/c%s_Distrib_%s.pdf",triggername.Data(),varname.Data()));
+  if(isPbPb) cDistrib->SaveAs(Form("fitefficiencyPbPb/c%s_Distrib_%s.pdf",triggername.Data(),varname.Data()));
+  else cDistrib->SaveAs(Form("fitefficiencyPP/data/pp/c%s_Distrib_%s.pdf",triggername.Data(),varname.Data()));
 
   return hDistrib;
 }
@@ -301,9 +301,9 @@ void plotTurnOn(TH1D* hnominator, TH1D* hdenominator, TString triggerlegend, TSt
   tex->SetTextFont(42);
   tex->SetTextSize(0.04);
   tex->Draw();
-  if(isPbPb) cEff->SaveAs(Form("triggerturnonPlots/data/pbpb/c%s_Eff_%s.pdf",triggername.Data(),varname.Data()));
-  else cEff->SaveAs(Form("triggerturnonPlots/data/pp/c%s_Eff_%s.pdf",triggername.Data(),varname.Data()));
-  TFile *fout=new TFile(Form("fileoutput_%s_%s.root",triggername.Data(),varname.Data()),"recreate");
+  if(isPbPb) cEff->SaveAs(Form("fitefficiencyPbPb/c%s_Eff_%s.pdf",triggername.Data(),varname.Data()));
+  else cEff->SaveAs(Form("fitefficiencyPbPb/c%s_Eff_%s.pdf",triggername.Data(),varname.Data()));
+  TFile *fout=new TFile(Form("fitefficiencyPbPb/fileoutput_%s_%s.root",triggername.Data(),varname.Data()),"recreate");
   fout->cd();
   hnominator->Write();
   hdenominator->Write();

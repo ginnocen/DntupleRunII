@@ -155,7 +155,7 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
    TH1D *hTmp2 = new TH1D ("hTmp2","",nBin,bins);
       
    // D meson selection
-   TCut DmassCut             = "(abs(Dmass-1.8696)<0.03)";
+   TCut DmassCut             = "(abs(Dmass-1.8696)<0.025)";
    TCut DmesonCut            = "(DsvpvDistance/DsvpvDisErr)>3.5&&Dchi2cl>0.10&&Dalpha<0.12";
    TCut DmesonDaughterTrkCut="Dtrk1highPurity&&Dtrk1Pt>8.5&&abs(Dtrk1Eta)<2.0&&Dtrk2highPurity&&Dtrk2Pt>8.5&&abs(Dtrk2Eta)<2.0";
    if (sideband) DmassCut = "(abs(Dmass-1.8696)>0.06 && abs(Dmass-1.8696)>0.12)";
@@ -226,6 +226,9 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
    c->SaveAs(outf+"/Dmeson-HIHLTriggerEfficiency.C");
    TFile *fouput=new TFile(outf+"/fefficiency.root","recreate");
    fouput->cd();
+   g20->SetName("g20");
+   g40->SetName("g40");
+   g60->SetName("g60");
    g20->Write();
    g40->Write();
    g60->Write();
