@@ -78,15 +78,15 @@ void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_D
    
    // You only need the branches which can help you decide if you want to keep the event
    int Dsize;   
-   float Dpt[30000];
-   float Dalpha[30000];
-   float Dy[30000];
-   float Dtrk1Pt[30000];
-   float Dtrk2Pt[30000];
-   float Dtrk1Eta[30000];
-   float Dtrk2Eta[30000];
-   float DsvpvDistance[30000];
-   float DsvpvDisErr[30000];
+   float Dpt[15000];
+   float Dalpha[15000];
+   float Dy[15000];
+   float Dtrk1Pt[15000];
+   float Dtrk2Pt[15000];
+   float Dtrk1Eta[15000];
+   float Dtrk2Eta[15000];
+   float DsvpvDistance[15000];
+   float DsvpvDisErr[15000];
    
    ntDkpi->SetBranchAddress("Dsize",&Dsize);
    ntDkpi->SetBranchAddress("Dpt",Dpt);
