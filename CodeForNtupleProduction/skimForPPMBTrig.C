@@ -76,12 +76,12 @@ void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_Dntuple
    
    // You only need the branches which can help you decide if you want to keep the event
    int Dsize;   
-   float Dpt[30000];
-   float Dy[30000];
-   float Dtrk1Pt[30000];
-   float Dtrk2Pt[30000];
-   float DsvpvDistance[30000];
-   float DsvpvDisErr[30000];
+   float Dpt[15000];
+   float Dy[15000];
+   float Dtrk1Pt[15000];
+   float Dtrk2Pt[15000];
+   float DsvpvDistance[15000];
+   float DsvpvDisErr[15000];
    
    ntDkpi->SetBranchAddress("Dsize",&Dsize);
    ntDkpi->SetBranchAddress("Dpt",Dpt);
