@@ -43,7 +43,7 @@ void AddCloneTree(vector<TTree*> &cloneForest,TFile *outf, TTree* t, const char 
 }
 
 // main routine
-void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root", TString outfname="/data/dmeson2015/DataDntuple/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016_skimmedPt1.root")
+void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016.root", TString outfname="/data/dmeson2015/DataDntuple/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016_skimmed.root")
 {
    vector<TTree*> cloneForest;
    vector<TTree*> forest;
@@ -61,6 +61,7 @@ void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_ncand_D
    
    forest.push_back(ntDkpi);
    forest.push_back(ntHlt);
+   forest.push_back(ntHi);
    forest.push_back(ntSkim);
    forest.push_back(ntGen);
    
@@ -69,6 +70,7 @@ void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_ncand_D
 
    AddCloneTree(cloneForest,outf,ntDkpi,"ntDkpi");
    AddCloneTree(cloneForest,outf,ntHlt,"ntHlt");
+   AddCloneTree(cloneForest,outf,ntHi,"ntHi");
    AddCloneTree(cloneForest,outf,ntSkim,"ntSkim");
    AddCloneTree(cloneForest,outf,ntGen,"ntGen");
    
@@ -99,7 +101,7 @@ void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_ncand_D
 	 if (Dsize>0) {
 	   int ncand=0;
 	   for (int j=0;j<Dsize;j++) {
-	      if (Dpt[j]>1.&&Dtrk1Pt[j]>0.5&&Dtrk2Pt[j]>0.5&&Dy[j]>-1.1&&Dy[j]<1.1&&DsvpvDistance[j]/DsvpvDisErr[j]>3.) {
+	      if (Dpt[j]>0.9&&Dy[j]>-1.1&&Dy[j]<1.1&&DsvpvDistance[j]/DsvpvDisErr[j]>3.) {
 	         ncand++;
 		 break;
 	      }

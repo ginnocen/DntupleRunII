@@ -82,6 +82,8 @@ void skimForPbPbTrig(TString infname="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtB
    float Dtrk2Pt[15000];
    float DsvpvDistance[15000];
    float DsvpvDisErr[15000];
+   float Dalpha[15000];
+
    int HLT_HIDmesonHITrackingGlobal_Dpt20_v1;
    int HLT_HIDmesonHITrackingGlobal_Dpt40_v1;
    int HLT_HIDmesonHITrackingGlobal_Dpt60_v1;
@@ -96,6 +98,7 @@ void skimForPbPbTrig(TString infname="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtB
    ntDkpi->SetBranchAddress("Dtrk2Pt",Dtrk2Pt);
    ntDkpi->SetBranchAddress("DsvpvDistance",DsvpvDistance);
    ntDkpi->SetBranchAddress("DsvpvDisErr",DsvpvDisErr);
+   ntDkpi->SetBranchAddress("Dalpha",Dalpha);
    
    // main loop
    for (Long64_t i=0;i<ntDkpi->GetEntries()/1.;i++)
@@ -107,7 +110,7 @@ void skimForPbPbTrig(TString infname="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtB
 	 if (Dsize>0) {
 	   int ncand=0;
 	   for (int j=0;j<Dsize;j++) {
-	      if (Dpt[j]>19.&&Dtrk1Pt[j]>8.&&Dtrk2Pt[j]>8.&&Dy[j]>-1.1&&Dy[j]<1.1&&DsvpvDistance[j]/DsvpvDisErr[j]>3.) {
+	      if (Dpt[j]>19.&&Dalpha[j]<0.12&&Dtrk1Pt[j]>8.&&Dtrk2Pt[j]>8.&&Dy[j]>-1.1&&Dy[j]<1.1&&DsvpvDistance[j]/DsvpvDisErr[j]>2.9) {
 	         ncand++;
 		 break;
 	      }
