@@ -6,13 +6,13 @@ CENTPbPbMAX=100
 
 DOANALYSISPP_FONLL=0
 DOANALYSISPP_TRGCOMBINATION=0
-DOANALYSISPP_FIT=0
+DOANALYSISPP_FIT=1
 DOANALYSISPP_CROSS=1
 DOANALYSISPP_MCSTUDY=0
 
 DOANALYSISPbPb_FONLL=0
 DOANALYSISPbPb_TRGCOMBINATION=0
-DOANALYSISPbPb_FIT=0
+DOANALYSISPbPb_FIT=1
 DOANALYSISPbPb_CROSS=1
 DOANALYSISPbPb_MCSTUDY=0
 
@@ -22,7 +22,7 @@ DOANALYSISPPMB_CROSS=1
 DOANALYSISPPMB_MCSTUDY=0
 
 DOANALYSISPbPbMB_FONLL=0
-DOANALYSISPbPbMB_FIT=0
+DOANALYSISPbPbMB_FIT=1
 DOANALYSISPbPbMB_CROSS=1
 DOANALYSISPbPbMB_MCSTUDY=0
 
@@ -102,7 +102,7 @@ INPUTMCPbPbPthat70="/data/wangj/MC2015/Dntuple/PbPb/revised/ntD_PbPb_Dzero_kpi_p
 INPUTDATAPbPbSKIMMED="/data/dmeson2015/DataDntuple/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_skimmed.root"
 INPUTDATAPbPbUNSKIMMED="/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON.root"
 INPUTDATAPbPbMBUNSKIMMED="/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
-INPUTDATAPbPbMBSKIMMED="/data/dmeson2015/DataDntuple/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skim_newfilterPt2GeV.root"
+INPUTDATAPbPbMBSKIMMED="/data/jisun/PbPb2015/HF2and_tk1p0_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root"
 
 #for 1-2 GeV study
 #INPUTDATAPbPbMBSKIMMED="/data/dmeson2015/DataDntuple/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skim.root"
