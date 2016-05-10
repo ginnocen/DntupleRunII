@@ -3,8 +3,10 @@
 #include "TLegendEntry.h"
 #include "../Systematics/systematics.C"
 
-void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", Int_t isPbPb=1, Float_t centMin=0., Float_t centMax=100., Int_t isMerged=1)
+void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", Int_t isPbPb=0, Float_t centMin=0., Float_t centMax=100., Int_t isMerged=1)
 {
+
+  bool doComparisonLHC=false;
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
@@ -252,7 +254,96 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   gaeRatioCrossFONLLunityMB->SetLineWidth(1);
   gaeRatioCrossFONLLunityMB->SetLineColor(4);
   gaeRatioCrossFONLLunityMB->Draw("5same");
+  
+  
+  if(doComparisonLHC){
+  const int nBinsATLAS=9;
+  double ptBinsATLAS[nBinsATLAS+1] = {3.5,5.0,6.5,8.0,12.0,20.0,30.,40.,60.,100.};
+  double ptBinscenterATLAS[nBinsATLAS];
+  double zerosATLAS[nBinsATLAS];
 
+  const int nBinsALICE=9;
+  double ptBinsALICE[nBinsALICE+1] = {1.,2.,3.,4.,5.,6.,7.,8.,12.,16.};
+  double ptBinscenterALICE[nBinsALICE];
+  double zerosALICE[nBinsALICE];
+
+  double valuesALICE[nBinsALICE]={1.6,1.75,1.8,1.75,1.5,1.4,1.2,1.4,1.1};
+  double errorsvaluesALICEup[nBinsALICE]={0.5,0.25,0.3,0.3,0.25,0.25,0.25,0.23,0.23};
+  double errorsvaluesALICElow[nBinsALICE]={1.0,0.5,0.3,0.3,0.25,0.25,0.25,0.23,0.23};
+
+  double valuesATLAS[nBinsATLAS]={1./0.55,1./0.5,1./0.55,1./0.54,1./0.8,1./0.7,1./0.7,1./0.7,1./0.7};
+  double errorsvaluesATLASup[nBinsATLAS];
+  double errorsvaluesATLASlow[nBinsATLAS];
+  
+  errorsvaluesATLASup[0]=valuesATLAS[0]*0.15;
+  errorsvaluesATLASlow[0]=valuesATLAS[0]*0.15;
+  errorsvaluesATLASup[1]=valuesATLAS[1]*0.12;
+  errorsvaluesATLASlow[1]=valuesATLAS[1]*0.12;
+  errorsvaluesATLASup[2]=valuesATLAS[2]*0.10;
+  errorsvaluesATLASlow[2]=valuesATLAS[2]*0.10;
+  errorsvaluesATLASup[3]=valuesATLAS[3]*0.17;
+  errorsvaluesATLASlow[3]=valuesATLAS[3]*0.17;
+  errorsvaluesATLASup[4]=valuesATLAS[4]*0.10;
+  errorsvaluesATLASlow[4]=valuesATLAS[4]*0.10;
+  errorsvaluesATLASup[5]=valuesATLAS[5]*0.10;
+  errorsvaluesATLASlow[5]=valuesATLAS[5]*0.10;
+  errorsvaluesATLASup[6]=valuesATLAS[6]*0.12;
+  errorsvaluesATLASlow[6]=valuesATLAS[6]*0.12;
+  errorsvaluesATLASup[7]=valuesATLAS[7]*0.10;
+  errorsvaluesATLASlow[7]=valuesATLAS[7]*0.10;
+  errorsvaluesATLASup[8]=valuesATLAS[8]*0.2;
+  errorsvaluesATLASlow[8]=valuesATLAS[8]*0.2;
+
+  double aptlATLAS[nBinsATLAS];
+  double aptlALICE[nBinsALICE];
+  
+  for (int i=0;i<nBinsATLAS;i++){
+  ptBinscenterATLAS[i]=(ptBinsATLAS[i]+ptBinsATLAS[i+1])/2.;
+  ptBinscenterALICE[i]=(ptBinsALICE[i]+ptBinsALICE[i+1])/2.;
+  zerosATLAS[i]=0.;
+  zerosALICE[i]=0.;
+  aptlATLAS[i] = (ptBinsATLAS[i+1]-ptBinsATLAS[i])/2;
+  aptlALICE[i] = (ptBinsALICE[i+1]-ptBinsALICE[i])/2;
+  }
+    
+  TGraphAsymmErrors* gaeCrossSystATLAS = new TGraphAsymmErrors(nBinsATLAS,ptBinscenterATLAS,valuesATLAS,aptlATLAS,aptlATLAS,errorsvaluesATLASlow,errorsvaluesATLASup);
+  gaeCrossSystATLAS->SetName("gaeCrossSystATLAS");
+  gaeCrossSystATLAS->SetLineWidth(2);
+  gaeCrossSystATLAS->SetLineColor(kRed);
+  gaeCrossSystATLAS->SetFillColor(kRed);
+  gaeCrossSystATLAS->SetFillStyle(3002);
+  gaeCrossSystATLAS->Draw("5same");
+  
+  TGraphAsymmErrors* gaeCrossSystALICE = new TGraphAsymmErrors(nBinsALICE,ptBinscenterALICE,valuesALICE,aptlALICE,aptlALICE,errorsvaluesALICElow,errorsvaluesALICEup);
+  gaeCrossSystALICE->SetName("gaeCrossSystALICE");
+  gaeCrossSystALICE->SetLineWidth(2);
+  gaeCrossSystALICE->SetLineColor(kBlue);
+  gaeCrossSystALICE->SetFillColor(kBlue);
+  gaeCrossSystALICE->SetFillStyle(3002);
+  gaeCrossSystALICE->Draw("5same");
+  
+  TLegend *legendOtherexp=new TLegend(0.5385906,0.6925208,0.8691275,0.9252078,"");//0.5100806,0.5868644,0.8084677,0.7605932
+  legendOtherexp->SetBorderSize(0);
+  legendOtherexp->SetLineColor(0);
+  legendOtherexp->SetFillColor(0);
+  legendOtherexp->SetFillStyle(1001);
+  legendOtherexp->SetTextFont(42);
+  legendOtherexp->SetTextSize(0.055);
+
+  TLegendEntry *entATLAS = legendOtherexp->AddEntry(gaeCrossSystATLAS,"ATLAS 7 TeV (|y|<2)","pf");
+  entATLAS->SetTextFont(42);
+  entATLAS->SetLineColor(kRed);
+  entATLAS->SetMarkerColor(kRed);
+  entATLAS->SetTextColor(kRed);
+
+  TLegendEntry *entALICE = legendOtherexp->AddEntry(gaeCrossSystALICE,"ALICE 7 TeV (|y|<0.5)","pf");
+  entALICE->SetTextFont(42);
+  entALICE->SetLineColor(kBlue);
+  entALICE->SetMarkerColor(kBlue);
+  entALICE->SetTextColor(kBlue);
+  legendOtherexp->Draw();
+  }
+  
   gaeRatioCrossFONLLstatMB->SetMarkerSize(1);
   gaeRatioCrossFONLLstatMB->SetLineWidth(2);
   if(isMerged==1)
@@ -290,6 +381,8 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
       gaeRatioCrossFONLLstat->SetLineColor(kAzure+1);//4
       gaeRatioCrossFONLLstat->SetMarkerColor(kAzure+1);//4
     }
+    
+   
   gaeRatioCrossFONLLstat->Draw("epsame");
 
   gaeRatioCrossFONLLsyst->SetLineWidth(3);
@@ -298,6 +391,7 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   gaeRatioCrossFONLLsyst->Draw("5same");
 
   l->Draw("same");
+    
   if(isPbPb==1) cSigma->SaveAs(Form("plotCrossSection/CrossSectionComparison_%s_%.0f_%.0f.pdf",texPbPb.Data(),centMin,centMax));
   else cSigma->SaveAs(Form("plotCrossSection/CrossSectionComparison_%s.pdf",texPbPb.Data()));
   

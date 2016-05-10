@@ -15,6 +15,8 @@ rm FitsVariables/*.*
 rm plot*/*.*
 git checkout ROOTfiles
 git checkout ROOTfilesCent10
+git checkout ROOTfilesOld
+git checkout ROOTfilesCent10Old
 git checkout plotCrossSection 
 git checkout plotFits 
 git checkout plotOthers 
