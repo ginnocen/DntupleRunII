@@ -1,5 +1,6 @@
 #include "uti.h"
 #include "parameters.h"
+#include "TF1.h"
 
 Double_t setparam0=100.;
 Double_t setparam1=1.865;
@@ -21,7 +22,7 @@ TString selmcgen;
 TString collisionsystem;
 Float_t hiBinMin,hiBinMax,centMin,centMax;
 
-void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/nt_20160112_DfinderData_pp_20160111_dPt0tkPt1_D0Dstar3p5p_DCSJSON_v2.root", TString inputmc="/afs/cern.ch/work/w/wangj/public/Dmeson/ntD_20151110_DfinderMC_20151110_EvtMatching_Pythia_D0pt15p0_Pthat15_TuneZ2_5020GeV_GENSIM_75x_1015_20151110_ppGlobaTrackingPPmenuHFlowpuv11_MBseed_twang-Pythia_1107.root", TString trgselection="((HLT_DmesonPPTrackingGlobal_Dpt15_v1&&Dpt>25&&Dpt<40)||(HLT_DmesonPPTrackingGlobal_Dpt30_v1&&Dpt>40&&Dpt<60)||(HLT_DmesonPPTrackingGlobal_Dpt50_v1&&Dpt>60))",  TString cut="Dy>-1.&&Dy<1.&&(Dtrk1highPurity&&Dtrk2highPurity)&&(DsvpvDistance/DsvpvDisErr)>3.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1Pt>1.5&&Dtrk2Pt>1.5", TString cutmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))", int isMC=0, Double_t luminosity=26., int doweight=0, TString collsyst="PbPb", TString outputfile="mytest.root", Float_t centmin=0., Float_t centmax=100.)
+void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/ntD_EvtBase_20160330_HeavyFlavor_DfinderData_pp_20160329_dPt0tkPt1_D0Dstar3p5p_goldenjson_skim_myskim.root" , TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root", TString trgselection="((HLT_DmesonPPTrackingGlobal_Dpt15_v1&&Dpt>20&&Dpt<40)||(HLT_DmesonPPTrackingGlobal_Dpt30_v1&&Dpt>40&&Dpt<60)||(HLT_DmesonPPTrackingGlobal_Dpt50_v1&&Dpt>60))",  TString cut="Dy>-1.&&Dy<1.&&(Dtrk1highPurity&&Dtrk2highPurity)&&(DsvpvDistance/DsvpvDisErr)>3.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1Pt>1.5&&Dtrk2Pt>1.5", TString cutmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))", int isMC=0, Double_t luminosity=26., int doweight=0, TString collsyst="PP", TString outputfile="mytest.root", Float_t centmin=0., Float_t centmax=100.)
 {
   collisionsystem=collsyst;
   hiBinMin = centmin*2;
@@ -55,7 +56,7 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/nt_2016
   gStyle->SetTitleX(.0f);
 
   void clean0 (TH1D* h);
-  TF1* fit (TTree* nt, TTree* ntMC, double ptmin, double ptmax, int isMC,bool);
+  TF1* fit (TTree* nt, TTree* ntMC, double ptmin, double ptmax, int isMC,bool, TF1* &total);
 
   if(!doweight) weight="1";
   TFile* inf = new TFile(inputdata.Data());
@@ -81,27 +82,48 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/nt_2016
   TH1D* hMean = new TH1D("hMean","",nBins,ptBins);                       
   TH1D* hSigmaGaus1 = new TH1D("hSigmaGaus1","",nBins,ptBins); 
   TH1D* hSigmaGaus2 = new TH1D("hSigmaGaus2","",nBins,ptBins); 
-  TH1D* hRelMagnGaus1Gaus2 = new TH1D("hRelMagnGaus1Gaus2","",nBins,ptBins); 
-
+  TH1D* hRelMagnGausOverGaus2 = new TH1D("hRelMagnGausOverGaus2","",nBins,ptBins); 
+  TH1D* hSigmaGausRefl = new TH1D("hSigmaGausRefl","",nBins,ptBins); 
+  TH1D* hRelMagnReflOverSignal = new TH1D("hRelMagnReflOverSignal","",nBins,ptBins); 
   TH1D* hDcandidates = new TH1D("hDcandidates","",nBins,ptBins);
+  TF1 *totalmass;
+  
+  //mass [1]
+  //yield total signal [7]
+  //relative yield first gaussian [9]
+  //sigma first gaussian signal [2]*(1+[11])
+  //relative yield second gaussian 1-[9]
+  //sigma second gaussian signal [10]*(1+[11])
+  //yield reflection gaussian 1-[7]
+  //sigma reflection gaussian [8]*(1+[11])
+  
+  //mi serve
+  //mean [1]
+  //sigma seconda gaussiana [10]*(1+[11])
+  //sigma reflected gaussiana [8]*(1+[11])
+  //relative signal/swapped
 
   for(int i=0;i<nBins;i++)
     {
-      TF1* f = fit(nt,ntMC,ptBins[i],ptBins[i+1],isMC,isPbPb);
+      TF1* f = fit(nt,ntMC,ptBins[i],ptBins[i+1],isMC,isPbPb, totalmass);
       double yield = f->Integral(minhisto,maxhisto)/binwidthmass;
       double yieldErr = f->Integral(minhisto,maxhisto)/binwidthmass*f->GetParError(0)/f->GetParameter(0);
       hPt->SetBinContent(i+1,yield/(ptBins[i+1]-ptBins[i]));
       hPt->SetBinError(i+1,yieldErr/(ptBins[i+1]-ptBins[i]));
-      hMean->SetBinContent(i+1,f->GetParameter(1));
-      hMean->SetBinError(i+1,f->GetParError(1));
-      hSigmaGaus1->SetBinContent(i+1,f->GetParameter(2)*(1+f->GetParameter(6)));
-      hSigmaGaus1->SetBinError(i+1,f->GetParError(2)*(1+f->GetParameter(6)));
-      hSigmaGaus2->SetBinContent(i+1,f->GetParameter(5)*(1+f->GetParameter(6)));
-      hSigmaGaus2->SetBinError(i+1,f->GetParError(5)*(1+f->GetParameter(6)));
-      hRelMagnGaus1Gaus2->SetBinContent(i+1,f->GetParameter(4));
-      hRelMagnGaus1Gaus2->SetBinError(i+1,f->GetParError(4));
+      hMean->SetBinContent(i+1,totalmass->GetParameter(1));
+      hMean->SetBinError(i+1,totalmass->GetParError(1));
+      hSigmaGaus1->SetBinContent(i+1,totalmass->GetParameter(2)*(1+totalmass->GetParameter(11)));
+      hSigmaGaus1->SetBinError(i+1,totalmass->GetParError(2)*(1+totalmass->GetParameter(11)));
+      hSigmaGaus2->SetBinContent(i+1,totalmass->GetParameter(10)*(1+totalmass->GetParameter(11)));
+      hSigmaGaus2->SetBinError(i+1,totalmass->GetParError(10)*(1+totalmass->GetParameter(11)));
+      hRelMagnGausOverGaus2->SetBinContent(i+1,totalmass->GetParameter(9));
+      hRelMagnGausOverGaus2->SetBinError(i+1,totalmass->GetParError(9));
+      hSigmaGausRefl->SetBinContent(i+1,totalmass->GetParameter(8)*(1+totalmass->GetParameter(11)));
+      hSigmaGausRefl->SetBinError(i+1,totalmass->GetParError(8)*(1+totalmass->GetParameter(11)));
+      hRelMagnReflOverSignal->SetBinContent(i+1,totalmass->GetParameter(7));
+      hRelMagnReflOverSignal->SetBinError(i+1,totalmass->GetParError(7));
     }  
-
+    
   ntMC->Project("hPtMC","Dpt",TCut(weight)*(TCut(selmceff.Data())&&"(Dgen==23333)"));
   divideBinWidth(hPtMC);
   ntMC->Project("hPtRecoTruth","Dpt",TCut(selmceff.Data())&&"(Dgen==23333)");
@@ -166,7 +188,9 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/nt_2016
   hMean->Write();
   hSigmaGaus1->Write();
   hSigmaGaus2->Write();
-  hRelMagnGaus1Gaus2->Write();
+  hRelMagnGausOverGaus2->Write();
+  hSigmaGausRefl->Write();
+  hRelMagnReflOverSignal->Write();
   hDcandidates->Write();
   outf->Close();
 }
@@ -179,7 +203,7 @@ void clean0(TH1D* h)
     }
 }
 
-TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC,bool isPbPb)
+TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC,bool isPbPb,TF1* &total)
 {
   static int count=0;
   count++;
@@ -370,6 +394,8 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC,bool i
   tex->SetTextSize(0.04);
   tex->SetLineWidth(2);
   tex->Draw();
+  
+  total=f;
 
   h->GetFunction(Form("f%d",count))->Delete();
   TH1F* histo_copy_nofitfun = ( TH1F * ) h->Clone("histo_copy_nofitfun");
