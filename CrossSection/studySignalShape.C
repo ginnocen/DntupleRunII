@@ -1,6 +1,6 @@
 #include "uti.h"
 
-void studySignalShape()
+void studySignalShape(bool isPP=false)
 {
   
   gStyle->SetOptTitle(0);
@@ -12,9 +12,21 @@ void studySignalShape()
   const int nFiles=4;
   int colors[4]={1,1,2,2};
   
-  TString myfiles[nFiles] = { "ROOTfiles/hPtSpectrumDzeroPP.root","ROOTfiles/hPtSpectrumDzeroPPMB.root","ROOTfiles/hPtSpectrumDzeroPPMCClosure.root","ROOTfiles/hPtSpectrumDzeroPPMCClosure.root"};
-  //TString myfiles[nFiles] = { "ROOTfiles/hPtSpectrumDzeroPbPb.root","ROOTfiles/hPtSpectrumDzeroPbPbMB.root","ROOTfiles/hPtSpectrumDzeroPbPbMCClosure.root","ROOTfiles/hPtSpectrumDzeroPbPbMCClosure.root"};
-
+  TString myfiles[nFiles];
+  
+  if(isPP){
+  myfiles[0] ="ROOTfiles/hPtSpectrumDzeroPP.root";
+  myfiles[1] ="ROOTfiles/hPtSpectrumDzeroPPMB.root";
+  myfiles[2] ="ROOTfiles/hPtSpectrumDzeroPPMCClosure.root";
+  myfiles[3] ="ROOTfiles/hPtSpectrumDzeroPPMCClosure.root";
+  }
+  else{
+  myfiles[0] ="ROOTfiles/hPtSpectrumDzeroPbPb.root";
+  myfiles[1] ="ROOTfiles/hPtSpectrumDzeroPbPbMB.root";
+  myfiles[2] ="ROOTfiles/hPtSpectrumDzeroPbPbMCClosure.root";
+  myfiles[3] ="ROOTfiles/hPtSpectrumDzeroPbPbMBMCClosure.root";
+  }
+  
   double minhisto[nHistos] = { 1.86, 0,0,0};
   double maxhisto[nHistos] ={ 1.87, 0.04,0.3,1};
   double minxhisto=0.;
@@ -87,5 +99,7 @@ void studySignalShape()
       }
       }
   }
+  if(isPP) canvas->SaveAs("canvasSignalShapePP.pdf");
+  else canvas->SaveAs("canvasSignalShapePbPb.pdf");
 
 }
