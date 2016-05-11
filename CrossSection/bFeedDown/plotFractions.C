@@ -1,14 +1,14 @@
 using namespace std;
 #include "uti.h"
 
-#define BIN_NUM_PP 9
-Float_t ptbins_PP[BIN_NUM_PP+1] = {2,6,8,10,15,20,25,35,50,100};
-Float_t aPfracCtv_PP[BIN_NUM_PP] = {0.766, 0.843, 0.861, 0.889, 0.686, 0.834, 0.845, 0.898, 0.972};
-Float_t aPfracErr_PP[BIN_NUM_PP] = {0.010, 0.026, 0.030, 0.021, 0.036, 0.020, 0.017, 0.018, 0.032};
-#define BIN_NUM_PbPb 6
-Float_t ptbins_PbPb[BIN_NUM_PbPb+1] = {6,10,15,20,40,50,100};
-Float_t aPfracCtv_PbPb[BIN_NUM_PbPb] = {0.703, 0.905, 0.665, 0.954, 0.958, 0.920};
-Float_t aPfracErr_PbPb[BIN_NUM_PbPb] = {0.031, 0.039, 0.062, 0.021, 0.038, 0.047};
+#define BIN_NUM_PP 8
+Float_t ptbins_PP[BIN_NUM_PP+1] = {2,6,10,20,30,40,50,60,100};
+Float_t aPfracCtv_PP[BIN_NUM_PP] = {0.827,0.890,0.871,0.848,0.87,0.856,0.781,0.784};
+Float_t aPfracErr_PP[BIN_NUM_PP] = {0.09,0.017,0.028,0.02,0.016,0.036,0.031,0.043};
+#define BIN_NUM_PbPb 5
+Float_t ptbins_PbPb[BIN_NUM_PbPb+1] = {2,6,10,20,50,100};
+Float_t aPfracCtv_PbPb[BIN_NUM_PbPb] = {0.828,0.771, 0.803, 0.955, 0.92};
+Float_t aPfracErr_PbPb[BIN_NUM_PbPb] = {0.014, 0.016, 0.013, 0.017, 0.034};
 
 void plotFractions()
 {
