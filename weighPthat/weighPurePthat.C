@@ -2,10 +2,10 @@ using namespace std;
 #include "uti.h"
 #define MAX_GEN      6000
 
-int weighPthat(TString ifname = "",
-               TString ofname = "")
+int weighPurePthat(TString ifname = "",
+                   TString ofname = "")
 {
-  Bool_t isInsidebin(Float_t xpthat, Float_t xmaxgenpt, Int_t i);
+  Bool_t isInsidebin(Float_t xpthat, Int_t i);
   cout<<endl;
   cout<<" -- Checking if input and output files are same"<<endl;
   if(ifname==ofname)
@@ -41,14 +41,9 @@ int weighPthat(TString ifname = "",
       ntGen->GetEntry(i);
       ntHi->GetEntry(i);
       if(i%100000==0) cout<<"    Processing event "<<setiosflags(ios::left)<<setw(7)<<i<<" / "<<nentries<<endl;
-      Float_t maxpt=0;
-      for(Int_t k=0;k<Gsize;k++)
-        {
-          if((GisSignal[k]==genSignal[0]||GisSignal[k]==genSignal[1])&&Gpt[k]>maxpt) maxpt=Gpt[k];
-        }
       for(Int_t j=0;j<nBins;j++)
         {
-          if(isInsidebin(pthat,maxpt,j)) nweight[j]++;
+          if(isInsidebin(pthat,j)) nweight[j]++;
         }
     }
   cout<<" -- Weight results"<<endl;
@@ -84,7 +79,7 @@ int weighPthat(TString ifname = "",
       maxDgenpt = maxpt;
       for(Int_t j=0;j<nBins;j++)
         {
-          if(isInsidebin(pthat,maxpt,j))
+          if(isInsidebin(pthat,j))
             {
               pthatweight = weight[j];
             }
@@ -99,16 +94,15 @@ int weighPthat(TString ifname = "",
   return 1;
 }
 
-Bool_t isInsidebin(Float_t xpthat, Float_t xmaxgenpt, Int_t i)
+Bool_t isInsidebin(Float_t xpthat, Int_t i)
 {
   if(i>=nBins)
     {
       cout<<"    Error: invalid input"<<endl;
       return false;
     }
-  //if(xpthat>(xmaxgenpt*2.)) return false; 
-  if(i<(nBins-1)&&(xpthat>pthatBin[i]&&xmaxgenpt>pthatBin[i])&&!(xpthat>pthatBin[i+1]&&xmaxgenpt>pthatBin[i+1])) return true;
-  else if(i==(nBins-1)&&xpthat>pthatBin[i]&&xmaxgenpt>pthatBin[i]) return true;
+  if(i<(nBins-1)&&xpthat>pthatBin[i]&&xpthat<pthatBin[i+1]) return true;
+  else if(i==(nBins-1)&&xpthat>pthatBin[i]) return true;
   else return false;
 }
 
@@ -116,7 +110,7 @@ int main(int argc, char *argv[])
 {
   if(argc==3)
     {
-      weighPthat(argv[1], argv[2]);
+      weighPurePthat(argv[1], argv[2]);
       return 1;
     }
   else
