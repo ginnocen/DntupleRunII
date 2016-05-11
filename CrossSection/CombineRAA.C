@@ -225,12 +225,12 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   legendSigma->SetFillColor(0);
   legendSigma->SetFillStyle(0);
   legendSigma->SetTextFont(42);
-  legendSigma->SetTextSize(0.045);//0.05
+//  legendSigma->SetTextSize(0.045);//0.05
 
   if(isMerged==0)
     {
       TLegendEntry *ent_Dhighpt=legendSigma->AddEntry(gNuclearModification,"R_{AA} D triggers.","pf");
-      ent_Dhighpt->SetTextFont(42);
+ //     ent_Dhighpt->SetTextFont(42);
       ent_Dhighpt->SetLineColor(1);
       ent_Dhighpt->SetMarkerColor(1);
       ent_Dhighpt->SetTextSize(0.045);
@@ -238,14 +238,14 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       ent_DMB->SetTextFont(42);
       ent_DMB->SetLineColor(1);
       ent_DMB->SetMarkerColor(1);
-      ent_DMB->SetTextSize(0.045);
+     // ent_DMB->SetTextSize(0.045);
       if(isHadDupl==1)
         {
           TLegendEntry *ent_Charged=legendSigma->AddEntry(hTrackPt_trkCorr_PbPb_copy1,"R_{AA} charged hadrons","pl");//pf
-          ent_Charged->SetTextFont(42);
+   //       ent_Charged->SetTextFont(42);
           ent_Charged->SetLineColor(1);
           ent_Charged->SetMarkerColor(1);
-          ent_Charged->SetTextSize(0.045);//0.03
+//          ent_Charged->SetTextSize(0.045);//0.03
         }
     }
   else
@@ -254,14 +254,14 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       ent_Dhighpt->SetTextFont(42);
       ent_Dhighpt->SetLineColor(4);
       ent_Dhighpt->SetMarkerColor(4);
-      ent_Dhighpt->SetTextSize(0.043);
+  //    ent_Dhighpt->SetTextSize(0.043);
       if(isHadDupl==1)
         {
           TLegendEntry *ent_Charged=legendSigma->AddEntry(hTrackPt_trkCorr_PbPb_copy1,"R_{AA} charged hadrons","pl");//pf
           ent_Charged->SetTextFont(42);
           ent_Charged->SetLineColor(1);
           ent_Charged->SetMarkerColor(1);
-          ent_Charged->SetTextSize(0.043);//0.03
+    //      ent_Charged->SetTextSize(0.043);//0.03
         } 
     }
   if(isHadDupl==1||isMerged==0) legendSigma->Draw();
@@ -271,6 +271,8 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       TGraphAsymmErrors* gRAApion5TeV = (TGraphAsymmErrors*)filePredictions->Get("gRAApion5TeV");
       TGraphAsymmErrors* gRAADmeson5TeV = (TGraphAsymmErrors*)filePredictions->Get("gRAADmeson5TeV");
       TGraphAsymmErrors* gRAABmeson5TeV = (TGraphAsymmErrors*)filePredictions->Get("gRAABmeson5TeV");
+      TGraphErrors* gPHSDWOShadowing = new TGraphErrors("phsd502TeVWoShadowing.txt");
+      TGraphErrors* gPHSDWShadowing = new TGraphErrors("phsd502TeVWShadowing.txt");
 //      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV.txt");
       TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV-plot.txt");
       TGraph *gShanshanD5TeV = new TGraph("Shanshan-D-RAA_PbPb5020_00-10.dat");
@@ -290,14 +292,24 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gShanshanD5TeV->SetLineWidth(3);
       gShanshanD5TeV->SetLineColor(kGray+1);
       gShanshanD5TeV->Draw("c same");
+      
+      gPHSDWShadowing->SetLineColor(kGreen+2);
+      gPHSDWShadowing->SetLineWidth(3);
+      gPHSDWShadowing->Draw("c same");
+      gPHSDWOShadowing->SetLineColor(kGreen+2);
+      gPHSDWOShadowing->SetLineWidth(3);
+      gPHSDWOShadowing->SetLineStyle(2);
+      gPHSDWOShadowing->Draw("c same");
       //gRAApion5TeV->Draw("psame");
       gRAADmeson5TeV->Draw("psame");
       
+      
+      
       TLegendEntry *ent_theoryD=legendSigma->AddEntry(gRAADmeson5TeV,"CUJET3.0 D^{0}","l");//pf
-      ent_theoryD->SetTextFont(42);
+ //     ent_theoryD->SetTextFont(42);
       ent_theoryD->SetLineColor(4);  
       ent_theoryD->SetMarkerColor(4);
-      ent_theoryD->SetTextSize(0.043);//0.03
+  //    ent_theoryD->SetTextSize(0.043);//0.03
       
       //TLegendEntry *ent_theoryCharged=legendSigma->AddEntry(gRAApion5TeV,"CUJET3.0 #pi^{0}, h^{#pm}","l");//pf
       //ent_theoryCharged->SetTextFont(42);
@@ -307,6 +319,8 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       
       TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"Magdalena 5.1 TeV","lf");
       TLegendEntry *ent_theory_Shanshan =legendSigma->AddEntry(gShanshanD5TeV,"Shanshan 5.02 TeV","l");
+      TLegendEntry *ent_theory_PHSDW =legendSigma->AddEntry(gPHSDWShadowing,"PHSD w/ shadowing ","l");
+      TLegendEntry *ent_theory_PHSDWO =legendSigma->AddEntry(gPHSDWOShadowing,"PHSD w/o shadowing ","l");
     }
   
   TLatex* texSystnorm = new TLatex(0.23,0.70,"T_{AA} and lumi.");
