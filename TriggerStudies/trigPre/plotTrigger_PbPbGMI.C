@@ -111,9 +111,9 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
    TCut l1Cut44MB = "L1_SingleJet44_BptxAND==1";
 
    TCut triggerHLTselMB = "(HLT_HIL1MinimumBiasHF2AND_part1_v1 || HLT_HIL1MinimumBiasHF2AND_part2_v1 || HLT_HIL1MinimumBiasHF2AND_part3_v1)";
-   TCut triggerHLTsel = "(HLT_HIPuAK4CaloJet40_Eta5p1_v1||HLT_HIPuAK4CaloJet60_Eta5p1_v1||HLT_HIPuAK4CaloJet80_Eta5p1_v1)";
+   TCut triggerHLTsel = "(HLT_HIPuAK4CaloJet40_Eta5p1_v1||HLT_HIPuAK4CaloJet60_Eta5p1_v1||HLT_HIPuAK4CaloJet80_Eta5p1_v1||HLT_HIPuAK4CaloJet100_Eta5p1_v1)";
 
-   TFile *inf = new TFile("/data/wangj/Data2015/Dntuple/PbPb/ntD_EvtBase_20160405_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_FINALJSON_jettriggerskim.root");
+   TFile *inf = new TFile("/data/HeavyFlavourRun2/Data2015/Dntuple/PbPb/ntD_EvtBase_20160511_HIHardProbes_DfinderData_PbPb_20160402_dPt0tkPt2p5_D0Dstar3p5p_skimhltbranches.root");
    //TFile *inf = new TFile("/data/dmeson2015/DataDntuple/checktriggered.root");
    TTree *ntDkpi = (TTree*)inf->Get("ntDkpi");
    TTree *ntHlt = (TTree*)inf->Get("ntHlt");
@@ -147,9 +147,10 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
    }
 
    // Define bin size and bin width for trigger turnon curve histograms
+
    const int nBin = 15;
    Float_t bins[nBin+1]={0,5,10,15,18,20,25,30,35,40,45,55,60,65,70,80};
- 
+   
    // Templates for plotting  
    TH1D *hTmp = new TH1D ("hTmp","",nBin,bins);
    TH1D *hTmp2 = new TH1D ("hTmp2","",nBin,bins);
@@ -233,5 +234,131 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
    g40->Write();
    g60->Write();
    fouput->Close();
+}
+
+
+void plotturnon(){
+   
+
+   const int nfiles=3;
+
+   TFile *fouput=new TFile("result_PbPbHPPlusMB/fefficiency.root");
+   TGraphAsymmErrors *g[nfiles];
+   g[0]=(TGraphAsymmErrors*)fouput->Get("g20");
+   g[1]=(TGraphAsymmErrors*)fouput->Get("g40");
+   g[2]=(TGraphAsymmErrors*)fouput->Get("g60");
+   
+  TLegendEntry *entry[nfiles];
+  TString label[nfiles] = {"HLT D20", "HLT D40", "HLT D60"};
+  const int nBin = 15;
+  int colors[nfiles]={1,2,4};
+  
+  for (int m=0;m<nBin;m++){
+      Double_t x,y;
+      g[0]->GetPoint(m,x,y);  
+      if (x>40){
+      g[0]->SetPoint(m,0.,0.);
+      g[0]->SetPointError(0.0,0.,0.,0.);
+      }
+  }
+
+  int whichthreshold[nBin]={0,0,0,0,0,0,1,1,1,2,2};
+
+  double yvalue[nBin];
+  double yvaluehigh[nBin];
+  double yvaluelow[nBin];
+  double xvalue[nBin];
+  double xvaluehigh[nBin];
+  double xvaluelow[nBin];
+
+
+  for (int m=0;m<nBin;m++){
+    int mybin=whichthreshold[m];
+
+    Double_t x,y;
+    g[mybin]->GetPoint(m,x,y);  
+
+    yvalue[m]=y;
+    yvaluehigh[m]=g[mybin]->GetErrorYhigh(m);
+    yvaluelow[m]=g[mybin]->GetErrorYlow(m);
+    
+    xvalue[m]=x;
+    xvaluehigh[m]=g[mybin]->GetErrorXhigh(m);
+    xvaluelow[m]=g[mybin]->GetErrorXlow(m);
+    
+    cout<<xvalue[m]<<","<<xvaluelow[m]<<","<<xvaluehigh[m]<<","<<yvalue[m]<<","<<yvaluelow[m]<<","<<yvaluehigh[m]<<endl;
+
+  }
+
+  TGraphAsymmErrors* gaeTrigger = new TGraphAsymmErrors(nBin,xvalue,yvalue,xvaluelow,xvaluehigh,yvaluelow,yvaluehigh);
+  gaeTrigger->SetName("gaeTrigger");
+  gaeTrigger->SetMarkerStyle(20);
+  gaeTrigger->SetMarkerSize(0.8);
+
+  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,15,100.,10.,0.0,1.5);
+  hemptyRatio->GetXaxis()->CenterTitle();
+  hemptyRatio->GetYaxis()->CenterTitle();
+  hemptyRatio->GetYaxis()->SetTitle("HLT D meson trigger efficiency");
+  hemptyRatio->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
+  hemptyRatio->GetXaxis()->SetTitleOffset(1.);
+  hemptyRatio->GetYaxis()->SetTitleOffset(1.4);//1.3
+  hemptyRatio->GetXaxis()->SetTitleSize(0.045);
+  hemptyRatio->GetYaxis()->SetTitleSize(0.045);
+  hemptyRatio->GetXaxis()->SetTitleFont(42);
+  hemptyRatio->GetYaxis()->SetTitleFont(42);
+  hemptyRatio->GetXaxis()->SetLabelFont(42);
+  hemptyRatio->GetYaxis()->SetLabelFont(42);
+  hemptyRatio->GetXaxis()->SetLabelSize(0.04);
+  hemptyRatio->GetYaxis()->SetLabelSize(0.04);  
+  hemptyRatio->Draw();
+  
+  TLegend *legendSigma=new TLegend(0.4714765,0.3496503,0.8003356,0.5244755,"");//0.5100806,0.5868644,0.8084677,0.7605932
+  legendSigma->SetBorderSize(0);
+  legendSigma->SetLineColor(0);
+  legendSigma->SetFillColor(0);
+  legendSigma->SetFillStyle(1001);
+  legendSigma->SetTextFont(42);
+  legendSigma->SetTextSize(0.045);
+    
+
+   TCanvas *c = new TCanvas("c","",1200,600);
+   c->Divide(2,1);
+   c->cd(1);
+   hemptyRatio->Draw();
+  for (int ifile=0;ifile<nfiles;ifile++){
+    gPad->SetLogx();
+    g[ifile]->SetLineColor(colors[ifile]);
+    g[ifile]->SetMarkerColor(colors[ifile]);
+    g[ifile]->SetLineWidth(2);
+    g[ifile]->SetFillStyle(0); 
+    g[ifile]->Draw("epsame");  
+    entry[ifile]=legendSigma->AddEntry(g[ifile],label[ifile].Data(),"f");
+    entry[ifile]->SetTextFont(42);
+    entry[ifile]->SetLineColor(colors[ifile]);
+    entry[ifile]->SetMarkerColor(colors[ifile]);
+    
+  }
+  legendSigma->Draw("same");
+  
+   c->cd(2);
+   hemptyRatio->Draw();
+   gPad->SetLogx();
+   TF1 *f= new TF1("f","[0]+[1]*x",20,70);
+   gaeTrigger->Fit(f,"","",20,70);
+   
+   TF1 *fup= new TF1("f","[0]+[1]*x",20,70);
+   TF1 *flow= new TF1("f","[0]+[1]*x",20,70);
+    fup->SetParameter(1,f->GetParameter(1));
+    flow->SetParameter(1,f->GetParameter(1));
+    fup->SetParameter(0,f->GetParameter(0)+f->GetParError(0));
+    flow->SetParameter(0,f->GetParameter(0)-f->GetParError(0));
+    fup->Draw("same");
+    flow->Draw("same");
+    gaeTrigger->SetLineColor(1);
+    gaeTrigger->SetMarkerColor(1);
+    gaeTrigger->SetLineWidth(2);
+    gaeTrigger->SetFillStyle(0); 
+    gaeTrigger->Draw("epsame"); 
+
 }
 
