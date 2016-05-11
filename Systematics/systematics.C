@@ -58,21 +58,21 @@ bool initialized = 0;
 void initializationPP()
 {
    ppBFeedDownCorrection = new TH1D("ppBFeedDownCorrection","",nPtBins,PtBins);
-   ppBFeedDownCorrection->SetBinContent(1,	1.2);
-   ppBFeedDownCorrection->SetBinContent(2,	1.2);
-   ppBFeedDownCorrection->SetBinContent(3,	1.2);
-   ppBFeedDownCorrection->SetBinContent(4,	1.2);
-   ppBFeedDownCorrection->SetBinContent(5,	1.4);
-   ppBFeedDownCorrection->SetBinContent(6,	1.4);
-   ppBFeedDownCorrection->SetBinContent(7,	2.0);
-   ppBFeedDownCorrection->SetBinContent(8,	2.0);
-   ppBFeedDownCorrection->SetBinContent(9,	0.6);
-   ppBFeedDownCorrection->SetBinContent(10,	0.6);
-   ppBFeedDownCorrection->SetBinContent(11,	0.6);
-   ppBFeedDownCorrection->SetBinContent(12,	0.6);
-   ppBFeedDownCorrection->SetBinContent(13,	2.7);
-   ppBFeedDownCorrection->SetBinContent(14,	2.7);
-   ppBFeedDownCorrection->SetBinContent(15,	2.7);
+   ppBFeedDownCorrection->SetBinContent(1,	10);
+   ppBFeedDownCorrection->SetBinContent(2,	5);
+   ppBFeedDownCorrection->SetBinContent(3,	5);
+   ppBFeedDownCorrection->SetBinContent(4,	5);
+   ppBFeedDownCorrection->SetBinContent(5,	5);
+   ppBFeedDownCorrection->SetBinContent(6,	5);
+   ppBFeedDownCorrection->SetBinContent(7,	5);
+   ppBFeedDownCorrection->SetBinContent(8,	5);
+   ppBFeedDownCorrection->SetBinContent(9,	5);
+   ppBFeedDownCorrection->SetBinContent(10,	5);
+   ppBFeedDownCorrection->SetBinContent(11,	5);
+   ppBFeedDownCorrection->SetBinContent(12,	5);
+   ppBFeedDownCorrection->SetBinContent(13,	5);
+   ppBFeedDownCorrection->SetBinContent(14,	5);
+   ppBFeedDownCorrection->SetBinContent(15,	5);
 
    ppMesonSelection = new TH1D("ppMesonSelection","",nPtBins,PtBins);
    ppMesonSelection->SetBinContent(1,		3.6);
@@ -114,21 +114,21 @@ void initializationPP()
 void initializationPbPbCent0100()
 {
    PbPbBFeedDownCorrection = new TH1D("PbPbBFeedDownCorrection","",nPtBins,PtBins);
-   PbPbBFeedDownCorrection->SetBinContent(1,	0.6);
-   PbPbBFeedDownCorrection->SetBinContent(2,	0.6);
-   PbPbBFeedDownCorrection->SetBinContent(3,	0.6);
-   PbPbBFeedDownCorrection->SetBinContent(4,	0.6);
-   PbPbBFeedDownCorrection->SetBinContent(5,	2.0);
-   PbPbBFeedDownCorrection->SetBinContent(6,	2.0);
-   PbPbBFeedDownCorrection->SetBinContent(7,	1.7);
-   PbPbBFeedDownCorrection->SetBinContent(8,	1.7);
-   PbPbBFeedDownCorrection->SetBinContent(9,	1.6);
-   PbPbBFeedDownCorrection->SetBinContent(10,	1.6);
-   PbPbBFeedDownCorrection->SetBinContent(11,	1.6);
-   PbPbBFeedDownCorrection->SetBinContent(12,	1.6);
-   PbPbBFeedDownCorrection->SetBinContent(13,	3.6);
-   PbPbBFeedDownCorrection->SetBinContent(14,	3.6);
-   PbPbBFeedDownCorrection->SetBinContent(15,	3.6);
+   PbPbBFeedDownCorrection->SetBinContent(1,	10);
+   PbPbBFeedDownCorrection->SetBinContent(2,	8);
+   PbPbBFeedDownCorrection->SetBinContent(3,	8);
+   PbPbBFeedDownCorrection->SetBinContent(4,	8);
+   PbPbBFeedDownCorrection->SetBinContent(5,	8);
+   PbPbBFeedDownCorrection->SetBinContent(6,	8);
+   PbPbBFeedDownCorrection->SetBinContent(7,	8);
+   PbPbBFeedDownCorrection->SetBinContent(8,	8);
+   PbPbBFeedDownCorrection->SetBinContent(9,	8);
+   PbPbBFeedDownCorrection->SetBinContent(10,	8);
+   PbPbBFeedDownCorrection->SetBinContent(11,	8);
+   PbPbBFeedDownCorrection->SetBinContent(12,	8);
+   PbPbBFeedDownCorrection->SetBinContent(13,	8);
+   PbPbBFeedDownCorrection->SetBinContent(14,	8);
+   PbPbBFeedDownCorrection->SetBinContent(15,	8);
 
    PbPbMesonSelection = new TH1D("PbPbMesonSelection","",nPtBins,PtBins);
    PbPbMesonSelection->SetBinContent(1,		3.5);
