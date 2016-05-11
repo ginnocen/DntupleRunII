@@ -487,18 +487,92 @@ double lumiMB=0.831646;
   line40->Draw();
   line60->Draw();
 
+ TCanvas* cMBfocus = new TCanvas("cMBfocus","",1000,500);
+  cMBfocus->Divide(2,1);
+  cMBfocus->cd(1);
+  TH2F* hemptyMBfocus=new TH2F("hemptyMBfocus","",50,20,40.,10.,0.,3);
+  hemptyMBfocus->GetXaxis()->CenterTitle();
+  hemptyMBfocus->GetYaxis()->CenterTitle();
+  hemptyMBfocus->GetYaxis()->SetTitle("Corrected D counting/Central values");
+  hemptyMBfocus->GetXaxis()->SetTitleOffset(1.);
+  hemptyMBfocus->GetYaxis()->SetTitleOffset(1.4);//1.3
+  hemptyMBfocus->GetXaxis()->SetTitleSize(0.045);
+  hemptyMBfocus->GetYaxis()->SetTitleSize(0.045);
+  hemptyMBfocus->GetXaxis()->SetTitleFont(42);
+  hemptyMBfocus->GetYaxis()->SetTitleFont(42);
+  hemptyMBfocus->GetXaxis()->SetLabelFont(42);
+  hemptyMBfocus->GetYaxis()->SetLabelFont(42);
+  hemptyMBfocus->GetXaxis()->SetLabelSize(0.04);
+  hemptyMBfocus->GetYaxis()->SetLabelSize(0.04);  
+  hemptyMBfocus->Draw();
+  
+  TH1D*hMBfocus=(TH1D*)hDcandidatesRatios[0]->Clone("hMBfocus");
+  hMBfocus->Divide(hYieldRatios[0] );
+  
+  hDcandidatesRatios[0] ->SetLineColor(1);
+  hDcandidatesRatios[0] ->SetLineWidth(3);
+  hDcandidatesRatios[0] ->SetLineWidth(6);
+  hDcandidatesRatios[0] ->SetMarkerColor(2);
+  hDcandidatesRatios[0] ->Draw("psame");  
+
+  hYieldRatios[0] ->SetLineColor(2);
+  hYieldRatios[0] ->SetLineWidth(3);
+  hYieldRatios[0] ->SetLineWidth(6);
+  hYieldRatios[0] ->SetMarkerColor(2);
+  hYieldRatios[0] ->Draw("psame");  
+
+
+  TLegend *legendSigmaMBfocus=new TLegend(0.311747,0.6945694,0.6401439,0.8740055,"");//0.5100806,0.5868644,0.8084677,0.7605932
+  legendSigmaMBfocus->SetBorderSize(0);
+  legendSigmaMBfocus->SetLineColor(0);
+  legendSigmaMBfocus->SetFillColor(0);
+  legendSigmaMBfocus->SetFillStyle(1001);
+  legendSigmaMBfocus->SetTextFont(42);
+  legendSigmaMBfocus->SetTextSize(0.045);
+  
+  TLegendEntry *myentry;
+  myentry=legendSigmaMBfocus->AddEntry(hDcandidatesRatios[0] ,"Ratio MB/D20 with bin counting","f");
+  myentry->SetTextFont(42);
+  myentry->SetLineColor(1);
+  myentry->SetMarkerColor(1);
+  myentry=legendSigmaMBfocus->AddEntry(hYieldRatios[0] ,"Ratio MB/D20 with fit extraction","f");
+  myentry->SetTextFont(42);
+  myentry->SetLineColor(1);
+  myentry->SetMarkerColor(1);
+  legendSigmaMBfocus->Draw();
+  
+  TLine *lunity = new TLine(20,1,40,1);
+  lunity->SetLineWidth(3);
+  lunity->SetLineStyle(2);
+  lunity->Draw();
+
+  cMBfocus->cd(2);
+  TH2F* hemptyMBfocus2=new TH2F("hemptyMBfocus2","",50,20,40.,10.,0.,3);
+  hemptyMBfocus2->GetXaxis()->CenterTitle();
+  hemptyMBfocus2->GetYaxis()->CenterTitle();
+  hemptyMBfocus2->GetYaxis()->SetTitle("Ratio counting/Fit");
+  hemptyMBfocus2->GetXaxis()->SetTitleOffset(1.);
+  hemptyMBfocus2->GetYaxis()->SetTitleOffset(1.4);//1.3
+  hemptyMBfocus2->GetXaxis()->SetTitleSize(0.045);
+  hemptyMBfocus2->GetYaxis()->SetTitleSize(0.045);
+  hemptyMBfocus2->GetXaxis()->SetTitleFont(42);
+  hemptyMBfocus2->GetYaxis()->SetTitleFont(42);
+  hemptyMBfocus2->GetXaxis()->SetLabelFont(42);
+  hemptyMBfocus2->GetYaxis()->SetLabelFont(42);
+  hemptyMBfocus2->GetXaxis()->SetLabelSize(0.04);
+  hemptyMBfocus2->GetYaxis()->SetLabelSize(0.04);  
+  hemptyMBfocus2->Draw();
+
+  hMBfocus->Draw("same");
+
   if(isTriggerCorrected){
   canvasPrescale->SaveAs("TriggerTests/canvasPrescaleDataDrivenPbPb.pdf");
-  //cTriggerEff->SaveAs("TriggerTests/TriggerEffPbPb.pdf");
-  //canvas->SaveAs("TriggerTests/canvasLumiPbPb.pdf");
-  //cSigma->SaveAs("TriggerTests/TriggerCrossSectionPbPb.pdf");
+  cMBfocus->SaveAs("TriggerTests/cMBfocus.pdf");
   cSigmaRatioTrigger->SaveAs("TriggerTests/TriggerCrossSectionRatioPbPb.pdf");
   }
   else{
   canvasPrescale->SaveAs("TriggerTests/canvasPrescaleDataDrivenPbPb_TriggerUncorrected.pdf");
-  //cTriggerEff->SaveAs("TriggerTests/TriggerEffPbPb_TriggerUncorrected.pdf");
-  //canvas->SaveAs("TriggerTests/canvasLumiPbPb_TriggerUncorrected.pdf");
-  //cSigma->SaveAs("TriggerTests/TriggerCrossSectionPbPb_TriggerUncorrected.pdf");
+  cMBfocus->SaveAs("TriggerTests/cMBfocus_TriggerUncorrected.pdf");
   cSigmaRatioTrigger->SaveAs("TriggerTests/TriggerCrossSectionRatioPbPb_TriggerUncorrected.pdf");
   }
 }
