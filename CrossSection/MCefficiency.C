@@ -29,11 +29,14 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   TFile* infMC = new TFile(inputmc.Data());
   TTree* ntMC = (TTree*)infMC->Get("ntDkpi");
   TTree* ntGen = (TTree*)infMC->Get("ntGen");
+  TTree* ntSkim = (TTree*)infMC->Get("ntSkim");
   ntMC->AddFriend(ntGen);
+  ntMC->AddFriend(ntSkim);
   
 
   TTree* nthi = (TTree*)infMC->Get("ntHi");
   ntGen->AddFriend(nthi);
+  ntGen->AddFriend(ntSkim);
   nthi->AddFriend(ntMC);
   ntMC->AddFriend(nthi);
 
