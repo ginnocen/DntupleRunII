@@ -30,6 +30,8 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/ntD_Evt
   centMin = centmin;
   centMax = centmax;
   
+  double ErrorOnSigma(double width, double errwidth, double smear, double errsmearing);
+  
   if (!(usePbPb==1||usePbPb==0)) std::cout<<"ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!, you are using a non valid isPbPb option"<<std::endl;
   bool isPbPb=(bool)(usePbPb);
 
@@ -112,14 +114,19 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/ntD_Evt
       hPt->SetBinError(i+1,yieldErr/(ptBins[i+1]-ptBins[i]));
       hMean->SetBinContent(i+1,totalmass->GetParameter(1));
       hMean->SetBinError(i+1,totalmass->GetParError(1));
+      
+      double errorsigma1=ErrorOnSigma(totalmass->GetParameter(2),totalmass->GetParError(2),totalmass->GetParameter(11),totalmass->GetParError(11));
+      double errorsigma2=ErrorOnSigma(totalmass->GetParameter(10),totalmass->GetParError(10),totalmass->GetParameter(11),totalmass->GetParError(11));
+      double errorrefl=ErrorOnSigma(totalmass->GetParameter(8),totalmass->GetParError(8),totalmass->GetParameter(11),totalmass->GetParError(11));
+      
       hSigmaGaus1->SetBinContent(i+1,totalmass->GetParameter(2)*(1+totalmass->GetParameter(11)));
-      hSigmaGaus1->SetBinError(i+1,totalmass->GetParError(2)*(1+totalmass->GetParameter(11)));
+      hSigmaGaus1->SetBinError(i+1,errorsigma1);
       hSigmaGaus2->SetBinContent(i+1,totalmass->GetParameter(10)*(1+totalmass->GetParameter(11)));
-      hSigmaGaus2->SetBinError(i+1,totalmass->GetParError(10)*(1+totalmass->GetParameter(11)));
+      hSigmaGaus2->SetBinError(i+1,errorsigma2);
       hRelMagnGausOverGaus2->SetBinContent(i+1,totalmass->GetParameter(9));
       hRelMagnGausOverGaus2->SetBinError(i+1,totalmass->GetParError(9));
       hSigmaGausRefl->SetBinContent(i+1,totalmass->GetParameter(8)*(1+totalmass->GetParameter(11)));
-      hSigmaGausRefl->SetBinError(i+1,totalmass->GetParError(8)*(1+totalmass->GetParameter(11)));
+      hSigmaGausRefl->SetBinError(i+1,errorrefl);
       hRelMagnReflOverSignal->SetBinContent(i+1,totalmass->GetParameter(7));
       hRelMagnReflOverSignal->SetBinError(i+1,totalmass->GetParError(7));
     }  
@@ -425,5 +432,14 @@ int main(int argc, char *argv[])
       std::cout << "Wrong number of inputs" << std::endl;
       return 1;
     }
+}
+
+
+
+double ErrorOnSigma(double width, double errwidth, double smear, double errsmearing){
+double squarederroronsigma=(1+smear)*(1+smear)*errwidth*errwidth+width*width*errsmearing*errsmearing;
+double erroronsigma=TMath::Sqrt(squarederroronsigma);
+return erroronsigma;
+
 }
 

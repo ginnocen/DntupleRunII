@@ -18,7 +18,7 @@ void studySignalShape(bool isPP=false)
   myfiles[0] ="ROOTfiles/hPtSpectrumDzeroPP.root";
   myfiles[1] ="ROOTfiles/hPtSpectrumDzeroPPMB.root";
   myfiles[2] ="ROOTfiles/hPtSpectrumDzeroPPMCClosure.root";
-  myfiles[3] ="ROOTfiles/hPtSpectrumDzeroPPMCClosure.root";
+  myfiles[3] ="ROOTfiles/hPtSpectrumDzeroPPMBMCClosure.root";
   }
   else{
   myfiles[0] ="ROOTfiles/hPtSpectrumDzeroPbPb.root";
@@ -57,7 +57,7 @@ void studySignalShape(bool isPP=false)
     gPad->SetLogx();
      hempty[ihisto]=new TH1D(Form("hempty_%d",ihisto),"",100,0,100);
      hempty[ihisto]  ->Draw();
-    for (int ifile=0;ifile<nFiles;ifile++){
+    for (int ifile=0;ifile<2;ifile++){
       cout<<"ihisto="<<ihisto<<",ifile="<<ifile<<endl;
       hempty[ihisto]  ->SetLineWidth(3);
       hempty[ihisto]->GetYaxis()->CenterTitle();
