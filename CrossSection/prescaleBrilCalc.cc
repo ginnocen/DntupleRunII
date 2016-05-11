@@ -119,6 +119,7 @@ double TAA=392.4/(70.*1e9);
 double lumiMB=TAA*ncountsMBPbPb;
 double lumiHighpt=lumiMB/prescalePbPbMB;      
 
+
 cout<<"******************* LUMI PbPb 0-100 *******************"<<endl;
 
 std::cout<<"Luminosity brilcalc low pt="<<lumiMB<<std::endl;
@@ -135,5 +136,12 @@ double lumiHighpt010=lumiMB010/prescalePbPbMB;
 
 std::cout<<"Luminosity brilcalc low pt 010="<<lumiMB010<<std::endl;
 std::cout<<"Luminosity brilcalc high pt 010="<<lumiHighpt010<<std::endl;
+
+
+/*
+
+lumi_bril=21.633
+Nevents=1.48357e+08/0.72
+*/
 
 }
