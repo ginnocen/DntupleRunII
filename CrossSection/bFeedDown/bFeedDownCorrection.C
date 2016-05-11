@@ -16,7 +16,7 @@ float bFeedDownCorrection(double pt, bool isPbPb)
       } else if (pt>6&&pt<10) {
 	 val = 0.890; // 1.7%
       }else if (pt>10&&pt<20) {
-	 val = 0.87.1; // 2.8%
+	 val = 0.871; // 2.8%
       } else if (pt>20&&pt<30) {
         val = 0.848; // 2.0%
       } else if (pt>30&&pt<40) {
@@ -34,16 +34,16 @@ float bFeedDownCorrection(double pt, bool isPbPb)
      if (pt>1&&pt<2) {
        val = 1.000;
      } else if (pt>2&&pt<6) {
-       val = 1.000;
+       val = 0.828;
      } else if (pt>6&&pt<10) {
-       val = 0.946;
+       val = 0.771;
      }else if (pt>10&&pt<20) {
-       val = 0.960;
-     } else if (pt>20&&pt<50) {
-       val = 1.000;
-     } else if (pt>50&&pt<100) { 
-       val = 0.976;
-     }
+       val = 0.803; // 1.3%
+      } else if (pt>20&&pt<50) {
+        val = 0.955; // 0.8%
+      } else if (pt>50&&pt<100) {
+        val = 0.92; // 3.4%
+      }
    }
    return val;
 }
