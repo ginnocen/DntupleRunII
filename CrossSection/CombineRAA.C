@@ -205,14 +205,14 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
 
   TString texper="%";
   //TLatex * tlatexeff2=new TLatex(0.65,0.20,Form("Centrality %.0f-%.0f%s",centMin,centMax,texper.Data()));//0.2612903,0.8425793
-  TLatex * tlatexeff2 = new TLatex(0.52,0.60,Form("Centrality %.0f-%.0f%s",centMin,centMax,texper.Data()));//0.2612903,0.8425793
+  TLatex * tlatexeff2 = new TLatex(0.41,0.60,Form("Centrality %.0f-%.0f%s",centMin,centMax,texper.Data()));//0.2612903,0.8425793
   tlatexeff2->SetNDC();
   tlatexeff2->SetTextColor(1);
   tlatexeff2->SetTextFont(42);
   tlatexeff2->SetTextSize(0.043);
   tlatexeff2->SetLineWidth(2);
   tlatexeff2->Draw();
-  TLatex * texY = new TLatex(0.52,0.55,"|y| < 1");//0.2612903,0.8425793
+  TLatex * texY = new TLatex(0.41,0.55,"|y| < 1");//0.2612903,0.8425793
   texY->SetNDC();
   texY->SetTextColor(1);
   texY->SetTextFont(42);
