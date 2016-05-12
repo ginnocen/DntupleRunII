@@ -11,6 +11,7 @@ void studyBfeed(bool isPP=false)
   gStyle->SetMarkerStyle(20);
 
   const int nFiles=2;
+
     
   TString mynamefilesEffP[nFiles];
   TString mynamefilesEffNP[nFiles];
@@ -119,15 +120,15 @@ void studyBfeed(bool isPP=false)
    }
 }
    
-  TCanvas* canvas = new TCanvas("canvas","",1000,600);
+  TCanvas* canvas = new TCanvas("canvas","",600,600);
 
   TH2F* hempty=new TH2F("hempty","",50,0.,100.,10,0,1.2);  
   hempty->GetXaxis()->CenterTitle();
   hempty->GetYaxis()->CenterTitle();
-  hempty->GetYaxis()->SetTitle("FONLL*efficiency");
+  hempty->GetYaxis()->SetTitle("f_{prompt estimation}");
   hempty->GetXaxis()->SetTitle("p_{T}");
   hempty->GetXaxis()->SetTitleOffset(0.9);
-  hempty->GetYaxis()->SetTitleOffset(0.95);
+  hempty->GetYaxis()->SetTitleOffset(1.1);
   hempty->GetXaxis()->SetTitleSize(0.05);
   hempty->GetYaxis()->SetTitleSize(0.05);
   hempty->GetXaxis()->SetTitleFont(42);
@@ -142,11 +143,32 @@ void studyBfeed(bool isPP=false)
   
       gratio[ifile]  ->SetLineColor(1);
       gratio[ifile]  ->SetMarkerColor(1);
+      gratio[ifile]  ->SetFillStyle(0);
       gratio[ifile]  ->Draw("psame");  
       dataPoints[ifile]  ->SetLineColor(2);
       dataPoints[ifile]  ->SetMarkerColor(2);
+      dataPoints[ifile]  ->SetFillStyle(0);
       dataPoints[ifile]  ->Draw("psame");  
   }
+
+  TLegend *legend=new TLegend(0.2332215,0.2814685,0.5620805,0.4020979,"");//0.5100806,0.5868644,0.8084677,0.7605932
+  legend->SetBorderSize(0);
+  legend->SetLineColor(0);
+  legend->SetFillColor(0);
+  legend->SetFillStyle(1001);
+  legend->SetTextFont(42);
+  legend->SetTextSize(0.04);
+
+  entry=legend->AddEntry(gratio[0],"FONLL prompt fraction","f");
+  entry->SetTextFont(42);
+  entry->SetLineColor(1);
+  entry->SetMarkerColor(1);
+  entry=legend->AddEntry(dataPoints[0],"Decay length data driven fraction","f");
+  entry->SetTextFont(42);
+  entry->SetLineColor(2);
+  entry->SetMarkerColor(2);  
+  legend->Draw();
+  
   if(isPP) canvas->SaveAs("canvasNPfractionPP.pdf");
   else canvas->SaveAs("canvasNPfractionPbPb.pdf");
 
