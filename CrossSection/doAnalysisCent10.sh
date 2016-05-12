@@ -201,7 +201,7 @@ OUTPUTFILERAA="ROOTfilesCent10/outputRAA.root"
 
 LUMIPbPb=6.53096 #from brilcalc
 ISMCPbPb=0
-ISDOWEIGHTPbPb=0
+ISDOWEIGHTPbPb=2
 SELGENPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
 SELGENPPACCPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0"
 RECOONLYPbPb="pprimaryVertexFilter&&phfCoincFilter3&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3"
@@ -348,7 +348,7 @@ OUTPUTFILERAAMB="ROOTfilesCent10/outputRAAMB.root"
 
 LUMIPbPbMB=0.350197  #from brilcalc
 ISMCPbPbMB=0
-ISDOWEIGHTPbPbMB=0
+ISDOWEIGHTPbPbMB=2
 SELGENPbPbMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
 SELGENACCPbPbMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<1.5&&abs(Gtk2eta)<1.5&&Gtk1pt>1.0&&Gtk2pt>1.0"
 RECOONLYPbPbMB="pprimaryVertexFilter&&phfCoincFilter3&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dtrk2Pt>1.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5"
@@ -489,7 +489,7 @@ LABELPPMCClosure="PPMCClosure"
 
 LUMIPbPbMCClosure=1
 ISMCPbPbMCClosure=1
-ISDOWEIGHTPbPbMCClosure=0
+ISDOWEIGHTPbPbMCClosure=2
 TRGPbPbMCClosure="1"
 LABELPbPbMCClosure="PbPbMCClosure"
 
@@ -513,13 +513,13 @@ OUTPUTFILEPPMBMCClosure="ROOTfilesCent10/hPtSpectrumDzeroPPMBMCClosure.root"
 OUTPUTFILEPbPbMBMCClosure="ROOTfilesCent10/hPtSpectrumDzeroPbPbMBMCClosure.root"
 LUMIPPMBMCClosure=1
 ISMCPPMBMCClosure=1
-ISDOWEIGHTPPMBMCClosure=0
+ISDOWEIGHTPPMBMCClosure=1
 TRGPPMBMCClosure="1"
 LABELPPMBMCClosure="PPMBMCClosure"
 
 LUMIPbPbMBMCClosure=1
 ISMCPbPbMBMCClosure=1
-ISDOWEIGHTPbPbMBMCClosure=0
+ISDOWEIGHTPbPbMBMCClosure=2
 TRGPbPbMBMCClosure="1"
 LABELPbPbMBMCClosure="PbPbMBMCClosure"
 

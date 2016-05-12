@@ -247,18 +247,19 @@ void plotturnon(){
    g[0]=(TGraphAsymmErrors*)fouput->Get("g20");
    g[1]=(TGraphAsymmErrors*)fouput->Get("g40");
    g[2]=(TGraphAsymmErrors*)fouput->Get("g60");
-   
+
   TLegendEntry *entry[nfiles];
   TString label[nfiles] = {"HLT D20", "HLT D40", "HLT D60"};
   const int nBin = 17;
   int colors[nfiles]={1,2,4};
-  
+
   for (int m=0;m<nBin;m++){
       Double_t x,y;
       g[0]->GetPoint(m,x,y);  
       if (x>40){
       g[0]->SetPoint(m,0.,0.);
-      g[0]->SetPointError(0.0,0.,0.,0.);
+      g[0]->SetPointEYlow(m,0);
+      g[0]->SetPointEYhigh(m,0);
       }
   }
 
@@ -359,6 +360,7 @@ void plotturnon(){
     gaeTrigger->SetLineWidth(2);
     gaeTrigger->SetFillStyle(0); 
     gaeTrigger->Draw("epsame"); 
+    c->SaveAs("result_PbPbHPPlusMB/Dmeson-HLTfinaltriggerefficiency.pdf");
 
 }
 
