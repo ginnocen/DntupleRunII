@@ -41,7 +41,7 @@ double PbPbNMBUncertainty	= 2;			// uncertainty associated with minbias events,
 							// used in RAA for pT < 20 GeV (4/7/2016)
 double TAAUncertainty0to100	= 2.5;			// Updated number (4/7/2016)
 double TAAUncertainty0to10	= 1.8;			// Updated number (4/7/2016)
-double PbPbTrigger		= 0.6;			// Statistical uncertainty of the eff plateau (92.8+-0.6%)
+double PbPbTrigger		= 2.0;			// Statistical uncertainty of the zero-coefficient of the linear fit
 double PbPbLumiUncertainty	= 10;			// 10% for the moment, to be updated (from Daniel), NOT used
 
 // Point-to-point
