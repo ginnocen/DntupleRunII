@@ -490,7 +490,7 @@ double lumiMB=0.831646;
  TCanvas* cMBfocus = new TCanvas("cMBfocus","",1000,500);
   cMBfocus->Divide(2,1);
   cMBfocus->cd(1);
-  TH2F* hemptyMBfocus=new TH2F("hemptyMBfocus","",50,20,40.,10.,0.,3);
+  TH2F* hemptyMBfocus=new TH2F("hemptyMBfocus","",50,20,40.,10.,0.5,1.5);
   hemptyMBfocus->GetXaxis()->CenterTitle();
   hemptyMBfocus->GetYaxis()->CenterTitle();
   hemptyMBfocus->GetYaxis()->SetTitle("Corrected D counting/Central values");
@@ -507,7 +507,7 @@ double lumiMB=0.831646;
   hemptyMBfocus->Draw();
   
   TH1D*hMBfocus=(TH1D*)hDcandidatesRatios[0]->Clone("hMBfocus");
-  hMBfocus->Divide(hYieldRatios[0] );
+  hMBfocus->Divide(hYieldRatios[0]);
   
   hDcandidatesRatios[0] ->SetLineColor(1);
   hDcandidatesRatios[0] ->SetLineWidth(3);
@@ -547,7 +547,7 @@ double lumiMB=0.831646;
   lunity->Draw();
 
   cMBfocus->cd(2);
-  TH2F* hemptyMBfocus2=new TH2F("hemptyMBfocus2","",50,20,40.,10.,0.,3);
+  TH2F* hemptyMBfocus2=new TH2F("hemptyMBfocus2","",50,20,40.,10.,0.5,1.5);
   hemptyMBfocus2->GetXaxis()->CenterTitle();
   hemptyMBfocus2->GetYaxis()->CenterTitle();
   hemptyMBfocus2->GetYaxis()->SetTitle("Ratio counting/Fit");
@@ -562,6 +562,7 @@ double lumiMB=0.831646;
   hemptyMBfocus2->GetXaxis()->SetLabelSize(0.04);
   hemptyMBfocus2->GetYaxis()->SetLabelSize(0.04);  
   hemptyMBfocus2->Draw();
+  lunity->Draw();
 
   hMBfocus->Draw("same");
 

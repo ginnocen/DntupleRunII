@@ -148,8 +148,8 @@ void plotTrigger_PbPbGMI(TString sample="JetTriggeredPlusMB")
 
    // Define bin size and bin width for trigger turnon curve histograms
 
-   const int nBin = 15;
-   Float_t bins[nBin+1]={0,5,10,15,18,20,25,30,35,40,45,55,60,65,70,80};
+   const int nBin = 17;
+   Float_t bins[nBin+1]={0,5,10,15,18,20,25,30,35,40,45,55,60,65,70,80,90,100};
    
    // Templates for plotting  
    TH1D *hTmp = new TH1D ("hTmp","",nBin,bins);
@@ -247,22 +247,23 @@ void plotturnon(){
    g[0]=(TGraphAsymmErrors*)fouput->Get("g20");
    g[1]=(TGraphAsymmErrors*)fouput->Get("g40");
    g[2]=(TGraphAsymmErrors*)fouput->Get("g60");
-   
+
   TLegendEntry *entry[nfiles];
   TString label[nfiles] = {"HLT D20", "HLT D40", "HLT D60"};
-  const int nBin = 15;
+  const int nBin = 17;
   int colors[nfiles]={1,2,4};
-  
+
   for (int m=0;m<nBin;m++){
       Double_t x,y;
       g[0]->GetPoint(m,x,y);  
       if (x>40){
       g[0]->SetPoint(m,0.,0.);
-      g[0]->SetPointError(0.0,0.,0.,0.);
+      g[0]->SetPointEYlow(m,0);
+      g[0]->SetPointEYhigh(m,0);
       }
   }
 
-  int whichthreshold[nBin]={0,0,0,0,0,0,1,1,1,2,2};
+  int whichthreshold[nBin]={0,0,0,0,0,0,1,1,1,2,2,2,2};
 
   double yvalue[nBin];
   double yvaluehigh[nBin];
@@ -319,7 +320,7 @@ void plotturnon(){
   legendSigma->SetFillStyle(1001);
   legendSigma->SetTextFont(42);
   legendSigma->SetTextSize(0.045);
-    
+
 
    TCanvas *c = new TCanvas("c","",1200,600);
    c->Divide(2,1);
@@ -339,15 +340,15 @@ void plotturnon(){
     
   }
   legendSigma->Draw("same");
-  
+
    c->cd(2);
    hemptyRatio->Draw();
    gPad->SetLogx();
-   TF1 *f= new TF1("f","[0]+[1]*x",20,70);
-   gaeTrigger->Fit(f,"","",20,70);
-   
-   TF1 *fup= new TF1("f","[0]+[1]*x",20,70);
-   TF1 *flow= new TF1("f","[0]+[1]*x",20,70);
+   TF1 *f= new TF1("f","[0]+[1]*x",20,100);
+   gaeTrigger->Fit(f,"","",20,100);
+
+   TF1 *fup= new TF1("f","[0]+[1]*x",20,100);
+   TF1 *flow= new TF1("f","[0]+[1]*x",20,100);
     fup->SetParameter(1,f->GetParameter(1));
     flow->SetParameter(1,f->GetParameter(1));
     fup->SetParameter(0,f->GetParameter(0)+f->GetParError(0));
@@ -359,6 +360,7 @@ void plotturnon(){
     gaeTrigger->SetLineWidth(2);
     gaeTrigger->SetFillStyle(0); 
     gaeTrigger->Draw("epsame"); 
+    c->SaveAs("result_PbPbHPPlusMB/Dmeson-HLTfinaltriggerefficiency.pdf");
 
 }
 

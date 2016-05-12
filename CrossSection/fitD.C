@@ -14,7 +14,7 @@ Double_t maxhisto=2.0;
 Double_t nbinsmasshisto=60;
 Double_t binwidthmass=(maxhisto-minhisto)/nbinsmasshisto;
 
-TString weight = "pthatweight";
+TString weight;
 TString seldata;
 TString selmc;
 TString selmceff;
@@ -60,7 +60,13 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/ntD_Evt
   void clean0 (TH1D* h);
   TF1* fit (TTree* nt, TTree* ntMC, double ptmin, double ptmax, int isMC,bool, TF1* &total);
 
-  if(!doweight) weight="1";
+  if(doweight==0) weight="1";
+  if(doweight==1) weight="pthatweight";
+  if(doweight==2) weight="(0.104044-0.00155184*hiBin+7.42445e-6*hiBin*hiBin-1.10964e-8*hiBin*hiBin*hiBin)";
+  if(doweight<0 || doweight>2) std::cout<<"ERROR, this weighting option is not defined"<<std::endl;
+  
+  std::cout<<"we are using weight="<<weight<<std::endl;
+  
   TFile* inf = new TFile(inputdata.Data());
   TFile* infMC = new TFile(inputmc.Data());
 
