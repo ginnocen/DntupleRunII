@@ -310,7 +310,6 @@ void RAA_0_100()
    box->SetFillColor(ci);
    box->Draw();
 
-   /*
    box = new TBox(103.6,0.6950113,120.8,0.8441899);
    ci = TColor::GetColor("#ffaaaa");
    box->SetFillColor(ci);
@@ -330,13 +329,12 @@ void RAA_0_100()
    ci = TColor::GetColor("#ffaaaa");
    box->SetFillColor(ci);
    box->Draw();
-
+   /*
    box = new TBox(250,0.762439,400,0.9260844);
    ci = TColor::GetColor("#ffaaaa");
    box->SetFillColor(ci);
    box->Draw();
-   */
-   /*
+
    double xAxis62[38] = {0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4, 3.2, 4, 4.8, 5.6, 6.4, 7.2, 9.6, 12, 14.4, 19.2, 24, 28.8, 35.2, 41.6, 48, 60.8, 73.6, 86.4, 103.6, 120.8, 140, 165, 250, 400}; 
    
    TH1D *RAA_0_10062 = new TH1D("RAA_0_10062","",37, xAxis62);
@@ -506,19 +504,19 @@ void RAA_0_100()
    RAA_0_100_copy63->SetBinContent(30,0.6571701);
    RAA_0_100_copy63->SetBinContent(31,0.7123546);
    RAA_0_100_copy63->SetBinContent(32,0.7498177);
-   /*
+
    RAA_0_100_copy63->SetBinContent(33,0.7696006);
    RAA_0_100_copy63->SetBinContent(34,0.7838902);
    RAA_0_100_copy63->SetBinContent(35,0.8553915);
    RAA_0_100_copy63->SetBinContent(36,0.8737696);
    RAA_0_100_copy63->SetBinContent(37,0.8442617);
-   */
+   /*
    RAA_0_100_copy63->SetBinContent(33,-1);
    RAA_0_100_copy63->SetBinContent(34,-1);
    RAA_0_100_copy63->SetBinContent(35,-1);
    RAA_0_100_copy63->SetBinContent(36,-1);
    RAA_0_100_copy63->SetBinContent(37,-1);
-
+   */
    RAA_0_100_copy63->SetBinError(1,6.270133e-05);
    RAA_0_100_copy63->SetBinError(2,4.624946e-05);
    RAA_0_100_copy63->SetBinError(3,5.123776e-05);

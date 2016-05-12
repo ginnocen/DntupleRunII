@@ -3,6 +3,7 @@ using namespace std;
 #include "ChargedHad/RAA_0_10.C"
 #include "ChargedHad/RAA_0_100.C"
 #include "TLegendEntry.h"
+#include "TGraphErrors.h"
 #include "../Systematics/systematics.C"
 
 void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file="ROOTfilesCent10/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", TString predictions="../TheoryPredictions/PredictionsCUJET3_pt_0_10.root", Float_t centMin=0., Float_t centMax=10., Int_t isHadDupl=1, Int_t isMerged=1,Int_t isTheoryComparison=1)
@@ -44,7 +45,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   canvasRAA->SetLogx();
 
   TH2F* hemptyEff;
-  if(isHadDupl==1) hemptyEff=new TH2F("hemptyEff","",50,0.7,120.,10.,0,1.45); else hemptyEff=new TH2F("hemptyEff","",50,1.0,120.,10.,0,1.45);//50,-2,120.,10.,0,1.5
+  if(isHadDupl==1) hemptyEff=new TH2F("hemptyEff","",50,0.7,300.,10.,0,1.45); else hemptyEff=new TH2F("hemptyEff","",50,1.0,300.,10.,0,1.45);//50,-2,120.,10.,0,1.5
   hemptyEff->GetXaxis()->CenterTitle();
   hemptyEff->GetYaxis()->CenterTitle();
   hemptyEff->GetYaxis()->SetTitle("D^{0} R_{AA}");
@@ -65,7 +66,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   hemptyEff->Draw();
 
   TLine *line;
-  if(isHadDupl==1) line = new TLine(0.7,1,120,1); else line = new TLine(1.0,1,120,1);
+  if(isHadDupl==1) line = new TLine(0.7,1,300,1); else line = new TLine(1.0,1,300,1);
   line->SetLineStyle(2);
   line->SetLineWidth(2);
   line->Draw();
