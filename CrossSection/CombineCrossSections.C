@@ -6,7 +6,7 @@
 void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", Int_t isPbPb=0, Float_t centMin=0., Float_t centMax=100., Int_t isMerged=1)
 {
 
-  bool doComparisonLHC=false;
+  bool doComparisonLHC=true;
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
@@ -391,10 +391,14 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   gaeRatioCrossFONLLsyst->Draw("5same");
 
   l->Draw("same");
-    
+  if(!doComparisonLHC){
   if(isPbPb==1) cSigma->SaveAs(Form("plotCrossSection/CrossSectionComparison_%s_%.0f_%.0f.pdf",texPbPb.Data(),centMin,centMax));
   else cSigma->SaveAs(Form("plotCrossSection/CrossSectionComparison_%s.pdf",texPbPb.Data()));
-  
+  }
+  else{
+  if(isPbPb==1) cSigma->SaveAs(Form("plotCrossSection/CrossSectionComparisonExperiments_%s_%.0f_%.0f.pdf",texPbPb.Data(),centMin,centMax));
+  else cSigma->SaveAs(Form("plotCrossSection/CrossSectionComparisonExperiments_%s.pdf",texPbPb.Data()));  
+  }
   
   TCanvas* cFprompt = new TCanvas("cFprompt","",550,500);
   TH2F* hemptyPrompt=new TH2F("hemptyPrompt","",50,0.,110.,10.,0,1.3);  
