@@ -6,7 +6,7 @@
 void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", Int_t isPbPb=0, Float_t centMin=0., Float_t centMax=100., Int_t isMerged=1)
 {
 
-  bool doComparisonLHC=true;
+  bool doComparisonLHC=false;
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
