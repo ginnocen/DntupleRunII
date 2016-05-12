@@ -10,7 +10,7 @@ float triggerEfficiency(double pt, double HLT, bool isPbPb)
       // correction factor for PbPb collisions
       val = 1;
       TF1 *fL1 = new TF1("fL1","TMath::Erf(x*[1]+[2])*0.5*(1-[0])+0.5*(1+[0])");
-      TF1 *fHLT = new TF1("[0]+[1]*x");
+      TF1 *fHLT = new TF1("fHLT","[0]+[1]*x");
       if (HLT==20) {
          fL1->SetParameters(-4.5400e3,3.09974e-1,2.31049);
       } else if (HLT==40) {
@@ -29,8 +29,9 @@ float triggerEfficiency(double pt, double HLT, bool isPbPb)
          val = 1e10; // veto
 	 std::cout <<"using D candidate below HLT threshold!!"<<std::endl;
       } else {
-         //fHLT->SetParameters(8.80693e-01,8.37858e-04);
-         val = fHLT->Eval(pt);
+         fHLT->SetParameters(8.80693e-01,8.37858e-04);
+         val = fHLT->Eval(pt); 
+         
       }
       
       val *= fL1->Eval(pt);
