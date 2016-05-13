@@ -21,7 +21,7 @@ double DKpiBRUncertainty	= 1.29;			// from PDG
 // =============================================================================================================
 
 // Normalization uncertainty
-double ppLumiUncertainty 	= 5;			// 5% for the moment, to be updated (4/7/2016)
+double ppLumiUncertainty 	= 12;			// 5% for the moment, to be updated (4/7/2016)
 
 // Point-to-point
 double ppTrackingEfficiency 	= 4;   			// single track systematics from D* studies
