@@ -8,8 +8,8 @@
 // Unit: In percentage
 
 // =============================================================================================================
-const int nPtBins = 15;
-double PtBins[nPtBins+1] = { 2, 3, 4, 5, 6, 8, 10, 15, 20, 25, 30, 40, 50, 60, 80, 100};
+const int nPtBins = 14;
+double PtBins[nPtBins+1] = { 2, 3, 4, 5, 6, 8, 10, 12.5,15.0, 20, 25, 30, 40, 60, 100};
 
 // =============================================================================================================
 // D meson decay
@@ -72,7 +72,6 @@ void initializationPP()
    ppBFeedDownCorrection->SetBinContent(12,	5);
    ppBFeedDownCorrection->SetBinContent(13,	5);
    ppBFeedDownCorrection->SetBinContent(14,	5);
-   ppBFeedDownCorrection->SetBinContent(15,	5);
 
    ppMesonSelection = new TH1D("ppMesonSelection","",nPtBins,PtBins);
    ppMesonSelection->SetBinContent(1,		3.6);
@@ -83,13 +82,12 @@ void initializationPP()
    ppMesonSelection->SetBinContent(6,		3.6);
    ppMesonSelection->SetBinContent(7,		3.6);
    ppMesonSelection->SetBinContent(8,		3.6);
-   ppMesonSelection->SetBinContent(9,		0.5);
+   ppMesonSelection->SetBinContent(9,		3.6);
    ppMesonSelection->SetBinContent(10,		0.5);
    ppMesonSelection->SetBinContent(11,		0.5);
    ppMesonSelection->SetBinContent(12,		0.5);
    ppMesonSelection->SetBinContent(13,		0.5);
    ppMesonSelection->SetBinContent(14,		0.5);
-   ppMesonSelection->SetBinContent(15,		0.5);
 
    ppSignalExtraction = new TH1D("ppSignalExtraction","",nPtBins,PtBins);
    ppSignalExtraction->SetBinContent(1,		8.2);
@@ -99,14 +97,13 @@ void initializationPP()
    ppSignalExtraction->SetBinContent(5,		3.0);
    ppSignalExtraction->SetBinContent(6,		1.7);
    ppSignalExtraction->SetBinContent(7,		2.1);
-   ppSignalExtraction->SetBinContent(8,		4.0);
-   ppSignalExtraction->SetBinContent(9,		2.0);
-   ppSignalExtraction->SetBinContent(10,	1.6);
-   ppSignalExtraction->SetBinContent(11,	2.3);
-   ppSignalExtraction->SetBinContent(12,	2.8);
-   ppSignalExtraction->SetBinContent(13,	5.2);
-   ppSignalExtraction->SetBinContent(14,	5.2); //was 2.4
-   ppSignalExtraction->SetBinContent(15,	7.6);
+   ppSignalExtraction->SetBinContent(8,		2.1);
+   ppSignalExtraction->SetBinContent(9,		4.0);
+   ppSignalExtraction->SetBinContent(10,		2.0);
+   ppSignalExtraction->SetBinContent(11,	1.6);
+   ppSignalExtraction->SetBinContent(12,	2.3);
+   ppSignalExtraction->SetBinContent(13,	2.8);
+   ppSignalExtraction->SetBinContent(14,	5.2); 
     
    fPPPtShape->SetParameters(0.999265,-0.0458006,-0.181359,0);
    }
@@ -128,7 +125,6 @@ void initializationPbPbCent0100()
    PbPbBFeedDownCorrection->SetBinContent(12,	8);
    PbPbBFeedDownCorrection->SetBinContent(13,	8);
    PbPbBFeedDownCorrection->SetBinContent(14,	8);
-   PbPbBFeedDownCorrection->SetBinContent(15,	8);
 
    PbPbMesonSelection = new TH1D("PbPbMesonSelection","",nPtBins,PtBins);
    PbPbMesonSelection->SetBinContent(1,		3.5);
@@ -139,13 +135,12 @@ void initializationPbPbCent0100()
    PbPbMesonSelection->SetBinContent(6,		3.5);
    PbPbMesonSelection->SetBinContent(7,		3.5);
    PbPbMesonSelection->SetBinContent(8,		3.5);
-   PbPbMesonSelection->SetBinContent(9,		2.7);
+   PbPbMesonSelection->SetBinContent(9,		3.5);
    PbPbMesonSelection->SetBinContent(10,		2.7);
    PbPbMesonSelection->SetBinContent(11,		2.7);
    PbPbMesonSelection->SetBinContent(12,		2.7);
    PbPbMesonSelection->SetBinContent(13,		2.7);
    PbPbMesonSelection->SetBinContent(14,		2.7);
-   PbPbMesonSelection->SetBinContent(15,		2.7);
 
 
    PbPbSignalExtraction = new TH1D("PbPbSignalExtraction","",nPtBins,PtBins);
@@ -156,14 +151,13 @@ void initializationPbPbCent0100()
    PbPbSignalExtraction->SetBinContent(5,	1.7);
    PbPbSignalExtraction->SetBinContent(6,	1.7);
    PbPbSignalExtraction->SetBinContent(7,	1.3);
-   PbPbSignalExtraction->SetBinContent(8,	6.5);
-   PbPbSignalExtraction->SetBinContent(9,	7.1);
-   PbPbSignalExtraction->SetBinContent(10,	9.4);
-   PbPbSignalExtraction->SetBinContent(11,	7.5);
-   PbPbSignalExtraction->SetBinContent(12,	6.0); //was 3.3% before smoothing
-   PbPbSignalExtraction->SetBinContent(13,	4.9);//was 4.9 % before smoothing
-   PbPbSignalExtraction->SetBinContent(14,	5.5);
-   PbPbSignalExtraction->SetBinContent(15,	10.5);
+   PbPbSignalExtraction->SetBinContent(8,	1.3);
+   PbPbSignalExtraction->SetBinContent(9,	6.5);
+   PbPbSignalExtraction->SetBinContent(10,	7.1);
+   PbPbSignalExtraction->SetBinContent(11,	9.4);
+   PbPbSignalExtraction->SetBinContent(12,	7.5);
+   PbPbSignalExtraction->SetBinContent(13,	6.0); //was 3.3% before smoothing
+   PbPbSignalExtraction->SetBinContent(14,	7.0);
     
    fPbPbPtShape->SetParameters(0.984161,0.0593406,-0.3992,0.000271564);
    }
@@ -179,13 +173,12 @@ void initializationPbPbCent010()
    PbPbBFeedDownCorrection->SetBinContent(6,	2.0);
    PbPbBFeedDownCorrection->SetBinContent(7,	1.7);
    PbPbBFeedDownCorrection->SetBinContent(8,	1.7);
-   PbPbBFeedDownCorrection->SetBinContent(9,	1.6);
+   PbPbBFeedDownCorrection->SetBinContent(9,	1.7);
    PbPbBFeedDownCorrection->SetBinContent(10,	1.6);
    PbPbBFeedDownCorrection->SetBinContent(11,	1.6);
    PbPbBFeedDownCorrection->SetBinContent(12,	1.6);
-   PbPbBFeedDownCorrection->SetBinContent(13,	3.6);
+   PbPbBFeedDownCorrection->SetBinContent(13,	1.6);
    PbPbBFeedDownCorrection->SetBinContent(14,	3.6);
-   PbPbBFeedDownCorrection->SetBinContent(15,	3.6);
 
    PbPbMesonSelection = new TH1D("PbPbMesonSelection","",nPtBins,PtBins);
    PbPbMesonSelection->SetBinContent(1,		8.1);
@@ -196,13 +189,12 @@ void initializationPbPbCent010()
    PbPbMesonSelection->SetBinContent(6,		8.1);
    PbPbMesonSelection->SetBinContent(7,		8.1);
    PbPbMesonSelection->SetBinContent(8,		8.1);
-   PbPbMesonSelection->SetBinContent(9,		1.7);
+   PbPbMesonSelection->SetBinContent(9,		8.1);
    PbPbMesonSelection->SetBinContent(10,		1.7);
    PbPbMesonSelection->SetBinContent(11,		1.7);
    PbPbMesonSelection->SetBinContent(12,		1.7);
    PbPbMesonSelection->SetBinContent(13,		1.7);
    PbPbMesonSelection->SetBinContent(14,		1.7);
-   PbPbMesonSelection->SetBinContent(15,		1.7);
 
 
    PbPbSignalExtraction = new TH1D("PbPbSignalExtraction","",nPtBins,PtBins);
@@ -213,14 +205,13 @@ void initializationPbPbCent010()
    PbPbSignalExtraction->SetBinContent(5,	3.7);
    PbPbSignalExtraction->SetBinContent(6,	3,7);
    PbPbSignalExtraction->SetBinContent(7,	3.4);
-   PbPbSignalExtraction->SetBinContent(8,	12.0); // TO BE FIXED, TEMPORARY SET TO THE RESULT IN THE BIN 9
-   PbPbSignalExtraction->SetBinContent(9,	12.0);
-   PbPbSignalExtraction->SetBinContent(10,	12.0);      //was 8.6
-   PbPbSignalExtraction->SetBinContent(11,	12.7);
-   PbPbSignalExtraction->SetBinContent(12,	10.1);    //was 6.5
-   PbPbSignalExtraction->SetBinContent(13,	10.1);  
+   PbPbSignalExtraction->SetBinContent(8,	3.4);
+   PbPbSignalExtraction->SetBinContent(9,	12.0); // TO BE FIXED, TEMPORARY SET TO THE RESULT IN THE BIN 9
+   PbPbSignalExtraction->SetBinContent(10,	12.0);
+   PbPbSignalExtraction->SetBinContent(11,	12.0);      //was 8.6
+   PbPbSignalExtraction->SetBinContent(12,	12.7);
+   PbPbSignalExtraction->SetBinContent(13,	10.1);    //was 6.5
    PbPbSignalExtraction->SetBinContent(14,	17.5); 
-   PbPbSignalExtraction->SetBinContent(15,	38.3);  
     
    fPbPbPtShape->SetParameters(1.00862,-0.277991,0.325087,0.);
 }
