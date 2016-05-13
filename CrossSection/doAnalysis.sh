@@ -26,17 +26,20 @@ DOANALYSISPbPbMB_FIT=0
 DOANALYSISPbPbMB_CROSS=0
 DOANALYSISPbPbMB_MCSTUDY=0
 
+DOANALYSISPP_MCSTUDYCombine=1
+DOANALYSISPbPb_MCSTUDYCombine=1
+
 DONORMPP=0
 DONORMPPMB=0
 DONORMPbPb=0
 DONORMPbPbMB=0
 
-DORAA=1
-DORAAMB=1
+DORAA=0
+DORAAMB=0
 
-DOCombineCrossSectionPP=1
-DOCombineCrossSectionPbPb=1
-DOCombineRAA=1
+DOCombineCrossSectionPP=0
+DOCombineCrossSectionPbPb=0
+DOCombineRAA=0
 
 #systematic section
 
@@ -350,6 +353,11 @@ g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.e
 rm CrossSectionRatio.exe
 fi
 
+if [ $DOANALYSISPP_MCSTUDYCombine -eq 1 ]; then
+g++ CombineplotPnNP.C $(root-config --cflags --libs) -g -o CombineplotPnNP.exe 
+./CombineplotPnNP.exe "pp" "$OUTPUTFILEMCSTUDYPPMB" "$OUTPUTFILEMCSTUDYPP" "$OUTPUTFILEMCSTUDYNPPPMB" "$OUTPUTFILEMCSTUDYNPPP"
+rm CombineplotPnNP.exe
+fi
 
 ## ANALYSIS PbPb MB
 
@@ -407,6 +415,13 @@ g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe
 ./plotPnNP.exe "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm plotPnNP.exe
 fi
+
+if [ $DOANALYSISPbPb_MCSTUDYCombine -eq 1 ]; then
+g++ CombineplotPnNP.C $(root-config --cflags --libs) -g -o CombineplotPnNP.exe 
+./CombineplotPnNP.exe "PbPb" "$OUTPUTFILEMCSTUDYPbPbMB" "$OUTPUTFILEMCSTUDYPbPb" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm CombineplotPnNP.exe
+fi
+
 
 if [ $DORAAMB -eq 1 ]; then      
 g++ NuclearModificationFactor.C $(root-config --cflags --libs) -g -o NuclearModificationFactor.exe 
