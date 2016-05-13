@@ -449,6 +449,8 @@ void plotSystematicsRAA(double centL=0,double centH=10)
    leg->AddEntry(h4,"Signal Extraction","l");
    leg->AddEntry(h5,"D Meson Selection and Correction","l");
    leg->Draw();
+   c->SaveAs("SystematicSummaryPbPb.pdf");
+
 
 }
 
@@ -499,8 +501,8 @@ void plotSystematicsPP()
    leg->AddEntry(h4,"Signal Extraction","l");
    leg->AddEntry(h5,"D Meson Selection and Correction","l");
    leg->Draw();
-
-}
+  c->SaveAs("SystematicSummaryPP.pdf");
+  }
 
 
 void plotNormalisationUnc(){
