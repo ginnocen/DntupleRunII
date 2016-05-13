@@ -44,10 +44,10 @@ void compareNewOldresults(int option=2)
   title="R_{AA}(0-100)";
   }
  if(option==2){
-  myfiles[0] ="ROOTfiles/CrossSectionFONLLPP.root";
-  myfiles[1] ="ROOTfiles/CrossSectionFONLLPPMB.root";
-  myfiles[2] ="/afs/cern.ch/user/g/ginnocen/public/ImportantFilesHIN16002/DntupleRunII_preapproval/CrossSection/ROOTfiles/CrossSectionFONLLPP.root";
-  myfiles[3] ="/afs/cern.ch/user/g/ginnocen/public/ImportantFilesHIN16002/DntupleRunII_preapproval/CrossSection/ROOTfiles/CrossSectionFONLLPPMB.root";
+  myfiles[0] ="/afs/cern.ch/user/g/ginnocen/DataHFAnalysis/CMSSW_7_5_5_patch4/src/master/CrossSection/ROOTfiles/CrossSectionFONLLPP.root";
+  myfiles[1] ="/afs/cern.ch/user/g/ginnocen/DataHFAnalysis/CMSSW_7_5_5_patch4/src/master/CrossSection/ROOTfiles/CrossSectionFONLLPPMB.root";
+  myfiles[2] ="/afs/cern.ch/user/g/ginnocen/public/ImportantFilesHIN16002/DntupleRunII_preapproval/CrossSection/ROOTfilesCent10/CrossSectionFONLLPP.root";
+  myfiles[3] ="/afs/cern.ch/user/g/ginnocen/public/ImportantFilesHIN16002/DntupleRunII_preapproval/CrossSection/ROOTfilesCent10/CrossSectionFONLLPPMB.root";
   namehisto="hPtSigma";
   namegraph="gaeCrossSyst";
   min=10;
@@ -123,9 +123,38 @@ void compareNewOldresults(int option=2)
     entry[1]->SetTextColor(2);
     entry[1]->SetMarkerColor(2);
     legendSigma->Draw();
-
+    
   if(option==0) canvas->SaveAs("NewOldComparisonPbPb0100.pdf");
   if(option==1) canvas->SaveAs("NewOldComparisonPbPb010.pdf");
   if(option==2) canvas->SaveAs("NewOldComparisonCrossSection.pdf");
 
+  TCanvas* canvasRatio = new TCanvas("canvasRatio","",600,600);
+  
+  TH1D*hCrossNewOverOldMB=(TH1D*)histogram[1]->Clone("hCrossNewOverOldMB");
+  TH1D*hCrossNewOverOld=(TH1D*)histogram[0]->Clone("hCrossNewOverOld");
+  hCrossNewOverOldMB->Divide(histogram[3]);
+  hCrossNewOverOld->Divide(histogram[2]);
+  
+  gPad->SetLogx();
+  hemptyRatio=new TH2D("hemptyRatio","",100,0,100,50,0,2);
+      hemptyRatio->SetLineWidth(3);
+      hemptyRatio->GetYaxis()->CenterTitle();
+      hemptyRatio->GetYaxis()->SetTitle(title.Data());
+      hemptyRatio->GetXaxis()->SetRangeUser(-10,100);//1.
+      hemptyRatio->GetXaxis()->SetTitle("p_{T} (GeV/c)");
+      hemptyRatio->GetYaxis()->SetTitle("New/Old");
+      hemptyRatio->GetXaxis()->SetTitleOffset(0.95);//0.9
+      hemptyRatio->GetYaxis()->SetTitleOffset(1.25);//1.
+      hemptyRatio->GetXaxis()->SetTitleSize(0.060);//0.045
+      hemptyRatio->GetYaxis()->SetTitleSize(0.060);//0.045
+      hemptyRatio->GetXaxis()->SetTitleFont(42);
+      hemptyRatio->GetYaxis()->SetTitleFont(42);
+      hemptyRatio->GetXaxis()->SetLabelFont(42);
+      hemptyRatio->GetYaxis()->SetLabelFont(42);  
+      hemptyRatio->GetXaxis()->SetLabelSize(0.050);//0.035
+      hemptyRatio->GetYaxis()->SetLabelSize(0.050);//0.035
+      hemptyRatio->Draw();
+      hCrossNewOverOldMB->Draw("same");
+      hCrossNewOverOld->Draw("same");
+        
 }
