@@ -105,7 +105,7 @@ void initializationPP()
    ppSignalExtraction->SetBinContent(11,	2.3);
    ppSignalExtraction->SetBinContent(12,	2.8);
    ppSignalExtraction->SetBinContent(13,	5.2);
-   ppSignalExtraction->SetBinContent(14,	2.4);
+   ppSignalExtraction->SetBinContent(14,	5.2); //was 2.4
    ppSignalExtraction->SetBinContent(15,	7.6);
     
    fPPPtShape->SetParameters(0.999265,-0.0458006,-0.181359,0);
@@ -160,8 +160,8 @@ void initializationPbPbCent0100()
    PbPbSignalExtraction->SetBinContent(9,	7.1);
    PbPbSignalExtraction->SetBinContent(10,	9.4);
    PbPbSignalExtraction->SetBinContent(11,	7.5);
-   PbPbSignalExtraction->SetBinContent(12,	3.3);
-   PbPbSignalExtraction->SetBinContent(13,	4.9);
+   PbPbSignalExtraction->SetBinContent(12,	6.0); //was 3.3% before smoothing
+   PbPbSignalExtraction->SetBinContent(13,	4.9);//was 4.9 % before smoothing
    PbPbSignalExtraction->SetBinContent(14,	5.5);
    PbPbSignalExtraction->SetBinContent(15,	10.5);
     
@@ -215,12 +215,12 @@ void initializationPbPbCent010()
    PbPbSignalExtraction->SetBinContent(7,	3.4);
    PbPbSignalExtraction->SetBinContent(8,	12.0); // TO BE FIXED, TEMPORARY SET TO THE RESULT IN THE BIN 9
    PbPbSignalExtraction->SetBinContent(9,	12.0);
-   PbPbSignalExtraction->SetBinContent(10,	8.6);
+   PbPbSignalExtraction->SetBinContent(10,	12.0);      //was 8.6
    PbPbSignalExtraction->SetBinContent(11,	12.7);
-   PbPbSignalExtraction->SetBinContent(12,	6.5);
-   PbPbSignalExtraction->SetBinContent(13,	10.1);
-   PbPbSignalExtraction->SetBinContent(14,	17.5);
-   PbPbSignalExtraction->SetBinContent(15,	38.3);
+   PbPbSignalExtraction->SetBinContent(12,	10.1);    //was 6.5
+   PbPbSignalExtraction->SetBinContent(13,	10.1);  
+   PbPbSignalExtraction->SetBinContent(14,	17.5); 
+   PbPbSignalExtraction->SetBinContent(15,	38.3);  
     
    fPbPbPtShape->SetParameters(1.00862,-0.277991,0.325087,0.);
 }
@@ -267,7 +267,6 @@ float systematicsForRAA(double pt,double centL=0,double centH=100, double HLT=0,
          PbPbSignalExtraction->GetBinContent(PbPbSignalExtraction->FindBin(pt));
    sys+= ppSignalExtraction->GetBinContent(ppSignalExtraction->FindBin(pt))*
          ppSignalExtraction->GetBinContent(ppSignalExtraction->FindBin(pt));
-
 
    if (stage==2) return sqrt(sys);
 
@@ -317,10 +316,19 @@ float normalizationUncertaintyForPP()
    return sqrt((DKpiBRUncertainty*DKpiBRUncertainty)+(ppLumiUncertainty*ppLumiUncertainty));
 }
 
-float systematicsPP(double pt, double HLT=0)
+float systematicsPP(double pt, double HLT=0,int stage=0)
 {
    if (!initialized) initialization();
    double sys=0;
+   
+   if (stage==1) return sqrt(sys);
+   
+   sys+= ppSignalExtraction->GetBinContent(ppSignalExtraction->FindBin(pt))* 
+         ppSignalExtraction->GetBinContent(ppSignalExtraction->FindBin(pt));
+
+   if (stage==2) return sqrt(sys);
+
+
    sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
    sys+=ppLumiUncertainty*ppLumiUncertainty;
    sys+= ppMesonSelection->GetBinContent(ppMesonSelection->FindBin(pt))* 
@@ -329,8 +337,6 @@ float systematicsPP(double pt, double HLT=0)
    sys+= ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt))* 
          ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt));
    sys+=fPPPtShape->Eval(pt)*fPPPtShape->Eval(pt);
-   sys+= ppSignalExtraction->GetBinContent(ppSignalExtraction->FindBin(pt))* 
-         ppSignalExtraction->GetBinContent(ppSignalExtraction->FindBin(pt));
    
    return sqrt(sys);
 }
@@ -398,7 +404,7 @@ void drawSys(double x1,double y1, double x2,double y2, int color = 1)
 // =============================================================================================================
 // Plot systematics for RAA
 // =============================================================================================================
-void plotSystematicsRAA(double centL=0,double centH=100)
+void plotSystematicsRAA(double centL=0,double centH=10)
 {
    TH1D *htmp = new TH1D("htmp","",10000,1,101);
    htmp->SetAxisRange(-0.5,0.5,"Y");
@@ -435,10 +441,60 @@ void plotSystematicsRAA(double centL=0,double centH=100)
    TH1D *h5 = new TH1D("h5","",100,0,1);
    h5->SetLineWidth(2); h5->SetLineColor(kGreen+2);
  
-   TLegend *leg = new TLegend(0.2,0.7,0.9,0.9);
+   TLegend *leg = new TLegend(0.2,0.74,0.9,0.92);
    leg->SetBorderSize(0);
    leg->SetFillStyle(0);
    leg->AddEntry(h2,"Overall Normalization (N_{MB}, Lumi)","l");
+   leg->AddEntry(h1,"Total Systematics","l");
+   leg->AddEntry(h4,"Signal Extraction","l");
+   leg->AddEntry(h5,"D Meson Selection and Correction","l");
+   leg->Draw();
+
+}
+
+// =============================================================================================================
+// Plot systematics for cross section
+// =============================================================================================================
+void plotSystematicsPP()
+{
+   TH1D *htmp = new TH1D("htmp","",10000,1,101);
+   htmp->SetAxisRange(-0.5,0.5,"Y");
+   htmp->SetXTitle("D meson p_{T} (GeV/c)");
+   htmp->SetYTitle("Systematical Uncertainty");
+   TCanvas *c = new TCanvas("c","",600,600);
+   c->SetLogx();
+   htmp->Draw();
+
+   drawSys(1,0, 1,normalizationUncertaintyForPP(),2);
+   drawSys(1,normalizationUncertaintyForPP(), 1.5,normalizationUncertaintyForPP(),2);
+   drawSys(1.5,0, 1.5,normalizationUncertaintyForPP(),2);
+
+
+   drawSys(2,0, 2,systematicsPP(2),1);
+
+   for (double i=2;i<100;i+=0.1)
+   {      
+      drawSys(i,systematicsPP(i,0,0), i+0.1,systematicsPP(i+0.1,0,0),1);
+//      drawSys(i,systematicsPP(i,0,1), i+0.1,systematicsPP(i+0.1,0,1),2);
+      drawSys(i,sqrt((systematicsPP(i,0,2)*systematicsPP(i,0,2))-(systematicsPP(i,0,1)*systematicsPP(i,0,1))),
+              i+0.1,sqrt((systematicsPP(i+0.1,0,2)*systematicsPP(i+0.1,0,2))-(systematicsPP(i+0.1,0,1)*systematicsPP(i+0.1,0,1))),4);
+      drawSys(i,sqrt((systematicsPP(i,0,0)*systematicsPP(i,0,0))-(systematicsPP(i,0,2)*systematicsPP(i,0,2))),
+              i+0.1,sqrt((systematicsPP(i+0.1,0,0)*systematicsPP(i+0.1,0,0))-(systematicsPP(i+0.1,0,2)*systematicsPP(i+0.1,0,2))),kGreen+2);
+   }
+
+   TH1D *h1 = new TH1D("h1","",100,0,1);
+   h1->SetLineWidth(2); h1->SetLineColor(1);
+   TH1D *h2 = new TH1D("h2","",100,0,1);
+   h2->SetLineWidth(2); h2->SetLineColor(2);
+   TH1D *h4 = new TH1D("h4","",100,0,1);
+   h4->SetLineWidth(2); h4->SetLineColor(4);
+   TH1D *h5 = new TH1D("h5","",100,0,1);
+   h5->SetLineWidth(2); h5->SetLineColor(kGreen+2);
+ 
+   TLegend *leg = new TLegend(0.2,0.74,0.9,0.92);
+   leg->SetBorderSize(0);
+   leg->SetFillStyle(0);
+   leg->AddEntry(h2,"Overall Normalization (Lumi + BR)","l");
    leg->AddEntry(h1,"Total Systematics","l");
    leg->AddEntry(h4,"Signal Extraction","l");
    leg->AddEntry(h5,"D Meson Selection and Correction","l");
