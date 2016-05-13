@@ -23,7 +23,7 @@ float bFeedDownCorrection(double pt, bool isPbPb, bool isDCA=0)
         val = 0.771; // 2.0%
       } else if (pt>25&&pt<35) {
         val = 0.824; // 1.6%
-      } else if (pt>35&&pt<50) {
+      } else if (pt>35&&pt<=50) {
         val = 0.824; // 3.6%
       } else if (pt>50&&pt<100) {
         val = 0.814; // 3.1%
@@ -43,7 +43,7 @@ float bFeedDownCorrection(double pt, bool isPbPb, bool isDCA=0)
         val = 0.775; // 2.0%
       } else if (pt>25&&pt<35) {
         val = 0.783; // 1.6%
-      } else if (pt>35&&pt<50) {
+      } else if (pt>35&&pt<=50) {
         val = 0.824; // 3.6%
       } else if (pt>50&&pt<100) {
         val = 1.0; // 3.1%
@@ -63,7 +63,7 @@ float bFeedDownCorrection(double pt, bool isPbPb, bool isDCA=0)
         val = 0.848; // 2.0%
       } else if (pt>30&&pt<40) {
         val = 0.87; // 1.6%
-      } else if (pt>40&&pt<50) {
+      } else if (pt>40&&pt<=50) {
         val = 0.856; // 3.6%
       } else if (pt>50&&pt<60) {
         val = 0.781; // 3.1%
@@ -81,7 +81,7 @@ float bFeedDownCorrection(double pt, bool isPbPb, bool isDCA=0)
        val = 0.771;
      }else if (pt>10&&pt<20) {
        val = 0.803; // 1.3%
-      } else if (pt>20&&pt<50) {
+      } else if (pt>20&&pt<=50) {
         val = 0.955; // 0.8%
       } else if (pt>50&&pt<100) {
         val = 0.92; // 3.4%

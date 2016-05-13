@@ -44,7 +44,7 @@ void AddCloneTree(vector<TTree*> &cloneForest,TFile *outf, TTree* t, const char 
 
 // main routine
 //void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root",TString outfname="/data/dmeson2015/DataDntuple/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skim_newfilter.root")
-void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root",TString outfname="/data/dmeson2015/DataDntuple/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skim_newfilterPt2GeV_9may2016_Pttrk1GeV.root")
+void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root",TString outfname="/data/dmeson2015/DataDntuple/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skim_newfilterPt2GeV_13may2016_Pttrk0p7GeV.root")
 {
    vector<TTree*> cloneForest;
    vector<TTree*> forest;
@@ -111,7 +111,7 @@ void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_D
 	   for (int j=0;j<Dsize;j++) {
 	     //for the low pt skim
 	      //if (Dalpha[j]<0.12&&Dpt[j]>0.9&&Dy[j]>-1.1&&Dy[j]<1.1&&(((DsvpvDistance[j]/DsvpvDisErr[j])>6.0&&Dpt[j]<=2.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>5.4&&Dpt[j]>2.0&&Dpt[j]<=5.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>3.&&Dpt[j]>5.0))) {
-	      if (Dalpha[j]<0.12&&Dtrk1Pt[j]>1.0&&Dtrk2Pt[j]>1.0&&Dpt[j]>2.0&&Dy[j]>-1.1&&Dy[j]<1.1&&(((DsvpvDistance[j]/DsvpvDisErr[j])>6.0&&Dpt[j]<=2.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>5.4&&Dpt[j]>2.0&&Dpt[j]<=5.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>3.&&Dpt[j]>5.0))) {
+	      if (Dpt[j]>2.0&&Dalpha[j]<0.12&&Dtrk1Pt[j]>0.7&&Dtrk2Pt[j]>0.7&&Dpt[j]>2.0&&Dy[j]>-1.1&&Dy[j]<1.1&&(((DsvpvDistance[j]/DsvpvDisErr[j])>5.4&&Dpt[j]>2.0&&Dpt[j]<=5.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>3.&&Dpt[j]>5.0))) {
 	         ncand++;
 		 break;
 	      }

@@ -285,9 +285,9 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gRAADmeson5TeV->SetMarkerColor(4);
       gRAADmeson5TeV->SetLineWidth(3);
       gRAADmeson5TeV->SetMarkerSize(0.15);
-      gMagdalenaD5TeV->SetLineColor(kGreen+1);
-      gMagdalenaD5TeV->SetFillColor(kGreen+1);
-      gMagdalenaD5TeV->SetFillStyle(3002);
+      gMagdalenaD5TeV->SetLineColor(kGreen+2);
+      gMagdalenaD5TeV->SetFillColor(kGreen+2);
+      gMagdalenaD5TeV->SetFillStyle(3004);
       gMagdalenaD5TeV->Draw("f same");
       gMagdalenaD5TeV->Draw("l same");
       gShanshanD5TeV->SetLineWidth(3);
@@ -339,7 +339,8 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   texSystnorm->SetLineWidth(2);
   texSystnorm->Draw();
 
-
+  //canvasRAA->Update();
+  //canvasRAA->RedrawAxis();
   canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparison_%.0f_%.0f.pdf",centMin,centMax));
 }
 
