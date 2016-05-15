@@ -16,18 +16,18 @@ DOANALYSISPbPb_FIT=0
 DOANALYSISPbPb_CROSS=0
 DOANALYSISPbPb_MCSTUDY=0
 
-DOANALYSISPPMB_FONLL=0
-DOANALYSISPPMB_FIT=0
-DOANALYSISPPMB_CROSS=0
-DOANALYSISPPMB_MCSTUDY=0
+DOANALYSISPPMB_FONLL=1
+DOANALYSISPPMB_FIT=1
+DOANALYSISPPMB_CROSS=1
+DOANALYSISPPMB_MCSTUDY=1
 
 DOANALYSISPbPbMB_FONLL=0
 DOANALYSISPbPbMB_FIT=0
 DOANALYSISPbPbMB_CROSS=0
 DOANALYSISPbPbMB_MCSTUDY=0
 
-DOANALYSISPP_MCSTUDYCombine=1
-DOANALYSISPbPb_MCSTUDYCombine=1
+DOANALYSISPP_MCSTUDYCombine=0
+DOANALYSISPbPb_MCSTUDYCombine=0
 
 DONORMPP=0
 DONORMPPMB=0
@@ -37,7 +37,7 @@ DONORMPbPbMB=0
 DORAA=0
 DORAAMB=0
 
-DOCombineCrossSectionPP=0
+DOCombineCrossSectionPP=1
 DOCombineCrossSectionPbPb=0
 DOCombineRAA=0
 
@@ -83,7 +83,7 @@ INPUTMCPPPthat70="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/
 INPUTDATAPPSKIMMED="/data/dmeson2015/DataDntuple/ntD_EvtBase_20160330_HeavyFlavor_DfinderData_pp_20160329_dPt0tkPt1_D0Dstar3p5p_goldenjson_skim_myskim.root"
 INPUTDATAPPUNSKIMMED="/data/wangj/Data2015/Dntuple/pp/ntD_EvtBase_20160330_HeavyFlavor_DfinderData_pp_20160329_dPt0tkPt1_D0Dstar3p5p_goldenjson.root"
 INPUTDATAPPMBUNSKIMMED="/data/jisun/ppMB2015fullstats/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016.root"
-INPUTDATAPPMBSKIMMED="/data/dmeson2015/DataDntuple/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016_skimmed.root"
+INPUTDATAPPMBSKIMMED="/data/dmeson2015/DataDntupleApproval/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016_skimmed_15May2016_Dpt2_y1p1_Decay3p5_Alpha0p12.root"
 
 ## PbPb MONTE CARLO
 
