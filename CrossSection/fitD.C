@@ -385,7 +385,9 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC,bool i
   texCms->SetTextFont(42);
   texCms->Draw();
 
-  TLatex* texCol = new TLatex(0.96,0.93, Form("%s #sqrt{s_{NN}} = 5.02 TeV",collisionsystem.Data()));
+  TLatex* texCol;
+  if(collisionsystem=="PP") texCol= new TLatex(0.96,0.93, Form("%s #sqrt{s_{NN}} = 5.02 TeV","pp"));
+  else texCol= new TLatex(0.96,0.93, Form("%s #sqrt{s_{NN}} = 5.02 TeV","PbPb"));
   texCol->SetNDC();
   texCol->SetTextAlign(32);
   texCol->SetTextSize(0.04);

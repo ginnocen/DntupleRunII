@@ -1,6 +1,6 @@
 #include "uti.h"
 
-void compareNewOldresults(int option=2)
+void compareNewOldresults(int option=3)
 {
   
   gStyle->SetOptTitle(0);
@@ -55,6 +55,19 @@ void compareNewOldresults(int option=2)
   isislogy=true;
   title="d#sigma/d_{p_{T}}";
   }
+  
+  if(option==3){
+  myfiles[0] ="ROOTfilesCent10/outputRAA.root";
+  myfiles[1] ="ROOTfilesCent10/outputRAAMB.root";
+  myfiles[2] ="ROOTfiles/outputRAA.root";
+  myfiles[3] ="ROOTfiles/outputRAAMB.root";
+  namehisto="hNuclearModification";
+  namegraph="gNuclearModification";
+  min=0;
+  max=1.4;
+  title="R_{AA}(0-100)";
+  }
+
 
 
   
@@ -112,21 +125,19 @@ void compareNewOldresults(int option=2)
       graph[ifile] ->Draw("5same");  
 
   }
-    entry[0]=legendSigma->AddEntry(histogram[0],"approval results","pf");
+    entry[0]=legendSigma->AddEntry(histogram[0],"0-10","pf");
     entry[0]->SetTextFont(42);
     entry[0]->SetLineColor(1);
     entry[0]->SetTextColor(1);
     entry[0]->SetMarkerColor(1);
-    entry[1]=legendSigma->AddEntry(histogram[2],"pre-approval results","pf");
+    entry[1]=legendSigma->AddEntry(histogram[2],"0-100","pf");
     entry[1]->SetTextFont(42);
     entry[1]->SetLineColor(2);
     entry[1]->SetTextColor(2);
     entry[1]->SetMarkerColor(2);
     legendSigma->Draw();
     
-  if(option==0) canvas->SaveAs("NewOldComparisonPbPb0100.pdf");
-  if(option==1) canvas->SaveAs("NewOldComparisonPbPb010.pdf");
-  if(option==2) canvas->SaveAs("NewOldComparisonCrossSection.pdf");
+      canvas->SaveAs("canvasRatio0100_010.pdf");
 
   TCanvas* canvasRatio = new TCanvas("canvasRatio","",600,600);
   
