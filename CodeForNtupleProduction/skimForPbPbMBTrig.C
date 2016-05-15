@@ -43,8 +43,7 @@ void AddCloneTree(vector<TTree*> &cloneForest,TFile *outf, TTree* t, const char 
 }
 
 // main routine
-//void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root",TString outfname="/data/dmeson2015/DataDntuple/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skim_newfilter.root")
-void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root",TString outfname="/data/dmeson2015/DataDntuple/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skim_newfilterPt2GeV_13may2016_Pttrk0p7GeV.root")
+void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root",TString outfname="/data/dmeson2015/DataDntupleApproval/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skimmed_15May2016_Dpt2_y1p1_tk0p7_optimalanalysiscut_HLTMB123.root")
 {
    vector<TTree*> cloneForest;
    vector<TTree*> forest;
@@ -77,6 +76,9 @@ void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_D
    
    
    // You only need the branches which can help you decide if you want to keep the event
+   int HLT_HIL1MinimumBiasHF2AND_part1_v1;   
+   int HLT_HIL1MinimumBiasHF2AND_part2_v1;   
+   int HLT_HIL1MinimumBiasHF2AND_part3_v1;   
    int Dsize;   
    float Dpt[15000];
    float Dalpha[15000];
@@ -88,6 +90,9 @@ void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_D
    float DsvpvDistance[15000];
    float DsvpvDisErr[15000];
    
+   ntDkpi->SetBranchAddress("HLT_HIL1MinimumBiasHF2AND_part1_v1",&HLT_HIL1MinimumBiasHF2AND_part1_v1);
+   ntDkpi->SetBranchAddress("HLT_HIL1MinimumBiasHF2AND_part2_v1",&HLT_HIL1MinimumBiasHF2AND_part2_v1);
+   ntDkpi->SetBranchAddress("HLT_HIL1MinimumBiasHF2AND_part3_v1",&HLT_HIL1MinimumBiasHF2AND_part3_v1);
    ntDkpi->SetBranchAddress("Dsize",&Dsize);
    ntDkpi->SetBranchAddress("Dpt",Dpt);
    ntDkpi->SetBranchAddress("Dy",Dy);
@@ -110,13 +115,12 @@ void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_D
 	   int ncand=0;
 	   for (int j=0;j<Dsize;j++) {
 	     //for the low pt skim
-	      //if (Dalpha[j]<0.12&&Dpt[j]>0.9&&Dy[j]>-1.1&&Dy[j]<1.1&&(((DsvpvDistance[j]/DsvpvDisErr[j])>6.0&&Dpt[j]<=2.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>5.4&&Dpt[j]>2.0&&Dpt[j]<=5.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>3.&&Dpt[j]>5.0))) {
-	      if (Dpt[j]>2.0&&Dalpha[j]<0.12&&Dtrk1Pt[j]>0.7&&Dtrk2Pt[j]>0.7&&Dpt[j]>2.0&&Dy[j]>-1.1&&Dy[j]<1.1&&(((DsvpvDistance[j]/DsvpvDisErr[j])>5.4&&Dpt[j]>2.0&&Dpt[j]<=5.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>3.&&Dpt[j]>5.0))) {
+	      if (Dpt[j]>2.0&&Dalpha[j]<0.12&&Dtrk1Pt[j]>0.7&&Dtrk2Pt[j]>0.7&&Dy[j]>-1.1&&Dy[j]<1.1&&(((DsvpvDistance[j]/DsvpvDisErr[j])>5.8&&Dpt[j]>2.0&&Dpt[j]<=4.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>5.4&&Dpt[j]>4.0&&Dpt[j]<=5.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>4.5&&Dpt[j]>5.0&&Dpt[j]<=8.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>3.5&&Dpt[j]>8.0&&Dpt[j]<=20.0))) {
 	         ncand++;
 		 break;
 	      }
-	   }
-          if (ncand>0) {
+	   } 
+          if (ncand>0&&(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)) {
 	      GetEntry(forest,i);
 	      FillOutput(cloneForest);
 	   }
