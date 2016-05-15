@@ -45,7 +45,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   canvasRAA->SetLogx();
 
   TH2F* hemptyEff;
-  if(isHadDupl==1) hemptyEff=new TH2F("hemptyEff","",50,0.7,300.,10.,0,1.45); else hemptyEff=new TH2F("hemptyEff","",50,1.0,300.,10.,0,1.45);//50,-2,120.,10.,0,1.5
+  if(isHadDupl==1) hemptyEff=new TH2F("hemptyEff","",50,0.7,300.,10.,0,1.55); else hemptyEff=new TH2F("hemptyEff","",50,1.0,300.,10.,0,1.55);//50,-2,120.,10.,0,1.5
   hemptyEff->GetXaxis()->CenterTitle();
   hemptyEff->GetYaxis()->CenterTitle();
   hemptyEff->GetYaxis()->SetTitle("D^{0} R_{AA}");
@@ -220,13 +220,13 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   texY->SetLineWidth(2);
   texY->Draw();
 
-  TLegend *legendSigma=new TLegend(0.4110738,0.6762937,0.8104027,0.8846154,"");//0.5100806,0.6268644,0.8084677,0.7805932
+  TLegend *legendSigma=new TLegend(0.5436242,0.6474695,0.942953,0.9057592,"");//0.5100806,0.6268644,0.8084677,0.7805932
   legendSigma->SetBorderSize(0);
   legendSigma->SetLineColor(0);
   legendSigma->SetFillColor(0);
   legendSigma->SetFillStyle(0);
   legendSigma->SetTextFont(42);
-//  legendSigma->SetTextSize(0.045);//0.05
+  legendSigma->SetTextSize(0.031);//0.05
 
   if(isMerged==0)
     {
@@ -305,7 +305,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gRAADmeson5TeV->Draw("psame");
       
       
-      
+            TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"Magdalena 5.1 TeV","lf");
       TLegendEntry *ent_theoryD=legendSigma->AddEntry(gRAADmeson5TeV,"CUJET3.0 D^{0}","l");//pf
  //     ent_theoryD->SetTextFont(42);
       ent_theoryD->SetLineColor(4);  
@@ -318,7 +318,6 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       //ent_theoryCharged->SetMarkerColor(kGreen+1);
       //ent_theoryCharged->SetTextSize(0.043);//0.03
       
-      TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"Magdalena 5.1 TeV","lf");
       TLegendEntry *ent_theory_Shanshan =legendSigma->AddEntry(gShanshanD5TeV,"Shanshan 5.02 TeV","l");
       TLegendEntry *ent_theory_PHSDW =legendSigma->AddEntry(gPHSDWShadowing,"PHSD w/ shadowing ","l");
       TLegendEntry *ent_theory_PHSDWO =legendSigma->AddEntry(gPHSDWOShadowing,"PHSD w/o shadowing ","l");
