@@ -3,7 +3,7 @@
 #include "parameters.h"
 
 
-void ClosureTest(TString inputfile="ROOTfiles/hPtSpectrumDzeroPPMCClosure.root",TString label="PPClosure"){
+void ClosureTest(TString inputfile="ROOTfiles/hPtSpectrumDzeroPbPbMBMCClosureMYTEST.root",TString label="PbPbMBClosure"){
 
 
   gStyle->SetOptTitle(0);
