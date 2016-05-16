@@ -12,6 +12,8 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
+  
+  bool superimposedALICE=false;
 
   TFile* filePPMB = new TFile(fileMB.Data());  
   TGraphAsymmErrors* gNuclearModificationMB = (TGraphAsymmErrors*)filePPMB->Get("gNuclearModification");
@@ -287,6 +289,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gRAADmeson5TeV->SetMarkerSize(0.15);
       gMagdalenaD5TeV->SetLineColor(kGreen+2);
       gMagdalenaD5TeV->SetFillColor(kGreen+2);
+
       gMagdalenaD5TeV->SetFillStyle(3004);
       gMagdalenaD5TeV->Draw("f same");
       gMagdalenaD5TeV->Draw("l same");
@@ -303,7 +306,27 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gPHSDWOShadowing->Draw("c same");
       //gRAApion5TeV->Draw("psame");
       gRAADmeson5TeV->Draw("psame");
-      
+
+      if(superimposedALICE){
+      double p9059_d9x1y1_xval[9] = { 1.5, 2.5, 3.5, 4.5, 5.5, 7.0, 10.0, 14.0, 20.0 };
+      double p9059_d9x1y1_xerrminus[9] = { 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 2.0, 2.0, 4.0 };
+      double p9059_d9x1y1_xerrplus[9] = { 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 2.0, 2.0, 4.0 };
+      double p9059_d9x1y1_yval[9] = { 0.695, 0.694, 0.385, 0.245, 0.186, 0.153, 0.155, 0.174, 0.219 };
+      double p9059_d9x1y1_yerrminus[9] = { 0.3686583784481237, 0.29960307074527787, 0.123664869708418, 0.07561084578286371, 0.05500909015790027, 0.042485291572496, 0.0442944691807002, 0.06788225099390856, 0.137800580550301 };
+      double p9059_d9x1y1_yerrplus[9] = { 0.3318870289722092, 0.2141074496602115, 0.09546203433826454, 0.06264982043070834, 0.05060632371551998, 0.03982461550347976, 0.043416586692184816, 0.06859300255857008, 0.11045361017187261 };
+      double p9059_d9x1y1_ystatminus9[] = { 0.21, 0.079, 0.037, 0.026, 0.025, 0.019, 0.021, 0.048, 0.058 };
+      double p9059_d9x1y1_ystatplus[9] = { 0.21, 0.079, 0.037, 0.026, 0.025, 0.019, 0.021, 0.048, 0.058 };
+      int p9059_d9x1y1_numpoints = 9;
+      TGraphAsymmErrors *p9059_d9x1y1 = new TGraphAsymmErrors(p9059_d9x1y1_numpoints, p9059_d9x1y1_xval, p9059_d9x1y1_yval, p9059_d9x1y1_xerrminus, p9059_d9x1y1_xerrplus, p9059_d9x1y1_yerrminus, p9059_d9x1y1_yerrplus);
+      p9059_d9x1y1->SetName("/HepData/9059/d9x1y1");
+      p9059_d9x1y1->SetLineColor(2);
+      p9059_d9x1y1->SetMarkerColor(2);  
+      p9059_d9x1y1->SetLineWidth(4);  
+      p9059_d9x1y1->SetTitle("/HepData/9059/d9x1y1");
+      p9059_d9x1y1->Draw("psame");
+      }
+
+
       
             TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"Magdalena 5.1 TeV","lf");
       TLegendEntry *ent_theoryD=legendSigma->AddEntry(gRAADmeson5TeV,"CUJET3.0 D^{0}","l");//pf
@@ -337,7 +360,6 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   texSystnorm->SetTextSize(0.035);
   texSystnorm->SetLineWidth(2);
   texSystnorm->Draw();
-
   //canvasRAA->Update();
   //canvasRAA->RedrawAxis();
   canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparison_%.0f_%.0f.pdf",centMin,centMax));
