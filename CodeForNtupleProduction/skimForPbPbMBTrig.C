@@ -43,7 +43,7 @@ void AddCloneTree(vector<TTree*> &cloneForest,TFile *outf, TTree* t, const char 
 }
 
 // main routine
-void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root",TString outfname="/data/dmeson2015/DataDntupleApproval/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skimmed_15May2016_Dpt2_y1p1_tk0p8_optimalanalysiscut_HLTMB123.root")
+void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root",TString outfname="/data/dmeson2015/DataDntupleApproval/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_skimmed_15May2016_Dpt2_y1p2_tk1_optimalanalysiscut_HLTMB123.root")
 {
    vector<TTree*> cloneForest;
    vector<TTree*> forest;
@@ -115,7 +115,7 @@ void skimForPbPbMBTrig(TString infname="/data/jisun/PbPb2015/HF2and_ncand_skim_D
 	   int ncand=0;
 	   for (int j=0;j<Dsize;j++) {
 	     //for the low pt skim
-	      if (Dpt[j]>2.0&&Dalpha[j]<0.12&&Dtrk1Pt[j]>0.8&&Dtrk2Pt[j]>0.8&&Dy[j]>-1.1&&Dy[j]<1.1&&(((DsvpvDistance[j]/DsvpvDisErr[j])>5.8&&Dpt[j]>2.0&&Dpt[j]<=4.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>5.4&&Dpt[j]>4.0&&Dpt[j]<=5.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>4.5&&Dpt[j]>5.0&&Dpt[j]<=8.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>3.5&&Dpt[j]>8.0&&Dpt[j]<=20.0))) {
+	      if (Dpt[j]>2.0&&Dalpha[j]<0.12&&Dtrk1Pt[j]>1.0&&Dtrk2Pt[j]>1.0&&Dy[j]>-1.1&&Dy[j]<1.1&&(((DsvpvDistance[j]/DsvpvDisErr[j])>5.8&&Dpt[j]>2.0&&Dpt[j]<=4.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>5.4&&Dpt[j]>4.0&&Dpt[j]<=5.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>4.5&&Dpt[j]>5.0&&Dpt[j]<=8.0) || ((DsvpvDistance[j]/DsvpvDisErr[j])>3.5&&Dpt[j]>8.0&&Dpt[j]<=20.0))) {
 	         ncand++;
 		 break;
 	      }
