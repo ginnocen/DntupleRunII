@@ -39,7 +39,7 @@ void studyBfeed(bool isPP=false)
   mynamefilesFONLLNP[0] ="ROOTfiles/output_pp_Btod0meson_5TeV_y1MB.root";
 
   mynamefilesEffP[1] ="ROOTfiles/MCstudiesPbPb.root";
-  mynamefilesEffNP[1] ="ROOTfiles/MCstudiesNPPbPbMB.root";
+  mynamefilesEffNP[1] ="ROOTfiles/MCstudiesNPPbPb.root";
   mynamefilesFONLLP[1] ="ROOTfiles/output_pp_d0meson_5TeV_y1.root";
   mynamefilesFONLLNP[1] ="ROOTfiles/output_pp_Btod0meson_5TeV_y1.root";
   }
