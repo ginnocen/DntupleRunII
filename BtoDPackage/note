@@ -1,0 +1,4 @@
+remaining issues not fixed due to limitted time:
+1. The MC sample is not really prompt / non-prompt tagged. According to Jian, there are about 20% of prompt in NP MC sample. I remember he was talking about pp for this. For Pb Pb the number could be different. This means roughly 20% * 20% = 4% higher real prompt ratio than measured. The new official MC will come with P/NP tag and solve this issue. 
+2. for very low pT pp MB, this approach could also help: do invariant mass fit for each D0 DCA bin, then use the fit signal yield to do the 2 component fit. But this is not applied due to limitted time.
+3. MC data discrepency, shown by the data / fit plots, MC seems to have worse resolution than data.

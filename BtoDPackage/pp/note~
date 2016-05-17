@@ -1,0 +1,19 @@
+as a preparation to run PbPb data with larger statistics, re-organize the code structure:
+separate projection and fitting / analysis 
+use 3 D histogram: D0DCA:pt:decayLengthSignificance, so that don't need to do projection for each pT bin.
+
+
+2 remaining issues:
+1. MC data discrepency, shown by the data / fit plots, MC seems to have worse resolution than data.
+2. integral total yield is larger than fit total yield (see below), maybe because using chi2 fit. But "wl" option in fit doesn't work due to other issues (can not get fit errors?). This can be solved by using the raw yield proceedure of the D analysis: 2 Gaussian + daughter swap + pol2 background.
+
+total yield: 32664 (integral) vs. 32414.4 +- 289.648 (fit)
+total yield: 8473 (integral) vs. 8227.16 +- 140.08 (fit)
+total yield: 3816 (integral) vs. 3710.8 +- 94.0612 (fit)
+total yield: 3328 (integral) vs. 3247.02 +- 87.0272 (fit)
+total yield: 1761 (integral) vs. 1652.13 +- 59.989 (fit)
+total yield: 4820 (integral) vs. 4600.63 +- 97.423 (fit)
+total yield: 7667 (integral) vs. 7499.39 +- 123.167 (fit)
+total yield: 4811 (integral) vs. 4581.26 +- 94.7376 (fit)
+total yield: 4144 (integral) vs. 3794.08 +- 82.6159 (fit)
+

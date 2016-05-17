@@ -1,0 +1,5 @@
+do project*.C first, then bFeedDownFraction.C
+for MB, do invariant mass fit for each D0 DCA bin, then use the fit signal yield to do the 2 component fit.
+for triggered, use side band, due to limitted statistics.
+Thus for > 20 GeV/c, the *invMassFit.pdf plots are not really used.
+Final results in bFeedDownResult.root
