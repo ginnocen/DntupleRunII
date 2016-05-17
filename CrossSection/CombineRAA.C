@@ -12,6 +12,8 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
+  
+  bool superimposedALICE=false;
 
   TFile* filePPMB = new TFile(fileMB.Data());  
   TGraphAsymmErrors* gNuclearModificationMB = (TGraphAsymmErrors*)filePPMB->Get("gNuclearModification");
@@ -266,6 +268,25 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
         } 
     }
   if(isHadDupl==1||isMerged==0) legendSigma->Draw();
+
+  if(isTheoryComparison && centMin==0. && centMax==100.)
+    {
+      TGraph *gShanshanD5TeV = new TGraph("Shanshan-D-RAA_PbPb5020_00-80.dat");
+      gShanshanD5TeV->SetLineWidth(3);
+      gShanshanD5TeV->SetLineColor(kRed+1);
+      gShanshanD5TeV->Draw("c same");
+      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV-0100-plot2.txt");
+      gMagdalenaD5TeV->SetLineColor(kGreen+4);
+      gMagdalenaD5TeV->SetFillColor(kGreen+4);
+
+      gMagdalenaD5TeV->SetFillStyle(3004);
+      gMagdalenaD5TeV->Draw("f same");
+      gMagdalenaD5TeV->Draw("l same");
+
+      TLegendEntry *ent_theory_Shanshan =legendSigma->AddEntry(gShanshanD5TeV,"S. Cao et al. 0-80%","l");
+      TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"M. Djordjevic","bf");
+
+    }
   if(isTheoryComparison && centMin==0. && centMax==10.)
     {
       TFile* filePredictions = new TFile(predictions.Data());  
@@ -275,7 +296,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       TGraphErrors* gPHSDWOShadowing = new TGraphErrors("phsd502TeVWoShadowing.txt");
       TGraphErrors* gPHSDWShadowing = new TGraphErrors("phsd502TeVWShadowing.txt");
 //      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV.txt");
-      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV-plot.txt");
+      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV-plot2.txt");
       TGraph *gShanshanD5TeV = new TGraph("Shanshan-D-RAA_PbPb5020_00-10.dat");
       gRAApion5TeV->SetLineColor(kGreen+1);
       gRAApion5TeV->SetMarkerColor(kGreen+1);
@@ -285,13 +306,14 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gRAADmeson5TeV->SetMarkerColor(4);
       gRAADmeson5TeV->SetLineWidth(3);
       gRAADmeson5TeV->SetMarkerSize(0.15);
-      gMagdalenaD5TeV->SetLineColor(kGreen+2);
-      gMagdalenaD5TeV->SetFillColor(kGreen+2);
+      gMagdalenaD5TeV->SetLineColor(kGreen+4);
+      gMagdalenaD5TeV->SetFillColor(kGreen+4);
+
       gMagdalenaD5TeV->SetFillStyle(3004);
       gMagdalenaD5TeV->Draw("f same");
       gMagdalenaD5TeV->Draw("l same");
       gShanshanD5TeV->SetLineWidth(3);
-      gShanshanD5TeV->SetLineColor(kGray+1);
+      gShanshanD5TeV->SetLineColor(kRed+1);
       gShanshanD5TeV->Draw("c same");
       
       gPHSDWShadowing->SetLineColor(kGreen+2);
@@ -303,9 +325,29 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gPHSDWOShadowing->Draw("c same");
       //gRAApion5TeV->Draw("psame");
       gRAADmeson5TeV->Draw("psame");
+
+      if(superimposedALICE){
+      double p9059_d9x1y1_xval[9] = { 1.5, 2.5, 3.5, 4.5, 5.5, 7.0, 10.0, 14.0, 20.0 };
+      double p9059_d9x1y1_xerrminus[9] = { 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 2.0, 2.0, 4.0 };
+      double p9059_d9x1y1_xerrplus[9] = { 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 2.0, 2.0, 4.0 };
+      double p9059_d9x1y1_yval[9] = { 0.695, 0.694, 0.385, 0.245, 0.186, 0.153, 0.155, 0.174, 0.219 };
+      double p9059_d9x1y1_yerrminus[9] = { 0.3686583784481237, 0.29960307074527787, 0.123664869708418, 0.07561084578286371, 0.05500909015790027, 0.042485291572496, 0.0442944691807002, 0.06788225099390856, 0.137800580550301 };
+      double p9059_d9x1y1_yerrplus[9] = { 0.3318870289722092, 0.2141074496602115, 0.09546203433826454, 0.06264982043070834, 0.05060632371551998, 0.03982461550347976, 0.043416586692184816, 0.06859300255857008, 0.11045361017187261 };
+      double p9059_d9x1y1_ystatminus9[] = { 0.21, 0.079, 0.037, 0.026, 0.025, 0.019, 0.021, 0.048, 0.058 };
+      double p9059_d9x1y1_ystatplus[9] = { 0.21, 0.079, 0.037, 0.026, 0.025, 0.019, 0.021, 0.048, 0.058 };
+      int p9059_d9x1y1_numpoints = 9;
+      TGraphAsymmErrors *p9059_d9x1y1 = new TGraphAsymmErrors(p9059_d9x1y1_numpoints, p9059_d9x1y1_xval, p9059_d9x1y1_yval, p9059_d9x1y1_xerrminus, p9059_d9x1y1_xerrplus, p9059_d9x1y1_yerrminus, p9059_d9x1y1_yerrplus);
+      p9059_d9x1y1->SetName("/HepData/9059/d9x1y1");
+      p9059_d9x1y1->SetLineColor(2);
+      p9059_d9x1y1->SetMarkerColor(2);  
+      p9059_d9x1y1->SetLineWidth(4);  
+      p9059_d9x1y1->SetTitle("/HepData/9059/d9x1y1");
+      p9059_d9x1y1->Draw("psame");
+      }
+
+
       
-      
-            TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"Magdalena 5.1 TeV","lf");
+      TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"M. Djordjevic","bf");
       TLegendEntry *ent_theoryD=legendSigma->AddEntry(gRAADmeson5TeV,"CUJET3.0 D^{0}","l");//pf
  //     ent_theoryD->SetTextFont(42);
       ent_theoryD->SetLineColor(4);  
@@ -318,7 +360,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       //ent_theoryCharged->SetMarkerColor(kGreen+1);
       //ent_theoryCharged->SetTextSize(0.043);//0.03
       
-      TLegendEntry *ent_theory_Shanshan =legendSigma->AddEntry(gShanshanD5TeV,"Shanshan 5.02 TeV","l");
+      TLegendEntry *ent_theory_Shanshan =legendSigma->AddEntry(gShanshanD5TeV,"S. Cao et al.","l");
       TLegendEntry *ent_theory_PHSDW =legendSigma->AddEntry(gPHSDWShadowing,"PHSD w/ shadowing ","l");
       TLegendEntry *ent_theory_PHSDWO =legendSigma->AddEntry(gPHSDWOShadowing,"PHSD w/o shadowing ","l");
     }
@@ -337,7 +379,6 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   texSystnorm->SetTextSize(0.035);
   texSystnorm->SetLineWidth(2);
   texSystnorm->Draw();
-
   //canvasRAA->Update();
   //canvasRAA->RedrawAxis();
   canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparison_%.0f_%.0f.pdf",centMin,centMax));
