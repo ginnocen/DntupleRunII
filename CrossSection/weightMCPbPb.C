@@ -5,33 +5,33 @@ TString weightfunctiongen = "1";
 TString weightfunctionreco = "1";
 TString selmc;
 
-void weightPPvertex(){
+void weightPbPbvertex(){
 
-TFile*fMC=new TFile("/data/HeavyFlavourRun2/MC2015/Dntuple/pp/ntD_EvtBase_20160513_DfinderMC_pp_20160502_dPt0tkPt0p5_D0Dstar_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight.root");
+TFile*fMC=new TFile("/data/HeavyFlavourRun2/MC2015/Dntuple/PbPb/ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight.root");
 TTree *ntDkpiMC = (TTree*)fMC->Get("ntDkpi");
 TTree *ntSkimMC = (TTree*)fMC->Get("ntSkim");
 TTree *ntHiMC = (TTree*)fMC->Get("ntHi");
 ntDkpiMC->AddFriend(ntSkimMC);
 ntDkpiMC->AddFriend(ntHiMC);
 
-
-//TFile*fData=new TFile("/data/dmeson2015/DataDntuple/ntD_EvtBase_20160330_HeavyFlavor_DfinderData_pp_20160329_dPt0tkPt1_D0Dstar3p5p_goldenjson_skim_myskim.root");
-TFile*fData=new TFile("/data/dmeson2015/DataDntupleApproval/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016_skimmed_15May2016_Dpt2_y1p1_Decay3p5_Alpha0p12.root");
+TFile*fData=new TFile("/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root");
 TTree *ntDkpiData = (TTree*)fData->Get("ntDkpi");
 TTree *ntSkimData = (TTree*)fData->Get("ntSkim");
 TTree *ntHiData = (TTree*)fData->Get("ntHi");
+TTree *ntHltData = (TTree*)fData->Get("ntHlt");
 ntDkpiData->AddFriend(ntSkimData);
 ntDkpiData->AddFriend(ntHiData);
+ntDkpiData->AddFriend(ntHltData);
 
 TH1F*hpzData=new TH1F("hpzData","hpzData",200,-15,15);
 TH1F*hpzMC=new TH1F("hpzMC","hpzMC",200,-15,15);
 
 TCut weighpthat="1";
-//TString cut="abs(PVz)<15&&pBeamScrapingFilter&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>2.5&&Dchi2cl>0.05&&Dalpha<0.12&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3";
-TString cut="abs(PVz)<15&&pBeamScrapingFilter&&pPAprimaryVertexFilter";
+TString cut="abs(PVz)<15&&pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3";
+TString hlt="HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1";
 
 ntDkpiMC->Project("hpzMC","PVz",TCut(weighpthat)*(TCut(cut.Data())));
-ntDkpiData->Project("hpzData","PVz",(TCut(cut.Data())));
+ntDkpiData->Project("hpzData","PVz",(TCut(cut.Data())*TCut(hlt.Data())));
 
 hpzMC->Scale(1./hpzMC->Integral(hpzMC->FindBin(-15.),hpzMC->FindBin(15)));
 hpzData->Scale(1./hpzData->Integral(hpzMC->FindBin(-15.),hpzMC->FindBin(15)));
@@ -56,7 +56,7 @@ double par3=myfit->GetParameter(3);
 std::cout<<"weight="<<par0<<"+PVz*("<<par1<<")+PVz*PVz*("<<par2<<")+PVz*PVz*PVz*("<<par3<<")"<<endl;
 }
 
-void weightPPFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
+void weightPbPbFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
 {
   TString label;
   TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))";
@@ -68,7 +68,7 @@ void weightPPFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
  
-  TFile*infMC=new TFile("/data/HeavyFlavourRun2/MC2015/Dntuple/pp/ntD_EvtBase_20160513_DfinderMC_pp_20160502_dPt0tkPt0p5_D0Dstar_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight.root");
+  TFile*infMC=new TFile("/data/HeavyFlavourRun2/MC2015/Dntuple/PbPb/ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight.root");
   TTree* ntGen = (TTree*)infMC->Get("ntGen");
   TTree *ntHiMC = (TTree*)infMC->Get("ntHi");
   ntGen->AddFriend(ntHiMC);
@@ -105,8 +105,6 @@ void weightPPFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
 
   std::cout<<"weight="<<par0<<"+Gpt*("<<par1<<")+Gpt*Gpt*("<<par2<<")+Gpt*Gpt*Gpt*("<<par3<<")"<<"+Gpt*Gpt*Gpt*Gpt*("<<par4<<")+Gpt*Gpt*Gpt*Gpt*Gpt*("<<par5<<")"<<endl;
   std::cout<<"weight="<<par0<<"+Dgenpt*("<<par1<<")+Dgenpt*Dgenpt*("<<par2<<")+Dgenpt*Dgenpt*Dgenpt*("<<par3<<")"<<"+Dgenpt*Dgenpt*Dgenpt*Dgenpt*("<<par4<<")+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*("<<par5<<")"<<endl;
-  label="PP"+pthat;
-
   
   std::cout<<myweightfunctiongen<<std::endl;
   std::cout<<myweightfunctionreco<<std::endl;
@@ -138,4 +136,59 @@ void weightPPFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
   hFONLLOverPt->GetYaxis()->SetTitleOffset(1.4);
   hFONLLOverPt->Draw();
 
+}
+
+
+void weightPbPbCentrality(){
+
+TFile*fMC=new TFile("/data/HeavyFlavourRun2/MC2015/Dntuple/PbPb/ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight.root");
+TTree *ntDkpiMC = (TTree*)fMC->Get("ntDkpi");
+TTree *ntSkimMC = (TTree*)fMC->Get("ntSkim");
+TTree *ntHiMC = (TTree*)fMC->Get("ntHi");
+ntDkpiMC->AddFriend(ntSkimMC);
+ntDkpiMC->AddFriend(ntHiMC);
+
+TFile*fData=new TFile("/data/jisun/PbPb2015/HF2and_ncand_skim_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root");
+TTree *ntDkpiData = (TTree*)fData->Get("ntDkpi");
+TTree *ntSkimData = (TTree*)fData->Get("ntSkim");
+TTree *ntHiData = (TTree*)fData->Get("ntHi");
+TTree *ntHltData = (TTree*)fData->Get("ntHlt");
+ntDkpiData->AddFriend(ntSkimData);
+ntDkpiData->AddFriend(ntHiData);
+ntDkpiData->AddFriend(ntHltData);
+
+TH1F*hCenData=new TH1F("hCenData","hCenData",200,0,200);
+TH1F*hCenMC=new TH1F("hCenMC","hCenMC",200,0,200);
+
+TCut weighpthat="1";
+TString cut="abs(PVz)<15&&pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3";
+TString hlt="HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1";
+
+ntDkpiMC->Project("hCenMC","hiBin",TCut(weighpthat)*(TCut(cut.Data())));
+ntDkpiData->Project("hCenData","hiBin",(TCut(cut.Data())*TCut(hlt.Data())));
+
+hCenMC->Scale(1./hCenMC->Integral(hCenMC->FindBin(0.),hCenMC->FindBin(200)));
+hCenData->Scale(1./hCenData->Integral(hCenMC->FindBin(0.),hCenMC->FindBin(200)));
+
+TCanvas*cRatioVtx=new TCanvas("cRatioVtx","cRatioVtx",500,500);
+cRatioVtx->Divide(2,1);
+cRatioVtx->cd(1);
+hCenMC->SetLineColor(2);
+hCenMC->Draw();
+hCenData->Draw("same");
+cRatioVtx->cd(2);
+TH1D*hRatioVertex=(TH1D*)hCenData->Clone("hRatioVertex");
+hRatioVertex->Divide(hCenMC);
+hRatioVertex->Draw();
+
+TF1 *myfit = new TF1("myfit","[0]+[1]*x+x*x*[2]+x*x*x*[3]+x*x*x*x*[4]", 0, 200);  
+hRatioVertex->Fit("myfit","","",0, 200);
+double par0=myfit->GetParameter(0);
+double par1=myfit->GetParameter(1);
+double par2=myfit->GetParameter(2);
+double par3=myfit->GetParameter(3);
+double par4=myfit->GetParameter(4);
+
+TString myweight;
+std::cout<<"weight="<<par0<<"+hiBin*("<<par1<<")+hiBin*hiBin*("<<par2<<")+hiBin*hiBin*hiBin*("<<par3<<")"<<"+hiBin*hiBin*hiBin*hiBin*("<<par4<<")"<<endl;
 }
