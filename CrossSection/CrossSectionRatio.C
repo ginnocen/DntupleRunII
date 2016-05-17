@@ -47,7 +47,7 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   hDcandidatesNoTriggerCorrectedFONLLnorm->Scale(1./lumi);
   
   for (int i=0;i<nBins;i++) {
-    double prompt=bFeedDownCorrection(hSigmaStat->GetBinCenter(i+1),isPbPb,2);
+    double prompt=bFeedDownCorrection(hSigmaStat->GetBinCenter(i+1),isPbPb,1);
     hfprompt->SetBinContent(i+1,prompt);
     hSigmaStat->SetBinContent(i+1,hSigmaStat->GetBinContent(i+1)*prompt);
     hSigmaStat->SetBinError(i+1,hSigmaStat->GetBinError(i+1)*prompt);

@@ -12,7 +12,7 @@ float bFeedDownCorrection(double pt, bool isPbPb, int method=0)
   double val=-1.0; // place holder
   double errval=-1.0;
 
-  if (method==0) {   
+  if (method==1) {   
     if (!isPbPb) { // pp
       if (pt>2&&pt<6) {
         val = 0.925; // 10.2%
@@ -26,7 +26,7 @@ float bFeedDownCorrection(double pt, bool isPbPb, int method=0)
         val = 0.779; // 2.0%
       } else if (pt>20&&pt<25) {
         val = 0.771; // 2.0%
-      } else if (pt>25&&pt<35) {
+      } else if (pt>25&&pt<=35) {
         val = 0.824; // 1.6%
       } else if (pt>35&&pt<=50) {
         val = 0.824; // 3.6%
@@ -46,7 +46,7 @@ float bFeedDownCorrection(double pt, bool isPbPb, int method=0)
         val = 0.803; // 2.8%
       } else if (pt>20&&pt<25) {
         val = 0.775; // 2.0%
-      } else if (pt>25&&pt<35) {
+      } else if (pt>25&&pt<=35) {
         val = 0.783; // 1.6%
       } else if (pt>35&&pt<=50) {
         val = 0.824; // 3.6%
@@ -54,7 +54,7 @@ float bFeedDownCorrection(double pt, bool isPbPb, int method=0)
         val = 1.0; // 3.1%
       } 
     }
-  } else  if (method==1) {
+  } else  if (method==0) {
     if (!isPbPb) { // pp
       if (pt>1&&pt<2) {
         val = 0.626; // 10.2%
