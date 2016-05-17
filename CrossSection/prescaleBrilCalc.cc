@@ -47,7 +47,7 @@ double prescaleHLTtree50=1;
 double prescaleHLTtreeMB=0.00109638;
 
 double unprescale=25775344.462;
-double unprescaleMB=1898.856*20;
+double unprescaleMB=1898.856*19;
 double D8pp=259286.311;
 double D15pp=1006475.256;
 double D30pp=6329008.193;
@@ -114,7 +114,21 @@ cout<<"prescalePbPb20="<<prescalePbPb20<<endl;
 cout<<"prescalePbPb40="<<prescalePbPb40<<endl;
 cout<<"prescalePbPb60="<<prescalePbPb60<<endl;
 
-double ncountsMBPbPb=1.48357e+08;
+
+TFile*f=new TFile("/data/jisun/PbPb2015/HF2and_skim_MB1to7_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root");
+TTree *ntDkpi = (TTree*)f->Get("ntDkpi");
+TTree *ntHlt = (TTree*)f->Get("ntHlt");
+TTree *ntSkim = (TTree*)f->Get("ntSkim");
+TTree *ntHi = (TTree*)f->Get("ntHi");
+ntDkpi->AddFriend(ntSkim);
+ntDkpi->AddFriend(ntHlt);
+ntDkpi->AddFriend(ntHi);
+TH1F*hcountsMB=new TH1F("hcountsMB","hcountsMB",100,-2,2);
+
+ntDkpi->Draw("1>>hcountsMB","pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3&&(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)&&hiBin<180");
+
+double ncountsMBPbPb=hcountsMB->GetEntries()*10/9;
+std::cout<<"number of MB events="<<ncountsMBPbPb<<std::endl;
 double TAA=392.4/(70.*1e9);
 double lumiMB=TAA*ncountsMBPbPb;
 double lumiHighpt=lumiMB/prescalePbPbMB;      
@@ -129,7 +143,11 @@ std::cout<<"Luminosity brilcalc high pt="<<lumiHighpt<<std::endl;
 
 cout<<"******************* LUMI PbPb 0-10 *******************"<<endl;
 
-double ncountsMBPbPb010=1.50947e+07;
+//double ncountsMBPbPb010=1.50947e+07;
+ntDkpi->Draw("1>>hcountsMB","pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3&&(HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1)&&hiBin<20");
+double ncountsMBPbPb010=hcountsMB->GetEntries();
+std::cout<<"number of MB events 0-10="<<ncountsMBPbPb010<<std::endl;
+
 double TAA010=(23.2/1e9);
 double lumiMB010=TAA010*ncountsMBPbPb010;
 double lumiHighpt010=lumiMB010/prescalePbPbMB;      
