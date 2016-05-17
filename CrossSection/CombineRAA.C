@@ -277,7 +277,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       TGraphErrors* gPHSDWOShadowing = new TGraphErrors("phsd502TeVWoShadowing.txt");
       TGraphErrors* gPHSDWShadowing = new TGraphErrors("phsd502TeVWShadowing.txt");
 //      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV.txt");
-      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV-plot.txt");
+      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV-plot2.txt");
       TGraph *gShanshanD5TeV = new TGraph("Shanshan-D-RAA_PbPb5020_00-10.dat");
       gRAApion5TeV->SetLineColor(kGreen+1);
       gRAApion5TeV->SetMarkerColor(kGreen+1);
@@ -287,14 +287,14 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gRAADmeson5TeV->SetMarkerColor(4);
       gRAADmeson5TeV->SetLineWidth(3);
       gRAADmeson5TeV->SetMarkerSize(0.15);
-      gMagdalenaD5TeV->SetLineColor(kGreen+2);
-      gMagdalenaD5TeV->SetFillColor(kGreen+2);
+      gMagdalenaD5TeV->SetLineColor(kGreen+4);
+      gMagdalenaD5TeV->SetFillColor(kGreen+4);
 
       gMagdalenaD5TeV->SetFillStyle(3004);
       gMagdalenaD5TeV->Draw("f same");
       gMagdalenaD5TeV->Draw("l same");
       gShanshanD5TeV->SetLineWidth(3);
-      gShanshanD5TeV->SetLineColor(kGray+1);
+      gShanshanD5TeV->SetLineColor(kRed+1);
       gShanshanD5TeV->Draw("c same");
       
       gPHSDWShadowing->SetLineColor(kGreen+2);
@@ -328,7 +328,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
 
 
       
-            TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"Magdalena 5.1 TeV","lf");
+            TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"M. Djordjevic","bf");
       TLegendEntry *ent_theoryD=legendSigma->AddEntry(gRAADmeson5TeV,"CUJET3.0 D^{0}","l");//pf
  //     ent_theoryD->SetTextFont(42);
       ent_theoryD->SetLineColor(4);  
@@ -341,7 +341,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       //ent_theoryCharged->SetMarkerColor(kGreen+1);
       //ent_theoryCharged->SetTextSize(0.043);//0.03
       
-      TLegendEntry *ent_theory_Shanshan =legendSigma->AddEntry(gShanshanD5TeV,"Shanshan 5.02 TeV","l");
+      TLegendEntry *ent_theory_Shanshan =legendSigma->AddEntry(gShanshanD5TeV,"S. Cao et al.","l");
       TLegendEntry *ent_theory_PHSDW =legendSigma->AddEntry(gPHSDWShadowing,"PHSD w/ shadowing ","l");
       TLegendEntry *ent_theory_PHSDWO =legendSigma->AddEntry(gPHSDWOShadowing,"PHSD w/o shadowing ","l");
     }
