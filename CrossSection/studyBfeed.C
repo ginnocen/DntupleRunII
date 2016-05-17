@@ -103,14 +103,18 @@ void studyBfeed(bool isPP=false)
     correctedFONLLP[ifile]->SetPointEYlow(ibin,yerrlowP*effP);
     correctedFONLLP[ifile]->SetPointEYhigh(ibin,yerrhighP*effP);
     
-    cout<<"yP="<<yP<<endl;
-    cout<<"yNP="<<yNP<<endl;
-    cout<<"effP="<<effP<<endl;
-    cout<<"effNP="<<effNP<<endl;
+   // cout<<"yP="<<yP<<endl;
+   // cout<<"yNP="<<yNP<<endl;
+   // cout<<"effP="<<effP<<endl;
+   // cout<<"effNP="<<effNP<<endl;
     
     gratio[ifile]->SetPoint(ibin,x,yP*effP/(yNP*effNP+yP*effP));
     gratio[ifile]->SetPointEYlow(ibin,0.);
     gratio[ifile]->SetPointEYhigh(ibin,0.);
+    
+    if (!isPP) cout<<"PbPb"<<endl;
+    if (isPP) cout<<"PP"<<endl;
+    cout<<"xvalue="<<x<<", fprompt="<<yP*effP/(yNP*effNP+yP*effP)<<endl;
     
     double prompt=bFeedDownCorrection(x,!isPP);
     dataPoints[ifile]->SetPoint(ibin,x,prompt);
