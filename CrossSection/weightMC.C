@@ -14,8 +14,6 @@ TTree *ntHiMC = (TTree*)fMC->Get("ntHi");
 ntDkpiMC->AddFriend(ntSkimMC);
 ntDkpiMC->AddFriend(ntHiMC);
 
-
-//TFile*fData=new TFile("/data/dmeson2015/DataDntuple/ntD_EvtBase_20160330_HeavyFlavor_DfinderData_pp_20160329_dPt0tkPt1_D0Dstar3p5p_goldenjson_skim_myskim.root");
 TFile*fData=new TFile("/data/dmeson2015/DataDntupleApproval/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016_skimmed_15May2016_Dpt2_y1p1_Decay3p5_Alpha0p12.root");
 TTree *ntDkpiData = (TTree*)fData->Get("ntDkpi");
 TTree *ntSkimData = (TTree*)fData->Get("ntSkim");
@@ -30,7 +28,10 @@ TCut weighpthat="1";
 //TString cut="abs(PVz)<15&&pBeamScrapingFilter&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>2.5&&Dchi2cl>0.05&&Dalpha<0.12&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3";
 TString cut="abs(PVz)<15&&pBeamScrapingFilter&&pPAprimaryVertexFilter";
 
-ntDkpiMC->Project("hpzMC","PVz",TCut(weighpthat)*(TCut(cut.Data())));
+TCut weighttest="1";
+//TCut weighttest="0.967866+PVz*(-0.0140489)+PVz*PVz*(0.00198395)+PVz*PVz*PVz*(-3.2333e-06)+PVz*PVz*PVz*PVz*(-7.1696e-06)";
+
+ntDkpiMC->Project("hpzMC","PVz",TCut(weighpthat)*(TCut(cut.Data()*TCut(weighttest))));
 ntDkpiData->Project("hpzData","PVz",(TCut(cut.Data())));
 
 hpzMC->Scale(1./hpzMC->Integral(hpzMC->FindBin(-15.),hpzMC->FindBin(15)));
@@ -47,13 +48,14 @@ TH1D*hRatioVertex=(TH1D*)hpzData->Clone("hRatioVertex");
 hRatioVertex->Divide(hpzMC);
 hRatioVertex->Draw();
 
-TF1 *myfit = new TF1("myfit","[0]+[1]*x+x*x*[2]+x*x*x*[3]", -15, 15);  
+TF1 *myfit = new TF1("myfit","[0]+[1]*x+x*x*[2]+x*x*x*[3]+x*x*x*x*[4]", -15, 15);  
 hRatioVertex->Fit("myfit","","",-15,15);
 double par0=myfit->GetParameter(0);
 double par1=myfit->GetParameter(1);
 double par2=myfit->GetParameter(2);
 double par3=myfit->GetParameter(3);
-std::cout<<"weight="<<par0<<"+PVz*("<<par1<<")+PVz*PVz*("<<par2<<")+PVz*PVz*PVz*("<<par3<<")"<<endl;
+double par4=myfit->GetParameter(4);
+std::cout<<"weight="<<par0<<"+PVz*("<<par1<<")+PVz*PVz*("<<par2<<")+PVz*PVz*PVz*("<<par3<<")+PVz*PVz*PVz*PVz*("<<par4<<")"<<endl;
 }
 
 void weightPPFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
@@ -74,7 +76,7 @@ void weightPPFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
   ntGen->AddFriend(ntHiMC);
   
   TH1D* hPtGenFONLL = new TH1D("hPtGenFONLL","",nBinsReweight,ptBinsReweight);
-  ntGen->Project("hPtGenFONLL","Gpt",TCut("pthatweight")*(TCut(selmcgen.Data())));
+  ntGen->Project("hPtGenFONLL","Gpt",(TCut(selmcgen.Data())));
   divideBinWidth(hPtGenFONLL);
     
   TString fonll="/afs/cern.ch/work/g/ginnocen/public/output_pp_d0meson_5TeV_y1.root";
@@ -92,6 +94,7 @@ void weightPPFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
 
   hFONLLOverPt->Divide(hPtGenFONLL);
 
+/*
 
   TF1 *myfit = new TF1("myfit","[0]+[1]*x+x*x*[2]+x*x*x*[3]+x*x*x*x*[4]+x*x*x*x*x*[5]",0, 100);  
   hFONLLOverPt->Fit("myfit","","",0,100);
@@ -111,7 +114,22 @@ void weightPPFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
   std::cout<<myweightfunctiongen<<std::endl;
   std::cout<<myweightfunctionreco<<std::endl;
   std::cout<<"fit function parameters="<<weightfunctiongen<<std::endl;
+*/
 
+  TF1 *myfit = new TF1("myfit","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 2, 100);
+  hFONLLOverPt->Fit("myfit","","",minfit,maxfit);
+  double par0=myfit->GetParameter(0);
+  double par1=myfit->GetParameter(1);
+  double par2=myfit->GetParameter(2);
+  double par3=myfit->GetParameter(3);
+  double par4=myfit->GetParameter(4);
+  double par5=myfit->GetParameter(5);
+
+  myweightfunctiongen=Form("pow(10,%f*Gpt+%f+Gpt*Gpt*%f)+pow(10,%f*Gpt+%f+Gpt*Gpt*%f)",par0,par1,par2,par3,par4,par5);
+  myweightfunctionreco=Form("pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)+pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)",par0,par1,par2,par3,par4,par5);
+  cout<<"myweightfunctiongen="<<myweightfunctiongen<<endl;
+  cout<<"myweightfunctionreco="<<myweightfunctionreco<<endl;
+  
   TCanvas*canvasPtReweight=new TCanvas("canvasPtReweight","canvasPtReweight",1000.,500.); 
   canvasPtReweight->Divide(3,1);
   canvasPtReweight->cd(1);

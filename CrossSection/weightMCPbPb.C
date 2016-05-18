@@ -30,7 +30,10 @@ TCut weighpthat="1";
 TString cut="abs(PVz)<15&&pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3";
 TString hlt="HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1";
 
-ntDkpiMC->Project("hpzMC","PVz",TCut(weighpthat)*(TCut(cut.Data())));
+TCut weighttest="1";
+//TCut weighttest="1.26077+PVz*(0.00887442)+PVz*PVz*(-0.00782056)+PVz*PVz*PVz*(-3.51063e-05)+PVz*PVz*PVz*PVz*(-3.51063e-05)";
+
+ntDkpiMC->Project("hpzMC","PVz",TCut(weighpthat)*(TCut(cut.Data()*TCut(weighttest))));
 ntDkpiData->Project("hpzData","PVz",(TCut(cut.Data())*TCut(hlt.Data())));
 
 hpzMC->Scale(1./hpzMC->Integral(hpzMC->FindBin(-15.),hpzMC->FindBin(15)));
@@ -47,13 +50,16 @@ TH1D*hRatioVertex=(TH1D*)hpzData->Clone("hRatioVertex");
 hRatioVertex->Divide(hpzMC);
 hRatioVertex->Draw();
 
-TF1 *myfit = new TF1("myfit","[0]+[1]*x+x*x*[2]+x*x*x*[3]", -15, 15);  
+
+TF1 *myfit = new TF1("myfit","[0]+[1]*x+x*x*[2]+x*x*x*[3]+x*x*x*x*[4]", -15, 15);  
 hRatioVertex->Fit("myfit","","",-15,15);
 double par0=myfit->GetParameter(0);
 double par1=myfit->GetParameter(1);
 double par2=myfit->GetParameter(2);
 double par3=myfit->GetParameter(3);
-std::cout<<"weight="<<par0<<"+PVz*("<<par1<<")+PVz*PVz*("<<par2<<")+PVz*PVz*PVz*("<<par3<<")"<<endl;
+double par4=myfit->GetParameter(4);
+std::cout<<"weight="<<par0<<"+PVz*("<<par1<<")+PVz*PVz*("<<par2<<")+PVz*PVz*PVz*("<<par3<<")+PVz*PVz*PVz*PVz*("<<par4<<")"<<endl;
+
 }
 
 void weightPbPbFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
@@ -61,8 +67,10 @@ void weightPbPbFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
   TString label;
   TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))";
   TString myweightfunctiongen,myweightfunctionreco;
-
   
+  //TCut weighpthat="pow(10,-0.075415*Gpt+1.748668+Gpt*Gpt*0.000388)+pow(10,-0.166406*Gpt+2.887856+Gpt*Gpt*0.000105) +0.003157";
+  TCut weighpthat="1";
+
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
@@ -74,7 +82,7 @@ void weightPbPbFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
   ntGen->AddFriend(ntHiMC);
   
   TH1D* hPtGenFONLL = new TH1D("hPtGenFONLL","",nBinsReweight,ptBinsReweight);
-  ntGen->Project("hPtGenFONLL","Gpt",TCut("pthatweight")*(TCut(selmcgen.Data())));
+  ntGen->Project("hPtGenFONLL","Gpt",(TCut(weighpthat)*TCut(selmcgen.Data())));
   divideBinWidth(hPtGenFONLL);
     
   TString fonll="/afs/cern.ch/work/g/ginnocen/public/output_pp_d0meson_5TeV_y1.root";
@@ -92,7 +100,7 @@ void weightPbPbFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
 
   hFONLLOverPt->Divide(hPtGenFONLL);
 
-
+/*
   TF1 *myfit = new TF1("myfit","[0]+[1]*x+x*x*[2]+x*x*x*[3]+x*x*x*x*[4]+x*x*x*x*x*[5]",0, 100);  
   hFONLLOverPt->Fit("myfit","","",0,100);
 
@@ -109,6 +117,21 @@ void weightPbPbFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
   std::cout<<myweightfunctiongen<<std::endl;
   std::cout<<myweightfunctionreco<<std::endl;
   std::cout<<"fit function parameters="<<weightfunctiongen<<std::endl;
+*/
+    TF1 *myfit = new TF1("myfit","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])+[6]", 2, 100);
+    hFONLLOverPt->Fit("myfit","","",minfit,maxfit);
+    double par0=myfit->GetParameter(0);
+    double par1=myfit->GetParameter(1);
+    double par2=myfit->GetParameter(2);
+    double par3=myfit->GetParameter(3);
+    double par4=myfit->GetParameter(4);
+    double par5=myfit->GetParameter(5);
+    double par6=myfit->GetParameter(6);
+
+   myweightfunctiongen=Form("pow(10,%f*Gpt+%f+Gpt*Gpt*%f)+pow(10,%f*Gpt+%f+Gpt*Gpt*%f)+%f",par0,par1,par2,par3,par4,par5,par6);
+   myweightfunctionreco=Form("pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)+pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)+%f",par0,par1,par2,par3,par4,par5,par6);
+   std::cout<<myweightfunctiongen<<std::endl;
+   std::cout<<myweightfunctionreco<<std::endl;
 
   TCanvas*canvasPtReweight=new TCanvas("canvasPtReweight","canvasPtReweight",1000.,500.); 
   canvasPtReweight->Divide(3,1);
@@ -160,6 +183,7 @@ ntDkpiData->AddFriend(ntHltData);
 TH1F*hCenData=new TH1F("hCenData","hCenData",200,0,200);
 TH1F*hCenMC=new TH1F("hCenMC","hCenMC",200,0,200);
 
+//TCut weighpthat="6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09)";
 TCut weighpthat="1";
 TString cut="abs(PVz)<15&&pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3";
 TString hlt="HLT_HIL1MinimumBiasHF2AND_part1_v1||HLT_HIL1MinimumBiasHF2AND_part2_v1||HLT_HIL1MinimumBiasHF2AND_part3_v1";
