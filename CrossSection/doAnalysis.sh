@@ -5,29 +5,29 @@ CENTPbPbMAX=100
 #Central point of the analysis
 
 DOANALYSIS_MCSTUDYDETAIL=1
-DOANALYSISPbPb_MCSTUDYDETAIL=1
+DOANALYSISPbPb_MCSTUDYDETAIL=0
 
 
 DOANALYSISPP_FONLL=0
 DOANALYSISPP_TRGCOMBINATION=0
-DOANALYSISPP_FIT=0
-DOANALYSISPP_CROSS=0
+DOANALYSISPP_FIT=1
+DOANALYSISPP_CROSS=1
 DOANALYSISPP_MCSTUDY=0
 
 DOANALYSISPbPb_FONLL=0
 DOANALYSISPbPb_TRGCOMBINATION=0
-DOANALYSISPbPb_FIT=0
-DOANALYSISPbPb_CROSS=0
+DOANALYSISPbPb_FIT=1
+DOANALYSISPbPb_CROSS=1
 DOANALYSISPbPb_MCSTUDY=0
 
 DOANALYSISPPMB_FONLL=0
-DOANALYSISPPMB_FIT=0
-DOANALYSISPPMB_CROSS=0
+DOANALYSISPPMB_FIT=1
+DOANALYSISPPMB_CROSS=1
 DOANALYSISPPMB_MCSTUDY=0
 
 DOANALYSISPbPbMB_FONLL=0
-DOANALYSISPbPbMB_FIT=0
-DOANALYSISPbPbMB_CROSS=0
+DOANALYSISPbPbMB_FIT=1
+DOANALYSISPbPbMB_CROSS=1
 DOANALYSISPbPbMB_MCSTUDY=0
 
 DOANALYSISPP_MCSTUDYCombine=0
@@ -215,7 +215,7 @@ OUTPUTFILERAA="ROOTfiles/outputRAA.root"
 
 LUMIPbPb=15.5665   # from brilcalc
 ISMCPbPb=0
-ISDOWEIGHTPbPb=3
+ISDOWEIGHTPbPb=2
 SELGENPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
 SELGENPPACCPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<1.5&&abs(Gtk2eta)<1.5&&Gtk1pt>2.0&&Gtk2pt>2.0"
 RECOONLYPbPb="pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3&&abs(PVz)<15&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3"
@@ -292,7 +292,7 @@ OUTPUTFILEMCSTUDYNPPPMB="ROOTfiles/MCstudiesNPPPMB.root"
 
 LUMIPPMB=0.0361128 # from brilcalc
 ISMCPPMB=0
-ISDOWEIGHTPPMB=2
+ISDOWEIGHTPPMB=1
 SELGENPPMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
 SELGENACCPPMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<1.5&&abs(Gtk2eta)<1.5&&Gtk1pt>1.0&&Gtk2pt>1.0"
 RECOONLYPPMB="abs(PVz)<15&&pBeamScrapingFilter&&pPAprimaryVertexFilter&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dtrk2Pt>1.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5"
@@ -373,7 +373,7 @@ OUTPUTFILERAAMB="ROOTfiles/outputRAAMB.root"
 
 LUMIPbPbMB=0.834692 
 ISMCPbPbMB=0
-ISDOWEIGHTPbPbMB=4
+ISDOWEIGHTPbPbMB=2
 SELGENPbPbMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
 SELGENACCPbPbMB="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<1.5&&abs(Gtk2eta)<1.5&&Gtk1pt>1.0&&Gtk2pt>1.0"
 RECOONLYPbPbMB="pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3&&abs(PVz)<15&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dtrk2Pt>1.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5"
