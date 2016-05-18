@@ -49,7 +49,7 @@ if(useweight==0) {
   }
   //high pt pp 
   if(useweight==1) {
-    weightfunctiongen="Dpt<(pow(10,-0.163600*Gpt+2.895957+Gpt*Gpt*-0.000041)+pow(10,-0.075506*Gpt+1.736871+Gpt*Gpt*0.000400))";
+    weightfunctiongen="(pow(10,-0.163600*Gpt+2.895957+Gpt*Gpt*-0.000041)+pow(10,-0.075506*Gpt+1.736871+Gpt*Gpt*0.000400))";
     weightfunctionreco="(pow(10,-0.163600*Dgenpt+2.895957+Dgenpt*Dgenpt*-0.000041)+pow(10,-0.075506*Dgenpt+1.736871+Dgenpt*Dgenpt*0.000400))";
   }
   //low pt pp 
