@@ -54,7 +54,7 @@ if(useweight==0) {
   }
   //low pt pp 
   if(useweight==2) {
-    weightfunctiongen="(0.0116437+Gpt*(0.0602697)+Gpt*Gpt*(-0.00226879)+Gpt*Gpt*Gpt*(3.91035e-05)+Gpt*Gpt*Gpt*Gpt*(-3.0699e-07)+Gpt*Gpt*Gpt*Gpt*Gpt*(8.73234e-10))*(pthatweight&&Gpt<pthat/1.5)";
+    weightfunctiongen="(0.0116437+Gpt*(0.0602697)+Gpt*Gpt*(-0.00226879)+Gpt*Gpt*Gpt*(3.91035e-05)+Gpt*Gpt*Gpt*Gpt*(-3.0699e-07)+Gpt*Gpt*Gpt*Gpt*Gpt*(8.73234e-10))*(pthatweight)";
     weightfunctionreco="(0.0116437+Dgenpt*(0.0602697)+Dgenpt*Dgenpt*(-0.00226879)+Dgenpt*Dgenpt*Dgenpt*(3.91035e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-3.0699e-07)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(8.73234e-10))*(pthatweight)";
     selmc=selmc+"&&Dpt<pthat/1.2";
     selmcgen=selmcgen+"&&Gpt<pthat/1.2";
@@ -69,8 +69,8 @@ if(useweight==0) {
   if(useweight==4) {
     weightfunctiongen="(-0.0132063+Gpt*(0.0947793)+Gpt*Gpt*(-0.0142289)+Gpt*Gpt*Gpt*(0.00110793)+Gpt*Gpt*Gpt*Gpt*(-4.17616e-05)+Gpt*Gpt*Gpt*Gpt*Gpt*(5.89538e-07))*(pthatweight)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
     weightfunctionreco="(-0.0132063+Dgenpt*(0.0947793)+Dgenpt*Dgenpt*(-0.0142289)+Dgenpt*Dgenpt*Dgenpt*(0.00110793)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-4.17616e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(5.89538e-07))*(pthatweight)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
-    selmc=selmc+"&&Dpt<pthat/1.2";
-    selmcgen=selmcgen+"&&Gpt<pthat/1.2";
+    //selmc=selmc+"&&Dpt<pthat/1.2";
+    //selmcgen=selmcgen+"&&Gpt<pthat/1.2";
   }
   
 // pthat weigths
