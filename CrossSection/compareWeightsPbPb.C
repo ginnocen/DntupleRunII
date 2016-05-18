@@ -2,7 +2,7 @@
 #include "bFeedDown/bFeedDownCorrection.C"
 
 
-void compareWeightsPbPb(bool isLowpt=true)
+void compareWeightsPbPb(bool isLowpt=false)
 {
   
   gStyle->SetOptTitle(0);
@@ -35,7 +35,7 @@ void compareWeightsPbPb(bool isLowpt=true)
   mynamefiles[1] ="DetailEfficiency/PbPbMBpthat.root";
   mynamefiles[2] ="DetailEfficiency/PbPbMBpt.root";
   mynamefiles[3] ="DetailEfficiency/PbPbMBCen.root";
-  mynamefiles[4] ="DetailEfficiency/PbPbCenPtPthat.root";
+  mynamefiles[4] ="DetailEfficiency/PbPbMBCenPtPthat.root";
   label[0]="no weight";
   label[1]="pthat";
   label[2]="pt shape";
