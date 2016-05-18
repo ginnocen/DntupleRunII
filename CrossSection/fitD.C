@@ -62,18 +62,22 @@ void fitD(int usePbPb=1, TString inputdata="/data/HeavyFlavourRun2/MC2015/Dntupl
   TF1* fit (TTree* nt, TTree* ntMC, double ptmin, double ptmax, int isMC,bool, TF1* &total);
 
 if(doweight==0) { //pp high pt
+    weightgen="1";
+    weight="1";
+  }
+if(doweight==1) { //pp high pt
     weightgen="(pow(10,-0.163600*Gpt+2.895957+Gpt*Gpt*-0.000041)+pow(10,-0.075506*Gpt+1.736871+Gpt*Gpt*0.000400))";
     weight="(pow(10,-0.163600*Dgenpt+2.895957+Dgenpt*Dgenpt*-0.000041)+pow(10,-0.075506*Dgenpt+1.736871+Dgenpt*Dgenpt*0.000400))";
   }
-  if(doweight==1) { //pp low pt
+  if(doweight==2) { //pp low pt
     weightgen="(0.0116437+Gpt*(0.0602697)+Gpt*Gpt*(-0.00226879)+Gpt*Gpt*Gpt*(3.91035e-05)+Gpt*Gpt*Gpt*Gpt*(-3.0699e-07)+Gpt*Gpt*Gpt*Gpt*Gpt*(8.73234e-10))*pthatweight";
     weight="(0.0116437+Dgenpt*(0.0602697)+Dgenpt*Dgenpt*(-0.00226879)+Dgenpt*Dgenpt*Dgenpt*(3.91035e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-3.0699e-07)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(8.73234e-10))*pthatweight";
   }
-  if(doweight==2) { //PbPb high pt
+  if(doweight==3) { //PbPb high pt
     weightgen="(pow(10,-0.075415*Gpt+1.748668+Gpt*Gpt*0.000388)+pow(10,-0.166406*Gpt+2.887856+Gpt*Gpt*0.000105)+0.003157)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
     weight="(pow(10,-0.075415*Dgenpt+1.748668+Dgenpt*Dgenpt*0.000388)+pow(10,-0.166406*Dgenpt+2.887856+Dgenpt*Dgenpt*0.000105)+0.003157)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
   }
-  if(doweight==3) { //PbPb loq pt
+  if(doweight==4) { //PbPb loq pt
     weightgen="(-0.0132063+Gpt*(0.0947793)+Gpt*Gpt*(-0.0142289)+Gpt*Gpt*Gpt*(0.00110793)+Gpt*Gpt*Gpt*Gpt*(-4.17616e-05)+Gpt*Gpt*Gpt*Gpt*Gpt*(5.89538e-07))*pthatweight*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
     weight="(-0.0132063+Dgenpt*(0.0947793)+Dgenpt*Dgenpt*(-0.0142289)+Dgenpt*Dgenpt*Dgenpt*(0.00110793)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-4.17616e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(5.89538e-07))*pthatweight*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
   }
