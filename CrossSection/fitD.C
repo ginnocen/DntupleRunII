@@ -82,7 +82,7 @@ if(doweight==1) { //pp high pt
     weight="(-0.0132063+Dgenpt*(0.0947793)+Dgenpt*Dgenpt*(-0.0142289)+Dgenpt*Dgenpt*Dgenpt*(0.00110793)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-4.17616e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(5.89538e-07))*pthatweight*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
   }
   
-  if(doweight<0 || doweight>3) std::cout<<"ERROR, this weighting option is not defined"<<std::endl;
+  if(doweight<0 || doweight>4) std::cout<<"ERROR, this weighting option is not defined"<<std::endl;
   
   std::cout<<"we are using weight="<<weight<<std::endl;
   

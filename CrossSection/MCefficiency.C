@@ -19,8 +19,9 @@ TString selmc;
 
 void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root", TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))",TString selmcgenacceptance="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0", TString cut_recoonly="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11", TString cut="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>1.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&Dtrk2Algo>3&&Dtrk2Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)",TString label="PP",TString outputfile="test", int useweight=1, int minfit=2,int maxfit=100)
 {
- std::cout<<"option="<<useweight<<std::endl;
  selmc=cut;
+ std::cout<<"option="<<useweight<<std::endl;
+ std::cout<<"cut="<<selmc<<std::endl;
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetEndErrorSize(0);
@@ -48,13 +49,16 @@ if(useweight==0) {
   }
   //high pt pp 
   if(useweight==1) {
-    weightfunctiongen="(pow(10,-0.163600*Gpt+2.895957+Gpt*Gpt*-0.000041)+pow(10,-0.075506*Gpt+1.736871+Gpt*Gpt*0.000400))";
+    weightfunctiongen="Dpt<(pow(10,-0.163600*Gpt+2.895957+Gpt*Gpt*-0.000041)+pow(10,-0.075506*Gpt+1.736871+Gpt*Gpt*0.000400))";
     weightfunctionreco="(pow(10,-0.163600*Dgenpt+2.895957+Dgenpt*Dgenpt*-0.000041)+pow(10,-0.075506*Dgenpt+1.736871+Dgenpt*Dgenpt*0.000400))";
   }
   //low pt pp 
   if(useweight==2) {
-    weightfunctiongen="(0.0116437+Gpt*(0.0602697)+Gpt*Gpt*(-0.00226879)+Gpt*Gpt*Gpt*(3.91035e-05)+Gpt*Gpt*Gpt*Gpt*(-3.0699e-07)+Gpt*Gpt*Gpt*Gpt*Gpt*(8.73234e-10))*pthatweight";
-    weightfunctionreco="(0.0116437+Dgenpt*(0.0602697)+Dgenpt*Dgenpt*(-0.00226879)+Dgenpt*Dgenpt*Dgenpt*(3.91035e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-3.0699e-07)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(8.73234e-10))*pthatweight";
+    weightfunctiongen="(0.0116437+Gpt*(0.0602697)+Gpt*Gpt*(-0.00226879)+Gpt*Gpt*Gpt*(3.91035e-05)+Gpt*Gpt*Gpt*Gpt*(-3.0699e-07)+Gpt*Gpt*Gpt*Gpt*Gpt*(8.73234e-10))*(pthatweight&&Gpt<pthat/1.5)";
+    weightfunctionreco="(0.0116437+Dgenpt*(0.0602697)+Dgenpt*Dgenpt*(-0.00226879)+Dgenpt*Dgenpt*Dgenpt*(3.91035e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-3.0699e-07)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(8.73234e-10))*(pthatweight)";
+    selmc=selmc+"&&Dpt<pthat/1.2";
+    selmcgen=selmcgen+"&&Gpt<pthat/1.2";
+
   }
   //high pt PbPb 
   if(useweight==3) {
@@ -63,15 +67,19 @@ if(useweight==0) {
   }
   //low pt PbPb 
   if(useweight==4) {
-    weightfunctiongen="(-0.0132063+Gpt*(0.0947793)+Gpt*Gpt*(-0.0142289)+Gpt*Gpt*Gpt*(0.00110793)+Gpt*Gpt*Gpt*Gpt*(-4.17616e-05)+Gpt*Gpt*Gpt*Gpt*Gpt*(5.89538e-07))*pthatweight*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
-    weightfunctionreco="(-0.0132063+Dgenpt*(0.0947793)+Dgenpt*Dgenpt*(-0.0142289)+Dgenpt*Dgenpt*Dgenpt*(0.00110793)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-4.17616e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(5.89538e-07))*pthatweight*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
+    weightfunctiongen="(-0.0132063+Gpt*(0.0947793)+Gpt*Gpt*(-0.0142289)+Gpt*Gpt*Gpt*(0.00110793)+Gpt*Gpt*Gpt*Gpt*(-4.17616e-05)+Gpt*Gpt*Gpt*Gpt*Gpt*(5.89538e-07))*(pthatweight)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
+    weightfunctionreco="(-0.0132063+Dgenpt*(0.0947793)+Dgenpt*Dgenpt*(-0.0142289)+Dgenpt*Dgenpt*Dgenpt*(0.00110793)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-4.17616e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(5.89538e-07))*(pthatweight)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
+    selmc=selmc+"&&Dpt<pthat/1.2";
+    selmcgen=selmcgen+"&&Gpt<pthat/1.2";
   }
   
 // pthat weigths
 
   if (useweight==5){
-     weightfunctiongen="pthatweight";
-     weightfunctionreco="pthatweight";  
+     weightfunctiongen="(pthatweight)";
+     weightfunctionreco="(pthatweight)";  
+     selmc=selmc+"&&Dpt<pthat/1.2";
+     selmcgen=selmcgen+"&&Gpt<pthat/1.2";
   }
   
 // pp weights
