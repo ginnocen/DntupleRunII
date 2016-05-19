@@ -201,7 +201,7 @@ void weightPbPbFONLLpthat(int minfit=2,int maxfit=100,TString pthat="pthatall")
   hFONLLOverPt->Divide(hPtGenFONLL);
 
 
-  TF1 *myfit = new TF1("myfit","[0]+[1]*x+x*x*[2]+x*x*x*[3]+x*x*x*x*[4]+x*x*x*x*x*[5]",0, 100);  
+  TF1 *myfit = new TF1("myfit","[0]+[1]*x+x*x*[2]+x*x*x*[3]+x*x*x*x*[4]",0, 100);  
   hFONLLOverPt->Fit("myfit","","",0,30);
 
   double par0=myfit->GetParameter(0);
@@ -209,11 +209,9 @@ void weightPbPbFONLLpthat(int minfit=2,int maxfit=100,TString pthat="pthatall")
   double par2=myfit->GetParameter(2);
   double par3=myfit->GetParameter(3);
   double par4=myfit->GetParameter(4);
-  double par5=myfit->GetParameter(5);
 
-  std::cout<<"weight="<<par0<<"+Gpt*("<<par1<<")+Gpt*Gpt*("<<par2<<")+Gpt*Gpt*Gpt*("<<par3<<")"<<"+Gpt*Gpt*Gpt*Gpt*("<<par4<<")+Gpt*Gpt*Gpt*Gpt*Gpt*("<<par5<<")"<<endl;
-  std::cout<<"weight="<<par0<<"+Dgenpt*("<<par1<<")+Dgenpt*Dgenpt*("<<par2<<")+Dgenpt*Dgenpt*Dgenpt*("<<par3<<")"<<"+Dgenpt*Dgenpt*Dgenpt*Dgenpt*("<<par4<<")+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*("<<par5<<")"<<endl;
-  
+  std::cout<<"weight="<<par0<<"+Max$(Gpt)*("<<par1<<")+Max$(Gpt)*Max$(Gpt)*("<<par2<<")+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*("<<par3<<")"<<"+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*("<<par4<<")"<<endl;
+
   std::cout<<myweightfunctiongen<<std::endl;
   std::cout<<myweightfunctionreco<<std::endl;
 

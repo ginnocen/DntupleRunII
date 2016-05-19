@@ -53,10 +53,15 @@ if(useweight==0) {
   }
   //PbPb weight
   if(useweight==2) {
-    weightfunctiongen="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
+    weightfunctiongen="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))*";
     weightfunctionreco="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
   }
-  
+  //PbPb low pt weight
+  if(useweight==3) {
+    weightfunctiongen="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))*(-0.00600791+Max$(Gpt)*(0.0838585)+Max$(Gpt)*Max$(Gpt)*(-0.00991096)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(0.000496019)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(-8.50065e-06))";
+    weightfunctionreco="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))*(-0.00600791+Max$(Gpt)*(0.0838585)+Max$(Gpt)*Max$(Gpt)*(-0.00991096)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(0.000496019)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(-8.50065e-06))";
+  }
+
    std::cout<<"fit function parameters="<<weightfunctiongen<<std::endl;
 
   TH1D* hPtMC = new TH1D("hPtMC","",nBins,ptBins);
