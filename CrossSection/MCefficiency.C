@@ -53,7 +53,7 @@ if(useweight==0) {
   }
   //PbPb weight
   if(useweight==2) {
-    weightfunctiongen="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))*";
+    weightfunctiongen="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
     weightfunctionreco="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
   }
   //PbPb low pt weight
