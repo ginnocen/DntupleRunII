@@ -41,70 +41,20 @@ void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_
   nthi->AddFriend(ntMC);
   ntMC->AddFriend(nthi);
 
-
 // optimal weigths
 if(useweight==0) {
     weightfunctiongen="1";
     weightfunctionreco="1";
   }
-  //high pt pp 
+  // pp weight
   if(useweight==1) {
-    weightfunctiongen="(pow(10,-0.163600*Gpt+2.895957+Gpt*Gpt*-0.000041)+pow(10,-0.075506*Gpt+1.736871+Gpt*Gpt*0.000400))";
-    weightfunctionreco="(pow(10,-0.163600*Dgenpt+2.895957+Dgenpt*Dgenpt*-0.000041)+pow(10,-0.075506*Dgenpt+1.736871+Dgenpt*Dgenpt*0.000400))";
+     weightfunctiongen="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(0.0116437+Max$(Gpt)*(0.0602697)+Max$(Gpt)*Max$(Gpt)*(-0.00226879)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(3.91035e-05)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(-3.0699e-07)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(8.73234e-10))";
+     weightfunctionreco="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(0.0116437+Max$(Gpt)*(0.0602697)+Max$(Gpt)*Max$(Gpt)*(-0.00226879)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(3.91035e-05)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(-3.0699e-07)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(8.73234e-10))";
   }
-  //low pt pp 
+  //PbPb weight
   if(useweight==2) {
-    weightfunctiongen="(0.0116437+Gpt*(0.0602697)+Gpt*Gpt*(-0.00226879)+Gpt*Gpt*Gpt*(3.91035e-05)+Gpt*Gpt*Gpt*Gpt*(-3.0699e-07)+Gpt*Gpt*Gpt*Gpt*Gpt*(8.73234e-10))*(pthatweight)";
-    weightfunctionreco="(0.0116437+Dgenpt*(0.0602697)+Dgenpt*Dgenpt*(-0.00226879)+Dgenpt*Dgenpt*Dgenpt*(3.91035e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-3.0699e-07)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(8.73234e-10))*(pthatweight)";
-    selmc=selmc+"&&Dpt<pthat/1.2";
-    selmcgen=selmcgen+"&&Gpt<pthat/1.2";
-
-  }
-  //high pt PbPb 
-  if(useweight==3) {
-    weightfunctiongen="(pow(10,-0.075415*Gpt+1.748668+Gpt*Gpt*0.000388)+pow(10,-0.166406*Gpt+2.887856+Gpt*Gpt*0.000105)+0.003157)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
-    weightfunctionreco="(pow(10,-0.075415*Dgenpt+1.748668+Dgenpt*Dgenpt*0.000388)+pow(10,-0.166406*Dgenpt+2.887856+Dgenpt*Dgenpt*0.000105)+0.003157)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
-  }
-  //low pt PbPb 
-  if(useweight==4) {
-    weightfunctiongen="(-0.0132063+Gpt*(0.0947793)+Gpt*Gpt*(-0.0142289)+Gpt*Gpt*Gpt*(0.00110793)+Gpt*Gpt*Gpt*Gpt*(-4.17616e-05)+Gpt*Gpt*Gpt*Gpt*Gpt*(5.89538e-07))*(pthatweight)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
-    weightfunctionreco="(-0.0132063+Dgenpt*(0.0947793)+Dgenpt*Dgenpt*(-0.0142289)+Dgenpt*Dgenpt*Dgenpt*(0.00110793)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-4.17616e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(5.89538e-07))*(pthatweight)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
-    //selmc=selmc+"&&Dpt<pthat/1.2";
-    //selmcgen=selmcgen+"&&Gpt<pthat/1.2";
-  }
-  
-// pthat weigths
-
-  if (useweight==5){
-     weightfunctiongen="(pthatweight)";
-     weightfunctionreco="(pthatweight)";  
-     selmc=selmc+"&&Dpt<pthat/1.2";
-     selmcgen=selmcgen+"&&Gpt<pthat/1.2";
-  }
-  
-// pp weights
-  if (useweight==6){
-     weightfunctiongen="(0.968416+PVz*(-0.0139711)+PVz*PVz*(0.0019548)+PVz*PVz*PVz*(-3.98088e-06)+PVz*PVz*PVz*PVz*(-6.9834e-06))";
-     weightfunctionreco="(0.968416+PVz*(-0.0139711)+PVz*PVz*(0.0019548)+PVz*PVz*PVz*(-3.98088e-06)+PVz*PVz*PVz*PVz*(-6.9834e-06))";  
-  }
-  
-  if (useweight==7){
-     weightfunctiongen="(pow(10,-0.163600*Gpt+2.895957+Gpt*Gpt*-0.000041)+pow(10,-0.075506*Gpt+1.736871+Gpt*Gpt*0.000400))";
-     weightfunctionreco="(pow(10,-0.163600*Dgenpt+2.895957+Dgenpt*Dgenpt*-0.000041)+pow(10,-0.075506*Dgenpt+1.736871+Dgenpt*Dgenpt*0.000400))";  
-  } 
-// PbPb weights
-
-  if (useweight==8){
-     weightfunctiongen="(1.26077+PVz*(0.00887442)+PVz*PVz*(-0.00782056)+PVz*PVz*PVz*(-3.51063e-05)+PVz*PVz*PVz*PVz*(-3.51063e-05))";
-     weightfunctionreco="(1.26077+PVz*(0.00887442)+PVz*PVz*(-0.00782056)+PVz*PVz*PVz*(-3.51063e-05)+PVz*PVz*PVz*PVz*(-3.51063e-05))";  
-  }
-  if (useweight==9){
-   weightfunctiongen="(pow(10,-0.075415*Gpt+1.748668+Gpt*Gpt*0.000388)+pow(10,-0.166406*Gpt+2.887856+Gpt*Gpt*0.000105)+0.003157)";
-   weightfunctionreco="(pow(10,-0.075415*Dgenpt+1.748668+Dgenpt*Dgenpt*0.000388)+pow(10,-0.166406*Dgenpt+2.887856+Dgenpt*Dgenpt*0.000105)+0.003157)";
-  }
-    if (useweight==10){
-     weightfunctiongen="(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
-     weightfunctionreco="(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";  
+    weightfunctiongen="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
+    weightfunctionreco="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
   }
   
    std::cout<<"fit function parameters="<<weightfunctiongen<<std::endl;
@@ -174,17 +124,6 @@ if(useweight==0) {
   hemptyEffAcc->SetYTitle("#alpha");
   hemptyEffAcc->Draw();
   hEffAcc->Draw("same");
-  /*
-  canvasEff->cd(2);
-  hEffReco->GetYaxis()->SetTitleOffset(1.2);
-  hemptyEffReco->SetYTitle("#alpha x #epsilon_{reco} ");
-  hemptyEffReco->Draw();
-  hEffReco->Draw("same");
-  canvasEff->cd(3);
-  hemptyEffSelection->SetYTitle(" #epsilon_{sel}");
-  hemptyEffSelection->Draw();  
-  hEffSelection->Draw("same");  
-  */
   canvasEff->cd(2);
   hemptyEff->Draw();
   hEff->Draw("same");
@@ -251,7 +190,6 @@ if(useweight==0) {
   gPad->SetLogy();
   hemptySpectra->Draw();
   hPtGen->Draw("same");
-  //canvasSpectra->SaveAs(Form("plotEff/canvasSpectra_%s.pdf",Form(label.Data())));
 
   TFile *fout=new TFile(outputfile.Data(),"recreate");
   fout->cd();
