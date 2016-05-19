@@ -4,31 +4,27 @@ CENTPbPbMIN=0
 CENTPbPbMAX=100
 #Central point of the analysis
 
-DOANALYSIS_MCSTUDYDETAIL=1
-DOANALYSISPbPb_MCSTUDYDETAIL=0
-
-
 DOANALYSISPP_FONLL=0
 DOANALYSISPP_TRGCOMBINATION=0
-DOANALYSISPP_FIT=1
+DOANALYSISPP_FIT=0
 DOANALYSISPP_CROSS=1
-DOANALYSISPP_MCSTUDY=0
+DOANALYSISPP_MCSTUDY=1
 
 DOANALYSISPbPb_FONLL=0
 DOANALYSISPbPb_TRGCOMBINATION=0
-DOANALYSISPbPb_FIT=1
+DOANALYSISPbPb_FIT=0
 DOANALYSISPbPb_CROSS=1
-DOANALYSISPbPb_MCSTUDY=0
+DOANALYSISPbPb_MCSTUDY=1
 
 DOANALYSISPPMB_FONLL=0
-DOANALYSISPPMB_FIT=1
+DOANALYSISPPMB_FIT=0
 DOANALYSISPPMB_CROSS=1
-DOANALYSISPPMB_MCSTUDY=0
+DOANALYSISPPMB_MCSTUDY=1
 
 DOANALYSISPbPbMB_FONLL=0
-DOANALYSISPbPbMB_FIT=1
+DOANALYSISPbPbMB_FIT=0
 DOANALYSISPbPbMB_CROSS=1
-DOANALYSISPbPbMB_MCSTUDY=0
+DOANALYSISPbPbMB_MCSTUDY=1
 
 DOANALYSISPP_MCSTUDYCombine=0
 DOANALYSISPbPb_MCSTUDYCombine=0
@@ -38,12 +34,12 @@ DONORMPPMB=0
 DONORMPbPb=0
 DONORMPbPbMB=0
 
-DORAA=0
-DORAAMB=0
+DORAA=1
+DORAAMB=1
 
-DOCombineCrossSectionPP=0
-DOCombineCrossSectionPbPb=0
-DOCombineRAA=0
+DOCombineCrossSectionPP=1
+DOCombineCrossSectionPbPb=1
+DOCombineRAA=1
 
 #systematic section
 
@@ -60,6 +56,8 @@ DOsystematicTrackingPPMB=0
 DOsystematicTrackingPbPb=0
 DOsystematicTrackingPbPbMB=0
 
+DOANALYSIS_MCSTUDYDETAIL=0
+DOANALYSISPbPb_MCSTUDYDETAIL=0
 
 UNITY=1
 NULL=0
@@ -185,17 +183,18 @@ g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe
 rm fitD.exe
 fi 
 
-if [ $DOANALYSISPP_CROSS -eq 1 ]; then      
-g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" 0 "$LABELPP" "$LUMIPP" 
-rm CrossSectionRatio.exe
-fi
-
 if [ $DOANALYSISPP_MCSTUDY -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$ISDOWEIGHTPP" "$MINIMUMFIT" "$MAXIMUMFIT"
 ./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELNPPP" "$OUTPUTFILEMCSTUDYNPPP" "$ISDOWEIGHTPP" "$MINIMUMFIT" "$MAXIMUMFIT"
 rm MCefficiency.exe
+
+
+if [ $DOANALYSISPP_CROSS -eq 1 ]; then      
+g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPP"  "$OUTPUTFILEMCSTUDYPP" "$OUTPUTPrescalePP" "$USEPRESCALEPP" "$OUTPUTFILEPlotPP" 0 "$LABELPP" "$LUMIPP" 
+rm CrossSectionRatio.exe
+fi
 
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
 ./plotPnNP.exe "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$OUTPUTFILEMCSTUDYNPPP"
@@ -254,17 +253,18 @@ g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe
 rm fitD.exe
 fi
 
-if [ $DOANALYSISPbPb_CROSS -eq 1 ]; then      
-g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" 1 "$LABELPbPb" "$LUMIPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
-rm CrossSectionRatio.exe
-fi
-
 if [ $DOANALYSISPbPb_MCSTUDY -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
 ./MCefficiency.exe "$INPUTMCNPPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELNPPbPb" "$OUTPUTFILEMCSTUDYNPPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
 rm MCefficiency.exe
+
+
+if [ $DOANALYSISPbPb_CROSS -eq 1 ]; then      
+g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
+./CrossSectionRatio.exe "$FONLLOUTPUTFILE"  "$OUTPUTFILEPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPb" "$OUTPUTFILEPlotPbPb" 1 "$LABELPbPb" "$LUMIPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm CrossSectionRatio.exe
+fi
 
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
 ./plotPnNP.exe "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$OUTPUTFILEMCSTUDYNPPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
@@ -353,7 +353,7 @@ fi
 
 if [ $DOANALYSISPPMB_CROSS -eq 1 ]; then      
 g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" 0 "$LABELPPMB" "$LUMIPPMB"
+./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPPMB"  "$OUTPUTFILEMCSTUDYPPMB" "$OUTPUTPrescalePP" "$USEPRESCALEPPMB" "$OUTPUTFILEPlotPPMB" 0 "$LABELPPMB" "$LUMIPPMB"
 rm CrossSectionRatio.exe
 fi
 
@@ -403,17 +403,18 @@ g++ fitD.C $(root-config --cflags --libs) -g -o fitD.exe
 rm fitD.exe
 fi
 
-if [ $DOANALYSISPbPbMB_CROSS -eq 1 ]; then      
-g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
-./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" 1 "$LABELPbPbMB" "$LUMIPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
-rm CrossSectionRatio.exe
-fi
-
 if [ $DOANALYSISPbPbMB_MCSTUDY -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
 ./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$ISDOWEIGHTPbPbMB" "$MINIMUMFIT" "$MAXIMUMFIT"
 ./MCefficiency.exe "$INPUTMCNPPbPb"  "$SELGENPbPbMB" "$SELGENACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELNPPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$ISDOWEIGHTPbPbMB" "$MINIMUMFIT" "$MAXIMUMFIT"
 rm MCefficiency.exe
+
+
+if [ $DOANALYSISPbPbMB_CROSS -eq 1 ]; then      
+g++ CrossSectionRatio.C $(root-config --cflags --libs) -g -o CrossSectionRatio.exe 
+./CrossSectionRatio.exe "$FONLLOUTPUTFILEMB"  "$OUTPUTFILEPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$OUTPUTPrescalePbPb" "$USEPRESCALEPbPbMB" "$OUTPUTFILEPlotPbPbMB" 1 "$LABELPbPbMB" "$LUMIPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+rm CrossSectionRatio.exe
+fi
 
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
 ./plotPnNP.exe "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
@@ -646,65 +647,30 @@ do
 done
 fi
 
-
 if [ $DOANALYSIS_MCSTUDYDETAIL -eq 1 ]; then      
 
 cp config/parametersHighpt.h parameters.h
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-
 OUTPUTFILEMCSTUDYPP="DetailEfficiency/PPnoweight.root"
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" 0 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPP="DetailEfficiency/PPpthat.root"
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" 5 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPP="DetailEfficiency/PPpt.root"
 ./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" 1 "$MINIMUMFIT" "$MAXIMUMFIT"
 
 cp config/parametersLowpt.h parameters.h
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-
 OUTPUTFILEMCSTUDYPPMB="DetailEfficiency/PPMBnoweight.root"
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" 0 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPPMB="DetailEfficiency/PPMBpthat.root"
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" 5  "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPPMB="DetailEfficiency/PPMBpthatANDpt.root"
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" 2 "$MINIMUMFIT" "$MAXIMUMFIT"
+./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" 1 "$MINIMUMFIT" "$MAXIMUMFIT"
 rm MCefficiency.exe
 fi
-
-
 
 if [ $DOANALYSISPbPb_MCSTUDYDETAIL -eq 1 ]; then      
 
 cp config/parametersHighpt.h parameters.h
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-
 OUTPUTFILEMCSTUDYPbPb="DetailEfficiency/PbPbnoweight.root"
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" 0 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPbPb="DetailEfficiency/PbPbpthat.root"
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" 5 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPbPb="DetailEfficiency/PbPbpt.root"
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" 9 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPbPb="DetailEfficiency/PbPbCen.root"
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" 10 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPbPb="DetailEfficiency/PbPbCenPt.root"
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" 3 "$MINIMUMFIT" "$MAXIMUMFIT"
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPb" "$SELGENPPACCPbPb"  "$RECOONLYPbPb" "$CUTPbPb"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" 2 "$MINIMUMFIT" "$MAXIMUMFIT"
 
 cp config/parametersLowpt.h parameters.h
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-
 OUTPUTFILEMCSTUDYPbPbMB="DetailEfficiency/PbPbMBnoweight.root"
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENPPACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" 0 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPbPbMB="DetailEfficiency/PbPbMBpthat.root"
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENPPACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" 5 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPbPbMB="DetailEfficiency/PbPbMBpt.root"
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENPPACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" 9 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPbPbMB="DetailEfficiency/PbPbMBCen.root"
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENPPACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" 10 "$MINIMUMFIT" "$MAXIMUMFIT"
-OUTPUTFILEMCSTUDYPbPbMB="DetailEfficiency/PbPbMBCenPtPthat.root"
-./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENPPACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" 4 "$MINIMUMFIT" "$MAXIMUMFIT"
+./MCefficiency.exe "$INPUTMCPbPb"  "$SELGENPbPbMB" "$SELGENPPACCPbPbMB"  "$RECOONLYPbPbMB" "$CUTPbPbMB"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" 2 "$MINIMUMFIT" "$MAXIMUMFIT"
 rm MCefficiency.exe
 fi
-
-
-
-
