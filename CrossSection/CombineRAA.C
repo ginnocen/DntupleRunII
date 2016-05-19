@@ -269,24 +269,6 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
     }
   if(isHadDupl==1||isMerged==0) legendSigma->Draw();
 
-  if(isTheoryComparison && centMin==0. && centMax==100.)
-    {
-      TGraph *gShanshanD5TeV = new TGraph("Shanshan-D-RAA_PbPb5020_00-80.dat");
-      gShanshanD5TeV->SetLineWidth(3);
-      gShanshanD5TeV->SetLineColor(kRed+1);
-      gShanshanD5TeV->Draw("c same");
-      TGraph *gMagdalenaD5TeV = new TGraph("Magdalena-5TeV-0100-plot2.txt");
-      gMagdalenaD5TeV->SetLineColor(kGreen+4);
-      gMagdalenaD5TeV->SetFillColor(kGreen+4);
-
-      gMagdalenaD5TeV->SetFillStyle(3004);
-      gMagdalenaD5TeV->Draw("f same");
-      gMagdalenaD5TeV->Draw("l same");
-
-      TLegendEntry *ent_theory_Shanshan =legendSigma->AddEntry(gShanshanD5TeV,"S. Cao et al. 0-80%","l");
-      TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"M. Djordjevic","bf");
-
-    }
   if(isTheoryComparison && centMin==0. && centMax==10.)
     {
       TFile* filePredictions = new TFile(predictions.Data());  
