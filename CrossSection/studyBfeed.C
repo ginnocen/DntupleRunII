@@ -39,12 +39,17 @@ void studyBfeed(bool isPP=false)
   mynamefilesFONLLNP[0] ="ROOTfiles/output_pp_Btod0meson_5TeV_y1MB.root";
 
   mynamefilesEffP[1] ="ROOTfiles/MCstudiesPbPb.root";
-  mynamefilesEffNP[1] ="ROOTfiles/MCstudiesNPPbPbMB.root";
+  mynamefilesEffNP[1] ="ROOTfiles/MCstudiesNPPbPb.root";
   mynamefilesFONLLP[1] ="ROOTfiles/output_pp_d0meson_5TeV_y1.root";
   mynamefilesFONLLNP[1] ="ROOTfiles/output_pp_Btod0meson_5TeV_y1.root";
   }
 
   
+  TFile*fDCA=new TFile("../BtoDPackage/PbPb/bFeedDownResult.root");
+  TGraphAsymmErrors* gDCA=(TGraphAsymmErrors*)fDCA->Get("grPromptFraction");
+  
+  TFile*fDecay=new TFile("bFeedDown/fpromptFractionDecay.root");
+  TGraphAsymmErrors* gDecay=(TGraphAsymmErrors*)fDecay->Get("gPfrac_PbPb");
 
   TFile* filesEffP[nFiles];
   TFile* filesEffNP[nFiles];
@@ -58,9 +63,6 @@ void studyBfeed(bool isPP=false)
   TGraphAsymmErrors* correctedFONLLP[nFiles];
   TGraphAsymmErrors* correctedFONLLNP[nFiles];
   TGraphAsymmErrors* gratio[nFiles];
-
-  TGraphAsymmErrors* dataPoints[nFiles];
-
 
   for (int ifile=0;ifile<nFiles;ifile++){
   
@@ -77,7 +79,6 @@ void studyBfeed(bool isPP=false)
   
 
   for (int ifile=0;ifile<nFiles;ifile++){
-    dataPoints[ifile]=(TGraphAsymmErrors*)gFONLLP[ifile]->Clone(Form("dataPoints%d",ifile));    
     correctedFONLLP[ifile]=(TGraphAsymmErrors*)gFONLLP[ifile]->Clone(Form("correctedFONLLP_%d",ifile));    
     correctedFONLLNP[ifile]=(TGraphAsymmErrors*)gFONLLNP[ifile]->Clone(Form("correctedFONLLNP_%d",ifile));    
     gratio[ifile]=(TGraphAsymmErrors*)gFONLLP[ifile]->Clone("gratio");    
@@ -103,20 +104,18 @@ void studyBfeed(bool isPP=false)
     correctedFONLLP[ifile]->SetPointEYlow(ibin,yerrlowP*effP);
     correctedFONLLP[ifile]->SetPointEYhigh(ibin,yerrhighP*effP);
     
-    cout<<"yP="<<yP<<endl;
-    cout<<"yNP="<<yNP<<endl;
-    cout<<"effP="<<effP<<endl;
-    cout<<"effNP="<<effNP<<endl;
+   // cout<<"yP="<<yP<<endl;
+   // cout<<"yNP="<<yNP<<endl;
+   // cout<<"effP="<<effP<<endl;
+   // cout<<"effNP="<<effNP<<endl;
     
     gratio[ifile]->SetPoint(ibin,x,yP*effP/(yNP*effNP+yP*effP));
     gratio[ifile]->SetPointEYlow(ibin,0.);
     gratio[ifile]->SetPointEYhigh(ibin,0.);
     
-    double prompt=bFeedDownCorrection(x,!isPP);
-    dataPoints[ifile]->SetPoint(ibin,x,prompt);
-    dataPoints[ifile]->SetPointEYlow(ibin,0.);
-    dataPoints[ifile]->SetPointEYhigh(ibin,0.);
-
+    if (!isPP) cout<<"PbPb"<<endl;
+    if (isPP) cout<<"PP"<<endl;
+    cout<<"xvalue="<<x<<", fprompt="<<yP*effP/(yNP*effNP+yP*effP)<<endl;
    }
 }
    
@@ -145,12 +144,24 @@ void studyBfeed(bool isPP=false)
       gratio[ifile]  ->SetMarkerColor(1);
       gratio[ifile]  ->SetFillStyle(0);
       gratio[ifile]  ->Draw("psame");  
-      dataPoints[ifile]  ->SetLineColor(2);
-      dataPoints[ifile]  ->SetMarkerColor(2);
-      dataPoints[ifile]  ->SetFillStyle(0);
-      dataPoints[ifile]  ->Draw("psame");  
   }
-
+      gDCA  ->SetLineColor(4);
+      gDCA  ->SetLineWidth(2);
+      gDCA  ->SetMarkerColor(4);
+      gDCA  ->SetFillStyle(0);
+      gDCA  ->Draw("psame");  
+      gDecay  ->SetLineColor(6);
+      gDCA  ->SetLineWidth(2);
+      gDecay  ->SetMarkerColor(6);
+      gDecay  ->SetFillStyle(0);
+      gDecay  ->Draw("psame");  
+      
+      double x3,y3;
+      double x4,y4;
+      gDCA  ->GetPoint(3,x3,y3);
+      gDCA  ->GetPoint(4,x4,y4);
+      gDCA  ->SetPoint(4,x4,y3);
+      
   TLegend *legend=new TLegend(0.2332215,0.2814685,0.5620805,0.4020979,"");//0.5100806,0.5868644,0.8084677,0.7605932
   legend->SetBorderSize(0);
   legend->SetLineColor(0);
@@ -163,7 +174,12 @@ void studyBfeed(bool isPP=false)
   entry->SetTextFont(42);
   entry->SetLineColor(1);
   entry->SetMarkerColor(1);
-  entry=legend->AddEntry(dataPoints[0],"Decay length data driven fraction","f");
+  entry=legend->AddEntry(gDecay,"Decay length data driven fraction","f");
+  entry->SetTextFont(42);
+  entry->SetLineColor(2);
+  entry->SetMarkerColor(2);  
+  legend->Draw();
+  entry=legend->AddEntry(gDCA,"DCA data driven fraction","f");
   entry->SetTextFont(42);
   entry->SetLineColor(2);
   entry->SetMarkerColor(2);  

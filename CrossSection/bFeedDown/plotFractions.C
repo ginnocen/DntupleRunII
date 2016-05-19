@@ -141,5 +141,15 @@ void plotFractions()
   texY->Draw();
   leg_PbPb->Draw("same");
   cPNPfrac_PbPb->SaveAs("plots/Results/cPNPfrac_PbPb.pdf");
+  
+  
+  gPfrac_PbPb->SetName("gPfrac_PbPb");
+  gPfrac_PP->SetName("gPfrac_PP");
+  TFile*fileoutput=new TFile("fpromptFractionDecay.root","recreate");
+  fileoutput->cd();
+  gPfrac_PP->Write();
+  gPfrac_PbPb->Write();
+  fileoutput->Close();
+  
 
 }

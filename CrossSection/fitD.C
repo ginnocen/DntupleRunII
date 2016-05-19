@@ -15,6 +15,7 @@ Double_t nbinsmasshisto=60;
 Double_t binwidthmass=(maxhisto-minhisto)/nbinsmasshisto;
 
 TString weight;
+TString weightgen;
 TString seldata;
 TString selmc;
 TString selmceff;
@@ -22,7 +23,7 @@ TString selmcgen;
 TString collisionsystem;
 Float_t hiBinMin,hiBinMax,centMin,centMax;
 
-void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/ntD_EvtBase_20160330_HeavyFlavor_DfinderData_pp_20160329_dPt0tkPt1_D0Dstar3p5p_goldenjson_skim_myskim.root" , TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root", TString trgselection="((HLT_DmesonPPTrackingGlobal_Dpt15_v1&&Dpt>20&&Dpt<40)||(HLT_DmesonPPTrackingGlobal_Dpt30_v1&&Dpt>40&&Dpt<60)||(HLT_DmesonPPTrackingGlobal_Dpt50_v1&&Dpt>60))",  TString cut="Dy>-1.&&Dy<1.&&(Dtrk1highPurity&&Dtrk2highPurity)&&(DsvpvDistance/DsvpvDisErr)>3.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1Pt>1.5&&Dtrk2Pt>1.5", TString cutmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))", int isMC=0, Double_t luminosity=26., int doweight=0, TString collsyst="PP", TString outputfile="mytest.root", Float_t centmin=0., Float_t centmax=100.)
+void fitD(int usePbPb=1, TString inputdata="/data/HeavyFlavourRun2/MC2015/Dntuple/PbPb/ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight.root" , TString inputmc="/data/HeavyFlavourRun2/MC2015/Dntuple/PbPb/ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight.root", TString trgselection="1",  TString cut="pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>1.0&&Dtrk2Pt>1.0&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5&&((DlxyBS/DlxyBSErr)>1.5&&Dalpha<0.12&&((Dpt>1&&Dpt<2&&(DsvpvDistance/DsvpvDisErr)>6.0&&Dchi2cl>0.25)||(Dpt>2&&Dpt<4&&(DsvpvDistance/DsvpvDisErr)>5.86&&Dchi2cl>0.224)||(Dpt>4&&Dpt<5&&(DsvpvDistance/DsvpvDisErr)>5.46&&Dchi2cl>0.196)||(Dpt>5&&Dpt<6&&(DsvpvDistance/DsvpvDisErr)>4.86&&Dchi2cl>0.170)||(Dpt>6&&Dpt<8&&(DsvpvDistance/DsvpvDisErr)>4.54&&Dchi2cl>0.125)||(Dpt>8&&Dpt<10&&(DsvpvDistance/DsvpvDisErr)>4.42&&Dchi2cl>0.091)||(Dpt>10&&Dpt<15&&(DsvpvDistance/DsvpvDisErr)>4.06&&Dchi2cl>0.069)||(Dpt>15&&Dpt<20&&(DsvpvDistance/DsvpvDisErr)>3.71&&Dchi2cl>0.056)||(Dpt>20&&Dpt<25&&(DsvpvDistance/DsvpvDisErr)>3.25&&Dchi2cl>0.054)||(Dpt>25&&(DsvpvDistance/DsvpvDisErr)>2.97&&Dchi2cl>0.050)))", TString cutmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))", int isMC=1, Double_t luminosity=1., int doweight=0, TString collsyst="PbPbMB", TString outputfile="ROOTfiles/hPtSpectrumDzeroPbPbMBMCClosureMYTEST.root", Float_t centmin=0., Float_t centmax=100.)
 {
   collisionsystem=collsyst;
   hiBinMin = centmin*2;
@@ -60,10 +61,21 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/ntD_Evt
   void clean0 (TH1D* h);
   TF1* fit (TTree* nt, TTree* ntMC, double ptmin, double ptmax, int isMC,bool, TF1* &total);
 
-  if(doweight==0) weight="1";
-  if(doweight==1) weight="pthatweight";
-  if(doweight==2) weight="(0.104044-0.00155184*hiBin+7.42445e-6*hiBin*hiBin-1.10964e-8*hiBin*hiBin*hiBin)";
-  if(doweight<0 || doweight>2) std::cout<<"ERROR, this weighting option is not defined"<<std::endl;
+if(doweight==0) { //pp high pt
+    weightgen="1";
+    weight="1";
+  }
+if(doweight==1) { //pp 
+    weightgen="(Gpt<(pthat/1.2))*pthatweight*(0.0116437+Gpt*(0.0602697)+Gpt*Gpt*(-0.00226879)+Gpt*Gpt*Gpt*(3.91035e-05)+Gpt*Gpt*Gpt*Gpt*(-3.0699e-07)+Gpt*Gpt*Gpt*Gpt*Gpt*(8.73234e-10))";
+    weight="(Dpt<(pthat/1.2))*pthatweight*(0.0116437+Dgenpt*(0.0602697)+Dgenpt*Dgenpt*(-0.00226879)+Dgenpt*Dgenpt*Dgenpt*(3.91035e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-3.0699e-07)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(8.73234e-10))";
+}
+  if(doweight==2) { //PbPb 
+    weightgen="(Gpt<(pthat/1.2))*pthatweight*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
+    weight="(Dpt<(pthat/1.2))*pthatweight*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
+
+  }
+  
+  if(doweight<0 || doweight>4) std::cout<<"ERROR, this weighting option is not defined"<<std::endl;
   
   std::cout<<"we are using weight="<<weight<<std::endl;
   
@@ -141,7 +153,7 @@ void fitD(int usePbPb=0, TString inputdata="/data/dmeson2015/DataDntuple/ntD_Evt
   divideBinWidth(hPtMC);
   ntMC->Project("hPtRecoTruth","Dpt",TCut(selmceff.Data())&&"(Dgen==23333)");
   divideBinWidth(hPtRecoTruth);
-  ntGen->Project("hPtGen","Gpt",TCut(weight)*(TCut(selmcgen.Data())));
+  ntGen->Project("hPtGen","Gpt",TCut(weightgen)*(TCut(selmcgen.Data())));
   divideBinWidth(hPtGen);
   nt->Project("hDcandidates","Dpt",Form("%s&&Dmass>1.8&&Dmass<1.9",seldata.Data()));
   divideBinWidth(hDcandidates);
@@ -228,15 +240,15 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC,bool i
   
   TF1* f = new TF1(Form("f%d",count),"[0]*([7]*([9]*Gaus(x,[1],[2]*(1+[11]))/(sqrt(2*3.14159)*[2]*(1+[11]))+(1-[9])*Gaus(x,[1],[10]*(1+[11]))/(sqrt(2*3.14159)*[10]*(1+[11])))+(1-[7])*Gaus(x,[1],[8]*(1+[11]))/(sqrt(2*3.14159)*[8]*(1+[11])))+[3]+[4]*x+[5]*x*x+[6]*x*x*x", 1.7, 2.0);
   
-  if(isMC==1) nt->Project(Form("h-%d",count),"Dmass",Form("%s*(%s&&Dpt>%f&&Dpt<%f)",weight.Data(),seldata.Data(),ptmin,ptmax));   
+  if(isMC==1) nt->Project(Form("h-%d",count),"Dmass",Form("%s*(%s&&Dpt>%f&&Dpt<%f)","1",seldata.Data(),ptmin,ptmax));   
   else nt->Project(Form("h-%d",count),"Dmass",Form("(%s&&Dpt>%f&&Dpt<%f)",seldata.Data(),ptmin,ptmax));   
   
-  ntMC->Project(Form("hMCSignal-%d",count),"Dmass",Form("%s*(%s&&Dpt>%f&&Dpt<%f&&(Dgen==23333))",weight.Data(),selmc.Data(),ptmin,ptmax));   
-  ntMC->Project(Form("hMCSwapped-%d",count),"Dmass",Form("%s*(%s&&Dpt>%f&&Dpt<%f&&(Dgen==23344))",weight.Data(),selmc.Data(),ptmin,ptmax));   
+  ntMC->Project(Form("hMCSignal-%d",count),"Dmass",Form("%s*(%s&&Dpt>%f&&Dpt<%f&&(Dgen==23333))","1",selmc.Data(),ptmin,ptmax));   
+  ntMC->Project(Form("hMCSwapped-%d",count),"Dmass",Form("%s*(%s&&Dpt>%f&&Dpt<%f&&(Dgen==23344))","1",selmc.Data(),ptmin,ptmax));   
   
   f->SetParLimits(4,-1000,1000);
   f->SetParLimits(10,0.001,0.05);
-  f->SetParLimits(2,0.01,0.1);
+  f->SetParLimits(2,0.01,0.5);
   f->SetParLimits(8,0.02,0.2);
   f->SetParLimits(7,0,1);
   f->SetParLimits(9,0,1);
@@ -415,6 +427,7 @@ TF1* fit(TTree* nt, TTree* ntMC, Double_t ptmin, Double_t ptmax, int isMC,bool i
   h->GetFunction(Form("f%d",count))->Delete();
   TH1F* histo_copy_nofitfun = ( TH1F * ) h->Clone("histo_copy_nofitfun");
   histo_copy_nofitfun->Draw("esame");
+
 //
   if(!isPbPb) c->SaveAs(Form("plotFits/DMass%s_%d.pdf",collisionsystem.Data(),count));
   else c->SaveAs(Form("plotFits/DMass%s_%.0f_%.0f_%d.pdf",collisionsystem.Data(),centMin,centMax,count));

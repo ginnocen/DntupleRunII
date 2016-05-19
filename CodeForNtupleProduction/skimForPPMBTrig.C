@@ -43,7 +43,7 @@ void AddCloneTree(vector<TTree*> &cloneForest,TFile *outf, TTree* t, const char 
 }
 
 // main routine
-void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016.root", TString outfname="/data/dmeson2015/DataDntuple/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016_skimmed.root")
+void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016.root", TString outfname="/data/dmeson2015/DataDntupleApproval/skim_Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016_skimmed_15May2016_Dpt2_y1p1_Decay3p5_Alpha0p12.root")
 {
    vector<TTree*> cloneForest;
    vector<TTree*> forest;
@@ -82,6 +82,7 @@ void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_Dntuple
    float Dtrk2Pt[15000];
    float DsvpvDistance[15000];
    float DsvpvDisErr[15000];
+   float Dalpha[15000];
    
    ntDkpi->SetBranchAddress("Dsize",&Dsize);
    ntDkpi->SetBranchAddress("Dpt",Dpt);
@@ -90,6 +91,7 @@ void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_Dntuple
    ntDkpi->SetBranchAddress("Dtrk2Pt",Dtrk2Pt);
    ntDkpi->SetBranchAddress("DsvpvDistance",DsvpvDistance);
    ntDkpi->SetBranchAddress("DsvpvDisErr",DsvpvDisErr);
+   ntDkpi->SetBranchAddress("Dalpha",Dalpha);
    
    // main loop
    for (Long64_t i=0;i<ntDkpi->GetEntries()/1.;i++)
@@ -101,7 +103,7 @@ void skimForPPMBTrig(TString infname="/data/jisun/ppMB2015fullstats/skim_Dntuple
 	 if (Dsize>0) {
 	   int ncand=0;
 	   for (int j=0;j<Dsize;j++) {
-	      if (Dpt[j]>0.9&&Dy[j]>-1.1&&Dy[j]<1.1&&DsvpvDistance[j]/DsvpvDisErr[j]>3.) {
+	      if (Dpt[j]>2.0&&Dy[j]>-1.1&&Dy[j]<1.1&&DsvpvDistance[j]/DsvpvDisErr[j]>3.5&&Dalpha[j]<0.12) {
 	         ncand++;
 		 break;
 	      }

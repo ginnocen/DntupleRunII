@@ -1,6 +1,6 @@
 #include "uti.h"
 
-void compareNewOldresults(int option=3)
+void compareNewOldresults(int option=0)
 {
   
   gStyle->SetOptTitle(0);
@@ -20,28 +20,32 @@ void compareNewOldresults(int option=3)
   
   
   TString myfiles[nFiles];
+  TString filename;
   
   if(option==0){
   myfiles[0] ="ROOTfiles/outputRAA.root";
   myfiles[1] ="ROOTfiles/outputRAAMB.root";
-  myfiles[2] ="/afs/cern.ch/user/g/ginnocen/public/ImportantFilesHIN16002/DntupleRunII_preapproval/CrossSection/ROOTfiles/outputRAA.root";
-  myfiles[3] ="/afs/cern.ch/user/g/ginnocen/public/ImportantFilesHIN16002/DntupleRunII_preapproval/CrossSection/ROOTfiles/outputRAAMB.root";
+  myfiles[2] ="../../DntupleRunIIGreenLight/CrossSection/ROOTfiles/outputRAA.root";
+  myfiles[3] ="../../DntupleRunIIGreenLight/CrossSection/ROOTfiles/outputRAAMB.root";
   namehisto="hNuclearModification";
   namegraph="gNuclearModification";
   min=0;
   max=1.4;
   title="R_{AA}(0-100)";
+  filename="canvasRAAnewold0100.pdf";
   }
  if(option==1){
   myfiles[0] ="ROOTfilesCent10/outputRAA.root";
   myfiles[1] ="ROOTfilesCent10/outputRAAMB.root";
-  myfiles[2] ="/afs/cern.ch/user/g/ginnocen/public/ImportantFilesHIN16002/DntupleRunII_preapproval/CrossSection/ROOTfilesCent10/outputRAA.root";
-  myfiles[3] ="/afs/cern.ch/user/g/ginnocen/public/ImportantFilesHIN16002/DntupleRunII_preapproval/CrossSection/ROOTfilesCent10/outputRAAMB.root";
+  myfiles[2] ="../../DntupleRunIIGreenLight/CrossSection/ROOTfilesCent10/outputRAA.root";
+  myfiles[3] ="../../DntupleRunIIGreenLight/CrossSection/ROOTfilesCent10/outputRAAMB.root";
   namehisto="hNuclearModification";
   namegraph="gNuclearModification";
   min=0;
   max=1.4;
-  title="R_{AA}(0-100)";
+  title="R_{AA}(0-10)";
+  filename="canvasRAAnewold010.pdf";
+
   }
  if(option==2){
   myfiles[0] ="/afs/cern.ch/user/g/ginnocen/DataHFAnalysis/CMSSW_7_5_5_patch4/src/master/CrossSection/ROOTfiles/CrossSectionFONLLPP.root";
@@ -125,19 +129,19 @@ void compareNewOldresults(int option=3)
       graph[ifile] ->Draw("5same");  
 
   }
-    entry[0]=legendSigma->AddEntry(histogram[0],"0-10","pf");
+    entry[0]=legendSigma->AddEntry(histogram[0],"New","pf");
     entry[0]->SetTextFont(42);
     entry[0]->SetLineColor(1);
     entry[0]->SetTextColor(1);
     entry[0]->SetMarkerColor(1);
-    entry[1]=legendSigma->AddEntry(histogram[2],"0-100","pf");
+    entry[1]=legendSigma->AddEntry(histogram[2],"Frozen","pf");
     entry[1]->SetTextFont(42);
     entry[1]->SetLineColor(2);
     entry[1]->SetTextColor(2);
     entry[1]->SetMarkerColor(2);
     legendSigma->Draw();
     
-      canvas->SaveAs("canvasRatio0100_010.pdf");
+  canvas->SaveAs(filename.Data());
 
   TCanvas* canvasRatio = new TCanvas("canvasRatio","",600,600);
   
