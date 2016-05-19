@@ -14,44 +14,66 @@ float bFeedDownCorrection(double pt, bool isPbPb, int method=0)
 
   if (method==1) {   
     if (!isPbPb) { // pp
-      if (pt>2&&pt<6) {
-        val = 0.925; // 10.2%
+      if (pt>2&&pt<3) {
+	val = 0.907438;
+      } else if (pt>3&&pt<4) {
+	val = 0.891066;
+      } else if (pt>4&&pt<5) {
+	val = 0.851007;
+      } else if (pt>5&&pt<6) {
+	val = 0.875401;
       } else if (pt>6&&pt<8) {
-        val = 0.852; // 0.9%
+	val = 0.836946;
       } else if (pt>8&&pt<10) {
-        val = 0.879; // 1.7%
-      }else if (pt>10&&pt<15) {
-        val = 0.849; // 2.8%
+	val = 0.799743;
+      } else if (pt>10&&pt<12.5) {
+	val = 0.76734;
+      } else if (pt>12.5&&pt<15) {
+	val = 0.81736;
       } else if (pt>15&&pt<20) {
-        val = 0.779; // 2.0%
+	val = 0.700143;
       } else if (pt>20&&pt<25) {
-        val = 0.771; // 2.0%
-      } else if (pt>25&&pt<=35) {
-        val = 0.824; // 1.6%
-      } else if (pt>35&&pt<=50) {
-        val = 0.824; // 3.6%
-      } else if (pt>50&&pt<100) {
-        val = 0.814; // 3.1%
-      } 
+	val = 0.763407;
+      } else if (pt>25&&pt<30) {
+	val = 0.70424;
+      } else if (pt>30&&pt<40) {
+	val = 0.787326;
+      } else if (pt>40&&pt<60) {
+	val = 0.767477;
+      } else if (pt>60&&pt<100) {
+	val = 0.763097;
+      }
     } 
     else{
       // PbPb
-      if (pt>2&&pt<6) {
-        val = 0.824; // 10.2%
+      if (pt>2&&pt<3) {
+	val = 0.810131;
+      } else if (pt>3&&pt<4) {
+	val = 0.675163;
+      } else if (pt>4&&pt<5) {
+	val = 0.764919;
+      } else if (pt>5&&pt<6) {
+	val = 0.788761;
       } else if (pt>6&&pt<8) {
-        val = 0.729; // 0.9%
+	val = 0.774951;
       } else if (pt>8&&pt<10) {
-        val = 0.774; // 1.7%
-      }else if (pt>10&&pt<20) {
-        val = 0.803; // 2.8%
+	val = 0.742544;
+      } else if (pt>10&&pt<12.5) {
+	val = 0.815646;
+      } else if (pt>12.5&&pt<15) {
+	val = 0.778901;
+      } else if (pt>15&&pt<20) {
+	val = 0.786314;
       } else if (pt>20&&pt<25) {
-        val = 0.775; // 2.0%
-      } else if (pt>25&&pt<=35) {
-        val = 0.783; // 1.6%
-      } else if (pt>35&&pt<=50) {
-        val = 0.824; // 3.6%
-      } else if (pt>50&&pt<100) {
-        val = 1.0; // 3.1%
+	val = 0.795452;
+      } else if (pt>25&&pt<30) {
+	val = 0.717988;
+      } else if (pt>30&&pt<40) {
+	val = 0.767657;
+      } else if (pt>40&&pt<60) {
+	val = 0.822358;
+      } else if (pt>60&&pt<100) {
+	val = 0.807229;
       } 
     }
   } else  if (method==0) {
