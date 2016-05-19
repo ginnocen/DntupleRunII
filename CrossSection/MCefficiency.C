@@ -16,10 +16,32 @@ Double_t binwidthmass=(maxhisto-minhisto)/nbinsmasshisto;
 TString weightfunctiongen = "1";
 TString weightfunctionreco = "1";
 TString selmc;
+Float_t hiBinMin,hiBinMax,centMin,centMax;
 
-void MCefficiency(TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root", TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))",TString selmcgenacceptance="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0", TString cut_recoonly="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11", TString cut="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>1.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&Dtrk2Algo>3&&Dtrk2Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)",TString label="PP",TString outputfile="test", int useweight=1, int minfit=2,int maxfit=100)
+void MCefficiency(int isPbPb=0,TString inputmc="/data/wangj/MC2015/Dntuple/pp/revised/ntD_pp_Dzero_kpi_prompt/ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight.root", TString selmcgen="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))",TString selmcgenacceptance="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<2.0&&abs(Gtk2eta)<2.0&&Gtk1pt>2.0&&Gtk2pt>2.0", TString cut_recoonly="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11", TString cut="Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>2.0&&Dtrk2Pt>2.0&&(DsvpvDistance/DsvpvDisErr)>3.5&&(DlxyBS/DlxyBSErr)>1.5&&Dchi2cl>0.05&&Dalpha<0.12&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<2.0&&abs(Dtrk2Eta)<2.0&&Dtrk1Algo>3&&Dtrk1Algo<8&&Dtrk2Algo>3&&Dtrk2Algo<8&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)",TString label="PP",TString outputfile="test", int useweight=1,Float_t centmin=0., Float_t centmax=100.)
 {
  selmc=cut;
+ 
+ 
+  hiBinMin = centmin*2;
+  hiBinMax = centmax*2;
+  centMin = centmin;
+  centMax = centmax;
+  
+  if(isPbPb==1)
+    {
+      selmcgen = selmcgen+Form("&&hiBin>=%f&&hiBin<%f",hiBinMin,hiBinMax);
+      selmcgenacceptance=selmcgenacceptance+Form("&&hiBin>=%f&&hiBin<%f",hiBinMin,hiBinMax);
+      cut_recoonly=cut_recoonly+Form("&&hiBin>=%f&&hiBin<%f",hiBinMin,hiBinMax);
+      cut=cut+Form("&&hiBin>=%f&&hiBin<%f",hiBinMin,hiBinMax);      
+    }
+
+     std::cout<<"selmcgen="<<selmcgen<<std::endl;
+     std::cout<<"selmcgenacceptance="<<selmcgenacceptance<<std::endl;
+     std::cout<<"cut_recoonly"<<cut_recoonly<<std::endl;
+     std::cout<<"cut"<<cut<<std::endl;
+
+ 
  std::cout<<"option="<<useweight<<std::endl;
  std::cout<<"cut="<<selmc<<std::endl;
   gStyle->SetOptTitle(0);
@@ -210,14 +232,14 @@ if(useweight==0) {
 
 int main(int argc, char *argv[])
 {
-  if((argc !=11))
+  if((argc !=12))
   {
     std::cout << "Wrong number of inputs" << std::endl;
     return 1;
   }
   
-  if(argc == 11)
-    MCefficiency(argv[1],argv[2],argv[3],argv[4],argv[5],argv[6],argv[7],atoi(argv[8]),atoi(argv[9]),atoi(argv[10]));
+  if(argc == 12)
+    MCefficiency(atoi(argv[1]),argv[2],argv[3],argv[4],argv[5],argv[6],argv[7],argv[8],atoi(argv[9]),atof(argv[10]),atof(argv[11]));
   return 0;
 }
 

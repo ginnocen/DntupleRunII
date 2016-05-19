@@ -48,6 +48,7 @@ void fitD(int usePbPb=1, TString inputdata="/data/HeavyFlavourRun2/MC2015/Dntupl
       selmceff = Form("%s&&hiBin>%f&&hiBin<%f",cut.Data(),hiBinMin,hiBinMax);
       selmcgen = Form("%s&&hiBin>%f&&hiBin<%f",cutmcgen.Data(),hiBinMin,hiBinMax);
     }
+
   selmc = Form("%s",cut.Data());
 
   gStyle->SetTextSize(0.05);
@@ -61,20 +62,26 @@ void fitD(int usePbPb=1, TString inputdata="/data/HeavyFlavourRun2/MC2015/Dntupl
   void clean0 (TH1D* h);
   TF1* fit (TTree* nt, TTree* ntMC, double ptmin, double ptmax, int isMC,bool, TF1* &total);
 
-if(doweight==0) { //pp high pt
-    weightgen="1";
-    weight="1";
+  if(doweight==0) {
+     weightgen="1";
+     weight="1";
   }
-if(doweight==1) { //pp 
-    weightgen="(Gpt<(pthat/1.2))*pthatweight*(0.0116437+Gpt*(0.0602697)+Gpt*Gpt*(-0.00226879)+Gpt*Gpt*Gpt*(3.91035e-05)+Gpt*Gpt*Gpt*Gpt*(-3.0699e-07)+Gpt*Gpt*Gpt*Gpt*Gpt*(8.73234e-10))";
-    weight="(Dpt<(pthat/1.2))*pthatweight*(0.0116437+Dgenpt*(0.0602697)+Dgenpt*Dgenpt*(-0.00226879)+Dgenpt*Dgenpt*Dgenpt*(3.91035e-05)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*(-3.0699e-07)+Dgenpt*Dgenpt*Dgenpt*Dgenpt*Dgenpt*(8.73234e-10))";
-}
-  if(doweight==2) { //PbPb 
-    weightgen="(Gpt<(pthat/1.2))*pthatweight*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
-    weight="(Dpt<(pthat/1.2))*pthatweight*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
 
+  // pp weight
+  if(doweight==1) {
+     weightgen="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(0.0116437+Max$(Gpt)*(0.0602697)+Max$(Gpt)*Max$(Gpt)*(-0.00226879)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(3.91035e-05)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(-3.0699e-07)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(8.73234e-10))";
+     weight="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(0.0116437+Max$(Gpt)*(0.0602697)+Max$(Gpt)*Max$(Gpt)*(-0.00226879)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(3.91035e-05)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(-3.0699e-07)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(8.73234e-10))";
   }
-  
+  //PbPb weight
+  if(doweight==2) {
+    weightgen="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
+    weight="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))";
+  }
+  //PbPb low pt weight
+  if(doweight==3) {
+   weightgen="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))*(-0.00600791+Max$(Gpt)*(0.0838585)+Max$(Gpt)*Max$(Gpt)*(-0.00991096)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(0.000496019)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(-8.50065e-06))";
+   weight="(pthatweight)*(Max$(Gpt)<pthat/1.2)*(6.14981+hiBin*(-0.156513)+hiBin*hiBin*(0.00149127)+hiBin*hiBin*hiBin*(-6.29087e-06)+hiBin*hiBin*hiBin*hiBin*(9.90029e-09))*(-0.00600791+Max$(Gpt)*(0.0838585)+Max$(Gpt)*Max$(Gpt)*(-0.00991096)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(0.000496019)+Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*Max$(Gpt)*(-8.50065e-06))";
+  }
   if(doweight<0 || doweight>4) std::cout<<"ERROR, this weighting option is not defined"<<std::endl;
   
   std::cout<<"we are using weight="<<weight<<std::endl;
@@ -86,13 +93,16 @@ if(doweight==1) { //pp
   nt->AddFriend("ntHlt");
   nt->AddFriend("ntHi");
   nt->AddFriend("ntSkim");
+
+  TTree* ntGen = (TTree*)infMC->Get("ntGen");
+  ntGen->AddFriend("ntHlt");
+  ntGen->AddFriend("ntHi");
+
   TTree* ntMC = (TTree*)infMC->Get("ntDkpi");
   ntMC->AddFriend("ntHlt");
   ntMC->AddFriend("ntHi");
   ntMC->AddFriend("ntSkim");
-  TTree* ntGen = (TTree*)infMC->Get("ntGen");
-  ntGen->AddFriend("ntHlt");
-  ntGen->AddFriend("ntHi");
+  ntMC->AddFriend(ntGen);
   
   TH1D* hPt = new TH1D("hPt","",nBins,ptBins);
   TH1D* hPtRecoTruth = new TH1D("hPtRecoTruth","",nBins,ptBins);
