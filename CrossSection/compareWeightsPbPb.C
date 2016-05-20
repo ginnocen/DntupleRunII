@@ -10,37 +10,28 @@ void compareWeightsPbPb(bool isLowpt=false)
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
 
-  const int nFiles=5;
+  const int nFiles=3;
 
     
   TString mynamefiles[nFiles];
   TString label[nFiles];
-  int colors[nFiles]={1,2,3,4,5};
+  int colors[nFiles]={1,2,3};
   if(!isLowpt){
   mynamefiles[0] ="DetailEfficiency/PbPbnoweight.root";
-  mynamefiles[1] ="DetailEfficiency/PbPbpthat.root";
-  mynamefiles[2] ="DetailEfficiency/PbPbpt.root";
-  mynamefiles[3] ="DetailEfficiency/PbPbCen.root";
-  mynamefiles[4] ="DetailEfficiency/PbPbCenPt.root";
+  mynamefiles[1] ="DetailEfficiency/PbPbfinal.root";
+  mynamefiles[2] ="DetailEfficiency/PbPbpthat.root";
   label[0]="no weight";
-  label[1]="pthat";
-  label[2]="pt shape";
-  label[3]="centrality";
-  label[4]="centrality & pt";
-  
+  label[1]="final";
+  label[2]="pthat";
   }
 
   if(isLowpt){
   mynamefiles[0] ="DetailEfficiency/PbPbMBnoweight.root";
-  mynamefiles[1] ="DetailEfficiency/PbPbMBpthat.root";
-  mynamefiles[2] ="DetailEfficiency/PbPbMBpt.root";
-  mynamefiles[3] ="DetailEfficiency/PbPbMBCen.root";
-  mynamefiles[4] ="DetailEfficiency/PbPbMBCenPtPthat.root";
+  mynamefiles[1] ="DetailEfficiency/PbPbMBfinal.root";
+  mynamefiles[2] ="DetailEfficiency/PbPbMBpthat.root";
   label[0]="no weight";
-  label[1]="pthat";
-  label[2]="pt shape";
-  label[3]="centrality";
-  label[4]="centrality & pt & pthat";
+  label[1]="final";
+  label[2]="pthat";
   }
 
   TFile* files[nFiles];

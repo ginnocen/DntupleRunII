@@ -36,17 +36,21 @@ void CrossSectionRatio(TString inputFONLL="ROOTfiles/output_inclusiveDd0meson_5T
   TFile* fileeff = new TFile(efficiency.Data());
   TH1F* hEff = (TH1F*)fileeff->Get("hEff");
   
-  TH1F* hPtSigma = (TH1F*)hYieldTriggerCorrected->Clone("hPtSigma");
-   hPtSigma->Divide(hEff);
-   hPtSigma->Scale(1./(2*lumi*BRchain));
-   hPtSigma->SetName("hPtSigma");
-
   TH1F* hfprompt = new TH1F("hfprompt","",nBins,ptBins);
 
   TH1F*hPrescalesPtBins;
   TH1F*hTriggerEfficiencyPtBins;
   
-  //hPtSigma->Scale(1./(2*lumi*BRchain));
+
+  TH1F* hPtSigma = (TH1F*)hYieldTriggerCorrected->Clone("hPtSigma");
+   hPtSigma->Divide(hEff);
+   hPtSigma->Scale(1./(2*lumi*BRchain));
+   hPtSigma->SetName("hPtSigma");
+
+/*
+  TH1F* hPtSigma = (TH1F*)file->Get("hPtSigma");
+  hPtSigma->Scale(1./lumi);
+*/
   hYieldTriggerCorrected->Scale(1./lumi);
   hYieldNoTriggerCorrected->Scale(1./lumi);
   hYieldTriggerCorrectedFONLLnorm->Scale(1./lumi);

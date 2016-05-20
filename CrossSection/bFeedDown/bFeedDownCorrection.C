@@ -47,9 +47,9 @@ float bFeedDownCorrection(double pt, bool isPbPb, int method=0)
     else{
       // PbPb
       if (pt>2&&pt<3) {
-	val = 0.810131;
+	val = 0.772;
       } else if (pt>3&&pt<4) {
-	val = 0.675163;
+	val = 0.772;
       } else if (pt>4&&pt<5) {
 	val = 0.764919;
       } else if (pt>5&&pt<6) {

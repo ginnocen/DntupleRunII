@@ -3,7 +3,7 @@
 #include "parameters.h"
 
 
-void ClosureTest(TString inputfile="ROOTfiles/hPtSpectrumDzeroPbPbMBMCClosureMYTEST.root",TString label="PbPbMBClosure"){
+void ClosureTest(TString inputfile="ROOTfiles/hPtSpectrumDzeroPbPbMBMCClosure.root",TString label="PbPbMBClosure"){
 
 
   gStyle->SetOptTitle(0);
@@ -20,7 +20,7 @@ void ClosureTest(TString inputfile="ROOTfiles/hPtSpectrumDzeroPbPbMBMCClosureMYT
     
   TCanvas*canvas=new TCanvas("canvas","canvas",550,500);
   canvas->cd();
-  TH2F* hemptyClosure=new TH2F("hemptyClosure","",50,ptBins[0]-2,ptBins[nBins-1]+2,10,0.5,1.5);  
+  TH2F* hemptyClosure=new TH2F("hemptyClosure","",50,ptBins[0]-2,ptBins[nBins-1]+2,10,0.0,1.5);  
   hemptyClosure->GetXaxis()->CenterTitle();
   hemptyClosure->GetYaxis()->CenterTitle();
   hemptyClosure->GetYaxis()->SetTitle("Corrected Yield/Generated Yield");

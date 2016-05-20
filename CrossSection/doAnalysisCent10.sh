@@ -11,23 +11,23 @@ DOANALYSISPP_FONLL=0
 DOANALYSISPP_TRGCOMBINATION=0
 DOANALYSISPP_FIT=0
 DOANALYSISPP_CROSS=1
-DOANALYSISPP_MCSTUDY=0
+DOANALYSISPP_MCSTUDY=1
 
 DOANALYSISPbPb_FONLL=0
 DOANALYSISPbPb_TRGCOMBINATION=0
 DOANALYSISPbPb_FIT=0
 DOANALYSISPbPb_CROSS=1
-DOANALYSISPbPb_MCSTUDY=0
+DOANALYSISPbPb_MCSTUDY=1
 
 DOANALYSISPPMB_FONLL=0
 DOANALYSISPPMB_FIT=0
 DOANALYSISPPMB_CROSS=1
-DOANALYSISPPMB_MCSTUDY=0
+DOANALYSISPPMB_MCSTUDY=1
 
 DOANALYSISPbPbMB_FONLL=0
 DOANALYSISPbPbMB_FIT=0
 DOANALYSISPbPbMB_CROSS=1
-DOANALYSISPbPbMB_MCSTUDY=0
+DOANALYSISPbPbMB_MCSTUDY=1
 
 DOANALYSISPbPb_MCSTUDYCombine=1
 
@@ -176,11 +176,11 @@ fi
 
 if [ $DOANALYSISPP_MCSTUDY -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$ISDOWEIGHTPP" "$MINIMUMFIT" "$MAXIMUMFIT"
-#./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELNPPP" "$OUTPUTFILEMCSTUDYNPPP" "$ISDOWEIGHTPP" "$MINIMUMFIT" "$MAXIMUMFIT"
+./MCefficiency.exe 0 "$INPUTMCPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$ISDOWEIGHTPP" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./MCefficiency.exe 0 "$INPUTMCNPPP"  "$SELGENPP" "$SELGENPPACCPP"  "$RECOONLYPP" "$CUTPP"  "$LABELNPPP" "$OUTPUTFILEMCSTUDYNPPP" "$ISDOWEIGHTPP" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm MCefficiency.exe
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
-#./plotPnNP.exe "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$OUTPUTFILEMCSTUDYNPPP"
+./plotPnNP.exe "$LABELPP" "$OUTPUTFILEMCSTUDYPP" "$OUTPUTFILEMCSTUDYNPPP"
 rm plotPnNP.exe
 fi
 
@@ -206,7 +206,7 @@ LUMIPbPb=6.53096 #from brilcalc
 ISMCPbPb=0
 ISDOWEIGHTPbPb=2
 SELGENPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))"
-SELGENPPACCPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<1.5&&abs(Gtk2eta)<1.5&&Gtk1pt>2.0&&Gtk2pt>2.0"
+SELGENACCPbPb="((GisSignal==1||GisSignal==2)&&(Gy>-1&&Gy<1))&&abs(Gtk1eta)<1.5&&abs(Gtk2eta)<1.5&&Gtk1pt>2.0&&Gtk2pt>2.0"
 RECOONLYPbPb="pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3&&abs(PVz)<15&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3"
 CUTPbPb="pclusterCompatibilityFilter&&pprimaryVertexFilter&&phfCoincFilter3&&abs(PVz)<15&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5&&Dtrk1PtErr/Dtrk1Pt<0.3&&Dtrk2PtErr/Dtrk2Pt<0.3&&((DlxyBS/DlxyBSErr)>2.5&&Dalpha<0.12&&((Dpt>2&&Dpt<4&&(DsvpvDistance/DsvpvDisErr)>5.86&&Dchi2cl>0.224)||(Dpt>4&&Dpt<5&&(DsvpvDistance/DsvpvDisErr)>5.46&&Dchi2cl>0.196)||(Dpt>5&&Dpt<6&&(DsvpvDistance/DsvpvDisErr)>4.86&&Dchi2cl>0.170)||(Dpt>6&&Dpt<8&&(DsvpvDistance/DsvpvDisErr)>4.54&&Dchi2cl>0.125)||(Dpt>8&&Dpt<10&&(DsvpvDistance/DsvpvDisErr)>4.42&&Dchi2cl>0.091)||(Dpt>10&&Dpt<15&&(DsvpvDistance/DsvpvDisErr)>4.06&&Dchi2cl>0.069)||(Dpt>15&&Dpt<20&&(DsvpvDistance/DsvpvDisErr)>3.71&&Dchi2cl>0.056)||(Dpt>20&&Dpt<25&&(DsvpvDistance/DsvpvDisErr)>3.25&&Dchi2cl>0.054)||(Dpt>25&&(DsvpvDistance/DsvpvDisErr)>2.97&&Dchi2cl>0.050)))"
 #RECOONLYPbPb="pprimaryVertexFilter&&phfCoincFilter3&&Dy>-1.&&Dy<1.&&Dtrk1highPurity&&Dtrk2highPurity&&Dtrk1Pt>8.5&&Dtrk2Pt>8.5&&Dtrk1PtErr/Dtrk1Pt<0.1&&Dtrk2PtErr/Dtrk2Pt<0.1&&abs(Dtrk1Eta)<1.5&&abs(Dtrk2Eta)<1.5&&(Dtrk1PixelHit+Dtrk1StripHit)>=11&&(Dtrk2PixelHit+Dtrk2StripHit)>=11&&(Dtrk1Chi2ndf/(Dtrk1nStripLayer+Dtrk1nPixelLayer)<0.15)&&(Dtrk2Chi2ndf/(Dtrk2nStripLayer+Dtrk2nPixelLayer)<0.15)&&Dtrk1OriginalAlgo>3&&Dtrk1OriginalAlgo<8&&Dtrk2OriginalAlgo>3&&Dtrk2OriginalAlgo<8"
@@ -245,11 +245,11 @@ fi
 
 if [ $DOANALYSISPbPb_MCSTUDY -eq 1 ]; then
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPbPb"  "${SELGENPbPb}${CUTCENTPbPb}" "${SELGENPPACCPbPb}${CUTCENTPbPb}"  "${RECOONLYPbPb}${CUTCENTPbPb}" "${CUTPbPb}${CUTCENTPbPb}"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
-#./MCefficiency.exe "$INPUTMCNPPbPb"  "${SELGENPbPb}${CUTCENTPbPb}" "${SELGENPPACCPbPb}${CUTCENTPbPb}"  "${RECOONLYPbPb}${CUTCENTPbPb}" "${CUTPbPb}${CUTCENTPbPb}"  "$LABELNPPbPb" "$OUTPUTFILEMCSTUDYNPPbPb" "$ISDOWEIGHTPbPb" "$MINIMUMFIT" "$MAXIMUMFIT"
+./MCefficiency.exe 1 "$INPUTMCPbPb"  "${SELGENPbPb}${CUTCENTPbPb}" "${SELGENACCPbPb}${CUTCENTPbPb}"  "${RECOONLYPbPb}${CUTCENTPbPb}" "${CUTPbPb}${CUTCENTPbPb}"  "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$ISDOWEIGHTPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./MCefficiency.exe 1 "$INPUTMCNPPbPb"  "${SELGENPbPb}${CUTCENTPbPb}" "${SELGENACCPbPb}${CUTCENTPbPb}"  "${RECOONLYPbPb}${CUTCENTPbPb}" "${CUTPbPb}${CUTCENTPbPb}"  "$LABELNPPbPb" "$OUTPUTFILEMCSTUDYNPPbPb" "$ISDOWEIGHTPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm MCefficiency.exe
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
-#./plotPnNP.exe "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$OUTPUTFILEMCSTUDYNPPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./plotPnNP.exe "$LABELPbPb" "$OUTPUTFILEMCSTUDYPbPb" "$OUTPUTFILEMCSTUDYNPPbPb" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm plotPnNP.exe
 fi
 
@@ -326,11 +326,11 @@ fi
 
 if [ $DOANALYSISPPMB_MCSTUDY -eq 1 ]; then      
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$ISDOWEIGHTPPMB" "$MINIMUMFIT" "$MAXIMUMFIT"
-#./MCefficiency.exe "$INPUTMCNPPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELNPPPMB" "$OUTPUTFILEMCSTUDYNPPPMB" "$ISDOWEIGHTPPMB" "$MINIMUMFIT" "$MAXIMUMFIT"
+./MCefficiency.exe 0 "$INPUTMCPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$ISDOWEIGHTPPMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./MCefficiency.exe 0 "$INPUTMCNPPP"  "$SELGENPPMB" "$SELGENACCPPMB"  "$RECOONLYPPMB" "$CUTPPMB"  "$LABELNPPPMB" "$OUTPUTFILEMCSTUDYNPPPMB" "$ISDOWEIGHTPPMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm MCefficiency.exe
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
-#./plotPnNP.exe "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$OUTPUTFILEMCSTUDYNPPPMB"
+./plotPnNP.exe "$LABELPPMB" "$OUTPUTFILEMCSTUDYPPMB" "$OUTPUTFILEMCSTUDYNPPPMB"
 rm plotPnNP.exe
 fi
 
@@ -381,11 +381,11 @@ fi
 
 if [ $DOANALYSISPbPbMB_MCSTUDY -eq 1 ]; then
 g++ MCefficiency.C $(root-config --cflags --libs) -g -o MCefficiency.exe 
-./MCefficiency.exe "$INPUTMCPbPb"  "${SELGENPbPbMB}${CUTCENTPbPb}" "${SELGENACCPbPbMB}${CUTCENTPbPb}"  "${RECOONLYPbPbMB}${CUTCENTPbPb}${CUTCENTPbPb}" "${CUTPbPbMB}${CUTCENTPbPb}"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$ISDOWEIGHTPbPbMB" "$MINIMUMFIT" "$MAXIMUMFIT"
-#./MCefficiency.exe "$INPUTMCNPPbPb"  "${SELGENPbPbMB}${CUTCENTPbPb}" "${SELGENACCPbPbMB}${CUTCENTPbPb}"  "${RECOONLYPbPbMB}${CUTCENTPbPb}" "${CUTPbPbMB}${CUTCENTPbPb}"  "$LABELNPPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$ISDOWEIGHTPbPbMB" "$MINIMUMFIT" "$MAXIMUMFIT"
+./MCefficiency.exe 1 "$INPUTMCPbPb"  "${SELGENPbPbMB}${CUTCENTPbPb}" "${SELGENACCPbPbMB}${CUTCENTPbPb}"  "${RECOONLYPbPbMB}${CUTCENTPbPb}${CUTCENTPbPb}" "${CUTPbPbMB}${CUTCENTPbPb}"  "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$ISDOWEIGHTPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./MCefficiency.exe 1 "$INPUTMCNPPbPb"  "${SELGENPbPbMB}${CUTCENTPbPb}" "${SELGENACCPbPbMB}${CUTCENTPbPb}"  "${RECOONLYPbPbMB}${CUTCENTPbPb}" "${CUTPbPbMB}${CUTCENTPbPb}"  "$LABELNPPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$ISDOWEIGHTPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm MCefficiency.exe
 g++ plotPnNP.C $(root-config --cflags --libs) -g -o plotPnNP.exe 
-#./plotPnNP.exe "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./plotPnNP.exe "$LABELPbPbMB" "$OUTPUTFILEMCSTUDYPbPbMB" "$OUTPUTFILEMCSTUDYNPPbPbMB" "$CENTPbPbMIN" "$CENTPbPbMAX"
 rm plotPnNP.exe
 fi
 

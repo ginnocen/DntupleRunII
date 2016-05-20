@@ -13,7 +13,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   gStyle->SetEndErrorSize(0);
   gStyle->SetMarkerStyle(20);
   
-  bool superimposedALICE=true;
+  bool superimposedALICE=false;
 
   TFile* filePPMB = new TFile(fileMB.Data());  
   TGraphAsymmErrors* gNuclearModificationMB = (TGraphAsymmErrors*)filePPMB->Get("gNuclearModification");
