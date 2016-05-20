@@ -129,7 +129,7 @@ void weightPbPbFONLL(int minfit=2,int maxfit=100,TString pthat="pthatall")
     double par6=myfit->GetParameter(6);
 
    myweightfunctiongen=Form("pow(10,%f*Gpt+%f+Gpt*Gpt*%f)+pow(10,%f*Gpt+%f+Gpt*Gpt*%f)+%f",par0,par1,par2,par3,par4,par5,par6);
-   myweightfunctionreco=Form("pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)+pow(10,%f*Dgenpt+%f+Dgenpt*Dgenpt*%f)+%f",par0,par1,par2,par3,par4,par5,par6);
+   myweightfunctionreco=Form("pow(10,%f*Gpt+%f+Gpt*Gpt*%f)+pow(10,%f*Gpt+%f+Gpt*Gpt*%f)+%f",par0,par1,par2,par3,par4,par5,par6);
    std::cout<<myweightfunctiongen<<std::endl;
    std::cout<<myweightfunctionreco<<std::endl;
 
