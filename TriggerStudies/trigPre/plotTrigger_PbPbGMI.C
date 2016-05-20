@@ -302,9 +302,9 @@ void plotturnon(){
   hemptyRatio->GetYaxis()->SetTitle("HLT D meson trigger efficiency");
   hemptyRatio->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
   hemptyRatio->GetXaxis()->SetTitleOffset(1.);
-  hemptyRatio->GetYaxis()->SetTitleOffset(1.4);//1.3
-  hemptyRatio->GetXaxis()->SetTitleSize(0.045);
-  hemptyRatio->GetYaxis()->SetTitleSize(0.045);
+  hemptyRatio->GetYaxis()->SetTitleOffset(1.05);//1.3
+  hemptyRatio->GetXaxis()->SetTitleSize(0.055);
+  hemptyRatio->GetYaxis()->SetTitleSize(0.055);
   hemptyRatio->GetXaxis()->SetTitleFont(42);
   hemptyRatio->GetYaxis()->SetTitleFont(42);
   hemptyRatio->GetXaxis()->SetLabelFont(42);
@@ -313,13 +313,15 @@ void plotturnon(){
   hemptyRatio->GetYaxis()->SetLabelSize(0.04);  
   hemptyRatio->Draw();
   
-  TLegend *legendSigma=new TLegend(0.4714765,0.3496503,0.8003356,0.5244755,"");//0.5100806,0.5868644,0.8084677,0.7605932
+  //TLegend *legendSigma=new TLegend(0.4714765,0.3496503,0.8003356,0.5244755,"");//0.5100806,0.5868644,0.8084677,0.7605932
+  TLegend *legendSigma=new TLegend(0.50,0.30,0.80,0.52,"");//0.5100806,0.5868644,0.8084677,0.7605932
   legendSigma->SetBorderSize(0);
   legendSigma->SetLineColor(0);
   legendSigma->SetFillColor(0);
   legendSigma->SetFillStyle(1001);
   legendSigma->SetTextFont(42);
-  legendSigma->SetTextSize(0.045);
+  //legendSigma->SetTextSize(0.045);
+  legendSigma->SetTextSize(0.060);
 
 
    TCanvas *c = new TCanvas("c","",1200,600);
@@ -340,12 +342,33 @@ void plotturnon(){
     
   }
   legendSigma->Draw("same");
+  TLatex* texlumi = new TLatex(0.46,0.865,"404 #mub^{-1} (5.02 TeV PbPb)");
+  texlumi->SetNDC();
+  texlumi->SetTextFont(42);
+  texlumi->SetTextSize(0.038);
+  texlumi->SetLineWidth(2);
+  texlumi->Draw();
+  TLatex* texcms = new TLatex(0.22,0.90,"CMS");
+  texcms->SetNDC();
+  texcms->SetTextAlign(13);
+  texcms->SetTextFont(62);//61
+  texcms->SetTextSize(0.06);
+  texcms->SetLineWidth(2);
+  texcms->Draw();
+  TLatex* texpre = new TLatex(0.22,0.84,"Performance");
+  texpre->SetNDC();
+  texpre->SetTextAlign(13);
+  texpre->SetTextFont(52);
+  texpre->SetTextSize(0.04);
+  texpre->SetLineWidth(2);
+  texpre->Draw();
 
    c->cd(2);
    hemptyRatio->Draw();
    gPad->SetLogx();
    TF1 *f= new TF1("f","[0]+[1]*x",20,100);
    gaeTrigger->Fit(f,"","",20,100);
+   gStyle->SetOptFit(0);
 
    TF1 *fup= new TF1("f","[0]+[1]*x",20,100);
    TF1 *flow= new TF1("f","[0]+[1]*x",20,100);
