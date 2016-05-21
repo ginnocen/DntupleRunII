@@ -59,7 +59,7 @@ void CombineplotPnNP(TString collision="PbPb", TString outputfilePMB="test.root"
   hEffNP->SetLineColor(4);
   hEffNP->SetMarkerColor(4);
 
-  TH2F* hemptyEff = new TH2F("hemptyEff","",50,0.,102.,10.,0,1.5);  
+  TH2F* hemptyEff = new TH2F("hemptyEff","",50,0.,102.,10.,0,1.0);  
   hemptyEff->GetXaxis()->CenterTitle();
   hemptyEff->GetYaxis()->CenterTitle();
   hemptyEff->GetYaxis()->SetTitle("#alpha x #epsilon_{reco} x #epsilon_{sel}");
@@ -71,7 +71,7 @@ void CombineplotPnNP(TString collision="PbPb", TString outputfilePMB="test.root"
   hemptyEff->GetXaxis()->SetTitleFont(42);
   hemptyEff->GetYaxis()->SetTitleFont(42);
 
-  TH2F* hemptyEffAcc = new TH2F("hemptyEffAcc","",50,0.,102.,10.,0,1.5);  
+  TH2F* hemptyEffAcc = new TH2F("hemptyEffAcc","",50,0.,102.,10.,0,1.0);  
   hemptyEffAcc->GetXaxis()->CenterTitle();
   hemptyEffAcc->GetYaxis()->CenterTitle();
   hemptyEffAcc->GetYaxis()->SetTitle("#alpha");
