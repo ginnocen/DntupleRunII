@@ -39,9 +39,9 @@ DONORMPbPbMB=0
 DORAA=0
 DORAAMB=0
 
-DOCombineCrossSectionPP=0
-DOCombineCrossSectionPbPb=0
-DOCombineRAA=0
+DOCombineCrossSectionPP=1
+DOCombineCrossSectionPbPb=1
+DOCombineRAA=1
 
 #systematic section
 
