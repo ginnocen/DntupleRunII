@@ -6,7 +6,7 @@ using namespace std;
 #include "TGraphErrors.h"
 #include "../Systematics/systematics.C"
 
-void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file="ROOTfilesCent10/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", TString predictions="../TheoryPredictions/PredictionsCUJET3_pt_0_10.root", Float_t centMin=0., Float_t centMax=10., Int_t isHadDupl=1, Int_t isTheoryComparison=1)
+void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file="ROOTfilesCent10/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", TString predictions="../TheoryPredictions/PredictionsCUJET3_pt_0_10.root", Float_t centMin=0., Float_t centMax=100., Int_t isHadDupl=1, Int_t isTheoryComparison=1)
 {
   gStyle->SetOptTitle(0);   
   gStyle->SetOptStat(0);
