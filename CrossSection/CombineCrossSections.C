@@ -203,7 +203,7 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   hemptyRatio->GetYaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->SetTitle("Data / FONLL");
   hemptyRatio->GetXaxis()->SetTitleOffset(1.0);//0.9
-  hemptyRatio->GetYaxis()->SetTitleOffset(1.0);//0.5
+  hemptyRatio->GetYaxis()->SetTitleOffset(0.4);//0.5
   hemptyRatio->GetXaxis()->SetTitleSize(0.13);//0.12
   hemptyRatio->GetYaxis()->SetTitleSize(0.12);
   hemptyRatio->GetXaxis()->SetTitleFont(42);
