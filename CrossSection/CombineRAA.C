@@ -177,6 +177,8 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
    ent_Dhighpt->SetLineColor(4);
    ent_Dhighpt->SetMarkerColor(4);
    ent_Dhighpt->SetTextSize(0.043);//0.03
+   if(isHadDupl==1 && isTheoryComparison==1){ent_Dhighpt->SetTextSize(0.03);}
+
 
     if(isHadDupl==1){
       TLegendEntry *ent_Charged=legendSigma->AddEntry(hTrackPt_trkCorr_PbPb_copy1,"R_{AA} charged hadrons","pl");//pf
@@ -184,8 +186,8 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
        ent_Charged->SetLineColor(1);
        ent_Charged->SetMarkerColor(1);
        ent_Charged->SetTextSize(0.043);//0.03
+      if(isHadDupl==1 && isTheoryComparison==1){ent_Charged->SetTextSize(0.03);}
     } 
-   if(isHadDupl==1 && isTheoryComparison==1){ent_Dhighpt->SetTextSize(0.03); ent_Charged->SetTextSize(0.03);}
    legendSigma->Draw();
 
   if(isTheoryComparison && centMin==0. && centMax==100.)
@@ -300,14 +302,17 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   texSystnorm->Draw();
   canvasRAA->Update();
   canvasRAA->RedrawAxis();
-  canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparison_%.0f_%.0f.pdf",centMin,centMax));
+    
+  if(isHadDupl==0&&isTheoryComparison==0) canvasRAA->SaveAs(Form("plotRAA/canvasRAA_%.0f_%.0f.pdf",centMin,centMax));
+  if(isHadDupl==1&&isTheoryComparison==0) canvasRAA->SaveAs(Form("plotRAA/canvasRAAchargedParticle_%.0f_%.0f.pdf",centMin,centMax));
+  if(isHadDupl==1&&isTheoryComparison==1) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonAll_%.0f_%.0f.pdf",centMin,centMax));
 }
 
 int main(int argc, char *argv[])
 {
   if(argc==9)
     {
-      CombineRAA(argv[1], argv[2], argv[3], argv[4], atof(argv[4]), atof(argv[5]), atoi(argv[6]), atoi(argv[7]),atoi(argv[8]));
+      CombineRAA(argv[1], argv[2], argv[3], argv[4], atof(argv[5]), atof(argv[6]), atoi(argv[7]), atoi(argv[8]));
       return 0;
     }
   else if(argc==7)
