@@ -325,7 +325,9 @@ float systematicsPP(double pt, double HLT=0,int stage=0)
    sys+=ppLumiUncertainty*ppLumiUncertainty;
    sys+= ppMesonSelection->GetBinContent(ppMesonSelection->FindBin(pt))* 
          ppMesonSelection->GetBinContent(ppMesonSelection->FindBin(pt));
-        
+
+   if (stage==3) return sqrt(sys);
+   
    sys+= ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt))* 
          ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt));
    sys+=fPPPtShape->Eval(pt)*fPPPtShape->Eval(pt);
@@ -451,13 +453,35 @@ void plotSystematicsRAA(double centL=0,double centH=10)
 // =============================================================================================================
 void plotSystematicsPP()
 {
-   TH1D *htmp = new TH1D("htmp","",10000,1,101);
-   htmp->SetAxisRange(-0.5,0.5,"Y");
-   htmp->SetXTitle("D meson p_{T} (GeV/c)");
-   htmp->SetYTitle("Systematical Uncertainty");
-   TCanvas *c = new TCanvas("c","",600,600);
-   c->SetLogx();
-   htmp->Draw();
+  TCanvas*cPP=new TCanvas("cPP","cPP",600,600);//550,500
+  cPP->cd();
+  cPP->SetFillColor(0);
+  cPP->SetBorderMode(0);
+  cPP->SetBorderSize(2);
+  cPP->SetLeftMargin(0.185);//0.200
+  cPP->SetRightMargin(0.045);
+  cPP->SetTopMargin(0.080);
+  cPP->SetBottomMargin(0.150);
+  cPP->SetFrameBorderMode(0);
+  cPP->SetLogx();
+
+  TH2F* hemptyEff=new TH2F("hemptyEff","",50,1,100.,10.,-0.5,0.5);
+  hemptyEff->GetXaxis()->CenterTitle();
+  hemptyEff->GetYaxis()->CenterTitle();
+  hemptyEff->GetYaxis()->SetTitle("Systematical Uncertainty");
+  hemptyEff->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
+  hemptyEff->GetXaxis()->SetTitleOffset(1.40);//0.9
+  hemptyEff->GetYaxis()->SetTitleOffset(1.45);//1.
+  hemptyEff->GetXaxis()->SetTitleSize(0.05);//0.045
+  hemptyEff->GetYaxis()->SetTitleSize(0.05);//0.045
+  hemptyEff->GetXaxis()->SetTitleFont(42);
+  hemptyEff->GetYaxis()->SetTitleFont(42);
+  hemptyEff->GetXaxis()->SetLabelFont(42);
+  hemptyEff->GetYaxis()->SetLabelFont(42);
+  hemptyEff->GetXaxis()->SetLabelSize(0.050);//0.035
+  hemptyEff->GetYaxis()->SetLabelSize(0.050);//0.035  
+  hemptyEff->GetXaxis()->SetLabelOffset(0.01);
+  hemptyEff->Draw();
 
    drawSys(1,0, 1,normalizationUncertaintyForPP(),2);
    drawSys(1,normalizationUncertaintyForPP(), 1.5,normalizationUncertaintyForPP(),2);
@@ -472,8 +496,11 @@ void plotSystematicsPP()
 //      drawSys(i,systematicsPP(i,0,1), i+0.1,systematicsPP(i+0.1,0,1),2);
       drawSys(i,sqrt((systematicsPP(i,0,2)*systematicsPP(i,0,2))-(systematicsPP(i,0,1)*systematicsPP(i,0,1))),
               i+0.1,sqrt((systematicsPP(i+0.1,0,2)*systematicsPP(i+0.1,0,2))-(systematicsPP(i+0.1,0,1)*systematicsPP(i+0.1,0,1))),4);
-      drawSys(i,sqrt((systematicsPP(i,0,0)*systematicsPP(i,0,0))-(systematicsPP(i,0,2)*systematicsPP(i,0,2))),
-              i+0.1,sqrt((systematicsPP(i+0.1,0,0)*systematicsPP(i+0.1,0,0))-(systematicsPP(i+0.1,0,2)*systematicsPP(i+0.1,0,2))),kGreen+2);
+      drawSys(i,sqrt((systematicsPP(i,0,3)*systematicsPP(i,0,3))-(systematicsPP(i,0,2)*systematicsPP(i,0,2))),
+              i+0.1,sqrt((systematicsPP(i+0.1,0,3)*systematicsPP(i+0.1,0,3))-(systematicsPP(i+0.1,0,2)*systematicsPP(i+0.1,0,2))),kGreen);
+      drawSys(i,sqrt((systematicsPP(i,0,0)*systematicsPP(i,0,0))-(systematicsPP(i,0,3)*systematicsPP(i,0,3))),
+              i+0.1,sqrt((systematicsPP(i+0.1,0,0)*systematicsPP(i+0.1,0,0))-(systematicsPP(i+0.1,0,3)*systematicsPP(i+0.1,0,3))),kMagenta);
+
    }
 
    TH1D *h1 = new TH1D("h1","",100,0,1);
@@ -484,16 +511,52 @@ void plotSystematicsPP()
    h4->SetLineWidth(2); h4->SetLineColor(4);
    TH1D *h5 = new TH1D("h5","",100,0,1);
    h5->SetLineWidth(2); h5->SetLineColor(kGreen+2);
- 
-   TLegend *leg = new TLegend(0.2,0.74,0.9,0.92);
+   TH1D *h6 = new TH1D("h6","",100,0,1);
+   h6->SetLineWidth(2); h6->SetLineColor(kMagenta);
+    
+  //TLatex* texlumi = new TLatex(0.19,0.936,"25.8 pb^{-1} (5.02 TeV pp) + 404 #mub^{-1} (5.02 TeV PbPb)");
+  TLatex* texlumi = new TLatex(0.35,0.936,"25.8 pb^{-1} (5.02 TeV pp)");
+  texlumi->SetNDC();
+  //texlumi->SetTextAlign(31);
+  texlumi->SetTextFont(42);
+  texlumi->SetTextSize(0.045);
+  texlumi->SetLineWidth(2);
+  texlumi->Draw();
+  TLatex* texcms = new TLatex(0.22,0.90,"CMS");
+  texcms->SetNDC();
+  texcms->SetTextAlign(13);
+  texcms->SetTextFont(62);//61
+  texcms->SetTextSize(0.06);
+  texcms->SetLineWidth(2);
+  texcms->Draw();
+  TLatex* texpre = new TLatex(0.22,0.84,"Performance");
+  texpre->SetNDC();
+  texpre->SetTextAlign(13);
+  texpre->SetTextFont(52);
+  texpre->SetTextSize(0.04);
+  texpre->SetLineWidth(2);
+  texpre->Draw();
+
+  TLatex * texY = new TLatex(0.5,0.8324607,"D^{0} d#sigma / dp_{T}, |y| < 1");//0.2612903,0.8425793
+  texY->SetNDC();
+  texY->SetTextColor(1);
+  texY->SetTextFont(42);
+  texY->SetTextSize(0.045);
+  texY->SetLineWidth(2);
+  texY->Draw();
+
+   TLegend *leg = new TLegend(0.2147651,0.1762653,0.7818792,0.3717277);
    leg->SetBorderSize(0);
    leg->SetFillStyle(0);
+   leg->SetTextSize(0.04);
    leg->AddEntry(h2,"Overall Normalization (Lumi + BR)","l");
    leg->AddEntry(h1,"Total Systematics","l");
    leg->AddEntry(h4,"Signal Extraction","l");
    leg->AddEntry(h5,"D Meson Selection and Correction","l");
+   leg->AddEntry(h6,"B feed down subtraction","l");
    leg->Draw();
-  c->SaveAs("SystematicSummaryPP.pdf");
+
+  cPP->SaveAs("SystematicSummaryPP.pdf");
   }
 
 
