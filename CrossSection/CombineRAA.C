@@ -47,7 +47,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   canvasRAA->SetLogx();
 
   TH2F* hemptyEff;
-  if(isHadDupl==1) hemptyEff=new TH2F("hemptyEff","",50,0.7,300.,10.,0,1.55); else hemptyEff=new TH2F("hemptyEff","",50,1.0,150.,10.,0,1.55);//50,-2,120.,10.,0,1.5
+  if(isHadDupl==1) hemptyEff=new TH2F("hemptyEff","",50,0.7,400.,10.,0,1.55); else hemptyEff=new TH2F("hemptyEff","",50,1.0,150.,10.,0,1.55);//50,-2,120.,10.,0,1.5
   hemptyEff->GetXaxis()->CenterTitle();
   hemptyEff->GetYaxis()->CenterTitle();
   hemptyEff->GetYaxis()->SetTitle("D^{0} R_{AA}");
@@ -113,39 +113,6 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   hNuclearModificationMB->SetLineColor(1);//kGreen+4
   hNuclearModificationMB->SetMarkerColor(1);//kGreen+4
   hNuclearModificationMB->Draw("psame");//same
-  
-    
-  /*
-  const int nBinsALL=15;
-  double ptBinsALL[nBinsALL+1] = {2.,3.,4.,5.,6.,8.,10.,15.,20.,25,30.,40.,50.,60.,80,100};
-
-  TH1D* hRAA_All = new TH1D("hPt","",nBinsALL,ptBinsALL);
-  for (int m=0;m<hNuclearModificationMB->GetNbinsX(); m++){
-    hRAA_All->SetBinContent(m+1,hNuclearModificationMB->GetBinContent(m+1));
-    hRAA_All->SetBinError(m+1,hNuclearModificationMB->GetBinError(m+1));
-  }
-  
-    for (int m=0;m<hNuclearModification->GetNbinsX(); m++){
-    double index=m+8;
-    hRAA_All->SetBinContent(index+1,hNuclearModification->GetBinContent(m+1));
-    hRAA_All->SetBinError(index+1,hNuclearModification->GetBinError(m+1));
-  }  
-  
-  TFile *filecompleteRAA=new TFile("totalRAA.root","recreate");
-  filecompleteRAA->cd();
-  hRAA_All->Write();
-  filecompleteRAA->Close();
-  delete filecompleteRAA;
-  */
-    
-  /*  
-  hTrackPt_trkCorr_PbPb_copy1->SetMarkerColor(2);
-  hTrackPt_trkCorr_PbPb_copy1->SetLineColor(2);
-  hTrackPt_trkCorr_PbPb_copy1->SetMarkerSize(1);
-  hTrackPt_trkCorr_PbPb_copy1->SetMarkerStyle(20);  
-  if(isHadDupl==1) hTrackPt_trkCorr_PbPb_copy1->Draw("same");
-  hTrackPt_trkCorr_PbPb_copy1->SetLineWidth(3);
-  */
 
   Float_t systnorm = normalizationUncertaintyForRAA(centMin,centMax)*1.e-2;
   TBox* bSystnorm;
@@ -194,7 +161,10 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   texY->SetLineWidth(2);
   texY->Draw();
 
-  TLegend *legendSigma=new TLegend(0.5436242,0.6474695,0.942953,0.9057592,"");//0.5100806,0.6268644,0.8084677,0.7805932
+  TLegend *legendSigma;
+  if(isHadDupl==0 && isTheoryComparison==0) legendSigma=new TLegend(0.5436242,0.7474695,0.942953,0.8457592,"");//0.5100806,0.6268644,0.8084677,0.7805932
+  if(isHadDupl==1 && isTheoryComparison==0) legendSigma=new TLegend(0.4436242,0.72,0.842953,0.88,"");//0.5100806,0.6268644,0.8084677,0.7805932
+  if(isHadDupl==1 && isTheoryComparison==1) legendSigma=new TLegend(0.5636242,0.6474695,0.912953,0.9057592,"");//0.5100806,0.6268644,0.8084677,0.7805932
   legendSigma->SetBorderSize(0);
   legendSigma->SetLineColor(0);
   legendSigma->SetFillColor(0);
@@ -206,16 +176,17 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
    ent_Dhighpt->SetTextFont(42);
    ent_Dhighpt->SetLineColor(4);
    ent_Dhighpt->SetMarkerColor(4);
-  //    ent_Dhighpt->SetTextSize(0.043);
+   ent_Dhighpt->SetTextSize(0.043);//0.03
+
     if(isHadDupl==1){
       TLegendEntry *ent_Charged=legendSigma->AddEntry(hTrackPt_trkCorr_PbPb_copy1,"R_{AA} charged hadrons","pl");//pf
        ent_Charged->SetTextFont(42);
        ent_Charged->SetLineColor(1);
        ent_Charged->SetMarkerColor(1);
-    //      ent_Charged->SetTextSize(0.043);//0.03
+       ent_Charged->SetTextSize(0.043);//0.03
     } 
-
-  if(isHadDupl==1) legendSigma->Draw();
+   if(isHadDupl==1 && isTheoryComparison==1){ent_Dhighpt->SetTextSize(0.03); ent_Charged->SetTextSize(0.03);}
+   legendSigma->Draw();
 
   if(isTheoryComparison && centMin==0. && centMax==100.)
     {
