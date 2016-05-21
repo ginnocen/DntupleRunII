@@ -68,7 +68,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   hemptyEff->Draw();
 
   TLine *line;
-  if(isHadDupl==1) line = new TLine(0.7,1,300,1); else line = new TLine(1.0,1,300,1);
+  if(isHadDupl==1) line = new TLine(0.7,1,400,1); else line = new TLine(1.0,1,150,1);
   line->SetLineStyle(2);
   line->SetLineWidth(2);
   line->Draw();
