@@ -1,3 +1,7 @@
+#include <TColor.h>
+#include <TBox.h>
+#include <TH1D.h>
+
 void RAA_0_100()
 {
 //=========Macro generated from canvas: RAA/RAA

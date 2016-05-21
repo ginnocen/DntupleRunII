@@ -39,7 +39,7 @@ DORAAMB=0
 
 DOCombineCrossSectionPP=0
 DOCombineCrossSectionPbPb=0
-DOCombineRAA=0
+DOCombineRAA=1
 
 #systematic section
 
@@ -57,7 +57,7 @@ DOsystematicTrackingPbPb=0
 DOsystematicTrackingPbPbMB=0
 
 DOANALYSIS_MCSTUDYDETAIL=0
-DOANALYSISPbPb_MCSTUDYDETAIL=1
+DOANALYSISPbPb_MCSTUDYDETAIL=0
 
 UNITY=1
 NULL=0
@@ -444,7 +444,9 @@ fi
 
 if [ $DOCombineRAA -eq 1 ]; then      
 g++ CombineRAA.C $(root-config --cflags --libs) -g -o CombineRAA.exe 
-./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON"  "$PREDICTIONS" "$CENTPbPbMIN" "$CENTPbPbMAX"
+./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON"  "$PREDICTIONS" "$CENTPbPbMIN" "$CENTPbPbMAX" 0 0 
+./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON"  "$PREDICTIONS" "$CENTPbPbMIN" "$CENTPbPbMAX" 1 0 
+./CombineRAA.exe "$OUTPUTFILERAAMB" "$OUTPUTFILERAA" "$CHARGEDHADRON"  "$PREDICTIONS" "$CENTPbPbMIN" "$CENTPbPbMAX" 1 1
 rm CombineRAA.exe
 fi
 
