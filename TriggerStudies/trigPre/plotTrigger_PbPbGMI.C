@@ -249,7 +249,7 @@ void plotturnon(){
    g[2]=(TGraphAsymmErrors*)fouput->Get("g60");
 
   TLegendEntry *entry[nfiles];
-  TString label[nfiles] = {"HLT D20", "HLT D40", "HLT D60"};
+  TString label[nfiles] = {"D^{0} trigger p_{T}> 20", "D^{0} trigger p_{T}> 40", "D^{0} trigger p_{T}> 60"};
   const int nBin = 17;
   int colors[nfiles]={1,2,4};
 
@@ -296,21 +296,21 @@ void plotturnon(){
   gaeTrigger->SetMarkerStyle(20);
   gaeTrigger->SetMarkerSize(0.8);
 
-  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,15,100.,10.,0.0,1.5);
+  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,10,100.,10.,0.0,1.5);
   hemptyRatio->GetXaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->SetTitle("HLT D meson trigger efficiency");
   hemptyRatio->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
-  hemptyRatio->GetXaxis()->SetTitleOffset(1.);
-  hemptyRatio->GetYaxis()->SetTitleOffset(1.05);//1.3
+  hemptyRatio->GetXaxis()->SetTitleOffset(1.20);
+  hemptyRatio->GetYaxis()->SetTitleOffset(1.14);//1.3
   hemptyRatio->GetXaxis()->SetTitleSize(0.055);
   hemptyRatio->GetYaxis()->SetTitleSize(0.055);
   hemptyRatio->GetXaxis()->SetTitleFont(42);
   hemptyRatio->GetYaxis()->SetTitleFont(42);
   hemptyRatio->GetXaxis()->SetLabelFont(42);
   hemptyRatio->GetYaxis()->SetLabelFont(42);
-  hemptyRatio->GetXaxis()->SetLabelSize(0.04);
-  hemptyRatio->GetYaxis()->SetLabelSize(0.04);  
+  hemptyRatio->GetXaxis()->SetLabelSize(0.045);
+  hemptyRatio->GetYaxis()->SetLabelSize(0.045);  
   hemptyRatio->Draw();
   
   //TLegend *legendSigma=new TLegend(0.4714765,0.3496503,0.8003356,0.5244755,"");//0.5100806,0.5868644,0.8084677,0.7605932
@@ -323,47 +323,7 @@ void plotturnon(){
   //legendSigma->SetTextSize(0.045);
   legendSigma->SetTextSize(0.060);
 
-
-   TCanvas *c = new TCanvas("c","",1200,600);
-   c->Divide(2,1);
-   c->cd(1);
-   hemptyRatio->Draw();
-  for (int ifile=0;ifile<nfiles;ifile++){
-    gPad->SetLogx();
-    g[ifile]->SetLineColor(colors[ifile]);
-    g[ifile]->SetMarkerColor(colors[ifile]);
-    g[ifile]->SetLineWidth(2);
-    g[ifile]->SetFillStyle(0); 
-    g[ifile]->Draw("epsame");  
-    entry[ifile]=legendSigma->AddEntry(g[ifile],label[ifile].Data(),"f");
-    entry[ifile]->SetTextFont(42);
-    entry[ifile]->SetLineColor(colors[ifile]);
-    entry[ifile]->SetMarkerColor(colors[ifile]);
-    
-  }
-  legendSigma->Draw("same");
-  TLatex* texlumi = new TLatex(0.46,0.865,"404 #mub^{-1} (5.02 TeV PbPb)");
-  texlumi->SetNDC();
-  texlumi->SetTextFont(42);
-  texlumi->SetTextSize(0.038);
-  texlumi->SetLineWidth(2);
-  texlumi->Draw();
-  TLatex* texcms = new TLatex(0.22,0.90,"CMS");
-  texcms->SetNDC();
-  texcms->SetTextAlign(13);
-  texcms->SetTextFont(62);//61
-  texcms->SetTextSize(0.06);
-  texcms->SetLineWidth(2);
-  texcms->Draw();
-  TLatex* texpre = new TLatex(0.22,0.84,"Performance");
-  texpre->SetNDC();
-  texpre->SetTextAlign(13);
-  texpre->SetTextFont(52);
-  texpre->SetTextSize(0.04);
-  texpre->SetLineWidth(2);
-  texpre->Draw();
-
-   c->cd(2);
+   TCanvas *cFit = new TCanvas("c","",1200,600);
    hemptyRatio->Draw();
    gPad->SetLogx();
    TF1 *f= new TF1("f","[0]+[1]*x",20,100);
@@ -383,7 +343,50 @@ void plotturnon(){
     gaeTrigger->SetLineWidth(2);
     gaeTrigger->SetFillStyle(0); 
     gaeTrigger->Draw("epsame"); 
-    c->SaveAs("result_PbPbHPPlusMB/Dmeson-HLTfinaltriggerefficiency.pdf");
+    cFit->SaveAs("result_PbPbHPPlusMB/Dmeson-HLTfinaltriggerefficiency.pdf");
+
+
+
+   TCanvas *c = new TCanvas("c","",600,600);
+   hemptyRatio->Draw();
+
+  for (int ifile=0;ifile<nfiles;ifile++){
+    g[ifile]->SetLineColor(colors[ifile]);
+    g[ifile]->SetMarkerColor(colors[ifile]);
+    g[ifile]->SetLineWidth(2);
+    g[ifile]->SetFillStyle(0); 
+    g[ifile]->Draw("epsame");  
+    entry[ifile]=legendSigma->AddEntry(g[ifile],label[ifile].Data(),"f");
+    entry[ifile]->SetTextFont(42);
+    entry[ifile]->SetTextSize(0.045);
+    entry[ifile]->SetLineColor(colors[ifile]);
+    entry[ifile]->SetMarkerColor(colors[ifile]);
+    
+  }
+
+  legendSigma->Draw("same");
+  TLatex* texlumi = new TLatex(0.42,0.865,"404 #mub^{-1} (5.02 TeV PbPb)");
+  texlumi->SetNDC();
+  texlumi->SetTextFont(42);
+  texlumi->SetTextSize(0.044);
+  texlumi->SetLineWidth(2);
+  texlumi->Draw();
+  TLatex* texcms = new TLatex(0.22,0.90,"CMS");
+  texcms->SetNDC();
+  texcms->SetTextAlign(13);
+  texcms->SetTextFont(62);//61
+  texcms->SetTextSize(0.06);
+  texcms->SetLineWidth(2);
+  texcms->Draw();
+  TLatex* texpre = new TLatex(0.22,0.84,"Performance");
+  texpre->SetNDC();
+  texpre->SetTextAlign(13);
+  texpre->SetTextFont(52);
+  texpre->SetTextSize(0.04);
+  texpre->SetLineWidth(2);
+  texpre->Draw();
+  c->SaveAs("HLTDmesonEfficiency.pdf");
+
 
 }
 

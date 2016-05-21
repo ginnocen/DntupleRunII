@@ -3,7 +3,7 @@
 #include "TLegendEntry.h"
 #include "../Systematics/systematics.C"
 
-void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", Int_t isPbPb=0, Float_t centMin=0., Float_t centMax=100., Int_t isMerged=1)
+void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root", TString file="ROOTfiles/CrossSectionFONLLPP.root", Int_t isPbPb=0, Float_t centMin=0., Float_t centMax=100.)
 {
 
   bool doComparisonLHC=false;
@@ -34,7 +34,7 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   TH1D* hfPrompt = (TH1D*)filePP->Get("hfprompt");
 
 
-  TCanvas* cSigma = new TCanvas("cSigma","",600,750);
+  TCanvas* cSigma = new TCanvas("cSigma","",750,750);
   cSigma->SetFrameBorderMode(0);
   cSigma->SetFrameBorderMode(0);
   cSigma->Range(-1.989924,-0.2917772,25.49622,2.212202);
@@ -49,7 +49,7 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   cSigma->SetFrameBorderMode(0);
   cSigma->SetLogx();
   cSigma->cd();
-  TPad* pSigma = new TPad("pSigma","",0,0.25,1,1);
+  TPad* pSigma = new TPad("pSigma","",0,0.30,1,1);
   pSigma->SetFillColor(0);
   pSigma->SetBorderMode(0);
   pSigma->SetBorderSize(2);
@@ -67,16 +67,16 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   hemptySigma->GetYaxis()->CenterTitle();
   hemptySigma->GetYaxis()->SetTitle("d#sigma / dp_{T}( pb GeV^{-1}c)");
   if(isPbPb==1) hemptySigma->GetYaxis()->SetTitle("1/T_{AA} * dN / dp_{T}( pb GeV^{-1}c)");
-  hemptySigma->GetXaxis()->SetTitleOffset(1.);
-  hemptySigma->GetYaxis()->SetTitleOffset(1.24);//1.3
-  hemptySigma->GetXaxis()->SetTitleSize(0.045);
-  hemptySigma->GetYaxis()->SetTitleSize(0.045);
+  hemptySigma->GetXaxis()->SetTitleOffset(0.7);
+  hemptySigma->GetYaxis()->SetTitleOffset(0.9);//1.3
+  hemptySigma->GetXaxis()->SetTitleSize(0.05);
+  hemptySigma->GetYaxis()->SetTitleSize(0.055);
   hemptySigma->GetXaxis()->SetTitleFont(42);
   hemptySigma->GetYaxis()->SetTitleFont(42);
   hemptySigma->GetXaxis()->SetLabelFont(42);
   hemptySigma->GetYaxis()->SetLabelFont(42);
   hemptySigma->GetXaxis()->SetLabelSize(0.04);
-  hemptySigma->GetYaxis()->SetLabelSize(0.04);  
+  hemptySigma->GetYaxis()->SetLabelSize(0.045);  
   hemptySigma->SetMaximum(2);
   hemptySigma->SetMinimum(0.);
   hemptySigma->Draw();
@@ -95,45 +95,27 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   hSigmaPPStatMB->SetLineWidth(2);
   hSigmaPPStatMB->SetMarkerSize(1);//4
   hSigmaPPStatMB->SetMarkerStyle(20);
-  if(isMerged==1)
-    {
-      hSigmaPPStatMB->SetLineColor(1);//kGreen+4
-      hSigmaPPStatMB->SetMarkerColor(1);//kGreen+4
-    }
-  else
-    {
-      hSigmaPPStatMB->SetLineColor(kTeal+4);//kGreen+4
-      hSigmaPPStatMB->SetMarkerColor(kTeal+4);//kGreen+4
-    }
+  hSigmaPPStatMB->SetLineColor(1);//kGreen+4
+  hSigmaPPStatMB->SetMarkerColor(1);//kGreen+4
   hSigmaPPStatMB->Draw("epsame"); 
 
   hSigmaPPStat->SetLineWidth(2);
   hSigmaPPStat->SetMarkerSize(1);//4
   hSigmaPPStat->SetMarkerStyle(20);
-  if(isMerged==1)
-    {
-      hSigmaPPStat->SetLineColor(1);//kGreen+4
-      hSigmaPPStat->SetMarkerColor(1);//kGreen+4
-    }
-  else
-    {
-      hSigmaPPStat->SetLineColor(kAzure+1);//4
-      hSigmaPPStat->SetMarkerColor(kAzure+1);//4
-    }
+  hSigmaPPStat->SetLineColor(1);//kGreen+4
+  hSigmaPPStat->SetMarkerColor(1);//kGreen+4
   hSigmaPPStat->Draw("epsame"); 
 
   gaeCrossSystMB->SetFillColor(1);
   gaeCrossSystMB->SetFillStyle(0); 
   gaeCrossSystMB->SetLineWidth(2);
-  if(isMerged==1) gaeCrossSystMB->SetLineColor(1);//kGreen+4
-  else gaeCrossSystMB->SetLineColor(kTeal+4);
+  gaeCrossSystMB->SetLineColor(1);//kGreen+4
   gaeCrossSystMB->Draw("5same");  
 
   gaeCrossSyst->SetFillColor(1);
   gaeCrossSyst->SetFillStyle(0); 
   gaeCrossSyst->SetLineWidth(2);
-  if(isMerged==1) gaeCrossSyst->SetLineColor(1);//kGreen+4
-  else gaeCrossSyst->SetLineColor(kAzure+1);//4
+  gaeCrossSyst->SetLineColor(1);//kGreen+4
   gaeCrossSyst->Draw("5same");  
 
   TString texper="%";
@@ -168,25 +150,12 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   legendSigma->SetTextFont(42);
   legendSigma->SetTextSize(0.045);
 
-  if(isMerged==0)
-    {   
-      TLegendEntry *ent_SigmaPPMB = legendSigma->AddEntry(hSigmaPPStatMB,"MB","pf");
-      ent_SigmaPPMB->SetTextFont(42);
-      ent_SigmaPPMB->SetLineColor(2);
-      ent_SigmaPPMB->SetMarkerColor(2);
-      
-      TLegendEntry *ent_SigmaPP = legendSigma->AddEntry(hSigmaPPStat,"triggered","pf");
-      ent_SigmaPP->SetTextFont(42);
-      ent_SigmaPP->SetLineColor(1);
-      ent_SigmaPP->SetMarkerColor(1);
-    }
-  else
-    {
-      TLegendEntry *ent_SigmaPPMB = legendSigma->AddEntry(hSigmaPPStatMB,"data","pf");
-      ent_SigmaPPMB->SetTextFont(42);
-      ent_SigmaPPMB->SetLineColor(2);
-      ent_SigmaPPMB->SetMarkerColor(2);
-    }
+
+  TLegendEntry *ent_SigmaPPMB = legendSigma->AddEntry(hSigmaPPStatMB,"data","pf");
+  ent_SigmaPPMB->SetTextFont(42);
+  ent_SigmaPPMB->SetLineColor(2);
+  ent_SigmaPPMB->SetMarkerColor(2);
+
   TLegendEntry *ent_SigmaFONLL = legendSigma->AddEntry(gaeBplusReferenceMB,"FONLL pp ref.","f");
   ent_SigmaFONLL->SetTextFont(42);
   ent_SigmaFONLL->SetLineColor(5);
@@ -219,7 +188,7 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   texpre->Draw();
 
   cSigma->cd();
-  TPad* pRatio = new TPad("pRatio","",0,0,1,0.25);
+  TPad* pRatio = new TPad("pRatio","",0,0,1,0.30);
   pRatio->SetLeftMargin(0.12);//0.1451613
   pRatio->SetRightMargin(0.03);//0.05443548
   pRatio->SetTopMargin(0);
@@ -228,21 +197,23 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   pRatio->Draw();
   pRatio->cd();
 
-  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,0.,110.,10.,0.,3.2);//50,0.,110.,10.,0.,4
+  TH2F* hemptyRatio=new TH2F("hemptyRatio","",50,0.,110.,10.,0.,2.7);//50,0.,110.,10.,0.,4
   hemptyRatio->GetXaxis()->SetTitle("p_{T} (GeV/c)");
   hemptyRatio->GetXaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->CenterTitle();
   hemptyRatio->GetYaxis()->SetTitle("Data / FONLL");
-  hemptyRatio->GetXaxis()->SetTitleOffset(1.05);//0.9
-  hemptyRatio->GetYaxis()->SetTitleOffset(0.90);//0.5
-  hemptyRatio->GetXaxis()->SetTitleSize(0.15);//0.12
+  hemptyRatio->GetXaxis()->SetTitleOffset(1.0);//0.9
+  hemptyRatio->GetYaxis()->SetTitleOffset(0.4);//0.5
+  hemptyRatio->GetXaxis()->SetTitleSize(0.13);//0.12
   hemptyRatio->GetYaxis()->SetTitleSize(0.12);
   hemptyRatio->GetXaxis()->SetTitleFont(42);
   hemptyRatio->GetYaxis()->SetTitleFont(42);
   hemptyRatio->GetXaxis()->SetLabelFont(42);
   hemptyRatio->GetYaxis()->SetLabelFont(42);
+  hemptyRatio->GetYaxis()->SetLabelOffset(0.015);
   hemptyRatio->GetXaxis()->SetLabelSize(0.1);
   hemptyRatio->GetYaxis()->SetLabelSize(0.1);  
+
   hemptyRatio->Draw();
 
   TLine* l = new TLine(2.2,1,110,1);//10,1,105,1
@@ -346,21 +317,13 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   
   gaeRatioCrossFONLLstatMB->SetMarkerSize(1);
   gaeRatioCrossFONLLstatMB->SetLineWidth(2);
-  if(isMerged==1)
-    {
-      gaeRatioCrossFONLLstatMB->SetLineColor(1);//kGreen+4
-      gaeRatioCrossFONLLstatMB->SetMarkerColor(1);//kGreen+4
-    }
-  else
-    {
-      gaeRatioCrossFONLLstatMB->SetLineColor(kTeal+4);//kGreen+4
-      gaeRatioCrossFONLLstatMB->SetMarkerColor(kTeal+4);//kGreen+4
-    }
+  gaeRatioCrossFONLLstatMB->SetLineColor(1);//kGreen+4 
+  gaeRatioCrossFONLLstatMB->SetMarkerColor(1);//kGreen+4
+
   gaeRatioCrossFONLLstatMB->Draw("epsame");
 
   gaeRatioCrossFONLLsystMB->SetLineWidth(3);
-  if(isMerged==1) gaeRatioCrossFONLLsystMB->SetLineColor(1);//kGreen+4
-  else gaeRatioCrossFONLLsystMB->SetLineColor(kTeal+4);
+  gaeRatioCrossFONLLsystMB->SetLineColor(1);//kGreen+4
   gaeRatioCrossFONLLsystMB->Draw("5same");
 
   gaeRatioCrossFONLLunity->SetFillColor(5);
@@ -371,23 +334,13 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
 
   gaeRatioCrossFONLLstat->SetMarkerSize(1);
   gaeRatioCrossFONLLstat->SetLineWidth(2);
-  if(isMerged==1)
-    {
-      gaeRatioCrossFONLLstat->SetLineColor(1);//kGreen+4
-      gaeRatioCrossFONLLstat->SetMarkerColor(1);//kGreen+4
-    }
-  else
-    {
-      gaeRatioCrossFONLLstat->SetLineColor(kAzure+1);//4
-      gaeRatioCrossFONLLstat->SetMarkerColor(kAzure+1);//4
-    }
-    
+  gaeRatioCrossFONLLstat->SetLineColor(1);//kGreen+4
+  gaeRatioCrossFONLLstat->SetMarkerColor(1);//kGreen+4
    
   gaeRatioCrossFONLLstat->Draw("epsame");
 
   gaeRatioCrossFONLLsyst->SetLineWidth(3);
-  if(isMerged==1) gaeRatioCrossFONLLsyst->SetLineColor(1);//kGreen+4
-  else gaeRatioCrossFONLLsyst->SetLineColor(kAzure+1);//4
+  gaeRatioCrossFONLLsyst->SetLineColor(1);//kGreen+4
   gaeRatioCrossFONLLsyst->Draw("5same");
 
   l->Draw("same");
@@ -440,12 +393,7 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
 
 int main(int argc, char *argv[])
 {
-  if(argc==7)
-    {
-      CombineCrossSections(argv[1], argv[2], atoi(argv[3]), atof(argv[4]), atof(argv[5]), atoi(argv[6]));
-      return 0;
-    }
-  else if(argc==6)
+  if(argc==6)
     {
       CombineCrossSections(argv[1], argv[2], atoi(argv[3]), atof(argv[4]), atof(argv[5]));
       return 0;
@@ -453,6 +401,11 @@ int main(int argc, char *argv[])
   else if(argc==4)
     {
       CombineCrossSections(argv[1], argv[2], atoi(argv[3]));
+      return 0;
+    }
+  else if(argc==3)
+    {
+      CombineCrossSections(argv[1], argv[2]);
       return 0;
     }
   else
