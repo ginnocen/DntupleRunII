@@ -1,5 +1,3 @@
-
-rm *.pdf
 cp ../plotFits/DMassPPMB_4.pdf  DmassPP_1.pdf
 cp ../plotFits/DMassPP_2.pdf DmassPP_2.pdf
 cp ../plotFits/DMassPP_5.pdf DmassPP_3.pdf
@@ -17,5 +15,10 @@ cp ../plotEff/canvasEff_PnNPCombine_PbPb_0_100.pdf EfficiencyPbPb0100.pdf
 cp ../plotEff/canvasEff_PnNPCombine_PbPb_0_10.pdf EfficiencyPbPb010.pdf
 
 cp ../plotCrossSection/CrossSectionComparison_PP.pdf CrossSectionPP.pdf
-cp ../plotRAA/canvasRAAComparison_0_100.pdf RAA0100.pdf
-cp ../plotRAA/canvasRAAComparison_0_10.pdf RAA010.pdf
+
+cp ../plotRAA/canvasRAA_0_100.pdf canvasRAA0100.pdf
+cp ../plotRAA/canvasRAA_0_10.pdf canvasRAA010.pdf
+cp ../plotRAA/canvasRAAchargedParticle_0_100.pdf canvasRAAcharged0100.pdf
+cp ../plotRAA/canvasRAAchargedParticle_0_10.pdf canvasRAAcharged010.pdf
+cp ../plotRAA/canvasRAAComparisonAll_0_100.pdf canvasRAAtheory0100.pdf
+cp ../plotRAA/canvasRAAComparisonAll_0_10.pdf canvasRAAtheory010.pdf
