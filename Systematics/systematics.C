@@ -25,6 +25,7 @@ double ppLumiUncertainty 	= 12;			// 5% for the moment, to be updated (4/7/2016)
 
 // Point-to-point
 double ppTrackingEfficiency 	= 4;   			// single track systematics from D* studies
+double PbPbTrackingEfficiency 	= 5;   			// single track systematics from D* studies
 TH1D*  ppSignalExtraction;				// (4/7/2016)
 TH1D*  ppMesonSelection;				// (4/7/2016)
 TH1D*  ppBFeedDownCorrection; 				// (4/7/2016)
@@ -268,7 +269,7 @@ float systematicsForRAA(double pt,double centL=0,double centH=100, double HLT=0,
          ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt));
    
    sys+=fPPPtShape->Eval(pt)*fPPPtShape->Eval(pt);
-
+   sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
 
    sys+= PbPbMesonSelection->GetBinContent(PbPbMesonSelection->FindBin(pt))*
          PbPbMesonSelection->GetBinContent(PbPbMesonSelection->FindBin(pt));
@@ -277,7 +278,8 @@ float systematicsForRAA(double pt,double centL=0,double centH=100, double HLT=0,
          PbPbBFeedDownCorrection->GetBinContent(PbPbBFeedDownCorrection->FindBin(pt));
 	 
    sys+=fPbPbPtShape->Eval(pt)*fPbPbPtShape->Eval(pt);
-  
+   sys+=(PbPbTrackingEfficiency*2)*(PbPbTrackingEfficiency*2);
+   
    return sqrt(sys);
 
 }
@@ -319,12 +321,11 @@ float systematicsPP(double pt, double HLT=0,int stage=0)
 
    if (stage==2) return sqrt(sys);
 
-
    sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
    sys+=ppLumiUncertainty*ppLumiUncertainty;
    sys+= ppMesonSelection->GetBinContent(ppMesonSelection->FindBin(pt))* 
          ppMesonSelection->GetBinContent(ppMesonSelection->FindBin(pt));
-
+        
    sys+= ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt))* 
          ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt));
    sys+=fPPPtShape->Eval(pt)*fPPPtShape->Eval(pt);
@@ -357,7 +358,7 @@ float systematicsPbPb(double pt, double centL=0,double centH=100, double HLT=0)
    double sys=0;
    
    // pp tracking eff uncertainty used for the moment
-   sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
+   sys+=(PbPbTrackingEfficiency*2)*(PbPbTrackingEfficiency*2);
    if (pt<20) sys+=PbPbNMBUncertainty*PbPbNMBUncertainty;
    	else  sys+=PbPbLumiUncertainty*PbPbLumiUncertainty;
    
