@@ -1,11 +1,6 @@
 using namespace std;
 #include "uti.h"
 
-#define BIN_NUM_PP 14
-Float_t ptbins_PP[BIN_NUM_PP+1] = {2.,3.,4.,5.,6.,8.,10.,12.5,15.0,20.,25.,30.,40.,60.,100};
-#define BIN_NUM_PbPb 13
-Float_t ptbins_PbPb[BIN_NUM_PbPb+1] = {2.,4.,5.,6.,8.,10.,12.5,15.0,20.,25.,30.,40.,60.,100};
-
 void plotFractions()
 {
   gStyle->SetTextSize(0.05);
@@ -19,232 +14,223 @@ void plotFractions()
   gStyle->SetMarkerStyle(20);
   gStyle->SetMarkerSize(0.9);
 
-  Float_t aPfracCtv_PP[BIN_NUM_PP];
-  Float_t aPfracErr_PP[BIN_NUM_PP];
-  Float_t aPfracCtv_PbPb[BIN_NUM_PbPb];
-  Float_t aPfracErr_PbPb[BIN_NUM_PbPb];
-
   TFile* fPbPb = new TFile("bFeedDownResultPbPb.root");
-  TGraphErrors* grPbPb = fPbPb->Get("grPromptFraction");
+  TGraphErrors* grPPbPb = fPbPb->Get("grPromptFraction");
   TFile* fPP = new TFile("bFeedDownResultPP.root");
-  TGraphErrors* grPP = fPP->Get("grPromptFraction");
+  TGraphErrors* grPPP = fPP->Get("grPromptFraction");
 
-  for(int i=0; i<BIN_NUM_PP; i++)
+  TGraphErrors* grNpPP = grPPP->Clone("grNpPP");
+  for(int i=0; i<grNpPP->GetN(); i++)
+    grNpPP->SetPoint(i, grPPP->GetX()[i], 1-grPPP->GetY()[i]);
+
+  TGraphErrors* grPPPSys = grPPP->Clone("grPPPSys");
+  for(int i=0; i<grPPPSys->GetN(); i++)
     {
-      aPfracCtv_PP[i] = grPP->GetY()[i];
-      aPfracErr_PP[i] = grPP->GetEY()[i];
+      if(i==0)
+	grPPPSys->SetPointError(i, grPPP->GetEX()[i], 0.1);
+      else
+        grPPPSys->SetPointError(i, grPPP->GetEX()[i], 0.05);
     }
 
-  for(int i=0; i<BIN_NUM_PbPb; i++)
-    {
-      aPfracCtv_PbPb[i] =grPbPb->GetY()[i];
-      aPfracErr_PbPb[i] =grPbPb->GetEY()[i];
-    }
+  TGraphErrors* grNpPPSys = grPPPSys->Clone("grNpPPSys");
+  for(int i=0; i<grNpPPSys->GetN(); i++)
+    grNpPPSys->SetPoint(i, grPPPSys->GetX()[i], 1-grPPPSys->GetY()[i]);
 
-  Float_t aXptCtv_PP[BIN_NUM_PP], aXptErr_PP[BIN_NUM_PP], aNPfracCtv_PP[BIN_NUM_PP], aNPfracErr_PP[BIN_NUM_PP];
-  Float_t aXptCtv_PbPb[BIN_NUM_PbPb], aXptErr_PbPb[BIN_NUM_PbPb], aNPfracCtv_PbPb[BIN_NUM_PbPb], aNPfracErr_PbPb[BIN_NUM_PbPb];
+  TGraphErrors* grNpPbPb = grPPbPb->Clone("grNpPbPb");
+  for(int i=0; i<grNpPbPb->GetN(); i++)
+    grNpPbPb->SetPoint(i, grPPbPb->GetX()[i], 1-grPPbPb->GetY()[i]);
 
-  for(int i=0;i<BIN_NUM_PP;i++)
-    {
-      aXptCtv_PP[i] = (ptbins_PP[i]+ptbins_PP[i+1])/2.;
-      aXptErr_PP[i] = (ptbins_PP[i+1]-ptbins_PP[i])/2.;
-      aNPfracCtv_PP[i] = 1. - aPfracCtv_PP[i];
-      aNPfracErr_PP[i] = aPfracErr_PP[i];
-    }
-  for(int i=0;i<BIN_NUM_PbPb;i++)
-    {
-      aXptCtv_PbPb[i] = (ptbins_PbPb[i]+ptbins_PbPb[i+1])/2.;
-      aXptErr_PbPb[i] = (ptbins_PbPb[i+1]-ptbins_PbPb[i])/2.;
-      aNPfracCtv_PbPb[i] = 1. - aPfracCtv_PbPb[i];
-      aNPfracErr_PbPb[i] = aPfracErr_PbPb[i];
-    }
+  TGraphErrors* grPPbPbSys = grPPbPb->Clone("grPPbPbSys");
+  for(int i=0; i<grPPbPbSys->GetN(); i++)
+    grPPbPbSys->SetPointError(i, grPPbPb->GetEX()[i], 0.1);
+
+  TGraphErrors* grNpPbPbSys = grPPbPbSys->Clone("grNpPbPbSys");
+  for(int i=0; i<grNpPbPbSys->GetN(); i++)
+    grNpPbPbSys->SetPoint(i, grPPbPbSys->GetX()[i], 1-grPPbPbSys->GetY()[i]);
+
+  grPPP->SetLineColor(2);
+  grPPP->SetLineWidth(2);
+  grPPP->SetMarkerColor(2);
+
+  grNpPP->SetLineColor(4);
+  grNpPP->SetLineWidth(2);
+  grNpPP->SetMarkerColor(4);
+
+  /*
+  grPPPSys->SetLineColor(kRed-9);
+  grPPPSys->SetFillColor(kRed-9);
+  grPPPSys->SetFillStyle(1001);
+
+  grNpPPSys->SetLineColor(kBlue-9);
+  grNpPPSys->SetFillColor(kBlue-9);
+  grNpPPSys->SetFillStyle(1001);
+  */
+
+  grPPPSys->SetLineColor(kRed);
+  grPPPSys->SetLineWidth(2);
+  grPPPSys->SetFillStyle(0);
+
+  grNpPPSys->SetLineColor(kBlue);
+  grNpPPSys->SetLineWidth(2);
+  grNpPPSys->SetFillStyle(0);
 
   TLatex* texCms = new TLatex(0.18,0.93, "#scale[1.25]{CMS} Preliminary");
   texCms->SetNDC();
   texCms->SetTextAlign(12);
   texCms->SetTextSize(0.04);
   texCms->SetTextFont(42);
+
   TLatex* texCol_PP = new TLatex(0.96,0.93, "PP #sqrt{s_{NN}} = 5.02 TeV");
   texCol_PP->SetNDC();
   texCol_PP->SetTextAlign(32);
   texCol_PP->SetTextSize(0.04);
   texCol_PP->SetTextFont(42);
+
   TLatex* texCol_PbPb = new TLatex(0.96,0.93, "PbPb #sqrt{s_{NN}} = 5.02 TeV");
   texCol_PbPb->SetNDC();
   texCol_PbPb->SetTextAlign(32);
   texCol_PbPb->SetTextSize(0.04);
   texCol_PbPb->SetTextFont(42);
-  TLatex* texY = new TLatex(0.59,0.65,"|y| < 1.0");
+
+  TLatex* texY = new TLatex(0.59,0.6,"|y| < 1.0");
   texY->SetNDC();
   texY->SetTextFont(42);
   texY->SetTextSize(0.04);
 
-  TGraphErrors* gPfrac_PP = new TGraphErrors(BIN_NUM_PP,aXptCtv_PP,aPfracCtv_PP,aXptErr_PP,aPfracErr_PP);
-  gPfrac_PP->SetLineColor(2);
-  gPfrac_PP->SetLineWidth(2);
-  gPfrac_PP->SetMarkerColor(2);
-  TGraphErrors* gNPfrac_PP = new TGraphErrors(BIN_NUM_PP,aXptCtv_PP,aNPfracCtv_PP,aXptErr_PP,aNPfracErr_PP);
-  gNPfrac_PP->SetLineColor(4);
-  gNPfrac_PP->SetLineWidth(2);
-  gNPfrac_PP->SetMarkerColor(4);
+  TH2F* hempty = new TH2F("hempty","",20,0,105,10,0,1);
+  hempty->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
+  hempty->GetYaxis()->SetTitle("Fraction");
+  hempty->GetXaxis()->CenterTitle();
+  hempty->GetYaxis()->CenterTitle();
+  hempty->GetXaxis()->SetTitleOffset(1.2);
+  hempty->GetYaxis()->SetTitleOffset(1.2);
+  hempty->GetXaxis()->SetTitleSize(0.045);
+  hempty->GetYaxis()->SetTitleSize(0.045);
+  hempty->GetXaxis()->SetTitleFont(42);
+  hempty->GetYaxis()->SetTitleFont(42);
+  hempty->GetXaxis()->SetLabelFont(42);
+  hempty->GetYaxis()->SetLabelFont(42);
+  hempty->GetXaxis()->SetLabelSize(0.04);
+  hempty->GetYaxis()->SetLabelSize(0.04);
 
-  TH2F* hempty_PP = new TH2F("hempty_PP","",20,0,105,10,0,1);
-  hempty_PP->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
-  hempty_PP->GetYaxis()->SetTitle("Fraction");
-  hempty_PP->GetXaxis()->CenterTitle();
-  hempty_PP->GetYaxis()->CenterTitle();
-  hempty_PP->GetXaxis()->SetTitleOffset(1.2);
-  hempty_PP->GetYaxis()->SetTitleOffset(1.2);
-  hempty_PP->GetXaxis()->SetTitleSize(0.045);
-  hempty_PP->GetYaxis()->SetTitleSize(0.045);
-  hempty_PP->GetXaxis()->SetTitleFont(42);
-  hempty_PP->GetYaxis()->SetTitleFont(42);
-  hempty_PP->GetXaxis()->SetLabelFont(42);
-  hempty_PP->GetYaxis()->SetLabelFont(42);
-  hempty_PP->GetXaxis()->SetLabelSize(0.04);
-  hempty_PP->GetYaxis()->SetLabelSize(0.04);
-  TLegend* leg_PP = new TLegend(0.57,0.51,0.85,0.63,NULL,"brNDC");
+  TLegend* leg_PP = new TLegend(0.57,0.46,0.85,0.58,NULL,"brNDC");
   leg_PP->SetBorderSize(0);
   leg_PP->SetTextSize(0.04);
   leg_PP->SetTextFont(42);
   leg_PP->SetFillStyle(0);
-  leg_PP->AddEntry(gPfrac_PP,"Prompt","pl");
-  leg_PP->AddEntry(gNPfrac_PP,"Non-prompt","pl");
-  TCanvas* cPNPfrac_PP = new TCanvas("cPNPfrac_PP","",600,600);
-  hempty_PP->Draw();
-  gPfrac_PP->Draw("psame");
-  gNPfrac_PP->Draw("psame");
+  leg_PP->AddEntry(grPPP,"Prompt","pl");
+  leg_PP->AddEntry(grNpPP,"Non-prompt","pl");
+
+  TCanvas* c1 = new TCanvas("c1","",600,600);
+  hempty->Draw();
   texCms->Draw();
   texCol_PP->Draw();
   texY->Draw();
   leg_PP->Draw("same");
 
-  TH1D* bFeedDownFractionSysPP = new TH1D("bFeedDownFractionSysPP","",BIN_NUM_PP,ptbins_PP);
-  bFeedDownFractionSysPP->SetBinContent(1,    10);
-  bFeedDownFractionSysPP->SetBinContent(2,    5);
-  bFeedDownFractionSysPP->SetBinContent(3,    5);
-  bFeedDownFractionSysPP->SetBinContent(4,    5);
-  bFeedDownFractionSysPP->SetBinContent(5,    5);
-  bFeedDownFractionSysPP->SetBinContent(6,    5);
-  bFeedDownFractionSysPP->SetBinContent(7,    5);
-  bFeedDownFractionSysPP->SetBinContent(8,    5);
-  bFeedDownFractionSysPP->SetBinContent(9,    5);
-  bFeedDownFractionSysPP->SetBinContent(10,    5);
-  bFeedDownFractionSysPP->SetBinContent(11,    5);
-  bFeedDownFractionSysPP->SetBinContent(12,    5);
-  bFeedDownFractionSysPP->SetBinContent(13,    5);
-  bFeedDownFractionSysPP->SetBinContent(14,    5);
+  grPPPSys->Draw("5same");
+  grNpPPSys->Draw("5same");
+  grPPP->Draw("psame");
+  grNpPP->Draw("psame");
+  c1->SaveAs("FractionPP.pdf");
 
-  for(int i=0;i<BIN_NUM_PP;i++) {
-    double x1 = bFeedDownFractionSysPP->GetXaxis()->GetBinLowEdge(i+1);
-    double x2 = bFeedDownFractionSysPP->GetXaxis()->GetBinUpEdge(i+1);
-    double y1 = aPfracCtv_PP[i]-bFeedDownFractionSysPP->GetBinContent(i+1)*0.01;
-    double y2 = aPfracCtv_PP[i]+bFeedDownFractionSysPP->GetBinContent(i+1)*0.01;
+  /////////
 
-    TBox *box = new TBox(x1, y1, x2, y2);
-    box->SetLineColor(kPink+1);
-    box->SetFillColor(kPink+1);
-    box->Draw("same");
-  }
+  grPPbPb->SetLineColor(2);
+  grPPbPb->SetLineWidth(2);
+  grPPbPb->SetMarkerColor(2);
 
-  for(int i=0;i<BIN_NUM_PP;i++) {
-    double x1 = bFeedDownFractionSysPP->GetXaxis()->GetBinLowEdge(i+1);
-    double x2 = bFeedDownFractionSysPP->GetXaxis()->GetBinUpEdge(i+1);
-    double y1 = 1-aPfracCtv_PP[i]-bFeedDownFractionSysPP->GetBinContent(i+1)*0.01;
-    double y2 = 1-aPfracCtv_PP[i]+bFeedDownFractionSysPP->GetBinContent(i+1)*0.01;
+  grNpPbPb->SetLineColor(4);
+  grNpPbPb->SetLineWidth(2);
+  grNpPbPb->SetMarkerColor(4);
 
-    TBox *box = new TBox(x1, y1, x2, y2);
-    box->SetLineColor(kCyan);
-    box->SetFillColor(kCyan);
-    box->Draw("same");
-  }
+  /*
+  grPPbPbSys->SetLineColor(kRed-9);
+  grPPbPbSys->SetFillColor(kRed-9);
+  grPPbPbSys->SetFillStyle(1001);
 
-  gPfrac_PP->Draw("psame");
-  gNPfrac_PP->Draw("psame");
-  cPNPfrac_PP->SaveAs("cPNPfrac_PP.pdf");
+  grNpPbPbSys->SetLineColor(kBlue-9);
+  grNpPbPbSys->SetFillColor(kBlue-9);
+  grNpPbPbSys->SetFillStyle(1001);
+  */
 
-  TGraphErrors* gPfrac_PbPb = new TGraphErrors(BIN_NUM_PbPb,aXptCtv_PbPb,aPfracCtv_PbPb,aXptErr_PbPb,aPfracErr_PbPb);
-  gPfrac_PbPb->SetLineColor(2);
-  gPfrac_PbPb->SetLineWidth(2);
-  gPfrac_PbPb->SetMarkerColor(2);
-  TGraphErrors* gNPfrac_PbPb = new TGraphErrors(BIN_NUM_PbPb,aXptCtv_PbPb,aNPfracCtv_PbPb,aXptErr_PbPb,aNPfracErr_PbPb);
-  gNPfrac_PbPb->SetLineColor(4);
-  gNPfrac_PbPb->SetLineWidth(2);
-  gNPfrac_PbPb->SetMarkerColor(4);
-  TH2F* hempty_PbPb = new TH2F("hempty_PbPb","",20,0,105,10,0,1);
-  hempty_PbPb->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
-  hempty_PbPb->GetYaxis()->SetTitle("Fraction");
-  hempty_PbPb->GetXaxis()->CenterTitle();
-  hempty_PbPb->GetYaxis()->CenterTitle();
-  hempty_PbPb->GetXaxis()->SetTitleOffset(1.2);
-  hempty_PbPb->GetYaxis()->SetTitleOffset(1.2);
-  hempty_PbPb->GetXaxis()->SetTitleSize(0.045);
-  hempty_PbPb->GetYaxis()->SetTitleSize(0.045);
-  hempty_PbPb->GetXaxis()->SetTitleFont(42);
-  hempty_PbPb->GetYaxis()->SetTitleFont(42);
-  hempty_PbPb->GetXaxis()->SetLabelFont(42);
-  hempty_PbPb->GetYaxis()->SetLabelFont(42);
-  hempty_PbPb->GetXaxis()->SetLabelSize(0.04);
-  hempty_PbPb->GetYaxis()->SetLabelSize(0.04);
-  TLegend* leg_PbPb = new TLegend(0.57,0.51,0.85,0.63,NULL,"brNDC");
+  grPPbPbSys->SetLineColor(kRed);
+  grPPbPbSys->SetLineWidth(2);
+  grPPbPbSys->SetFillStyle(0);
+
+  grNpPbPbSys->SetLineColor(kBlue);
+  grNpPbPbSys->SetLineWidth(2);
+  grNpPbPbSys->SetFillStyle(0);
+
+  TLegend* leg_PbPb = new TLegend(0.57,0.46,0.85,0.58,NULL,"brNDC");
   leg_PbPb->SetBorderSize(0);
   leg_PbPb->SetTextSize(0.04);
   leg_PbPb->SetTextFont(42);
   leg_PbPb->SetFillStyle(0);
-  leg_PbPb->AddEntry(gPfrac_PbPb,"Prompt","pl");
-  leg_PbPb->AddEntry(gNPfrac_PbPb,"Non-prompt","pl");
-  TCanvas* cPNPfrac_PbPb = new TCanvas("cPNPfrac_PbPb","",600,600);
-  hempty_PbPb->Draw();
-  gPfrac_PbPb->Draw("psame");
-  gNPfrac_PbPb->Draw("psame");
+  leg_PbPb->AddEntry(grPPbPb,"Prompt","pl");
+  leg_PbPb->AddEntry(grNpPbPb,"Non-prompt","pl");
+
+  hempty->Draw();
   texCms->Draw();
   texCol_PbPb->Draw();
   texY->Draw();
   leg_PbPb->Draw("same");
 
-  TH1D* bFeedDownFractionSysPbPb = new TH1D("bFeedDownFractionSysPbPb","",BIN_NUM_PbPb,ptbins_PbPb);
-  bFeedDownFractionSysPbPb->SetBinContent(1,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(2,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(3,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(4,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(5,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(6,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(7,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(8,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(9,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(10,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(11,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(12,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(13,    10.);
-  bFeedDownFractionSysPbPb->SetBinContent(14,    10.);
+  grPPbPbSys->Draw("5same");
+  grNpPbPbSys->Draw("5same");
+  grPPbPb->Draw("psame");
+  grNpPbPb->Draw("psame");
+  c1->SaveAs("FractionPbPb.pdf");
 
-  for(int i=0;i<BIN_NUM_PbPb;i++) {
-    double x1 = bFeedDownFractionSysPbPb->GetXaxis()->GetBinLowEdge(i+1);
-    double x2 = bFeedDownFractionSysPbPb->GetXaxis()->GetBinUpEdge(i+1);
-    double y1 = aPfracCtv_PbPb[i]-bFeedDownFractionSysPbPb->GetBinContent(i+1)*0.01;
-    double y2 = aPfracCtv_PbPb[i]+bFeedDownFractionSysPbPb->GetBinContent(i+1)*0.01;
+  /////////
 
-    TBox *box = new TBox(x1, y1, x2, y2);
-    box->SetLineColor(kPink+1);
-    box->SetFillColor(kPink+1);
-    box->Draw("same");
-  }
+  grPPP->SetLineColor(4);
+  grPPP->SetMarkerColor(4);
 
-  for(int i=0;i<BIN_NUM_PbPb;i++) {
-    double x1 = bFeedDownFractionSysPbPb->GetXaxis()->GetBinLowEdge(i+1);
-    double x2 = bFeedDownFractionSysPbPb->GetXaxis()->GetBinUpEdge(i+1);
-    double y1 = 1-aPfracCtv_PbPb[i]-bFeedDownFractionSysPbPb->GetBinContent(i+1)*0.01;
-    double y2 = 1-aPfracCtv_PbPb[i]+bFeedDownFractionSysPbPb->GetBinContent(i+1)*0.01;
+  grPPbPbSys->SetLineColor(kRed);
+  grPPbPbSys->SetFillColor(kRed);
 
-    TBox *box = new TBox(x1, y1, x2, y2);
-    box->SetLineColor(kCyan);
-    box->SetFillColor(kCyan);
-    box->Draw("same");
-  }
+  grPPPSys->SetLineColor(kBlue);
+  grPPPSys->SetFillColor(kBlue);
 
-  gPfrac_PbPb->Draw("psame");
-  gNPfrac_PbPb->Draw("psame");
+  grPPPSys->SetLineWidth(2);
+  grPPbPbSys->SetLineWidth(2);
+  grPPPSys->SetFillStyle(0);
+  grPPbPbSys->SetFillStyle(0);
 
-  cPNPfrac_PbPb->SaveAs("cPNPfrac_PbPb.pdf");
+  TLegend* leg_compare = new TLegend(0.3,0.36,0.85,0.48,NULL,"brNDC");
+  leg_compare->SetBorderSize(0);
+  leg_compare->SetTextSize(0.04);
+  leg_compare->SetTextFont(42);
+  leg_compare->SetFillStyle(0);
+  leg_compare->AddEntry(grPPP,"pp 25.8 pb^{-1}","pl");
+  leg_compare->AddEntry(grPPbPb,"PbPb Centrality 0-100% 404 #mub^{-1}","pl");
 
+  TLatex* texY2 = new TLatex(0.33,0.5,"|y| < 1.0");
+  texY2->SetNDC();
+  texY2->SetTextFont(42);
+  texY2->SetTextSize(0.04);
+
+  TLatex* texCol = new TLatex(0.96,0.93, "#sqrt{s_{NN}} = 5.02 TeV");
+  texCol->SetNDC();
+  texCol->SetTextAlign(32);
+  texCol->SetTextSize(0.04);
+  texCol->SetTextFont(42);
+
+  hempty->GetYaxis()->SetTitle("Prompt fraction");
+
+  c1->SetLogx();
+  hempty->Draw();
+  texCms->Draw();
+  texY2->Draw();
+  texCol->Draw();
+  leg_compare->Draw("same");
+  //  grPPPSys->Draw("[]same");
+  //  grPPbPbSys->Draw("[]same");
+  grPPPSys->Draw("5same");
+  grPPbPbSys->Draw("5same");
+  grPPP->Draw("psame");
+  grPPbPb->Draw("psame");
+
+  c1->SaveAs("FractionPPPbPb.pdf");
 }

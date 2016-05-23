@@ -50,8 +50,8 @@ void projectPbPbMB()
   for(int i=0; i<=nBinM; i++)
     binsM[i] = minMassBin + massBinWidth*i;
 
-  TH3D* hSideband = new TH3D("hSideband",";p_{T} (GeV/c};D0 DCA (cm);flight distance significance",nBinX,binsX,nBinY,binsY,nBinZ,binsZ);
-  TH3D* hData = new TH3D("hData",";p_{T} (GeV/c};D0 DCA (cm);flight distance significance",nBinX,binsX,nBinY,binsY,nBinZ,binsZ);
+  TH3D* hSideband = new TH3D("hSideband",";p_{T} (GeV/c};D^{0} DCA (cm);flight distance significance",nBinX,binsX,nBinY,binsY,nBinZ,binsZ);
+  TH3D* hData = new TH3D("hData",";p_{T} (GeV/c};D^{0} DCA (cm);flight distance significance",nBinX,binsX,nBinY,binsY,nBinZ,binsZ);
   TH3D* hPtMD0Dca = new TH3D("hPtMD0Dca",";p_{T} (GeV/c);m (GeV/c^{2});D^{0} DCA (cm)",nBinX,binsX,nBinM,binsM,nBinY,binsY);
   
   hSideband->Sumw2();

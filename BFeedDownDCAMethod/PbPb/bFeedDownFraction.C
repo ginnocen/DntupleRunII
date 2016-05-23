@@ -100,6 +100,7 @@ void bFeedDownFraction()
   float ptBins[nPtBins+1] = {2.,4.,5.,6.,8.,10.,12.5,15.0,20.,25.,30.,40.,60.,100};
 
   float pts[nPtBins];
+  float ptErrors[nPtBins];
   float promptFraction[nPtBins];
   float promptFractionError[nPtBins];
   float promptFractionErrorDataOnly[nPtBins];
@@ -121,6 +122,7 @@ void bFeedDownFraction()
   for(int i=1; i<=nPtBins; i++)
     {
       pts[i-1] = 0.5*(ptBins[i-1]+ptBins[i]);
+      ptErrors[i-1] = 0.5*(ptBins[i]-ptBins[i-1]);
       float ptLow = ptBins[i-1];
       float ptHigh = ptBins[i];
       cout<<endl<<"======================================="<<endl;
@@ -218,7 +220,7 @@ void bFeedDownFraction()
       divideBinWidth(hD0DcaData0);
       divideBinWidth(hD0DcaSideband);
       setColorTitleLabel(hD0DcaData0, 1);
-      hD0DcaData0->GetXaxis()->SetRangeUser(0,0.1);
+      hD0DcaData0->GetXaxis()->SetRangeUser(0,0.07);
       hD0DcaData0->GetYaxis()->SetTitle("counts per cm");
 
       TH1D* hD0DcaSideband0 = (TH1D*)hD0DcaSideband->Clone("hD0DcaSideband0");
@@ -256,7 +258,7 @@ void bFeedDownFraction()
       texPt->Draw();
       texY->Draw();
 
-      TH1D* hD0DcaDataFit = new TH1D("hD0DcaDataFit", ";D^{0} DCA (cm);yield per cm", nBinY, binsY);
+      TH1D* hD0DcaDataFit = new TH1D("hD0DcaDataFit", ";D^{0} DCA (cm);dN / d(D^{0} DCA) (cm^{-1})", nBinY, binsY);
 
       for(int j=1; j<=14; j++)
 	{
@@ -299,13 +301,13 @@ void bFeedDownFraction()
  
       normalize(hD0DcaMCPSignal);
       setColorTitleLabel(hD0DcaMCPSignal, 2);
-      hD0DcaMCPSignal->GetXaxis()->SetRangeUser(0,0.1);
-      hD0DcaMCPSignal->GetYaxis()->SetTitle("normalized counts per cm");
+      hD0DcaMCPSignal->GetXaxis()->SetRangeUser(0,0.07);
    
       normalize(hD0DcaMCNPSignal);
       setColorTitleLabel(hD0DcaMCNPSignal, 4);
-      hD0DcaMCNPSignal->GetXaxis()->SetRangeUser(0,0.1);
-      hD0DcaMCNPSignal->GetYaxis()->SetTitle("normalized counts per cm");
+      hD0DcaMCNPSignal->GetXaxis()->SetRangeUser(0,0.07);
+      hD0DcaMCNPSignal->GetYaxis()->SetTitle("dN / d(D^{0} DCA) (cm^{-1})");
+      hD0DcaMCNPSignal->GetXaxis()->SetTitle("D^{0} DCA (cm)");
       hD0DcaMCNPSignal->SetMaximum(hD0DcaMCPSignal->GetMaximum()*3.);
 
       hD0DcaMCNPSignal->Draw("");
@@ -337,13 +339,13 @@ void bFeedDownFraction()
       fMix->SetParLimits(1,0,1);
 
       fMix->SetLineColor(2);
-      fMix->SetFillColor(2);
-      fMix->SetFillStyle(3001);
+      fMix->SetFillColor(kRed-9);
+      fMix->SetFillStyle(1001);
       
       float fitRangeL = 0;
       float fitRangeH = 0.08;
       
-      hD0DcaData->GetXaxis()->SetRangeUser(0,0.1);
+      hD0DcaData->GetXaxis()->SetRangeUser(0,0.07);
       hD0DcaData->Draw();
       int fitStatus = 1;
       TFitResultPtr fitResult;
@@ -364,6 +366,7 @@ void bFeedDownFraction()
       fMix->SetParameters(integralTotalYield,0.9);
       fMix->SetParError(0,0.1*integralTotalYield);
       fMix->SetParError(1,0.1);
+      fMix->SetNpx(10000);
       fitResult = hD0DcaData->Fit("fMix","E S0", "", fitRangeL, fitRangeH);
       hD0DcaData->GetFunction("fMix")->Draw("flsame");
       fitStatus = fitResult->Status();
@@ -373,8 +376,9 @@ void bFeedDownFraction()
       fNP->SetParameters(fMix->GetParameter(0),fMix->GetParameter(1));
       fNP->SetRange(fitRangeL,fitRangeH);
       fNP->SetLineColor(4);
-      fNP->SetFillStyle(3001);
-      fNP->SetFillColor(4);
+      fNP->SetFillStyle(1001);
+      fNP->SetFillColor(kBlue-9);
+      fNP->SetNpx(10000);
       fNP->Draw("same");  
    
       hD0DcaData->Draw("same");
@@ -475,7 +479,7 @@ void bFeedDownFraction()
       hD0DcaDataOverFit->Divide(fMix);
       hD0DcaDataOverFit->GetYaxis()->SetTitle("data / fit");
       hD0DcaDataOverFit->GetYaxis()->SetRangeUser(0,5);
-      hD0DcaDataOverFit->GetXaxis()->SetRangeUser(0,0.1);
+      hD0DcaDataOverFit->GetXaxis()->SetRangeUser(0,0.07);
       setColorTitleLabel(hD0DcaDataOverFit, 1);
       hD0DcaDataOverFit->Draw("e");
       
@@ -497,12 +501,12 @@ void bFeedDownFraction()
   hStupidJie->GetYaxis()->SetTitle("prompt fraction");
   hStupidJie->SetStats(0);
   hStupidJie->Draw();
-  TGraphErrors* grFraction = new TGraphErrors(nPtBins, pts, promptFraction, 0, promptFractionError);
+  TGraphErrors* grFraction = new TGraphErrors(nPtBins, pts, promptFraction, ptErrors, promptFractionError);
   grFraction->SetName("grPromptFraction");
   grFraction->SetMarkerStyle(20);
   grFraction->Draw("psame");
 
-  TGraphErrors* grFraction2 = new TGraphErrors(nPtBins, pts, promptFraction, 0, promptFractionErrorDataOnly);
+  TGraphErrors* grFraction2 = new TGraphErrors(nPtBins, pts, promptFraction, ptErrors, promptFractionErrorDataOnly);
   grFraction2->SetName("grPromptFractionErrorFromRealDataOnly");
   grFraction2->SetMarkerStyle(20);
   grFraction2->SetMarkerColor(4);
