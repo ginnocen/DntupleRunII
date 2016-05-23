@@ -286,6 +286,26 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       TLegendEntry *ent_theory_PHSDWO =legendSigma->AddEntry(gPHSDWOShadowing,"PHSD w/o shadowing ","l");
     }
   
+  if(1)
+    {
+      TGraph *R_PbPb_cen = new TGraph("R-PbPb_cen_cron1.5_eloss1.5.5100GeVD0.txt");
+      R_PbPb_cen->SetLineColor(kViolet);
+      R_PbPb_cen->SetFillColor(kViolet);
+      R_PbPb_cen->SetFillStyle(3011);
+      R_PbPb_cen->Draw("f same");
+      R_PbPb_cen->Draw("l same");
+      TLegendEntry *ent_theory_R_PbPb_cen =legendSigma->AddEntry(R_PbPb_cen,"Ivan, 0-10%","bf");
+
+      TGraph *R_PbPb_mb = new TGraph("R-PbPb_mb_cron1.5_eloss1.5.5100GeVD0.txt");
+      R_PbPb_mb->SetLineColor(kBlue+3);
+      R_PbPb_mb->SetFillColor(kBlue+3);
+      R_PbPb_mb->SetFillStyle(3008);
+      R_PbPb_mb->Draw("f same");
+      R_PbPb_mb->Draw("l same");
+      TLegendEntry *ent_theory_R_PbPb_mb =legendSigma->AddEntry(R_PbPb_mb,"Ivan, MB","bf");
+
+    }
+
   TLatex* texSystnorm = new TLatex(0.23,0.70,"T_{AA} and lumi.");
   texSystnorm->SetNDC();
   texSystnorm->SetTextColor(1);
