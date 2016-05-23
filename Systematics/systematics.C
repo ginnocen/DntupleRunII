@@ -399,7 +399,7 @@ void drawSys(double x1,double y1, double x2,double y2, int color = 1)
 // =============================================================================================================
 // Plot systematics for RAA
 // =============================================================================================================
-void plotSystematicsRAA(double centL=0,double centH=10)
+void plotSystematicsRAA(double centL=0,double centH=100)
 {
 
   TCanvas*canvas=new TCanvas("canvas","canvas",600,600);//550,500
