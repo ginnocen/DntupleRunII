@@ -297,17 +297,6 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       TLegendEntry *ent_theory_R_PbPb_cen =legendSigma->AddEntry(R_PbPb_cen,"I.Vitev (g=1.8-2.0)","bf");
     }
 
-  if(isTheoryComparison==1&&centMax==100)
-    {
-      TGraph *R_PbPb_mb = new TGraph("R-PbPb_mb_cron1.5_eloss1.5.5100GeVD0.txt");
-      R_PbPb_mb->SetLineColor(kViolet);
-      R_PbPb_mb->SetFillColor(kViolet);
-      R_PbPb_mb->SetFillStyle(3008);
-      R_PbPb_mb->Draw("f same");
-      R_PbPb_mb->Draw("l same");
-      TLegendEntry *ent_theory_R_PbPb_mb =legendSigma->AddEntry(R_PbPb_mb,"I.Vitev (g=1.8-2.0)","bf");
-    }
-
 
   TLatex* texSystnorm = new TLatex(0.23,0.70,"T_{AA} and lumi.");
   texSystnorm->SetNDC();
