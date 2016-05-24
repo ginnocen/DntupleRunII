@@ -40,8 +40,8 @@ TF1 *fPPPtShape = new TF1("fPPPtShapeSig","[0]+[1]/(x)+[2]/x/x+[3]*x");
 // Normalization uncertainty
 double PbPbNMBUncertainty	= 2;			// uncertainty associated with minbias events,
 							// used in RAA for pT < 20 GeV (4/7/2016)
-double TAAUncertainty0to100	= 2.5;			// Updated number (4/7/2016)
-double TAAUncertainty0to10	= 1.8;			// Updated number (4/7/2016)
+double TAAUncertainty0to100	= 8.9;			// Updated number (4/7/2016)
+double TAAUncertainty0to10	= 1.7;			// Updated number (4/7/2016)
 double PbPbTrigger		= 2.0;			// Statistical uncertainty of the zero-coefficient of the linear fit
 double PbPbLumiUncertainty	= 10;			// 10% for the moment, to be updated (from Daniel), NOT used
 
@@ -486,7 +486,7 @@ void plotSystematicsRAA(double centL=0,double centH=10)
   texpre->SetLineWidth(2);
   texpre->Draw();
 
-  TLatex * texY = new TLatex(0.5,0.8324607,"D^{0} R_{AA} / dp_{T}, |y| < 1");//0.2612903,0.8425793
+  TLatex * texY = new TLatex(0.5,0.8324607,"D^{0} R_{AA}, |y| < 1");//0.2612903,0.8425793
   texY->SetNDC();
   texY->SetTextColor(1);
   texY->SetTextFont(42);

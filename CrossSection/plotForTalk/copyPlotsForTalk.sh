@@ -22,3 +22,10 @@ cp ../plotRAA/canvasRAAchargedParticle_0_100.pdf canvasRAAcharged0100.pdf
 cp ../plotRAA/canvasRAAchargedParticle_0_10.pdf canvasRAAcharged010.pdf
 cp ../plotRAA/canvasRAAComparisonAll_0_100.pdf canvasRAAtheory0100.pdf
 cp ../plotRAA/canvasRAAComparisonAll_0_10.pdf canvasRAAtheory010.pdf
+
+
+cp ../../TriggerStudies/trigPre/HLTDmesonEfficiency.pdf HLTDmesonEfficiency.pdf
+
+cp ../../Systematics/SystematicSummaryPP.pdf  .
+cp ../../Systematics/SystematicSummaryPbPb_Cent100.pdf .
+cp ../../Systematics/SystematicSummaryPbPb_Cent10.pdf .

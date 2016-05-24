@@ -6,7 +6,7 @@ using namespace std;
 #include "TGraphErrors.h"
 #include "../Systematics/systematics.C"
 
-void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file="ROOTfilesCent10/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", TString predictions="../TheoryPredictions/PredictionsCUJET3_pt_0_10.root", Float_t centMin=0., Float_t centMax=100., Int_t isHadDupl=1, Int_t isTheoryComparison=1)
+void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file="ROOTfilesCent10/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", TString predictions="../TheoryPredictions/PredictionsCUJET3_pt_0_10.root", Float_t centMin=0., Float_t centMax=10., Int_t isHadDupl=1, Int_t isTheoryComparison=1)
 {
   gStyle->SetOptTitle(0);   
   gStyle->SetOptStat(0);
@@ -68,7 +68,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   hemptyEff->Draw();
 
   TLine *line;
-  if(isHadDupl==1) line = new TLine(0.7,1,300,1); else line = new TLine(1.0,1,300,1);
+  if(isHadDupl==1) line = new TLine(0.7,1,400,1); else line = new TLine(1.0,1,150,1);
   line->SetLineStyle(2);
   line->SetLineWidth(2);
   line->Draw();
@@ -83,7 +83,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
         }
     }
   gNuclearModification->SetFillColor(5);//1
-  gNuclearModification->SetFillStyle(1001);//0 
+  gNuclearModification->SetFillStyle(3001);//0 
   gNuclearModification->SetLineWidth(1);//3
   gNuclearModification->SetMarkerSize(1);
   gNuclearModification->SetMarkerStyle(21);
@@ -91,7 +91,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   gNuclearModification->SetMarkerColor(1);//kGreen+4
   gNuclearModification->Draw("5same");
   gNuclearModificationMB->SetFillColor(5);//1
-  gNuclearModificationMB->SetFillStyle(1001);//0 
+  gNuclearModificationMB->SetFillStyle(3001);//0 
   gNuclearModificationMB->SetLineWidth(1);//3
   gNuclearModificationMB->SetMarkerSize(1);
   gNuclearModificationMB->SetMarkerStyle(21);
