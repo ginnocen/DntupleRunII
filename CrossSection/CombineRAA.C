@@ -75,8 +75,8 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
 
   if(isHadDupl==1)
     {
-      if(centMin==0&&centMax==100&&isTheoryComparison<1) RAA_0_100();
-      else if(centMin==0&&centMax==10&&isTheoryComparison<1) RAA_0_10();
+      if(centMin==0&&centMax==100) RAA_0_100();
+      else if(centMin==0&&centMax==10) RAA_0_10();
       else
         {
           cout<<"ERROR: Invalid Centrality range"<<endl;
@@ -166,6 +166,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   if(isHadDupl==1 && isTheoryComparison==0) legendSigma=new TLegend(0.4436242,0.72,0.842953,0.88,"");//0.5100806,0.6268644,0.8084677,0.7805932
   if(isTheoryComparison==2||isTheoryComparison==3) legendSigma=new TLegend(0.5636242,0.6474695,0.912953,0.9057592,"");//0.5100806,0.6268644,0.8084677,0.7805932
   if(isHadDupl==0 && isTheoryComparison==1) legendSigma=new TLegend(0.5636242,0.6474695,0.912953,0.9057592,"");//0.5100806,0.6268644,0.8084677,0.7805932
+  if(isHadDupl==1 && isTheoryComparison==1) legendSigma=new TLegend(0.5636242,0.6474695,0.912953,0.9057592,"");//0.5100806,0.6268644,0.8084677,0.7805932
   legendSigma->SetBorderSize(0);
   legendSigma->SetLineColor(0);
   legendSigma->SetFillColor(0);
