@@ -6,7 +6,7 @@ using namespace std;
 #include "TGraphErrors.h"
 #include "../Systematics/systematics.C"
 
-void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file="ROOTfilesCent10/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", TString predictions="../TheoryPredictions/PredictionsCUJET3_pt_0_10.root", Float_t centMin=0., Float_t centMax=10., Int_t isHadDupl=1, Int_t isTheoryComparison=1)
+void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file="ROOTfilesCent10/outputRAA.root", TString filecharged="/afs/cern.ch/work/g/ginnocen/public/Spectra_March17_evtselCorrData.root", TString predictions="../TheoryPredictions/PredictionsCUJET3_pt_0_10.root", Float_t centMin=0., Float_t centMax=10., Int_t isHadDupl=1, Int_t isTheoryComparison=2)
 {
   gStyle->SetOptTitle(0);   
   gStyle->SetOptStat(0);
@@ -164,6 +164,8 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   TLegend *legendSigma;
   if(isHadDupl==0 && isTheoryComparison==0) legendSigma=new TLegend(0.5436242,0.7474695,0.942953,0.8457592,"");//0.5100806,0.6268644,0.8084677,0.7805932
   if(isHadDupl==1 && isTheoryComparison==0) legendSigma=new TLegend(0.4436242,0.72,0.842953,0.88,"");//0.5100806,0.6268644,0.8084677,0.7805932
+  if(isTheoryComparison==2||isTheoryComparison==3) legendSigma=new TLegend(0.5636242,0.6474695,0.912953,0.9057592,"");//0.5100806,0.6268644,0.8084677,0.7805932
+  if(isHadDupl==0 && isTheoryComparison==1) legendSigma=new TLegend(0.5636242,0.6474695,0.912953,0.9057592,"");//0.5100806,0.6268644,0.8084677,0.7805932
   if(isHadDupl==1 && isTheoryComparison==1) legendSigma=new TLegend(0.5636242,0.6474695,0.912953,0.9057592,"");//0.5100806,0.6268644,0.8084677,0.7805932
   legendSigma->SetBorderSize(0);
   legendSigma->SetLineColor(0);
@@ -180,7 +182,7 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
    if(isHadDupl==1 && isTheoryComparison==1){ent_Dhighpt->SetTextSize(0.03);}
 
 
-    if(isHadDupl==1){
+    if(isHadDupl==1&&isTheoryComparison==0){
       TLegendEntry *ent_Charged=legendSigma->AddEntry(hTrackPt_trkCorr_PbPb_copy1,"R_{AA} charged hadrons","pl");//pf
        ent_Charged->SetTextFont(42);
        ent_Charged->SetLineColor(1);
@@ -229,14 +231,14 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gRAADmeson5TeV->SetMarkerSize(0.15);
       gMagdalenaD5TeV->SetLineColor(kGreen+4);
       gMagdalenaD5TeV->SetFillColor(kGreen+4);
-
+      if (isTheoryComparison==1||isTheoryComparison==2){
       gMagdalenaD5TeV->SetFillStyle(3004);
       gMagdalenaD5TeV->Draw("f same");
       gMagdalenaD5TeV->Draw("l same");
-      gShanshanD5TeV->SetLineWidth(3);
-      gShanshanD5TeV->SetLineColor(kRed+1);
-      gShanshanD5TeV->Draw("c same");
-      
+      gRAADmeson5TeV->Draw("psame");
+
+      }
+      if (isTheoryComparison==1||isTheoryComparison==3){
       gPHSDWShadowing->SetLineColor(kGreen+2);
       gPHSDWShadowing->SetLineWidth(3);
       gPHSDWShadowing->Draw("c same");
@@ -244,8 +246,13 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       gPHSDWOShadowing->SetLineWidth(3);
       gPHSDWOShadowing->SetLineStyle(2);
       gPHSDWOShadowing->Draw("c same");
+      gShanshanD5TeV->SetLineWidth(3);
+      gShanshanD5TeV->SetLineColor(kRed+1);
+      gShanshanD5TeV->Draw("c same");
+
+      }
       //gRAApion5TeV->Draw("psame");
-      gRAADmeson5TeV->Draw("psame");
+      
 
       if(superimposedALICE){
       double p9059_d9x1y1_xval[9] = { 1.5, 2.5, 3.5, 4.5, 5.5, 7.0, 10.0, 14.0, 20.0 };
@@ -267,12 +274,13 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       }
 
 
-      
+      if (isTheoryComparison==1||isTheoryComparison==2){
       TLegendEntry *ent_theory_Magdalena =legendSigma->AddEntry(gMagdalenaD5TeV,"M. Djordjevic","bf");
       TLegendEntry *ent_theoryD=legendSigma->AddEntry(gRAADmeson5TeV,"CUJET3.0 D^{0}","l");//pf
  //     ent_theoryD->SetTextFont(42);
       ent_theoryD->SetLineColor(4);  
       ent_theoryD->SetMarkerColor(4);
+      }
   //    ent_theoryD->SetTextSize(0.043);//0.03
       
       //TLegendEntry *ent_theoryCharged=legendSigma->AddEntry(gRAApion5TeV,"CUJET3.0 #pi^{0}, h^{#pm}","l");//pf
@@ -280,13 +288,15 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       //ent_theoryCharged->SetLineColor(kGreen+1);
       //ent_theoryCharged->SetMarkerColor(kGreen+1);
       //ent_theoryCharged->SetTextSize(0.043);//0.03
-      
+
+      if (isTheoryComparison==1||isTheoryComparison==3){
       TLegendEntry *ent_theory_Shanshan =legendSigma->AddEntry(gShanshanD5TeV,"S. Cao et al.","l");
       TLegendEntry *ent_theory_PHSDW =legendSigma->AddEntry(gPHSDWShadowing,"PHSD w/ shadowing ","l");
       TLegendEntry *ent_theory_PHSDWO =legendSigma->AddEntry(gPHSDWOShadowing,"PHSD w/o shadowing ","l");
+      }
     }
   
-  if(isTheoryComparison==1&&centMax==10)
+  if((isTheoryComparison==1||isTheoryComparison==2)&&centMax==10)
     {
       TGraph *R_PbPb_cen = new TGraph("R-PbPb_cen_cron1.5_eloss1.5.5100GeVD0.txt");
       R_PbPb_cen->SetLineColor(kViolet);
@@ -295,17 +305,6 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
       R_PbPb_cen->Draw("f same");
       R_PbPb_cen->Draw("l same");
       TLegendEntry *ent_theory_R_PbPb_cen =legendSigma->AddEntry(R_PbPb_cen,"I.Vitev (g=1.8-2.0)","bf");
-    }
-
-  if(isTheoryComparison==1&&centMax==100)
-    {
-      TGraph *R_PbPb_mb = new TGraph("R-PbPb_mb_cron1.5_eloss1.5.5100GeVD0.txt");
-      R_PbPb_mb->SetLineColor(kViolet);
-      R_PbPb_mb->SetFillColor(kViolet);
-      R_PbPb_mb->SetFillStyle(3008);
-      R_PbPb_mb->Draw("f same");
-      R_PbPb_mb->Draw("l same");
-      TLegendEntry *ent_theory_R_PbPb_mb =legendSigma->AddEntry(R_PbPb_mb,"I.Vitev (g=1.8-2.0)","bf");
     }
 
 
@@ -328,7 +327,9 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
     
   if(isHadDupl==0&&isTheoryComparison==0) canvasRAA->SaveAs(Form("plotRAA/canvasRAA_%.0f_%.0f.pdf",centMin,centMax));
   if(isHadDupl==1&&isTheoryComparison==0) canvasRAA->SaveAs(Form("plotRAA/canvasRAAchargedParticle_%.0f_%.0f.pdf",centMin,centMax));
-  if(isHadDupl==1&&isTheoryComparison==1) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonAll_%.0f_%.0f.pdf",centMin,centMax));
+  if(isTheoryComparison==1) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonAll_%.0f_%.0f.pdf",centMin,centMax));
+  if(isTheoryComparison==2) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonQCD_%.0f_%.0f.pdf",centMin,centMax));
+  if(isTheoryComparison==3) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonTransport_%.0f_%.0f.pdf",centMin,centMax));
 }
 
 int main(int argc, char *argv[])

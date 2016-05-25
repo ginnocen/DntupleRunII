@@ -20,9 +20,8 @@ cp ../plotRAA/canvasRAA_0_100.pdf canvasRAA0100.pdf
 cp ../plotRAA/canvasRAA_0_10.pdf canvasRAA010.pdf
 cp ../plotRAA/canvasRAAchargedParticle_0_100.pdf canvasRAAcharged0100.pdf
 cp ../plotRAA/canvasRAAchargedParticle_0_10.pdf canvasRAAcharged010.pdf
-cp ../plotRAA/canvasRAAComparisonAll_0_100.pdf canvasRAAtheory0100.pdf
-cp ../plotRAA/canvasRAAComparisonAll_0_10.pdf canvasRAAtheory010.pdf
 
+cp ../plotRAA/canvasRAAComparison*.pdf .
 
 cp ../../TriggerStudies/trigPre/HLTDmesonEfficiency.pdf HLTDmesonEfficiency.pdf
 
