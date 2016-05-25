@@ -28,3 +28,5 @@ cp ../../TriggerStudies/trigPre/HLTDmesonEfficiency.pdf HLTDmesonEfficiency.pdf
 cp ../../Systematics/SystematicSummaryPP.pdf  .
 cp ../../Systematics/SystematicSummaryPbPb_Cent100.pdf .
 cp ../../Systematics/SystematicSummaryPbPb_Cent10.pdf .
+
+cp ../plotRAA/canvasRAAexperiments_0_10.pdf .
