@@ -88,6 +88,7 @@ void plotPnNP(TString collision="PbPb",TString outputfileP="test.root",TString o
   legEffAcc->Draw("same");
   if(!isPbPb) cEffAcc->SaveAs(Form("plotEff/canvasEffAcc_PnNP_%s.pdf",collision.Data()));
   else cEffAcc->SaveAs(Form("plotEff/canvasEffAcc_PnNP_%s_%.0f_%.0f.pdf",collision.Data(),centMin,centMax));
+  else cEffAcc->SaveAs(Form("plotEff/canvasEffAcc_PnNP_%s_%.0f_%.0f.png",collision.Data(),centMin,centMax));
 
   TCanvas* cEff = new TCanvas("cEff","",600,600);
   TLegend* legEff = new TLegend(0.55,0.70,0.90,0.81);
@@ -103,6 +104,7 @@ void plotPnNP(TString collision="PbPb",TString outputfileP="test.root",TString o
   legEff->Draw("same");
   if(!isPbPb) cEff->SaveAs(Form("plotEff/canvasEff_PnNP_%s.pdf",collision.Data()));
   else cEff->SaveAs(Form("plotEff/canvasEff_PnNP_%s_%.0f_%.0f.pdf",collision.Data(),centMin,centMax));
+  else cEff->SaveAs(Form("plotEff/canvasEff_PnNP_%s_%.0f_%.0f.png",collision.Data(),centMin,centMax));
 }
 
 int main(int argc, char* argv[])
