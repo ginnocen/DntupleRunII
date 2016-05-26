@@ -330,6 +330,13 @@ void CombineRAA(TString fileMB="ROOTfilesCent10/outputRAAMB.root", TString file=
   if(isTheoryComparison==1) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonAll_%.0f_%.0f.pdf",centMin,centMax));
   if(isTheoryComparison==2) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonQCD_%.0f_%.0f.pdf",centMin,centMax));
   if(isTheoryComparison==3) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonTransport_%.0f_%.0f.pdf",centMin,centMax));
+  
+    if(isHadDupl==0&&isTheoryComparison==0) canvasRAA->SaveAs(Form("plotRAA/canvasRAA_%.0f_%.0f.png",centMin,centMax));
+  if(isHadDupl==1&&isTheoryComparison==0) canvasRAA->SaveAs(Form("plotRAA/canvasRAAchargedParticle_%.0f_%.0f.png",centMin,centMax));
+  if(isTheoryComparison==1) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonAll_%.0f_%.0f.png",centMin,centMax));
+  if(isTheoryComparison==2) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonQCD_%.0f_%.0f.png",centMin,centMax));
+  if(isTheoryComparison==3) canvasRAA->SaveAs(Form("plotRAA/canvasRAAComparisonTransport_%.0f_%.0f.png",centMin,centMax));
+
 }
 
 int main(int argc, char *argv[])
