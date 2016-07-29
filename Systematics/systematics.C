@@ -21,7 +21,7 @@ double DKpiBRUncertainty	= 1.29;			// from PDG
 // =============================================================================================================
 
 // Normalization uncertainty
-double ppLumiUncertainty 	= 12;			// 5% for the moment, to be updated (4/7/2016)
+double ppLumiUncertainty 	= 4;			// 5% for the moment, to be updated (4/7/2016)
 
 // Point-to-point
 double ppTrackingEfficiency 	= 4;   			// single track systematics from D* studies
@@ -270,16 +270,21 @@ float systematicsForRAA(double pt,double centL=0,double centH=100, double HLT=0,
    sys+=fPPPtShape->Eval(pt)*fPPPtShape->Eval(pt);
    sys+=fPbPbPtShape->Eval(pt)*fPbPbPtShape->Eval(pt);
 
-   sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
-   sys+=(PbPbTrackingEfficiency*2)*(PbPbTrackingEfficiency*2);
-	    
+   //sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
+   //sys+=(PbPbTrackingEfficiency*2)*(PbPbTrackingEfficiency*2);
+
+   if (centL==0&&centH==10)  sys+= 12*12;	    
+   if (centL==0&&centH==100) {
+     sys+=(ppTrackingEfficiency*2)*(ppTrackingEfficiency*2);
+     sys+=(PbPbTrackingEfficiency*2)*(PbPbTrackingEfficiency*2);
+
+   }	    
    if (stage==3) return sqrt(sys);
 
-   sys+= ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt))*
-         ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt));
+//   sys+= ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt))*
+//         ppBFeedDownCorrection->GetBinContent(ppBFeedDownCorrection->FindBin(pt));
 
-   sys+= PbPbBFeedDownCorrection->GetBinContent(PbPbBFeedDownCorrection->FindBin(pt))*
-         PbPbBFeedDownCorrection->GetBinContent(PbPbBFeedDownCorrection->FindBin(pt));
+   sys+= (PbPbBFeedDownCorrection->GetBinContent(PbPbBFeedDownCorrection->FindBin(pt))/2)*(PbPbBFeedDownCorrection->GetBinContent(PbPbBFeedDownCorrection->FindBin(pt))/2);
 
    return sqrt(sys);
 
