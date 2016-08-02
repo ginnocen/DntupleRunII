@@ -32,6 +32,16 @@ void CombineCrossSections(TString fileMB="ROOTfiles/CrossSectionFONLLPPMB.root",
   TGraphAsymmErrors* gaeRatioCrossFONLLunity = (TGraphAsymmErrors*)filePP->Get("gaeRatioCrossFONLLunity");
   TH1D* hSigmaPPStat = (TH1D*)filePP->Get("hPtSigma");
   TH1D* hfPrompt = (TH1D*)filePP->Get("hfprompt");
+  
+  double x,y;
+  double ystat,ysyst;
+  
+  std::cout<<"AAAAA"<<std::endl;
+  
+  for (int i=0; i<gaeRatioCrossFONLLstatMB->GetN();i++){
+    gaeCrossSystMB->GetPoint(i,x,ysyst);
+    cout<<"pt="<<gaeCrossSystMB->GetBinCenter(i)<<", sigma="<<hSigmaPPStatMB->GetBinContent(i+1)<<", stat="<<hSigmaPPStatMB->GetBinError(i+1)<<", syst="<<endl;
+  }
 
 
   TCanvas* cSigma = new TCanvas("cSigma","",750,750);
