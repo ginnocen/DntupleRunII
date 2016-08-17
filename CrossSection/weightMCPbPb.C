@@ -182,7 +182,7 @@ void weightPbPbFONLLpthat(int minfit=2,int maxfit=100,TString pthat="pthatall")
   ntGen->AddFriend(ntHiMC);
   
   TH1D* hPtGenFONLL = new TH1D("hPtGenFONLL","",nBinsReweight,ptBinsReweight);
-  ntGen->Project("hPtGenFONLL","Gpt",(TCut(weighpthat)*TCut(selmcgen.Data())));
+  ntGen->Project("hPtGenFONLL","Max$(Gpt)",(TCut(weighpthat)*TCut(selmcgen.Data())));
   divideBinWidth(hPtGenFONLL);
     
   TString fonll="/afs/cern.ch/work/g/ginnocen/public/output_pp_d0meson_5TeV_y1.root";
